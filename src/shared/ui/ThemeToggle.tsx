@@ -8,14 +8,14 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="sm" disabled>
+      <Button variant="secondary" size="sm" disabled>
         ...
       </Button>
     )
   }
 
   return (
-    <Button variant="ghost" size="sm" onClick={toggleTheme} aria-label="Переключить тему">
+    <Button variant="secondary" size="sm" onClick={toggleTheme} aria-label="Переключить тему">
       {theme === 'light' ? '🌙' : '☀️'}
     </Button>
   )

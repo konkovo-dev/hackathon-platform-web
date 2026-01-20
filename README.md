@@ -234,6 +234,61 @@ export default function MyComponent() {
 #### Ссылки
 - `link-default`, `link-hover`
 
+### Spacing токены (размеры)
+
+Все размеры из `tokens.json` доступны через классы Tailwind или CSS переменные.
+
+#### Доступные размеры
+
+Размеры от `m` до `m32` (от 2px до 64px с шагом 2px):
+- `m` = 2px
+- `m2` = 4px
+- `m3` = 6px
+- `m4` = 8px
+- `m5` = 10px
+- `m6` = 12px
+- `m7` = 14px
+- `m8` = 16px
+- `m9` = 18px
+- `m10` = 20px
+- ... и так далее до `m32` = 64px
+
+#### Использование в Tailwind
+
+```tsx
+// Padding
+<div className="p-m8">Padding 16px</div>
+<div className="px-m4 py-m2">Padding horizontal 8px, vertical 4px</div>
+
+// Margin
+<div className="m-m16">Margin 32px</div>
+<div className="mx-m8 my-m4">Margin horizontal 16px, vertical 8px</div>
+
+// Gap
+<div className="flex gap-m2">Gap 4px</div>
+<div className="grid gap-m8">Gap 16px</div>
+
+// Height/Width
+<div className="h-m16 w-m20">Height 32px, Width 40px</div>
+```
+
+#### Использование в TypeScript/JavaScript
+
+```tsx
+import { getSpacing, getSpacingVar } from '@/shared/lib/tokens'
+
+// Получить значение в пикселях
+const spacing = getSpacing('m8') // 16
+
+// Получить CSS переменную
+const spacingVar = getSpacingVar('m8') // 'var(--spacing-m8)'
+
+// Использование в инлайн-стилях
+<div style={{ padding: getSpacingVar('m8') }}>
+  Content
+</div>
+```
+
 ### Typography токены
 
 Все стили текста из `tokens.json` доступны через классы Tailwind или компонент `Typography`.

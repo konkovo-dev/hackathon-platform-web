@@ -67,6 +67,40 @@
     --color-overlay-scrim: rgba(0, 0, 0, 0.5);
     --color-shadow-color: rgba(0, 0, 0, 0.1);
 
+    /* Spacing tokens (numbers) */
+    --spacing-m: 2px;
+    --spacing-m2: 4px;
+    --spacing-m3: 6px;
+    --spacing-m4: 8px;
+    --spacing-m5: 10px;
+    --spacing-m6: 12px;
+    --spacing-m7: 14px;
+    --spacing-m8: 16px;
+    --spacing-m9: 18px;
+    --spacing-m10: 20px;
+    --spacing-m11: 22px;
+    --spacing-m12: 24px;
+    --spacing-m13: 26px;
+    --spacing-m14: 28px;
+    --spacing-m15: 30px;
+    --spacing-m16: 32px;
+    --spacing-m17: 34px;
+    --spacing-m18: 36px;
+    --spacing-m19: 38px;
+    --spacing-m20: 40px;
+    --spacing-m21: 42px;
+    --spacing-m22: 44px;
+    --spacing-m23: 46px;
+    --spacing-m24: 48px;
+    --spacing-m25: 50px;
+    --spacing-m26: 52px;
+    --spacing-m27: 54px;
+    --spacing-m28: 56px;
+    --spacing-m29: 58px;
+    --spacing-m30: 60px;
+    --spacing-m31: 62px;
+    --spacing-m32: 64px;
+
     /* Typography - Display */
     --typography-display-2xl-font-family: var(--font-ibm-plex-sans), sans-serif;
     --typography-display-2xl-font-weight: 600;
@@ -278,6 +312,40 @@
     /* Overlay & Shadow */
     --color-overlay-scrim: rgba(0, 0, 0, 0.8);
     --color-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* Spacing tokens (numbers) - same for both themes */
+    --spacing-m: 2px;
+    --spacing-m2: 4px;
+    --spacing-m3: 6px;
+    --spacing-m4: 8px;
+    --spacing-m5: 10px;
+    --spacing-m6: 12px;
+    --spacing-m7: 14px;
+    --spacing-m8: 16px;
+    --spacing-m9: 18px;
+    --spacing-m10: 20px;
+    --spacing-m11: 22px;
+    --spacing-m12: 24px;
+    --spacing-m13: 26px;
+    --spacing-m14: 28px;
+    --spacing-m15: 30px;
+    --spacing-m16: 32px;
+    --spacing-m17: 34px;
+    --spacing-m18: 36px;
+    --spacing-m19: 38px;
+    --spacing-m20: 40px;
+    --spacing-m21: 42px;
+    --spacing-m22: 44px;
+    --spacing-m23: 46px;
+    --spacing-m24: 48px;
+    --spacing-m25: 50px;
+    --spacing-m26: 52px;
+    --spacing-m27: 54px;
+    --spacing-m28: 56px;
+    --spacing-m29: 58px;
+    --spacing-m30: 60px;
+    --spacing-m31: 62px;
+    --spacing-m32: 64px;
 
     /* Typography - Display */
     --typography-display-2xl-font-family: var(--font-ibm-plex-sans), sans-serif;
