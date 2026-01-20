@@ -11,7 +11,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <h1 className="text-2xl font-bold">Регистрация</h1>
-          <p className="text-sm text-muted-foreground">Создайте новый аккаунт</p>
+          <p className="text-sm text-text-secondary">Создайте новый аккаунт</p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4">
@@ -39,9 +39,9 @@ export default function RegisterPage() {
               Зарегистрироваться
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-text-secondary">
               Уже есть аккаунт?{' '}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-link-default hover:text-link-hover hover:underline">
                 Войти
               </Link>
             </p>

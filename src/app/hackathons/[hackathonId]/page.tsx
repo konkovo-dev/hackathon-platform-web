@@ -7,7 +7,7 @@ export default async function HackathonMainPage({
   return (
     <div>
       <h1 className="mb-6 text-3xl font-bold">Хакатон #{hackathonId}</h1>
-      <div className="text-muted-foreground">
+      <div className="text-text-secondary">
         <p>Главная страница хакатона будет здесь</p>
       </div>
     </div>
