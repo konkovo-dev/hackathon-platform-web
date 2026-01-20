@@ -11,7 +11,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <h1 className="text-2xl font-bold">Вход</h1>
-          <p className="text-sm text-muted-foreground">Войдите в свой аккаунт</p>
+          <p className="text-sm text-text-secondary">Войдите в свой аккаунт</p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4">
@@ -27,10 +27,10 @@ export default function LoginPage() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className="rounded border-border" />
+                <input type="checkbox" className="rounded border-border-default" />
                 <span>Запомнить меня</span>
               </label>
-              <Link href="#" className="text-sm text-primary hover:underline">
+              <Link href="#" className="text-sm text-link-default hover:text-link-hover hover:underline">
                 Забыли пароль?
               </Link>
             </div>
@@ -39,9 +39,9 @@ export default function LoginPage() {
               Войти
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-text-secondary">
               Нет аккаунта?{' '}
-              <Link href="/register" className="text-primary hover:underline">
+              <Link href="/register" className="text-link-default hover:text-link-hover hover:underline">
                 Зарегистрироваться
               </Link>
             </p>

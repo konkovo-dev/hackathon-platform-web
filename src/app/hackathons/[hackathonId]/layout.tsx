@@ -13,13 +13,13 @@ const menuItems = [
 
 function HackathonSidebar({ hackathonId }: { hackathonId: string }) {
   return (
-    <aside className="w-64 border-r border-border bg-background p-4">
+    <aside className="w-64 border-r border-border-default bg-bg-surface p-4">
       <nav className="space-y-1">
         {menuItems.map(item => (
           <Link
             key={item.key}
             href={`/hackathons/${hackathonId}/${item.href}`}
-            className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+            className="block rounded-md px-3 py-2 text-sm hover:bg-bg-hover hover:text-text-primary"
           >
             {item.label}
           </Link>

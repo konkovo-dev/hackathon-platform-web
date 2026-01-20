@@ -3,31 +3,458 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+  :root[data-theme='light'] {
+    /* Brand colors */
+    --color-brand-primary: 239 68% 58%;
+    --color-brand-primary-hover: 243 75% 59%;
+    --color-brand-primary-active: 248 81% 57%;
+    --color-brand-secondary: 188 94% 43%;
+    --color-brand-accent: 25 95% 53%;
+
+    /* Background colors */
+    --color-bg-default: 0 0% 100%;
+    --color-bg-surface: 210 20% 98%;
+    --color-bg-elevated: 210 17% 95%;
+    --color-bg-hover: 210 13% 91%;
+    --color-bg-selected: 210 11% 87%;
+
+    /* Text colors */
+    --color-text-primary: 222 84% 5%;
+    --color-text-secondary: 215 16% 47%;
+    --color-text-tertiary: 215 13% 34%;
+    --color-text-inverse: 0 0% 100%;
+    --color-text-disabled: 215 16% 47%;
+
+    /* Border colors */
+    --color-border-default: 210 11% 87%;
+    --color-border-strong: 210 14% 83%;
+    --color-border-focus: 239 68% 58%;
+    --color-divider: 210 13% 91%;
+
+    /* Icon colors */
+    --color-icon-primary: 222 47% 11%;
+    --color-icon-secondary: 215 13% 34%;
+
+    /* State colors */
+    --color-state-success: 142 76% 36%;
+    --color-state-success-bg: 142 76% 36%;
+    --color-state-warning: 38 92% 50%;
+    --color-state-warning-bg: 38 92% 50%;
+    --color-state-error: 0 84% 60%;
+    --color-state-error-bg: 0 84% 60%;
+    --color-state-info: 217 91% 60%;
+    --color-state-info-bg: 217 91% 60%;
+
+    /* Status colors */
+    --color-status-new: 217 91% 60%;
+    --color-status-in-progress: 38 92% 50%;
+    --color-status-closed: 142 76% 36%;
+    --color-status-draft: 258 90% 66%;
+    --color-status-submitted: 142 76% 36%;
+    --color-status-overdue: 0 84% 60%;
+    --color-status-pending: 38 92% 50%;
+    --color-status-accepted: 142 76% 36%;
+    --color-status-declined: 0 84% 60%;
+    --color-status-expired: 215 16% 47%;
+    --color-status-canceled: 215 13% 34%;
+
+    /* Link colors */
+    --color-link-default: 239 68% 58%;
+    --color-link-hover: 243 75% 59%;
+    --color-focus-ring: 199 89% 48%;
+
+    /* Overlay & Shadow */
+    --color-overlay-scrim: rgba(0, 0, 0, 0.5);
+    --color-shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Typography - Display */
+    --typography-display-2xl-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-display-2xl-font-weight: 600;
+    --typography-display-2xl-font-size: 48px;
+    --typography-display-2xl-line-height: 56px;
+    --typography-display-2xl-letter-spacing: 0px;
+
+    --typography-display-xl-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-display-xl-font-weight: 600;
+    --typography-display-xl-font-size: 40px;
+    --typography-display-xl-line-height: 48px;
+    --typography-display-xl-letter-spacing: 0px;
+
+    /* Typography - Heading */
+    --typography-heading-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-lg-font-weight: 600;
+    --typography-heading-lg-font-size: 32px;
+    --typography-heading-lg-line-height: 40px;
+    --typography-heading-lg-letter-spacing: 0px;
+
+    --typography-heading-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-md-font-weight: 600;
+    --typography-heading-md-font-size: 28px;
+    --typography-heading-md-line-height: 36px;
+    --typography-heading-md-letter-spacing: 0px;
+
+    --typography-heading-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-sm-font-weight: 600;
+    --typography-heading-sm-font-size: 24px;
+    --typography-heading-sm-line-height: 32px;
+    --typography-heading-sm-letter-spacing: 0px;
+
+    /* Typography - Title */
+    --typography-title-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-lg-font-weight: 600;
+    --typography-title-lg-font-size: 20px;
+    --typography-title-lg-line-height: 28px;
+    --typography-title-lg-letter-spacing: 0px;
+
+    --typography-title-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-md-font-weight: 600;
+    --typography-title-md-font-size: 18px;
+    --typography-title-md-line-height: 26px;
+    --typography-title-md-letter-spacing: 0px;
+
+    --typography-title-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-sm-font-weight: 600;
+    --typography-title-sm-font-size: 16px;
+    --typography-title-sm-line-height: 24px;
+    --typography-title-sm-letter-spacing: 0px;
+
+    /* Typography - Body */
+    --typography-body-lg-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-lg-regular-font-weight: 400;
+    --typography-body-lg-regular-font-size: 16px;
+    --typography-body-lg-regular-line-height: 24px;
+    --typography-body-lg-regular-letter-spacing: 0px;
+
+    --typography-body-lg-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-lg-medium-font-weight: 500;
+    --typography-body-lg-medium-font-size: 16px;
+    --typography-body-lg-medium-line-height: 24px;
+    --typography-body-lg-medium-letter-spacing: 0px;
+
+    --typography-body-md-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-md-regular-font-weight: 400;
+    --typography-body-md-regular-font-size: 14px;
+    --typography-body-md-regular-line-height: 20px;
+    --typography-body-md-regular-letter-spacing: 0px;
+
+    --typography-body-md-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-md-medium-font-weight: 500;
+    --typography-body-md-medium-font-size: 14px;
+    --typography-body-md-medium-line-height: 20px;
+    --typography-body-md-medium-letter-spacing: 0px;
+
+    --typography-body-sm-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-sm-regular-font-weight: 400;
+    --typography-body-sm-regular-font-size: 13px;
+    --typography-body-sm-regular-line-height: 18px;
+    --typography-body-sm-regular-letter-spacing: 0px;
+
+    --typography-body-sm-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-sm-medium-font-weight: 500;
+    --typography-body-sm-medium-font-size: 13px;
+    --typography-body-sm-medium-line-height: 18px;
+    --typography-body-sm-medium-letter-spacing: 0px;
+
+    /* Typography - Label */
+    --typography-label-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-lg-font-weight: 500;
+    --typography-label-lg-font-size: 16px;
+    --typography-label-lg-line-height: 20px;
+    --typography-label-lg-letter-spacing: 0px;
+
+    --typography-label-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-md-font-weight: 500;
+    --typography-label-md-font-size: 14px;
+    --typography-label-md-line-height: 18px;
+    --typography-label-md-letter-spacing: 0px;
+
+    --typography-label-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-sm-font-weight: 500;
+    --typography-label-sm-font-size: 12px;
+    --typography-label-sm-line-height: 16px;
+    --typography-label-sm-letter-spacing: 0px;
+
+    --typography-label-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-xs-font-weight: 600;
+    --typography-label-xs-font-size: 11px;
+    --typography-label-xs-line-height: 14px;
+    --typography-label-xs-letter-spacing: 0px;
+
+    /* Typography - Caption */
+    --typography-caption-sm-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-sm-regular-font-weight: 400;
+    --typography-caption-sm-regular-font-size: 12px;
+    --typography-caption-sm-regular-line-height: 16px;
+    --typography-caption-sm-regular-letter-spacing: 0px;
+
+    --typography-caption-sm-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-sm-medium-font-weight: 500;
+    --typography-caption-sm-medium-font-size: 12px;
+    --typography-caption-sm-medium-line-height: 16px;
+    --typography-caption-sm-medium-letter-spacing: 0px;
+
+    --typography-caption-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-xs-font-weight: 400;
+    --typography-caption-xs-font-size: 11px;
+    --typography-caption-xs-line-height: 14px;
+    --typography-caption-xs-letter-spacing: 0px;
+
+    /* Typography - Overline */
+    --typography-overline-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-overline-xs-font-weight: 600;
+    --typography-overline-xs-font-size: 11px;
+    --typography-overline-xs-line-height: 14px;
+    --typography-overline-xs-letter-spacing: 0.6px;
+    --typography-overline-xs-text-transform: uppercase;
+
+    /* Typography - Code */
+    --typography-code-sm-font-family: 'IBM Plex Mono', monospace;
+    --typography-code-sm-font-weight: 400;
+    --typography-code-sm-font-size: 12px;
+    --typography-code-sm-line-height: 16px;
+    --typography-code-sm-letter-spacing: 0px;
+  }
+
+  :root[data-theme='dark'] {
+    /* Brand colors */
+    --color-brand-primary: 239 68% 58%;
+    --color-brand-primary-hover: 243 75% 59%;
+    --color-brand-primary-active: 248 81% 57%;
+    --color-brand-secondary: 188 94% 43%;
+    --color-brand-accent: 25 95% 53%;
+
+    /* Background colors */
+    --color-bg-default: 222 47% 5%;
+    --color-bg-surface: 222 42% 9%;
+    --color-bg-elevated: 222 38% 13%;
+    --color-bg-hover: 222 35% 17%;
+    --color-bg-selected: 222 33% 21%;
+
+    /* Text colors */
+    --color-text-primary: 220 100% 95%;
+    --color-text-secondary: 220 30% 75%;
+    --color-text-tertiary: 220 25% 65%;
+    --color-text-inverse: 222 47% 5%;
+    --color-text-disabled: 220 20% 45%;
+
+    /* Border colors */
+    --color-border-default: 222 33% 21%;
+    --color-border-strong: 222 35% 25%;
+    --color-border-focus: 239 100% 75%;
+    --color-divider: 222 35% 17%;
+
+    /* Icon colors */
+    --color-icon-primary: 220 100% 95%;
+    --color-icon-secondary: 220 30% 75%;
+
+    /* State colors */
+    --color-state-success: 142 76% 36%;
+    --color-state-success-bg: 142 76% 36%;
+    --color-state-warning: 38 92% 50%;
+    --color-state-warning-bg: 38 92% 50%;
+    --color-state-error: 0 84% 60%;
+    --color-state-error-bg: 0 84% 60%;
+    --color-state-info: 217 91% 60%;
+    --color-state-info-bg: 217 91% 60%;
+
+    /* Status colors */
+    --color-status-new: 217 91% 60%;
+    --color-status-in-progress: 38 92% 50%;
+    --color-status-closed: 142 76% 36%;
+    --color-status-draft: 258 90% 66%;
+    --color-status-submitted: 142 76% 36%;
+    --color-status-overdue: 0 84% 60%;
+    --color-status-pending: 38 92% 50%;
+    --color-status-accepted: 142 76% 36%;
+    --color-status-declined: 0 84% 60%;
+    --color-status-expired: 215 16% 47%;
+    --color-status-canceled: 215 13% 34%;
+
+    /* Link colors */
+    --color-link-default: 239 100% 75%;
+    --color-link-hover: 239 100% 85%;
+    --color-focus-ring: 199 89% 48%;
+
+    /* Overlay & Shadow */
+    --color-overlay-scrim: rgba(0, 0, 0, 0.8);
+    --color-shadow-color: rgba(0, 0, 0, 0.5);
+
+    /* Typography - Display */
+    --typography-display-2xl-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-display-2xl-font-weight: 600;
+    --typography-display-2xl-font-size: 48px;
+    --typography-display-2xl-line-height: 56px;
+    --typography-display-2xl-letter-spacing: 0px;
+
+    --typography-display-xl-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-display-xl-font-weight: 600;
+    --typography-display-xl-font-size: 40px;
+    --typography-display-xl-line-height: 48px;
+    --typography-display-xl-letter-spacing: 0px;
+
+    /* Typography - Heading */
+    --typography-heading-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-lg-font-weight: 600;
+    --typography-heading-lg-font-size: 32px;
+    --typography-heading-lg-line-height: 40px;
+    --typography-heading-lg-letter-spacing: 0px;
+
+    --typography-heading-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-md-font-weight: 600;
+    --typography-heading-md-font-size: 28px;
+    --typography-heading-md-line-height: 36px;
+    --typography-heading-md-letter-spacing: 0px;
+
+    --typography-heading-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-heading-sm-font-weight: 600;
+    --typography-heading-sm-font-size: 24px;
+    --typography-heading-sm-line-height: 32px;
+    --typography-heading-sm-letter-spacing: 0px;
+
+    /* Typography - Title */
+    --typography-title-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-lg-font-weight: 600;
+    --typography-title-lg-font-size: 20px;
+    --typography-title-lg-line-height: 28px;
+    --typography-title-lg-letter-spacing: 0px;
+
+    --typography-title-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-md-font-weight: 600;
+    --typography-title-md-font-size: 18px;
+    --typography-title-md-line-height: 26px;
+    --typography-title-md-letter-spacing: 0px;
+
+    --typography-title-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-title-sm-font-weight: 600;
+    --typography-title-sm-font-size: 16px;
+    --typography-title-sm-line-height: 24px;
+    --typography-title-sm-letter-spacing: 0px;
+
+    /* Typography - Body */
+    --typography-body-lg-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-lg-regular-font-weight: 400;
+    --typography-body-lg-regular-font-size: 16px;
+    --typography-body-lg-regular-line-height: 24px;
+    --typography-body-lg-regular-letter-spacing: 0px;
+
+    --typography-body-lg-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-lg-medium-font-weight: 500;
+    --typography-body-lg-medium-font-size: 16px;
+    --typography-body-lg-medium-line-height: 24px;
+    --typography-body-lg-medium-letter-spacing: 0px;
+
+    --typography-body-md-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-md-regular-font-weight: 400;
+    --typography-body-md-regular-font-size: 14px;
+    --typography-body-md-regular-line-height: 20px;
+    --typography-body-md-regular-letter-spacing: 0px;
+
+    --typography-body-md-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-md-medium-font-weight: 500;
+    --typography-body-md-medium-font-size: 14px;
+    --typography-body-md-medium-line-height: 20px;
+    --typography-body-md-medium-letter-spacing: 0px;
+
+    --typography-body-sm-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-sm-regular-font-weight: 400;
+    --typography-body-sm-regular-font-size: 13px;
+    --typography-body-sm-regular-line-height: 18px;
+    --typography-body-sm-regular-letter-spacing: 0px;
+
+    --typography-body-sm-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-body-sm-medium-font-weight: 500;
+    --typography-body-sm-medium-font-size: 13px;
+    --typography-body-sm-medium-line-height: 18px;
+    --typography-body-sm-medium-letter-spacing: 0px;
+
+    /* Typography - Label */
+    --typography-label-lg-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-lg-font-weight: 500;
+    --typography-label-lg-font-size: 16px;
+    --typography-label-lg-line-height: 20px;
+    --typography-label-lg-letter-spacing: 0px;
+
+    --typography-label-md-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-md-font-weight: 500;
+    --typography-label-md-font-size: 14px;
+    --typography-label-md-line-height: 18px;
+    --typography-label-md-letter-spacing: 0px;
+
+    --typography-label-sm-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-sm-font-weight: 500;
+    --typography-label-sm-font-size: 12px;
+    --typography-label-sm-line-height: 16px;
+    --typography-label-sm-letter-spacing: 0px;
+
+    --typography-label-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-label-xs-font-weight: 600;
+    --typography-label-xs-font-size: 11px;
+    --typography-label-xs-line-height: 14px;
+    --typography-label-xs-letter-spacing: 0px;
+
+    /* Typography - Caption */
+    --typography-caption-sm-regular-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-sm-regular-font-weight: 400;
+    --typography-caption-sm-regular-font-size: 12px;
+    --typography-caption-sm-regular-line-height: 16px;
+    --typography-caption-sm-regular-letter-spacing: 0px;
+
+    --typography-caption-sm-medium-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-sm-medium-font-weight: 500;
+    --typography-caption-sm-medium-font-size: 12px;
+    --typography-caption-sm-medium-line-height: 16px;
+    --typography-caption-sm-medium-letter-spacing: 0px;
+
+    --typography-caption-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-caption-xs-font-weight: 400;
+    --typography-caption-xs-font-size: 11px;
+    --typography-caption-xs-line-height: 14px;
+    --typography-caption-xs-letter-spacing: 0px;
+
+    /* Typography - Overline */
+    --typography-overline-xs-font-family: var(--font-ibm-plex-sans), sans-serif;
+    --typography-overline-xs-font-weight: 600;
+    --typography-overline-xs-font-size: 11px;
+    --typography-overline-xs-line-height: 14px;
+    --typography-overline-xs-letter-spacing: 0.6px;
+    --typography-overline-xs-text-transform: uppercase;
+
+    /* Typography - Code */
+    --typography-code-sm-font-family: 'IBM Plex Mono', monospace;
+    --typography-code-sm-font-weight: 400;
+    --typography-code-sm-font-size: 12px;
+    --typography-code-sm-line-height: 16px;
+    --typography-code-sm-letter-spacing: 0px;
+  }
+
+  /* Default theme (dark) */
+  :root:not([data-theme]) {
+    --color-bg-default: 222 47% 5%;
+    --color-bg-surface: 222 42% 9%;
+    --color-bg-elevated: 222 38% 13%;
+    --color-bg-hover: 222 35% 17%;
+    --color-bg-selected: 222 33% 21%;
+    --color-text-primary: 220 100% 95%;
+    --color-text-secondary: 220 30% 75%;
+    --color-text-tertiary: 220 25% 65%;
+    --color-text-inverse: 222 47% 5%;
+    --color-text-disabled: 220 20% 45%;
+    --color-border-default: 222 33% 21%;
+    --color-border-strong: 222 35% 25%;
+    --color-border-focus: 239 100% 75%;
+    --color-divider: 222 35% 17%;
+    --color-icon-primary: 220 100% 95%;
+    --color-icon-secondary: 220 30% 75%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border-default;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-bg-default text-text-primary;
+    font-family: var(--font-ibm-plex-sans), sans-serif;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
