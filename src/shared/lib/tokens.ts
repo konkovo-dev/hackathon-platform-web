@@ -2,7 +2,7 @@
  * Утилиты для работы с токенами дизайна
  */
 
-import { getColor } from '../config/tokens'
+import { getColor, tokens } from '../config/tokens'
 
 /**
  * Получить CSS переменную для цвета
@@ -21,4 +21,24 @@ export function getColorVar(tokenPath: string): string {
  */
 export function getColorValue(tokenPath: string): string {
   return getColor(tokenPath)
+}
+
+/**
+ * Получить значение spacing токена
+ * Пример: getSpacing('m8') => 16
+ */
+export function getSpacing(token: string): number {
+  const spacing = tokens.spacing[token as keyof typeof tokens.spacing]
+  if (spacing === undefined) {
+    throw new Error(`Spacing token not found: ${token}`)
+  }
+  return spacing
+}
+
+/**
+ * Получить CSS переменную для spacing
+ * Пример: getSpacingVar('m8') => 'var(--spacing-m8)'
+ */
+export function getSpacingVar(token: string): string {
+  return `var(--spacing-${token})`
 }
