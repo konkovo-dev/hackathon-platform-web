@@ -1,5 +1,5 @@
 import { cn } from '@/shared/lib/cn'
-import { type ButtonHTMLAttributes, forwardRef } from 'react'
+import { cloneElement, forwardRef, isValidElement, type ButtonHTMLAttributes } from 'react'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'action' | 'secondary-action'
 export type ButtonSize = 'sm' | 'md' | 'lg'
@@ -10,6 +10,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   text?: string
   disabled?: boolean
   type?: 'button' | 'submit' | 'reset'
+  asChild?: boolean
 }
 
 const getVariantStyles = (variant: ButtonVariant, disabled: boolean) => {
@@ -104,6 +105,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       text = 'текст',
       disabled = false,
       type = 'button',
+      asChild = false,
       children,
       ...props
     },
@@ -113,30 +115,63 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantStyles = getVariantStyles(variant, disabled)
     const sizeStyles = getSizeStyles(size, isActionType)
     const actionIcon = getActionIcon(variant)
-    const displayText = children || text
+    const displayText = asChild ? text : children || text
+
+    const baseClassName = cn(
+      'inline-flex items-center justify-center rounded-md transition-colors',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
+      disabled && 'pointer-events-none cursor-not-allowed',
+      variantStyles.container,
+      sizeStyles.container,
+      className
+    )
+
+    const content = (
+      <>
+        {isActionType && actionIcon && (
+          <span className={cn(sizeStyles.text, variantStyles.icon)}>{actionIcon}</span>
+        )}
+        <span className={cn(sizeStyles.text, variantStyles.text, 'whitespace-nowrap')}>
+          {displayText}
+        </span>
+      </>
+    )
+
+    if (asChild) {
+      if (!isValidElement(children)) {
+        if (process.env.NODE_ENV !== 'production') {
+          throw new Error('<Button asChild> expects a single valid React element child')
+        }
+        return null
+      }
+
+      const childProps: Record<string, unknown> = {
+        ...props,
+        className: cn(baseClassName, (children as any).props?.className),
+        children: content,
+        ...(disabled
+          ? {
+              'aria-disabled': true,
+              tabIndex: -1,
+              onClick: (e: any) => {
+                e.preventDefault?.()
+              },
+            }
+          : null),
+      }
+
+      return cloneElement(children as any, childProps)
+    }
 
     return (
       <button
         ref={ref}
         type={type}
         disabled={disabled}
-        className={cn(
-          'inline-flex items-center justify-center rounded-md transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
-          'disabled:pointer-events-none disabled:cursor-not-allowed',
-          variantStyles.container,
-          sizeStyles.container,
-          className
-        )}
+        className={baseClassName}
         {...props}
       >
-        {isActionType && actionIcon && (
-          <span className={cn(sizeStyles.text, variantStyles.icon)}>{actionIcon}</span>
-        )}
-
-        <span className={cn(sizeStyles.text, variantStyles.text, 'whitespace-nowrap')}>
-          {displayText}
-        </span>
+        {content}
       </button>
     )
   }
