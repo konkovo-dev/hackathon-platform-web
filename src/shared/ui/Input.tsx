@@ -60,11 +60,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       >
         {isSearch && (
-          <img
-            className="w-m4 h-m4 flex-shrink-0"
-            src="/icons/search-icon/search-icon-sm.svg"
-            alt=""
+          <span
             aria-hidden="true"
+            className={cn(
+              'w-m8 h-m8 flex-shrink-0 bg-icon-primary',
+              "[mask-image:url('/icons/search-icon/search-icon-sm.svg')]",
+              "[mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]",
+              "[-webkit-mask-image:url('/icons/search-icon/search-icon-sm.svg')]",
+              "[-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center] [-webkit-mask-size:contain]"
+            )}
           />
         )}
 
