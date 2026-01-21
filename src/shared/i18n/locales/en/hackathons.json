@@ -1,0 +1,11 @@
+{
+  "list": {
+    "title": "Hackathons",
+    "empty": "Hackathon list will be here"
+  },
+  "detail": {
+    "title": "Hackathon #{hackathonId}",
+    "empty": "Hackathon main page will be here"
+  }
+}
+

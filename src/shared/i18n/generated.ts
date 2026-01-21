@@ -1,0 +1,47 @@
+// AUTO-GENERATED. DO NOT EDIT.
+// Run: pnpm i18n:gen
+
+export const I18N_KEYS = [
+  "auth.login.label",
+  "auth.login.placeholder",
+  "auth.password.label",
+  "auth.password.placeholder",
+  "auth.register.confirm_password.label",
+  "auth.register.confirm_password.placeholder",
+  "auth.register.email.label",
+  "auth.register.email.placeholder",
+  "auth.register.have_account",
+  "auth.register.login_link",
+  "auth.register.name.label",
+  "auth.register.name.placeholder",
+  "auth.register.password.label",
+  "auth.register.password.placeholder",
+  "auth.register.submit",
+  "auth.register.subtitle",
+  "auth.register.title",
+  "auth.remember_me",
+  "auth.title",
+  "common.actions.login",
+  "common.actions.register",
+  "hackathons.detail.empty",
+  "hackathons.detail.title",
+  "hackathons.list.empty",
+  "hackathons.list.title",
+  "home.nav.design_system",
+  "home.nav.hackathons",
+  "home.nav.invitations",
+  "home.nav.login",
+  "home.nav.my_teams",
+  "home.nav.profile",
+  "home.nav.register",
+  "home.subtitle",
+  "home.title",
+  "invitations.empty",
+  "invitations.title",
+  "profile.empty",
+  "profile.title",
+  "teams.my.empty",
+  "teams.my.title"
+] as const
+
+export type I18nKey = (typeof I18N_KEYS)[number]

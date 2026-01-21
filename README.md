@@ -72,10 +72,13 @@ pnpm start
 - `pnpm dev` — запуск dev сервера
 - `pnpm build` — сборка проекта
 - `pnpm start` — запуск production сервера
-- `pnpm lint` — проверка кода ESLint
+- `pnpm lint` — линт (Next ESLint) + проверки локализации/строк (см. ниже)
 - `pnpm format` — форматирование кода Prettier
 - `pnpm typecheck` — проверка типов TypeScript
 - `pnpm api:gen` — генерация типов из OpenAPI схемы
+- `pnpm i18n:check` — проверка консистентности переводов (одинаковые неймспейсы/ключи между языками)
+- `pnpm i18n:gen` — генерация типобезопасных ключей локализации (`src/shared/i18n/generated.ts`)
+- `pnpm strings:check` — правило: запрет "сырого" текста в UI (см. раздел Локализация)
 
 ## Генерация типов API
 
@@ -400,6 +403,88 @@ src/
 - **Системные настройки**: Если тема не сохранена, используется системная настройка `prefers-color-scheme`
 - **Атрибут темы**: Тема устанавливается через атрибут `data-theme` на элементе `<html>`
 - **CSS переменные**: Все цвета определены как HSL значения для лучшей поддержки темной темы
+
+## Локализация (i18n)
+
+Проект использует **типобезопасную локализацию** без внешних библиотек, совместимую с Next.js App Router
+(SSR + CSR).
+
+### Как устроено
+
+- **Переводы**: `src/shared/i18n/locales/{ru,en}/{namespace}.json`
+- **Неймспейсы**: перечислены в `src/shared/i18n/config.ts` (например: `common`, `auth`, `home`)
+- **Генерация ключей**: `pnpm i18n:gen` обновляет `src/shared/i18n/generated.ts`
+- **Хранение языка**: cookie `hp_locale` (1 год)
+- **SSR загрузка**: `src/shared/i18n/server.ts`
+  - `getServerMessages()` — получить `{ locale, messages }` для layout'ов/провайдеров
+  - `getServerI18n([...namespaces])` — получить `{ t }` на сервере
+- **CSR доступ**: `src/shared/i18n/I18nProvider.tsx` + `useI18n()/useT()`
+
+### Использование на сервере (страницы/лейауты)
+
+Пример (server component):
+
+```tsx
+import { getServerI18n } from '@/shared/i18n/server'
+
+export default async function Page() {
+  const { t } = await getServerI18n(['auth', 'common'])
+  return <h1>{t('auth.title')}</h1>
+}
+```
+
+### Использование на клиенте (клиентские компоненты)
+
+```tsx
+'use client'
+
+import { useT } from '@/shared/i18n/useT'
+
+export function MyWidget() {
+  const t = useT()
+  return <button>{t('common.actions.login')}</button>
+}
+```
+
+### Переключение языка
+
+Есть компонент `LocaleToggle` (`src/shared/ui/LocaleToggle.tsx`). Он меняет cookie `hp_locale` и
+делает `router.refresh()`, чтобы серверные компоненты перерендерились с новой локалью.
+
+### Правило: запрет "сырого" текста в UI
+
+Чтобы не разносить строки по коду, действует проверка `pnpm strings:check` (входит в `pnpm lint`):
+
+- сканирует `src/app`, `src/features`, `src/widgets`, `src/entities`
+- ругается на текст в JSX (`<div>Текст</div>`) и на строковые JSX-атрибуты (например `aria-label="..."`)
+- исключение: `src/app/design-system/**` (пока демо-страница без локализации)
+
+Если нужно временно оставить "сырой" текст в конкретном месте — лучше вынести в локализацию, но для
+эксперимента можно исключить файл/папку в `scripts/strings.mjs`.
+
+### Как добавить новые строки
+
+1. Выбери неймспейс (например `profile`) и создай файлы:
+   - `src/shared/i18n/locales/ru/profile.json`
+   - `src/shared/i18n/locales/en/profile.json`
+2. Добавь `profile` в список `NAMESPACES` в `src/shared/i18n/config.ts`
+3. Подключи загрузчик в `src/shared/i18n/messages.ts`
+4. Запусти:
+   - `pnpm i18n:check`
+   - `pnpm i18n:gen`
+5. Используй ключи через `t('profile.some_key')`
+
+## Иконки (assets)
+
+Иконки складываем в `public/icons/`.  
+В коде используем абсолютный путь от корня сайта:
+
+- `/icons/search-icon/search-icon-sm.svg`
+
+Рекомендации:
+
+- SVG предпочтительнее PNG.
+- Имена файлов — `kebab-case` (например `arrow-left.svg`).
 
 ## TODO
 

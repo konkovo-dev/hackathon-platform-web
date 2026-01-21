@@ -1,5 +1,5 @@
 import { cn } from '@/shared/lib/cn'
-import { type HTMLAttributes, type ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 export type TypographyVariant =
   | 'display-2xl'
@@ -26,13 +26,14 @@ export type TypographyVariant =
   | 'overline-xs'
   | 'code-sm'
 
-export interface TypographyProps extends HTMLAttributes<HTMLElement> {
+export type TypographyProps<T extends ElementType = ElementType> = {
   variant: TypographyVariant
-  as?: keyof JSX.IntrinsicElements
+  as?: T
   children: ReactNode
-}
+  className?: string
+} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'children' | 'className'>
 
-const variantToElement: Record<TypographyVariant, keyof JSX.IntrinsicElements> = {
+const variantToElement: Record<TypographyVariant, keyof HTMLElementTagNameMap> = {
   'display-2xl': 'h1',
   'display-xl': 'h1',
   'heading-lg': 'h2',
@@ -58,12 +59,18 @@ const variantToElement: Record<TypographyVariant, keyof JSX.IntrinsicElements> =
   'code-sm': 'code',
 }
 
-export function Typography({ variant, as, children, className, ...props }: TypographyProps) {
-  const Component = as || variantToElement[variant]
+export function Typography<T extends ElementType = ElementType>({
+  variant,
+  as,
+  children,
+  className,
+  ...props
+}: TypographyProps<T>) {
+  const Component = (as || variantToElement[variant]) as ElementType
   const typographyClass = `typography-${variant}`
 
   return (
-    <Component className={cn(typographyClass, className)} {...props}>
+    <Component className={cn(typographyClass, className)} {...(props as any)}>
       {children}
     </Component>
   )
