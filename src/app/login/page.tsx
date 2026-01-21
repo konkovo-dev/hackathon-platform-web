@@ -1,53 +1,55 @@
 import { Button } from '@/shared/ui/Button'
-import { Card, CardContent, CardHeader } from '@/shared/ui/Card'
-import { FormField } from '@/shared/ui/FormField'
-import { Input } from '@/shared/ui/Input'
-import { Label } from '@/shared/ui/Label'
+import { Checkbox } from '@/shared/ui/Checkbox'
+import { InputLabel } from '@/shared/ui/InputLabel'
 import Link from 'next/link'
+import { getServerI18n } from '@/shared/i18n/server'
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const { t } = await getServerI18n(['auth', 'common'])
+
   return (
-    <div className="flex min-h-screen items-center justify-center p-8">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <h1 className="text-2xl font-bold">Вход</h1>
-          <p className="text-sm text-text-secondary">Войдите в свой аккаунт</p>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4">
-            <FormField>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="example@mail.com" />
-            </FormField>
+    <div className="flex w-full h-screen items-center justify-end relative bg-bg-default">
+      <div className="inline-flex flex-col items-center gap-m10 p-[120px] self-stretch bg-bg-surface relative flex-[0_0_auto]">
+        <form className="flex flex-col w-[364px] items-center justify-center gap-m10 relative flex-[0_0_auto]">
+          <div className="typography-title-lg text-text-primary relative w-fit whitespace-nowrap">
+            {t('auth.title')}
+          </div>
 
-            <FormField>
-              <Label htmlFor="password">Пароль</Label>
-              <Input id="password" type="password" placeholder="••••••••" />
-            </FormField>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className="rounded border-border-default" />
-                <span>Запомнить меня</span>
-              </label>
-              <Link href="#" className="text-sm text-link-default hover:text-link-hover hover:underline">
-                Забыли пароль?
-              </Link>
+          <div className="flex flex-col items-end justify-center gap-m8 relative self-stretch w-full flex-[0_0_auto]">
+            <div className="flex flex-col items-start gap-m6 self-stretch w-full relative flex-[0_0_auto]">
+              <InputLabel
+                className="self-stretch flex-[0_0_auto] w-full"
+                inputPlaceholder={t('auth.login.placeholder')}
+                label={t('auth.login.label')}
+              />
+              <InputLabel
+                className="self-stretch flex-[0_0_auto] w-full"
+                inputPlaceholder={t('auth.password.placeholder')}
+                label={t('auth.password.label')}
+                inputType="password"
+              />
+              <Checkbox label={t('auth.remember_me')} />
             </div>
+          </div>
 
-            <Button type="submit" className="w-full" variant="primary">
-              Войти
+          <div className="flex items-center gap-m4 self-stretch w-full relative flex-[0_0_auto]">
+            <Button
+              className="flex-1 flex grow"
+              variant="secondary-action"
+              text={t('common.actions.register')}
+              asChild
+            >
+              <Link href="/register" />
             </Button>
-
-            <p className="text-center text-sm text-text-secondary">
-              Нет аккаунта?{' '}
-              <Link href="/register" className="text-link-default hover:text-link-hover hover:underline">
-                Зарегистрироваться
-              </Link>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
+            <Button
+              className="flex-1 flex grow"
+              variant="action"
+              text={t('common.actions.login')}
+              type="submit"
+            />
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
