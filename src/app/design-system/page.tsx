@@ -1,7 +1,9 @@
 import { Button } from '@/shared/ui/Button'
 import { Card, CardContent, CardHeader } from '@/shared/ui/Card'
+import { Checkbox } from '@/shared/ui/Checkbox'
 import { Input } from '@/shared/ui/Input'
 import { Label } from '@/shared/ui/Label'
+import { Radio } from '@/shared/ui/Radio'
 import { Typography } from '@/shared/ui/Typography'
 import { ThemeToggle } from '@/shared/ui/ThemeToggle'
 import Link from 'next/link'
@@ -364,29 +366,87 @@ export default function DesignSystemPage() {
               Form Elements
             </Typography>
 
-            <Card>
-              <CardHeader>
-                <Typography variant="title-md">Input & Label</Typography>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="input-default">Default Input</Label>
-                  <Input id="input-default" placeholder="Введите текст..." />
-                </div>
-                <div>
-                  <Label htmlFor="input-disabled">Disabled Input</Label>
-                  <Input id="input-disabled" placeholder="Отключено" disabled />
-                </div>
-                <div>
-                  <Label htmlFor="input-email">Email Input</Label>
-                  <Input id="input-email" type="email" placeholder="example@mail.com" />
-                </div>
-                <div>
-                  <Label htmlFor="input-password">Password Input</Label>
-                  <Input id="input-password" type="password" placeholder="••••••••" />
-                </div>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              {/* Text Input */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Text Input</Typography>
+                  <Typography variant="body-sm-regular" className="text-text-secondary">
+                    Текстовое поле ввода. При фокусе меняется цвет обводки на border-focus.
+                  </Typography>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="input-text-default">Default</Label>
+                    <Input id="input-text-default" variant="text" placeholder="Введите текст..." />
+                  </div>
+                  <div>
+                    <Label htmlFor="input-text-filled">Filled</Label>
+                    <Input id="input-text-filled" variant="text" defaultValue="Введенный текст" />
+                  </div>
+                  <div>
+                    <Label htmlFor="input-text-error">With Error</Label>
+                    <Input id="input-text-error" variant="text" error placeholder="Ошибка валидации" />
+                  </div>
+                  <div>
+                    <Label htmlFor="input-text-disabled">Disabled</Label>
+                    <Input id="input-text-disabled" variant="text" placeholder="Отключено" disabled />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Search Input */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Search Input</Typography>
+                  <Typography variant="body-sm-regular" className="text-text-secondary">
+                    Поле поиска с иконкой поиска слева.
+                  </Typography>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="input-search-default">Default</Label>
+                    <Input id="input-search-default" variant="search" placeholder="Поиск..." />
+                  </div>
+                  <div>
+                    <Label htmlFor="input-search-filled">Filled</Label>
+                    <Input id="input-search-filled" variant="search" defaultValue="Результаты поиска" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Checkbox */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Checkbox</Typography>
+                  <Typography variant="body-sm-regular" className="text-text-secondary">
+                    Чекбокс с поддержкой label. При выборе меняется цвет обводки и фона.
+                  </Typography>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Checkbox label="Не выбранный чекбокс" />
+                  <Checkbox label="Выбранный чекбокс" defaultChecked />
+                  <Checkbox label="Отключенный" disabled />
+                  <Checkbox label="Отключенный выбранный" defaultChecked disabled />
+                </CardContent>
+              </Card>
+
+              {/* Radio */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Radio</Typography>
+                  <Typography variant="body-sm-regular" className="text-text-secondary">
+                    Радио-кнопка с поддержкой label. При выборе меняется цвет обводки и появляется индикатор.
+                  </Typography>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Radio name="radio-group" label="Вариант 1" />
+                  <Radio name="radio-group" label="Вариант 2" defaultChecked />
+                  <Radio name="radio-group-disabled" label="Отключенный" disabled />
+                  <Radio name="radio-group-disabled" label="Отключенный выбранный" defaultChecked disabled />
+                </CardContent>
+              </Card>
+            </div>
           </section>
 
           {/* Colors */}

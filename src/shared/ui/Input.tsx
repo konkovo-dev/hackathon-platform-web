@@ -1,20 +1,89 @@
 import { cn } from '@/shared/lib/cn'
 import { type InputHTMLAttributes, forwardRef } from 'react'
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export type InputVariant = 'text' | 'search'
+
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  variant?: InputVariant
+  error?: boolean
+  type?: InputHTMLAttributes<HTMLInputElement>['type']
+}
+
+const getVariantStyles = (variant: InputVariant, error: boolean) => {
+  const baseStyles = 'flex items-center h-m16 overflow-hidden border border-solid'
+  const borderRadius = 'rounded-[var(--spacing-m4)]' // 8px
+  
+  if (error) {
+    return {
+      container: `${baseStyles} ${borderRadius} border-state-error`,
+      input: '',
+    }
+  }
+
+  switch (variant) {
+    case 'text':
+      return {
+        container: `${baseStyles} ${borderRadius} border-border-strong focus-within:border-border-focus`,
+        input: '',
+      }
+    case 'search':
+      return {
+        container: `${baseStyles} ${borderRadius} border-border-strong focus-within:border-border-focus`,
+        input: '',
+      }
+    default:
+      return {
+        container: `${baseStyles} ${borderRadius}`,
+        input: '',
+      }
+  }
+}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, variant = 'text', error = false, disabled, placeholder, ...props }, ref) => {
+    const variantStyles = getVariantStyles(variant, error)
+    const isSearch = variant === 'search'
+    
+    const processedPlaceholder =
+      !isSearch && typeof placeholder === 'string' && placeholder.length > 0
+        ? `# ${placeholder}`
+        : placeholder
+
     return (
-      <input
-        type={type}
+      <div
         className={cn(
-          'flex h-10 w-full rounded-md border border-border-default bg-bg-default px-3 py-2 text-sm ring-offset-bg-default file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-text-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          variantStyles.container,
+          'pr-m4 pl-m4 py-1',
+          isSearch ? 'gap-m2' : '',
+          disabled && 'opacity-50 cursor-not-allowed',
           className
         )}
-        ref={ref}
-        {...props}
-      />
+      >
+        {isSearch && (
+          <img
+            className="w-m4 h-m4 flex-shrink-0"
+            src="/icons/search-icon/search-icon-sm.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        )}
+
+        <input
+          ref={ref}
+          type={props.type || 'text'}
+          disabled={disabled}
+          placeholder={processedPlaceholder}
+          className={cn(
+            'w-full bg-transparent border-0 outline-none',
+            'typography-caption-sm-regular',
+            'text-text-primary placeholder:text-text-tertiary',
+            'placeholder:lowercase',
+            'focus:outline-none',
+            'disabled:cursor-not-allowed'
+          )}
+          {...props}
+        />
+      </div>
     )
   }
 )
