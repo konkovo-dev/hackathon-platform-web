@@ -4,6 +4,7 @@ import Script from 'next/script'
 import './globals.css'
 import { Providers } from './providers'
 import { getServerMessages } from '@/shared/i18n/server'
+import { Sidebar } from '@/widgets/sidebar/Sidebar'
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600'],
@@ -46,7 +47,10 @@ export default async function RootLayout({
           }}
         />
         <Providers locale={locale} messages={messages}>
-          {children}
+          <div className="flex min-h-screen bg-bg-surface">
+            <Sidebar />
+            <main className="flex-1 bg-bg-surface">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>

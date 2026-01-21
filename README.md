@@ -486,6 +486,23 @@ export function MyWidget() {
 - SVG предпочтительнее PNG.
 - Имена файлов — `kebab-case` (например `arrow-left.svg`).
 
+## Анимации (motion)
+
+Принцип: **анимации должны быть быстрыми, предсказуемыми и уважать настройки пользователя**.
+
+- **Предпочтение**: `opacity` / `transform` / `colors`. Они наиболее дешёвые для браузера.
+- **Layout-анимации** (например, ширина сайдбара) — через CSS `transition-*`, без JS-анимаций.
+- **Reduced motion**: всегда добавляй `motion-reduce:transition-none` и/или `motion-reduce:transform-none`,
+  чтобы у пользователей с `prefers-reduced-motion` ничего не “ездило”.
+- **Длительности (ориентир)**:
+  - микро-интеракции (hover/press): 120–180ms
+  - переключатели/раскрытия: 180–280ms
+  - сложные переходы: 250–350ms
+- **Easing (ориентир)**: `ease-out` для появления/реакции, `ease-in-out` для переключателей.
+
+Пример из проекта: `Sidebar` анимирует `width` и `padding` через `transition-[width] duration-200 ease-in-out`
+и отключает это при `motion-reduce`.
+
 ## TODO
 
 - [ ] Реализация API интеграции

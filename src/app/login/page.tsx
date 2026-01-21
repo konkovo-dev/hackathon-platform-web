@@ -8,9 +8,8 @@ export default async function LoginPage() {
   const { t } = await getServerI18n(['auth', 'common'])
 
   return (
-    <div className="flex w-full h-screen items-center justify-end relative bg-bg-default">
-      <div className="inline-flex flex-col items-center gap-m10 p-[120px] self-stretch bg-bg-surface relative flex-[0_0_auto]">
-        <form className="flex flex-col w-[364px] items-center justify-center gap-m10 relative flex-[0_0_auto]">
+    <div className="flex w-full min-h-screen items-center justify-center bg-bg-surface p-m16">
+      <form className="flex flex-col w-full max-w-[364px] items-center justify-center gap-m10">
           <div className="typography-title-lg text-text-primary relative w-fit whitespace-nowrap">
             {t('auth.title')}
           </div>
@@ -48,8 +47,7 @@ export default async function LoginPage() {
               type="submit"
             />
           </div>
-        </form>
-      </div>
+      </form>
     </div>
   )
 }

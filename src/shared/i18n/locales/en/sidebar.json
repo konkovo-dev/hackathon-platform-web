@@ -1,0 +1,13 @@
+{
+  "collapse": "Collapse sidebar",
+  "expand": "Expand sidebar",
+  "footer": "hackathon platform",
+  "items": {
+    "hackathons": "hackathons",
+    "invitations": "invitations",
+    "teams": "teams",
+    "profile": "profile",
+    "auth": "auth",
+    "settings": "settings"
+  }
+}

@@ -11,6 +11,8 @@ const loaders = {
     profile: () => import('./locales/ru/profile.json'),
     invitations: () => import('./locales/ru/invitations.json'),
     teams: () => import('./locales/ru/teams.json'),
+    sidebar: () => import('./locales/ru/sidebar.json'),
+    settings: () => import('./locales/ru/settings.json'),
   },
   en: {
     common: () => import('./locales/en/common.json'),
@@ -20,6 +22,8 @@ const loaders = {
     profile: () => import('./locales/en/profile.json'),
     invitations: () => import('./locales/en/invitations.json'),
     teams: () => import('./locales/en/teams.json'),
+    sidebar: () => import('./locales/en/sidebar.json'),
+    settings: () => import('./locales/en/settings.json'),
   },
 } satisfies Record<Locale, Record<Namespace, () => Promise<{ default: MessagesTree }>>>
 
@@ -33,7 +37,5 @@ export const loadNamespaces = async (locale: Locale, namespaces: readonly Namesp
     })
   )
 
-  // Склеиваем в дерево вида: { common: {...}, auth: {...} }
   return Object.fromEntries(entries) as MessagesTree
 }
-

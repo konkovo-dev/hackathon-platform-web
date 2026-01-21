@@ -1,5 +1,6 @@
 import { cn } from '@/shared/lib/cn'
 import { type InputHTMLAttributes, forwardRef } from 'react'
+import { Icon } from './Icon'
 
 export type InputVariant = 'text' | 'search'
 
@@ -60,16 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       >
         {isSearch && (
-          <span
-            aria-hidden="true"
-            className={cn(
-              'w-m8 h-m8 flex-shrink-0 bg-icon-primary',
-              "[mask-image:url('/icons/search-icon/search-icon-sm.svg')]",
-              "[mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]",
-              "[-webkit-mask-image:url('/icons/search-icon/search-icon-sm.svg')]",
-              "[-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center] [-webkit-mask-size:contain]"
-            )}
-          />
+          <Icon src="/icons/icon-search/icon-search-sm.svg" size="sm" />
         )}
 
         <input

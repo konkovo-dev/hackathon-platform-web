@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib/cn'
 import { cloneElement, forwardRef, isValidElement, type ButtonHTMLAttributes } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'action' | 'secondary-action'
+export type ButtonVariant = 'primary' | 'secondary' | 'action' | 'secondary-action' | 'icon'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
@@ -49,6 +49,13 @@ const getVariantStyles = (variant: ButtonVariant, disabled: boolean) => {
         text: 'text-text-tertiary lowercase group-hover:text-text-primary group-active:text-text-primary',
         icon: 'text-text-tertiary group-hover:text-text-primary group-active:text-text-primary',
       }
+    case 'icon':
+      return {
+        container:
+          'bg-transparent border-0 rounded-[var(--spacing-m4)] hover:bg-bg-hover active:bg-bg-selected',
+        text: 'text-text-primary',
+        icon: 'text-icon-secondary',
+      }
     default:
       return {
         container: '',
@@ -58,8 +65,20 @@ const getVariantStyles = (variant: ButtonVariant, disabled: boolean) => {
   }
 }
 
-const getSizeStyles = (size: ButtonSize, isActionType: boolean) => {
+const getSizeStyles = (size: ButtonSize, isActionType: boolean, isIcon: boolean) => {
   const gap = isActionType ? 'gap-m2' : 'gap-m5'
+  if (isIcon) {
+    switch (size) {
+      case 'sm':
+        return { container: 'h-m16 w-m16 p-0', text: 'typography-caption-sm-medium' }
+      case 'md':
+        return { container: 'h-m20 w-m20 p-0', text: 'typography-caption-sm-medium' }
+      case 'lg':
+        return { container: 'h-m24 w-m24 p-0', text: 'typography-caption-sm-medium' }
+      default:
+        return { container: '', text: '' }
+    }
+  }
   
   switch (size) {
     case 'sm':
@@ -112,13 +131,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isActionType = variant === 'action' || variant === 'secondary-action'
+    const isIcon = variant === 'icon'
     const variantStyles = getVariantStyles(variant, disabled)
-    const sizeStyles = getSizeStyles(size, isActionType)
+    const sizeStyles = getSizeStyles(size, isActionType, isIcon)
     const actionIcon = getActionIcon(variant)
     const displayText = asChild ? text : children || text
 
     const baseClassName = cn(
-      'inline-flex items-center justify-center rounded-md transition-colors',
+      'inline-flex items-center justify-center transition-colors',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
       disabled && 'pointer-events-none cursor-not-allowed',
       variantStyles.container,
@@ -126,7 +146,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className
     )
 
-    const content = (
+    const content = isIcon ? (
+      <>{children}</>
+    ) : (
       <>
         {isActionType && actionIcon && (
           <span className={cn(sizeStyles.text, variantStyles.icon)}>{actionIcon}</span>
