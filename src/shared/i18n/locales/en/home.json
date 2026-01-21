@@ -1,0 +1,13 @@
+{
+  "title": "Hackathon Platform",
+  "subtitle": "Hackathon management platform",
+  "nav": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "hackathons": "Hackathons",
+    "profile": "Profile",
+    "invitations": "Invitations",
+    "my_teams": "My teams",
+    "design_system": "Design System"
+  }
+}

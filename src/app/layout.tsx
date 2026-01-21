@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import { Providers } from './providers'
+import { getServerMessages } from '@/shared/i18n/server'
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600'],
@@ -21,13 +22,15 @@ export const metadata: Metadata = {
   description: 'Платформа для проведения хакатонов',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { locale, messages } = await getServerMessages()
+
   return (
-    <html lang="ru">
+    <html lang={locale}>
       <body className={`${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
         <Script
           id="theme-init"
@@ -42,7 +45,9 @@ export default function RootLayout({
             `,
           }}
         />
-        <Providers>{children}</Providers>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
       </body>
     </html>
   )
