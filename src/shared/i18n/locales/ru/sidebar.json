@@ -1,0 +1,13 @@
+{
+  "collapse": "Свернуть сайдбар",
+  "expand": "Развернуть сайдбар",
+  "footer": "hackathon platform",
+  "items": {
+    "hackathons": "хакатоны",
+    "invitations": "приглашения",
+    "teams": "команды",
+    "profile": "профиль",
+    "auth": "авторизация",
+    "settings": "настройки"
+  }
+}

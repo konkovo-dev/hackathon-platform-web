@@ -28,6 +28,8 @@ const IGNORE_ATTRS = new Set([
   'htmlFor',
   'variant',
   'size',
+  'color',
+  'colorClassName',
   'inputType',
   'inputId',
 ])
@@ -150,4 +152,3 @@ const main = async () => {
 }
 
 await main()
-

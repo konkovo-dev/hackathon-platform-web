@@ -40,6 +40,17 @@ export const I18N_KEYS = [
   "invitations.title",
   "profile.empty",
   "profile.title",
+  "settings.empty",
+  "settings.title",
+  "sidebar.collapse",
+  "sidebar.expand",
+  "sidebar.footer",
+  "sidebar.items.auth",
+  "sidebar.items.hackathons",
+  "sidebar.items.invitations",
+  "sidebar.items.profile",
+  "sidebar.items.settings",
+  "sidebar.items.teams",
   "teams.my.empty",
   "teams.my.title"
 ] as const
