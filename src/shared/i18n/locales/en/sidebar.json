@@ -2,12 +2,18 @@
   "collapse": "Collapse sidebar",
   "expand": "Expand sidebar",
   "footer": "hackathon platform",
+  "settings_panel": {
+    "debug": "debug",
+    "theme": "dark theme",
+    "language": "language"
+  },
   "items": {
     "hackathons": "hackathons",
     "invitations": "invitations",
     "teams": "teams",
     "profile": "profile",
     "auth": "auth",
+    "design_system": "design system",
     "settings": "settings"
   }
 }
