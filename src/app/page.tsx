@@ -1,19 +1,18 @@
 import Link from 'next/link'
-import { ThemeToggle } from '@/shared/ui/ThemeToggle'
-import { LocaleToggle } from '@/shared/ui/LocaleToggle'
 import { getServerI18n } from '@/shared/i18n/server'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export default async function Home() {
+  const debug = cookies().get('hp_debug')?.value === '1'
+  if (debug) {
+    redirect('/design-system')
+  }
+
   const { t } = await getServerI18n(['home'])
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="absolute top-4 right-4">
-        <div className="flex items-center gap-m4">
-          <LocaleToggle />
-          <ThemeToggle />
-        </div>
-      </div>
       <div className="w-full max-w-2xl space-y-8 text-center">
         <h1 className="typography-display-xl">{t('home.title')}</h1>
         <p className="typography-body-md-regular text-text-secondary">{t('home.subtitle')}</p>

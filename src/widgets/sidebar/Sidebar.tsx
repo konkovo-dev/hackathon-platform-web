@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/Button'
@@ -9,6 +9,8 @@ import { Logo } from '@/shared/ui/Logo'
 import { MenuItem } from '@/shared/ui/MenuItem'
 import { useT } from '@/shared/i18n/useT'
 import type { I18nKey } from '@/shared/i18n/generated'
+import { SidebarSettings } from './SidebarSettings'
+import { useDebugFlag } from './useDebugFlag'
 
 type SidebarItem = {
   key:
@@ -17,7 +19,7 @@ type SidebarItem = {
     | 'teams'
     | 'profile'
     | 'auth'
-    | 'settings'
+    | 'design_system'
   href: string
   iconSrc: string
 }
@@ -28,7 +30,7 @@ const ICONS = {
   team: '/icons/icon-team/iton-team-md.svg',
   profile: '/icons/icon-profile/icon-profile-md.svg',
   auth: '/icons/icon-auth/icon-auth-md.svg',
-  settings: '/icons/icon-settings/icon-settings-md.svg',
+  designSystem: '/icons/icon-code/icon-code-md.svg',
   sidebar: '/icons/icon-sidebar/icon-sidebar-md.svg',
   arrowRight: '/icons/icon-arrow/icon-arrow-right-md.svg',
 } as const
@@ -39,25 +41,30 @@ const LABEL_KEY: Record<SidebarItem['key'], I18nKey> = {
   teams: 'sidebar.items.teams',
   profile: 'sidebar.items.profile',
   auth: 'sidebar.items.auth',
-  settings: 'sidebar.items.settings',
+  design_system: 'sidebar.items.design_system',
 }
 
 export function Sidebar() {
   const t = useT()
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const { debug, setDebug } = useDebugFlag({ cookieName: 'hp_debug' })
 
-  const items: SidebarItem[] = useMemo(
-    () => [
+  const items: SidebarItem[] = useMemo(() => {
+    const base: SidebarItem[] = [
       { key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code },
       { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
       { key: 'teams', href: '/my-teams', iconSrc: ICONS.team },
       { key: 'profile', href: '/profile', iconSrc: ICONS.profile },
       { key: 'auth', href: '/login', iconSrc: ICONS.auth },
-      { key: 'settings', href: '/settings', iconSrc: ICONS.settings },
-    ],
-    []
-  )
+    ]
+
+    if (debug) {
+      base.push({ key: 'design_system', href: '/design-system', iconSrc: ICONS.designSystem })
+    }
+
+    return base
+  }, [debug])
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
@@ -92,7 +99,7 @@ export function Sidebar() {
           'px-m4 gap-m2'
         )}
       >
-        {items.map(item => (
+        {items.map((item) => (
           <MenuItem
             key={item.key}
             href={item.href}
@@ -102,6 +109,8 @@ export function Sidebar() {
             collapsed={collapsed}
           />
         ))}
+
+        <SidebarSettings collapsed={collapsed} pathname={pathname} debug={debug} setDebug={setDebug} />
 
         {collapsed && (
           <Button
@@ -118,11 +127,7 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto p-m8">
-        {!collapsed && (
-          <div className="text-text-tertiary typography-caption-xs">
-            {t('sidebar.footer')}
-          </div>
-        )}
+        {!collapsed && <div className="text-text-tertiary typography-caption-xs">{t('sidebar.footer')}</div>}
       </div>
     </aside>
   )

@@ -5,7 +5,6 @@ import { Input } from '@/shared/ui/Input'
 import { Label } from '@/shared/ui/Label'
 import { Radio } from '@/shared/ui/Radio'
 import { Typography } from '@/shared/ui/Typography'
-import { ThemeToggle } from '@/shared/ui/ThemeToggle'
 import Link from 'next/link'
 
 export default function DesignSystemPage() {
@@ -22,7 +21,6 @@ export default function DesignSystemPage() {
             </Typography>
           </div>
           <div className="flex items-center gap-4">
-            <ThemeToggle />
             <Link
               href="/"
               className="typography-body-md-medium text-link-default hover:text-link-hover"
