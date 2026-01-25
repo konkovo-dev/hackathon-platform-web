@@ -3,7 +3,8 @@ import { cn } from '@/shared/lib/cn'
 import { Icon } from './Icon'
 
 export type MenuItemProps = {
-  href: string
+  href?: string
+  onClick?: () => void
   iconSrc: string
   title: string
   active?: boolean
@@ -11,7 +12,15 @@ export type MenuItemProps = {
   className?: string
 }
 
-export function MenuItem({ href, iconSrc, title, active = false, collapsed = false, className }: MenuItemProps) {
+export function MenuItem({
+  href,
+  onClick,
+  iconSrc,
+  title,
+  active = false,
+  collapsed = false,
+  className,
+}: MenuItemProps) {
   const base = cn(
     'select-none',
     'transition-colors duration-150 ease-out motion-reduce:transition-none',
@@ -24,17 +33,27 @@ export function MenuItem({ href, iconSrc, title, active = false, collapsed = fal
 
   const iconColor = 'primary' as const
 
+  const content = collapsed ? (
+    <Icon src={iconSrc} size="md" color={iconColor} />
+  ) : (
+    <div className="flex items-center">
+      <Icon src={iconSrc} size="md" color={iconColor} />
+      <span className="ml-m8 text-text-tertiary typography-label-sm-medium">/</span>
+      <span className="ml-m typography-label-md-medium text-text-primary lowercase">{title}</span>
+    </div>
+  )
+
+  if (href) {
+    return (
+      <Link href={href} className={base} aria-current={active ? 'page' : undefined}>
+        {content}
+      </Link>
+    )
+  }
+
   return (
-    <Link href={href} className={base} aria-current={active ? 'page' : undefined}>
-      {collapsed ? (
-        <Icon src={iconSrc} size="md" color={iconColor} />
-      ) : (
-        <div className="flex items-center">
-          <Icon src={iconSrc} size="md" color={iconColor} />
-          <span className="ml-m8 text-text-tertiary typography-label-sm-medium">/</span>
-          <span className="ml-m typography-label-md-medium text-text-primary lowercase">{title}</span>
-        </div>
-      )}
-    </Link>
+    <button type="button" className={base} aria-current={active ? 'page' : undefined} onClick={onClick}>
+      {content}
+    </button>
   )
 }
