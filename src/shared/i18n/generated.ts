@@ -2,6 +2,9 @@
 // Run: pnpm i18n:gen
 
 export const I18N_KEYS = [
+  "auth.errors.password_mismatch",
+  "auth.errors.required",
+  "auth.errors.unknown",
   "auth.login.label",
   "auth.login.placeholder",
   "auth.password.label",
@@ -10,7 +13,11 @@ export const I18N_KEYS = [
   "auth.register.confirm_password.placeholder",
   "auth.register.email.label",
   "auth.register.email.placeholder",
+  "auth.register.first_name.label",
+  "auth.register.first_name.placeholder",
   "auth.register.have_account",
+  "auth.register.last_name.label",
+  "auth.register.last_name.placeholder",
   "auth.register.login_link",
   "auth.register.name.label",
   "auth.register.name.placeholder",
@@ -18,7 +25,10 @@ export const I18N_KEYS = [
   "auth.register.password.placeholder",
   "auth.register.submit",
   "auth.register.subtitle",
+  "auth.register.timezone.label",
   "auth.register.title",
+  "auth.register.username.label",
+  "auth.register.username.placeholder",
   "auth.remember_me",
   "auth.title",
   "common.actions.login",
@@ -46,11 +56,15 @@ export const I18N_KEYS = [
   "sidebar.expand",
   "sidebar.footer",
   "sidebar.items.auth",
+  "sidebar.items.design_system",
   "sidebar.items.hackathons",
   "sidebar.items.invitations",
   "sidebar.items.profile",
   "sidebar.items.settings",
   "sidebar.items.teams",
+  "sidebar.settings_panel.debug",
+  "sidebar.settings_panel.language",
+  "sidebar.settings_panel.theme",
   "teams.my.empty",
   "teams.my.title"
 ] as const
