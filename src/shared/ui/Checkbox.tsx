@@ -1,5 +1,6 @@
 import { cn } from '@/shared/lib/cn'
 import { type InputHTMLAttributes, forwardRef } from 'react'
+import { Icon } from './Icon'
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string
@@ -28,31 +29,21 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             className={cn(
               'w-m8 h-m8 rounded-[var(--spacing-m2)] border border-solid', // 4px
               'border-border-strong peer-checked:border-border-focus',
-              'peer-checked:bg-border-focus',
               'peer-disabled:opacity-50',
               'transition-colors',
               'flex items-center justify-center'
             )}
-          >
-            <svg
-              className={cn(
-                'w-m5 h-m5 text-text-inverse',
-                'peer-checked:opacity-100 opacity-0',
-                'transition-opacity'
-              )}
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 8L6 11L13 4"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+          />
+          <Icon
+            src="/icons/icon-tick/icon-tick-sm.svg"
+            size="sm"
+            colorClassName="bg-border-focus"
+            className={cn(
+              'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
+              'pointer-events-none',
+              'opacity-0 peer-checked:opacity-100 transition-opacity'
+            )}
+          />
         </div>
         {label && <span className="whitespace-nowrap">{label}</span>}
       </label>

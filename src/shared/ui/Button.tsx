@@ -139,6 +139,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const baseClassName = cn(
       'inline-flex items-center justify-center transition-colors',
+      'rounded-[var(--spacing-m4)]',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
       disabled && 'pointer-events-none cursor-not-allowed',
       variantStyles.container,
