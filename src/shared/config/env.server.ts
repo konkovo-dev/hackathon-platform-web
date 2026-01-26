@@ -11,5 +11,5 @@ export const envServer = {
   platformApiBaseUrl:
     process.env.PLATFORM_API_BASE_URL ||
     process.env.NEXT_PUBLIC_API_BASE_URL ||
-    'http://localhost:3001/api',
+    'http://localhost:8080',
 } as const

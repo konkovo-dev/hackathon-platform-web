@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import { setAuthCookies } from '@/shared/lib/auth/server'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
+import { mapAuthGatewayErrorToBff } from '../_lib/errorMap'
 
 type TokenPairResponse = AuthGatewayComponents['schemas']['TokenPairResponse']
 type RegisterRequest = AuthGatewayComponents['schemas']['RegisterRequest']
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
   const timezone = raw?.timezone?.trim()
 
   if (!username || !email || !password || !firstName || !lastName || !timezone) {
-    return NextResponse.json({ message: 'Invalid payload' }, { status: 400 })
+    return NextResponse.json({ message: 'Invalid payload', code: 'INVALID_PAYLOAD' }, { status: 400 })
   }
 
   const payload: RegisterRequest = {
@@ -40,7 +41,10 @@ export async function POST(req: Request) {
   }
 
   const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/register', payload)
-  if (!result.ok) return result.response
+  if (!result.ok) {
+    const json = await result.response.json().catch(() => ({}))
+    return NextResponse.json(mapAuthGatewayErrorToBff(json), { status: result.response.status })
+  }
 
   setAuthCookies(result.data)
   return NextResponse.json({ ok: true })

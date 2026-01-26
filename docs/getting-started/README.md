@@ -14,7 +14,7 @@ pnpm dev
 ```env
 # Base URL продуктового API для BFF-прокси (Next.js server-side).
 # Все клиентские запросы продукта идут через /api/platform/*,
-PLATFORM_API_BASE_URL=http://localhost:3001/api
+PLATFORM_API_BASE_URL=http://localhost:8080
 
 # Auth HTTP gateway (см. `hackaton-platform-api/docs/auth/rest-guide.md`)
 AUTH_GATEWAY_BASE_URL=http://localhost:8080

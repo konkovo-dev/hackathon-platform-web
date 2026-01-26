@@ -57,7 +57,11 @@ pnpm api:gen
 ### Что возвращают BFF endpoints
 
 - **Auth BFF** (`/api/auth/*`):
-  - в случае ошибки старается вернуть JSON `{ message, ... }` с тем же HTTP status (см. `src/shared/lib/auth/proxyAuthGateway.ts`)
+  - в случае ошибки возвращает JSON с тем же HTTP status и форматом:
+    - `{ message, code?, fieldErrors? }`
+    - `code` — **доменный** код для UI (локализация/логика)
+    - `fieldErrors` — ошибки по полям для подсветки
+  - почему так: grpc-gateway часто отдаёт `code` как число (grpc status), а UI нужны стабильные доменные коды
 - **Product BFF** (`/api/platform/*`):
   - проксирует upstream ответ “как есть”
   - при `401` делает refresh+retry один раз

@@ -91,8 +91,16 @@ components:
       type: object
       additionalProperties: true
       properties:
+        code:
+          type: string
         message:
           type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
       required:
         - message
 

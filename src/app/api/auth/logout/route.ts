@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import { clearAuthCookies, getRefreshTokenFromCookies } from '@/shared/lib/auth/server'
+import { mapAuthGatewayErrorToBff } from '../_lib/errorMap'
 
 export async function POST() {
   const refreshToken = getRefreshTokenFromCookies()
@@ -15,7 +16,10 @@ export async function POST() {
   })
 
   clearAuthCookies()
-  if (!result.ok) return result.response
+  if (!result.ok) {
+    const json = await result.response.json().catch(() => ({}))
+    return NextResponse.json(mapAuthGatewayErrorToBff(json), { status: result.response.status })
+  }
 
   return NextResponse.json({ ok: true })
 }

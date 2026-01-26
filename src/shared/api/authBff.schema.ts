@@ -89,7 +89,11 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         ErrorResponse: {
+            code?: string;
             message: string;
+            fieldErrors?: {
+                [key: string]: string[];
+            };
         } & {
             [key: string]: unknown;
         };
