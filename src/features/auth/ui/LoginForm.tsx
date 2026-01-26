@@ -20,6 +20,7 @@ export function LoginForm() {
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const [formError, setFormError] = useState<string | null>(null)
+  const [fieldError, setFieldError] = useState<{ login?: boolean; password?: boolean }>({})
 
   const isPending = loginMutation.isPending
 
@@ -30,8 +31,13 @@ export function LoginForm() {
         onSubmit={async (e) => {
           e.preventDefault()
           setFormError(null)
+          setFieldError({})
 
-          if (!login.trim() || !password) {
+          const loginMissing = !login.trim()
+          const passwordMissing = !password
+
+          if (loginMissing || passwordMissing) {
+            setFieldError({ login: loginMissing, password: passwordMissing })
             setFormError(t('auth.errors.required'))
             return
           }
@@ -63,7 +69,7 @@ export function LoginForm() {
                 onChange: (e) => setLogin(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.login === true}
             />
             <InputLabel
               className="self-stretch flex-[0_0_auto] w-full"
@@ -78,7 +84,7 @@ export function LoginForm() {
                 onChange: (e) => setPassword(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.password === true}
             />
             <Checkbox
               label={t('auth.remember_me')}
