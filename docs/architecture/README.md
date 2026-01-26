@@ -13,6 +13,14 @@ src/
 └── widgets/          # Композиции (составные блоки)
 ```
 
+## Роутинг (Next.js App Router)
+
+Используем **route groups** для разделения layout’ов без изменения URL:
+
+- `src/app/(app)/**` — основной layout приложения (с `Sidebar`)
+- `src/app/(auth)/**` — auth-страницы без `Sidebar`
+- `src/app/api/**` — BFF route handlers (`/api/auth/*`, `/api/platform/*`)
+
 ## Правила
 
 1. `app/**` — только роутинг/layout; сетевые вызовы и бизнес-логика выносятся в `features/entities`.

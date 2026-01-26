@@ -6,6 +6,7 @@ import type { components as AuthBffComponents } from '@/shared/api/authBff.schem
 
 type LoginRequest = AuthBffComponents['schemas']['BffLoginRequest']
 type RegisterRequest = AuthBffComponents['schemas']['BffRegisterRequest']
+type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 const sessionKey = ['auth', 'session'] as const
 
@@ -14,6 +15,15 @@ export function useSessionQuery() {
     queryKey: sessionKey,
     queryFn: () => authApi.session(),
     staleTime: 15_000,
+  })
+}
+
+export function useSessionQueryWithInitial(initialData?: SessionResponse) {
+  return useQuery({
+    queryKey: sessionKey,
+    queryFn: () => authApi.session(),
+    staleTime: 15_000,
+    initialData,
   })
 }
 

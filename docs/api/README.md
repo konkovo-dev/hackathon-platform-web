@@ -38,9 +38,16 @@ pnpm api:gen
 
 ## Клиент (openapi-fetch)
 
-Базовый клиент для продуктового API: `src/shared/api/client.ts`
+Базовый клиент для продуктового API:
 
-- `baseUrl` берётся из `NEXT_PUBLIC_API_BASE_URL`
+- `src/shared/api/platformClient.ts` — текущий fetch-клиент (работает даже если OpenAPI для платформы ещё заглушка)
+- `src/shared/api/client.ts` — openapi-fetch клиент (станет полезен, когда `OPENAPI_URL` реально задан и `schema.ts` не заглушка)
+
+Важно: продуктовые запросы идут **через BFF-прокси**:
+
+- браузер → `/api/platform/*`
+- Next.js → `{PLATFORM_API_BASE_URL}/*` (с подстановкой access token из httpOnly cookies)
+- при `401` выполняется `POST /api/auth/refresh` и **повтор запроса 1 раз**
 
 ## Auth: как устроено сейчас
 
@@ -62,7 +69,18 @@ pnpm api:gen
 
 Полезные файлы:
 
-- `src/app/api/auth/_lib/proxy.ts` — проксирование на auth gateway
+- `src/shared/lib/auth/proxyAuthGateway.ts` — проксирование на auth gateway (server-only helper)
 - `src/shared/lib/auth/server.ts` — set/get/clear httpOnly cookies
 - `src/entities/auth/api/authApi.ts` — клиент для UI (ходит только в `/api/auth/*`)
 - `src/features/auth/model/hooks.ts` — TanStack Query хуки (login/register/logout/session)
+
+## Product API BFF proxy
+
+Прокси-роут:
+
+- `src/app/api/platform/[...path]/route.ts`
+
+Переменные окружения:
+
+- `PLATFORM_API_BASE_URL` — base url продуктового API (server-only)
+- `OPENAPI_URL` — опционально, для генерации типов в `src/shared/api/schema.ts`

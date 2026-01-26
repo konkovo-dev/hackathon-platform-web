@@ -6,6 +6,7 @@
 
 - [Быстрый старт](getting-started/README.md)
 - [Архитектура (FSD-lite)](architecture/README.md)
+- [Доступ и роли (policy)](access-control/README.md)
 - [API и OpenAPI генерация (включая auth)](api/README.md)
 - [Tooling / скрипты](tooling/README.md)
 - [Темизация](theming/README.md)
