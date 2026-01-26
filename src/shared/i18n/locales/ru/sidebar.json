@@ -1,0 +1,19 @@
+{
+  "collapse": "Свернуть сайдбар",
+  "expand": "Развернуть сайдбар",
+  "footer": "hackathon platform",
+  "settings_panel": {
+    "debug": "debug",
+    "theme": "темная тема",
+    "language": "язык"
+  },
+  "items": {
+    "hackathons": "хакатоны",
+    "invitations": "приглашения",
+    "teams": "команды",
+    "profile": "профиль",
+    "auth": "авторизация",
+    "design_system": "design system",
+    "settings": "настройки"
+  }
+}
