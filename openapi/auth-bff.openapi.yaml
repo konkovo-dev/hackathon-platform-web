@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: Hackathon Platform Web BFF Auth API
+  version: 1.0.0
+  description: |
+    Контракт фронта к BFF (`src/app/api/auth/*`).
+    Токены не возвращаются в JS: они пишутся в httpOnly cookies на сервере.
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/auth/login:
+    post:
+      operationId: bffAuthLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BffLoginRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BffOkResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+  /api/auth/register:
+    post:
+      operationId: bffAuthRegister
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BffRegisterRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BffOkResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+  /api/auth/refresh:
+    post:
+      operationId: bffAuthRefresh
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BffOkResponse"
+        "401":
+          $ref: "#/components/responses/Error"
+  /api/auth/logout:
+    post:
+      operationId: bffAuthLogout
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BffOkResponse"
+  /api/auth/session:
+    get:
+      operationId: bffAuthSession
+      responses:
+        "200":
+          description: Session status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BffSessionResponse"
+components:
+  responses:
+    Error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ErrorResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      required:
+        - message
+
+    BffOkResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+      required: [ok]
+
+    BffLoginRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        login: { type: string, description: "username или email" }
+        password: { type: string }
+      required: [login, password]
+
+    BffRegisterRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        username: { type: string }
+        email: { type: string }
+        password: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        timezone: { type: string }
+      required: [username, email, password, firstName, lastName, timezone]
+
+    BffSessionInactive:
+      type: object
+      additionalProperties: false
+      properties:
+        active:
+          type: boolean
+          enum: [false]
+      required: [active]
+
+    BffSessionActive:
+      type: object
+      additionalProperties: false
+      properties:
+        active:
+          type: boolean
+          enum: [true]
+        userId:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required: [active, userId, expiresAt]
+
+    BffSessionResponse:
+      oneOf:
+        - $ref: "#/components/schemas/BffSessionInactive"
+        - $ref: "#/components/schemas/BffSessionActive"

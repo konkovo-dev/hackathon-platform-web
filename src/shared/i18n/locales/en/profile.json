@@ -1,0 +1,10 @@
+{
+  "title": "Profile",
+  "empty": "User profile will be here",
+  "auth_required": "You are not signed in",
+  "signed_in_as": "Signed in as: {name}",
+  "me_load_failed": "Failed to load profile: {message}",
+  "actions": {
+    "logout": "Sign out"
+  }
+}

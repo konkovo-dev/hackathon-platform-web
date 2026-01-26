@@ -1,0 +1,14 @@
+{
+  "generators": [
+    {
+      "name": "auth-gateway",
+      "input": "./openapi/auth-gateway.openapi.yaml",
+      "output": "./src/shared/api/authGateway.schema.ts"
+    },
+    {
+      "name": "auth-bff",
+      "input": "./openapi/auth-bff.openapi.yaml",
+      "output": "./src/shared/api/authBff.schema.ts"
+    }
+  ]
+}
