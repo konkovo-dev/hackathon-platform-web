@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { proxyAuthPost } from '../_lib/proxy'
+import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import { clearAuthCookies, getRefreshTokenFromCookies } from '@/shared/lib/auth/server'
 
 export async function POST() {
