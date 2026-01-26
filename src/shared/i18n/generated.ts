@@ -2,10 +2,15 @@
 // Run: pnpm i18n:gen
 
 export const I18N_KEYS = [
+  "auth.errors.auth_required",
+  "auth.errors.invalid_credentials",
+  "auth.errors.invalid_email",
   "auth.errors.invalid_password",
+  "auth.errors.invalid_username",
   "auth.errors.password_mismatch",
   "auth.errors.required",
   "auth.errors.unknown",
+  "auth.errors.user_already_exists",
   "auth.login.label",
   "auth.login.placeholder",
   "auth.password.label",

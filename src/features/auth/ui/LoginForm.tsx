@@ -7,7 +7,21 @@ import { useT } from '@/shared/i18n/useT'
 import { Button } from '@/shared/ui/Button'
 import { Checkbox } from '@/shared/ui/Checkbox'
 import { InputLabel } from '@/shared/ui/InputLabel'
+import { ApiError } from '@/shared/api/errors'
 import { useLoginMutation } from '../model/hooks'
+
+function getAuthErrorText(t: ReturnType<typeof useT>, code: string): string {
+  switch (code) {
+    case 'INVALID_CREDENTIALS':
+      return t('auth.errors.invalid_credentials')
+    case 'AUTH_REQUIRED':
+      return t('auth.errors.auth_required')
+    case 'INVALID_PAYLOAD':
+      return t('auth.errors.required')
+    default:
+      return t('auth.errors.unknown')
+  }
+}
 
 export function LoginForm() {
   const t = useT()
@@ -46,8 +60,20 @@ export function LoginForm() {
             await loginMutation.mutateAsync({ login, password })
             router.push('/profile')
           } catch (err) {
-            const message = err instanceof Error ? err.message : t('auth.errors.unknown')
-            setFormError(message)
+            const api = err instanceof ApiError ? err.data : null
+
+            const loginErr = api?.fieldErrors?.login?.length
+            const passwordErr = api?.fieldErrors?.password?.length
+            if (loginErr || passwordErr) {
+              setFieldError({ login: Boolean(loginErr), password: Boolean(passwordErr) })
+            }
+
+            if (api?.code) {
+              setFormError(getAuthErrorText(t, api.code))
+              return
+            }
+
+            setFormError((api?.message && api.message.trim()) || t('auth.errors.unknown'))
           }
         }}
       >

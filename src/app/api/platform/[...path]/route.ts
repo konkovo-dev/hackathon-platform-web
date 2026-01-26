@@ -72,13 +72,38 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
   const upstream = new URL(joinUrl(envServer.platformApiBaseUrl, path))
   upstream.search = url.search
 
-  const accessToken = getAccessTokenFromCookies()
-  let res = await proxyOnce(req, upstream, accessToken)
+  let res: Response
+  try {
+    const accessToken = getAccessTokenFromCookies()
+    res = await proxyOnce(req, upstream, accessToken)
+  } catch (e) {
+    const message = e instanceof Error ? e.message : 'Upstream fetch failed'
+    return NextResponse.json(
+      {
+        message,
+        code: 'UPSTREAM_UNAVAILABLE',
+        upstream: upstream.toString(),
+      },
+      { status: 502 }
+    )
+  }
 
   if (res.status === 401) {
     const refreshed = await tryRefreshTokens()
     if (refreshed.ok) {
-      res = await proxyOnce(req, upstream, refreshed.accessToken ?? getAccessTokenFromCookies())
+      try {
+        res = await proxyOnce(req, upstream, refreshed.accessToken ?? getAccessTokenFromCookies())
+      } catch (e) {
+        const message = e instanceof Error ? e.message : 'Upstream fetch failed'
+        return NextResponse.json(
+          {
+            message,
+            code: 'UPSTREAM_UNAVAILABLE',
+            upstream: upstream.toString(),
+          },
+          { status: 502 }
+        )
+      }
     }
   }
 

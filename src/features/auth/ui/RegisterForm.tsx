@@ -3,10 +3,30 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
+import { ApiError } from '@/shared/api/errors'
 import { useT } from '@/shared/i18n/useT'
 import { Button } from '@/shared/ui/Button'
 import { InputLabel } from '@/shared/ui/InputLabel'
 import { useRegisterMutation } from '../model/hooks'
+
+function getAuthErrorText(t: ReturnType<typeof useT>, code: string, passwordMinLength: number): string {
+  switch (code) {
+    case 'INVALID_PASSWORD':
+      return t('auth.errors.invalid_password', { min: passwordMinLength })
+    case 'USER_ALREADY_EXISTS':
+      return t('auth.errors.user_already_exists')
+    case 'INVALID_USERNAME':
+      return t('auth.errors.invalid_username')
+    case 'INVALID_EMAIL':
+      return t('auth.errors.invalid_email')
+    case 'AUTH_REQUIRED':
+      return t('auth.errors.auth_required')
+    case 'INVALID_PAYLOAD':
+      return t('auth.errors.required')
+    default:
+      return t('auth.errors.unknown')
+  }
+}
 
 export function RegisterForm() {
   const t = useT()
@@ -94,15 +114,26 @@ export function RegisterForm() {
 
             router.push('/profile')
           } catch (err) {
-            const raw = err instanceof Error ? err.message : ''
-            if (raw.toLowerCase() === 'invalid password') {
-              setFieldError({ password: true })
-              setFormError(t('auth.errors.invalid_password', { min: passwordMinLength }))
+            const api = err instanceof ApiError ? err.data : null
+
+            const nextFieldError = {
+              username: Boolean(api?.fieldErrors?.username?.length),
+              email: Boolean(api?.fieldErrors?.email?.length),
+              password: Boolean(api?.fieldErrors?.password?.length),
+              confirmPassword: false,
+              firstName: false,
+              lastName: false,
+            }
+            if (nextFieldError.username || nextFieldError.email || nextFieldError.password) {
+              setFieldError(nextFieldError)
+            }
+
+            if (api?.code) {
+              setFormError(getAuthErrorText(t, api.code, passwordMinLength))
               return
             }
 
-            const message = raw || t('auth.errors.unknown')
-            setFormError(message)
+            setFormError((api?.message && api.message.trim()) || t('auth.errors.unknown'))
           }
         }}
       >
