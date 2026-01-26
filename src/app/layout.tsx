@@ -5,6 +5,7 @@ import './globals.css'
 import { Providers } from './providers'
 import { getServerMessages } from '@/shared/i18n/server'
 import { Sidebar } from '@/widgets/sidebar/Sidebar'
+import { getServerSession } from '@/entities/auth/model/server'
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600'],
@@ -29,6 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const { locale, messages } = await getServerMessages()
+  const session = await getServerSession()
 
   return (
     <html lang={locale}>
@@ -48,7 +50,7 @@ export default async function RootLayout({
         />
         <Providers locale={locale} messages={messages}>
           <div className="flex min-h-screen bg-bg-surface">
-            <Sidebar />
+            <Sidebar initialSession={session} />
             <main className="flex-1 bg-bg-surface">{children}</main>
           </div>
         </Providers>
