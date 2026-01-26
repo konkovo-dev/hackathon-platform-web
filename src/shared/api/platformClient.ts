@@ -16,21 +16,29 @@ async function getServerOrigin(): Promise<string> {
   return `${proto}://${host}`
 }
 
+async function getServerCookieHeader(): Promise<string | undefined> {
+  const { headers } = await import('next/headers')
+  const h = await headers()
+  const cookie = h.get('cookie') || undefined
+  return cookie
+}
+
 export async function platformFetchJson<TResponse>(
   path: string,
   init?: Omit<RequestInit, 'headers'> & { headers?: HeadersInit }
 ): Promise<TResponse> {
   const urlPath = joinPath(env.apiBaseUrl, path)
-  const url =
-    typeof window === 'undefined' && urlPath.startsWith('/')
-      ? new URL(urlPath, await getServerOrigin()).toString()
-      : urlPath
+  const isServer = typeof window === 'undefined'
+  const url = isServer && urlPath.startsWith('/') ? new URL(urlPath, await getServerOrigin()).toString() : urlPath
+
+  const cookieHeader = isServer ? await getServerCookieHeader() : undefined
 
   const res = await fetch(url, {
     ...init,
     headers: {
       accept: 'application/json',
       ...(init?.headers || {}),
+      ...(cookieHeader ? { cookie: cookieHeader } : null),
     },
     cache: 'no-store',
   })
