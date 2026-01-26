@@ -86,6 +86,24 @@ Cookie-флаги:
   чтобы он выдавал refresh token с другим TTL
 - или иметь отдельные login endpoints/режимы на бекенде
 
+### Как работает logout
+
+С точки зрения UI, logout — это простой вызов:
+
+- `POST /api/auth/logout` (см. `src/entities/auth/api/authApi.ts`)
+
+Что делает BFF на сервере (Next route handler `src/app/api/auth/logout/route.ts`):
+
+- читает `hp_refresh_token` из httpOnly cookie
+- делает `POST {AUTH_GATEWAY_BASE_URL}/v1/auth/logout` с `refresh_token`
+- **в любом случае** очищает `hp_access_token` и `hp_refresh_token` (см. `clearAuthCookies()` в `src/shared/lib/auth/server.ts`)
+- возвращает `{ ok: true }`
+
+Ожидаемый эффект для приложения:
+
+- следующий `GET /api/auth/session` вернёт `{ active: false }`
+- UI обычно инвалидирует query `['auth','session']` и/или редиректит пользователя на `/login` (см. `src/features/auth/model/hooks.ts`)
+
 Роуты:
 
 - `POST /api/auth/login` → `POST {AUTH_GATEWAY_BASE_URL}/v1/auth/login`
