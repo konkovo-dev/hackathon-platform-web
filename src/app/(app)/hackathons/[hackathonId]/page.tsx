@@ -1,10 +1,6 @@
 import { getServerI18n } from '@/shared/i18n/server'
 
-export default async function HackathonMainPage({
-  params,
-}: {
-  params: Promise<{ hackathonId: string }>
-}) {
+export default async function HackathonMainPage({ params }: { params: Promise<{ hackathonId: string }> }) {
   const { t } = await getServerI18n(['hackathons'])
   const { hackathonId } = await params
 

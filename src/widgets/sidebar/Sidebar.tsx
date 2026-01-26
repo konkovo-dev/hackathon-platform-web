@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/Button'
@@ -9,8 +9,12 @@ import { Logo } from '@/shared/ui/Logo'
 import { MenuItem } from '@/shared/ui/MenuItem'
 import { useT } from '@/shared/i18n/useT'
 import type { I18nKey } from '@/shared/i18n/generated'
+import { useSessionQueryWithInitial } from '@/features/auth/model/hooks'
+import type { components as AuthBffComponents } from '@/shared/api/authBff.schema'
 import { SidebarSettings } from './SidebarSettings'
 import { useDebugFlag } from './useDebugFlag'
+
+type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
   key:
@@ -44,27 +48,33 @@ const LABEL_KEY: Record<SidebarItem['key'], I18nKey> = {
   design_system: 'sidebar.items.design_system',
 }
 
-export function Sidebar() {
+export function Sidebar({ initialSession }: { initialSession?: SessionResponse }) {
   const t = useT()
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const { debug, setDebug } = useDebugFlag({ cookieName: 'hp_debug' })
+  const sessionQuery = useSessionQueryWithInitial(initialSession)
+  const isAuthed = sessionQuery.data?.active === true
 
   const items: SidebarItem[] = useMemo(() => {
-    const base: SidebarItem[] = [
-      { key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code },
-      { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
-      { key: 'teams', href: '/my-teams', iconSrc: ICONS.team },
-      { key: 'profile', href: '/profile', iconSrc: ICONS.profile },
-      { key: 'auth', href: '/login', iconSrc: ICONS.auth },
-    ]
+    const base: SidebarItem[] = [{ key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code }]
+
+    if (isAuthed) {
+      base.push(
+        { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
+        { key: 'teams', href: '/my-teams', iconSrc: ICONS.team },
+        { key: 'profile', href: '/profile', iconSrc: ICONS.profile }
+      )
+    } else {
+      base.push({ key: 'auth', href: '/login', iconSrc: ICONS.auth })
+    }
 
     if (debug) {
       base.push({ key: 'design_system', href: '/design-system', iconSrc: ICONS.designSystem })
     }
 
     return base
-  }, [debug])
+  }, [debug, isAuthed])
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
