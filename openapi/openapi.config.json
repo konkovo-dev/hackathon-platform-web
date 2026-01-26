@@ -1,12 +1,6 @@
 {
   "generators": [
     {
-      "name": "platform-api",
-      "inputEnv": "OPENAPI_URL",
-      "output": "./src/shared/api/schema.ts",
-      "optional": true
-    },
-    {
       "name": "auth-gateway",
       "input": "./openapi/auth-gateway.openapi.yaml",
       "output": "./src/shared/api/authGateway.schema.ts"
