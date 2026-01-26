@@ -31,17 +31,11 @@ pnpm api:gen
   - output: `src/shared/api/authBff.schema.ts`
   - endpoints: `/api/auth/*`
 
-- **Platform API (опционально)**:
-  - input: env `OPENAPI_URL`
-  - output: `src/shared/api/schema.ts`
-  - если `OPENAPI_URL` не задан — генерация этого файла пропускается
-
-## Клиент (openapi-fetch)
+## Клиент продуктового API
 
 Базовый клиент для продуктового API:
 
-- `src/shared/api/platformClient.ts` — текущий fetch-клиент (работает даже если OpenAPI для платформы ещё заглушка)
-- `src/shared/api/client.ts` — openapi-fetch клиент (станет полезен, когда `OPENAPI_URL` реально задан и `schema.ts` не заглушка)
+- `src/shared/api/platformClient.ts` — текущий fetch-клиент (не зависит от OpenAPI)
 
 Важно: продуктовые запросы идут **через BFF-прокси**:
 
@@ -58,6 +52,39 @@ pnpm api:gen
 - токены **не возвращаются в JS**, а сохраняются в **httpOnly cookies**:
   - `hp_access_token`
   - `hp_refresh_token`
+
+## Безопасность токенов и “Запомнить меня”
+
+### Где и как хранятся токены
+
+Токены **не сохраняются в `localStorage`/`sessionStorage`** и **не доступны из JS**:
+
+- access/refresh записываются только на сервере в `httpOnly` cookies (см. `src/shared/lib/auth/server.ts`)
+- UI общается с auth только через BFF (`/api/auth/*`)
+- продуктовые запросы идут через BFF `/api/platform/*`, где сервер подставляет `Authorization` сам
+
+Cookie-флаги:
+
+- `httpOnly: true` — защищает от утечки токенов через XSS (JS не может прочитать cookie)
+- `secure: true` только в production — cookie передаются только по HTTPS
+- `sameSite: 'lax'` — снижает риск CSRF (браузер не отправляет эти cookies на большинство cross-site запросов)
+- `path: '/'` — доступны на всём сайте
+- `maxAge` выставляется **только если** auth gateway отдаёт `accessExpiresAt/refreshExpiresAt`
+  - если `maxAge` не выставлен — cookie становятся “session cookies” и обычно не переживают перезапуск браузера
+
+### Как влияет “Запомнить меня”
+
+Сейчас **никак**: чекбокс “Запомнить меня” в `src/features/auth/ui/LoginForm.tsx` не влияет на payload,
+потому что в запрос `/api/auth/login` отправляются только `{ login, password }` (см. `openapi/auth-bff.openapi.yaml`).
+
+Фактическая “длина” сессии определяется **TTL refresh token’а**, который выдаёт auth gateway (и тем,
+выставляется ли `refreshExpiresAt` → `maxAge` для cookie).
+
+Если нужно реальное поведение “запомнить меня”, обычно делается одно из:
+
+- расширить контракт BFF (`BffLoginRequest`) полем вроде `rememberMe: boolean` и прокинуть в auth gateway,
+  чтобы он выдавал refresh token с другим TTL
+- или иметь отдельные login endpoints/режимы на бекенде
 
 Роуты:
 
@@ -83,4 +110,4 @@ pnpm api:gen
 Переменные окружения:
 
 - `PLATFORM_API_BASE_URL` — base url продуктового API (server-only)
-- `OPENAPI_URL` — опционально, для генерации типов в `src/shared/api/schema.ts`
+ 

@@ -57,7 +57,7 @@
 
 - `PLATFORM_API_BASE_URL` — base url продуктового API (server-only)
 - `AUTH_GATEWAY_BASE_URL` — base url auth gateway (server-only)
-- `OPENAPI_URL` — опционально, для генерации типов продуктового API в `src/shared/api/schema.ts`
+ 
 
 ## Policy / Access Control
 
