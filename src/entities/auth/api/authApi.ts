@@ -1,4 +1,5 @@
 import type { components as AuthBffComponents } from '@/shared/api/authBff.schema'
+import { ApiError, parseApiErrorResponse } from '@/shared/api/errors'
 
 type ErrorResponse = AuthBffComponents['schemas']['ErrorResponse']
 type LoginRequest = AuthBffComponents['schemas']['BffLoginRequest']
@@ -9,17 +10,8 @@ type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 async function assertOk(res: Response): Promise<void> {
   if (res.ok) return
 
-  let message = res.statusText || 'Request failed'
-  try {
-    const json = (await res.json()) as Partial<ErrorResponse>
-    if (typeof json.message === 'string' && json.message.trim()) {
-      message = json.message
-    }
-  } catch {
-    // ignore
-  }
-
-  throw new Error(message)
+  const data = await parseApiErrorResponse(res.clone())
+  throw new ApiError(data)
 }
 
 export const authApi = {

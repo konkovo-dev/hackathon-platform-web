@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { proxyAuthPost } from '../_lib/proxy'
+import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import { getRefreshTokenFromCookies, setAuthCookies } from '@/shared/lib/auth/server'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
 
