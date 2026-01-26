@@ -43,6 +43,33 @@ pnpm api:gen
 - Next.js → `{PLATFORM_API_BASE_URL}/*` (с подстановкой access token из httpOnly cookies)
 - при `401` выполняется `POST /api/auth/refresh` и **повтор запроса 1 раз**
 
+## Ошибки: формат и обработка
+
+### Единый формат на фронте
+
+На фронте ошибки нормализуются в `ApiError` (`src/shared/api/errors.ts`):
+
+- `message: string` — человекочитаемое сообщение
+- `status?: number` — HTTP статус
+- `code?: string` — опциональный код ошибки (если пришёл от BFF/бекенда)
+- `fieldErrors?: Record<string, string[]>` — ошибки по полям (если бекенд их отдаёт)
+
+### Что возвращают BFF endpoints
+
+- **Auth BFF** (`/api/auth/*`):
+  - в случае ошибки старается вернуть JSON `{ message, ... }` с тем же HTTP status (см. `src/shared/lib/auth/proxyAuthGateway.ts`)
+- **Product BFF** (`/api/platform/*`):
+  - проксирует upstream ответ “как есть”
+  - при `401` делает refresh+retry один раз
+  - при недоступности upstream (например `ECONNREFUSED`) возвращает `502` с JSON:
+    `{ message, code: "UPSTREAM_UNAVAILABLE", upstream }`
+
+### Как это используется в UI
+
+- `authApi` бросает `ApiError` при non-2xx (см. `src/entities/auth/api/authApi.ts`)
+- `platformFetchJson` бросает `ApiError` при non-2xx (см. `src/shared/api/platformClient.ts`)
+- UI/хуки могут показывать пользователю `err.message`, а при наличии `fieldErrors` — подсвечивать конкретные поля формы
+
 ## Auth: как устроено сейчас
 
 Авторизация реализована через **BFF Route Handlers** в Next.js:
@@ -74,17 +101,7 @@ Cookie-флаги:
 
 ### Как влияет “Запомнить меня”
 
-Сейчас **никак**: чекбокс “Запомнить меня” в `src/features/auth/ui/LoginForm.tsx` не влияет на payload,
-потому что в запрос `/api/auth/login` отправляются только `{ login, password }` (см. `openapi/auth-bff.openapi.yaml`).
-
-Фактическая “длина” сессии определяется **TTL refresh token’а**, который выдаёт auth gateway (и тем,
-выставляется ли `refreshExpiresAt` → `maxAge` для cookie).
-
-Если нужно реальное поведение “запомнить меня”, обычно делается одно из:
-
-- расширить контракт BFF (`BffLoginRequest`) полем вроде `rememberMe: boolean` и прокинуть в auth gateway,
-  чтобы он выдавал refresh token с другим TTL
-- или иметь отдельные login endpoints/режимы на бекенде
+пока никак
 
 ### Как работает logout
 

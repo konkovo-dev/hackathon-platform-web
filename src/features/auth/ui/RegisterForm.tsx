@@ -31,6 +31,14 @@ export function RegisterForm() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [formError, setFormError] = useState<string | null>(null)
+  const [fieldError, setFieldError] = useState<{
+    username?: boolean
+    email?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    password?: boolean
+    confirmPassword?: boolean
+  }>({})
 
   const isPending = registerMutation.isPending
 
@@ -41,13 +49,28 @@ export function RegisterForm() {
         onSubmit={async (e) => {
           e.preventDefault()
           setFormError(null)
+          setFieldError({})
 
-          if (!username.trim() || !email.trim() || !firstName.trim() || !lastName.trim() || !password) {
+          const usernameMissing = !username.trim()
+          const emailMissing = !email.trim()
+          const firstNameMissing = !firstName.trim()
+          const lastNameMissing = !lastName.trim()
+          const passwordMissing = !password
+
+          if (usernameMissing || emailMissing || firstNameMissing || lastNameMissing || passwordMissing) {
+            setFieldError({
+              username: usernameMissing,
+              email: emailMissing,
+              firstName: firstNameMissing,
+              lastName: lastNameMissing,
+              password: passwordMissing,
+            })
             setFormError(t('auth.errors.required'))
             return
           }
 
           if (password !== confirmPassword) {
+            setFieldError({ confirmPassword: true })
             setFormError(t('auth.errors.password_mismatch'))
             return
           }
@@ -87,7 +110,7 @@ export function RegisterForm() {
                 onChange: (e) => setUsername(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.username === true}
             />
 
             <InputLabel
@@ -102,7 +125,7 @@ export function RegisterForm() {
                 onChange: (e) => setFirstName(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.firstName === true}
             />
 
             <InputLabel
@@ -117,7 +140,7 @@ export function RegisterForm() {
                 onChange: (e) => setLastName(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.lastName === true}
             />
 
             <InputLabel
@@ -132,7 +155,7 @@ export function RegisterForm() {
                 onChange: (e) => setEmail(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.email === true}
             />
 
             <InputLabel
@@ -148,7 +171,7 @@ export function RegisterForm() {
                 onChange: (e) => setPassword(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.password === true}
             />
 
             <InputLabel
@@ -164,7 +187,7 @@ export function RegisterForm() {
                 onChange: (e) => setConfirmPassword(e.target.value),
                 disabled: isPending,
               }}
-              error={Boolean(formError)}
+              error={fieldError.confirmPassword === true}
             />
           </div>
         </div>
