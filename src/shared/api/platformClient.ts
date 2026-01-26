@@ -7,11 +7,26 @@ function joinPath(base: string, path: string) {
   return `${baseTrimmed}${pathTrimmed}`
 }
 
+async function getServerOrigin(): Promise<string> {
+  const { headers } = await import('next/headers')
+  const h = await headers()
+
+  const proto = h.get('x-forwarded-proto') || 'http'
+  const host = h.get('x-forwarded-host') || h.get('host') || 'localhost:3000'
+  return `${proto}://${host}`
+}
+
 export async function platformFetchJson<TResponse>(
   path: string,
   init?: Omit<RequestInit, 'headers'> & { headers?: HeadersInit }
 ): Promise<TResponse> {
-  const res = await fetch(joinPath(env.apiBaseUrl, path), {
+  const urlPath = joinPath(env.apiBaseUrl, path)
+  const url =
+    typeof window === 'undefined' && urlPath.startsWith('/')
+      ? new URL(urlPath, await getServerOrigin()).toString()
+      : urlPath
+
+  const res = await fetch(url, {
     ...init,
     headers: {
       accept: 'application/json',
