@@ -14,6 +14,7 @@ export function RegisterForm() {
   const registerMutation = useRegisterMutation()
 
   const timezone = useMemo(() => Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', [])
+  const passwordMinLength = 8
 
   const alertRole = 'alert' as const
   const ariaLivePolite = 'polite' as const
@@ -69,6 +70,12 @@ export function RegisterForm() {
             return
           }
 
+          if (password.length < passwordMinLength) {
+            setFieldError({ password: true })
+            setFormError(t('auth.errors.invalid_password', { min: passwordMinLength }))
+            return
+          }
+
           if (password !== confirmPassword) {
             setFieldError({ confirmPassword: true })
             setFormError(t('auth.errors.password_mismatch'))
@@ -87,7 +94,14 @@ export function RegisterForm() {
 
             router.push('/profile')
           } catch (err) {
-            const message = err instanceof Error ? err.message : t('auth.errors.unknown')
+            const raw = err instanceof Error ? err.message : ''
+            if (raw.toLowerCase() === 'invalid password') {
+              setFieldError({ password: true })
+              setFormError(t('auth.errors.invalid_password', { min: passwordMinLength }))
+              return
+            }
+
+            const message = raw || t('auth.errors.unknown')
             setFormError(message)
           }
         }}
