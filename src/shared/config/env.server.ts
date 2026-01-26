@@ -8,4 +8,8 @@ import 'server-only'
  */
 export const envServer = {
   authGatewayBaseUrl: process.env.AUTH_GATEWAY_BASE_URL || 'http://localhost:8080',
+  platformApiBaseUrl:
+    process.env.PLATFORM_API_BASE_URL ||
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    'http://localhost:3001/api',
 } as const
