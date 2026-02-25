@@ -14,6 +14,7 @@ const TARGET_DIRS = [
 
 const IGNORE_PATH_PARTS = [
   `${path.sep}app${path.sep}design-system${path.sep}`, // демо-страница, пока без локализации
+  `${path.sep}app${path.sep}(app)${path.sep}design-system${path.sep}`, // демо-страница в app-group, пока без локализации
 ]
 
 const IGNORE_ATTRS = new Set([
