@@ -15,15 +15,15 @@ src/
 
 ## Роутинг (Next.js App Router)
 
-Используем **route groups** для разделения layout’ов без изменения URL:
+Используем **route groups** (папки в скобках) для организации страниц без изменения URL.
 
-- `src/app/(app)/**` — основной layout приложения (с `Sidebar`)
-- `src/app/(auth)/**` — auth-страницы без `Sidebar`
+- `src/app/layout.tsx` — корневой layout приложения (с `Sidebar`)
+- `src/app/(app)/**` — страницы приложения (включая `/login` и `/register`, т.к. сейчас layout унифицирован)
 - `src/app/api/**` — BFF route handlers (`/api/auth/*`, `/api/platform/*`)
 
 ## Правила
 
-1. `app/**` — только роутинг/layout; сетевые вызовы и бизнес-логика выносятся в `features/entities`.
+1. `app/**` — только роутинг/layout; бизнес-логика выносятся в `features/entities` (исключение: `app/api/**` — BFF).
 2. `shared/**` — переиспользуемое; не знает про конкретные бизнес-сущности.
 3. `entities/**` — доменные модели/DTO/доменные API функции; не зависит от `features/widgets`.
 4. `features/**` — использует `entities` и `shared`, но не другие `features`.
@@ -41,8 +41,9 @@ src/
 - `/login` — вход
 - `/register` — регистрация
 - `/hackathons` — список хакатонов
-- `/hackathons/[hackathonId]` — страница хакатона (с sidebar)
+- `/hackathons/[hackathonId]` — страница хакатона (с `Sidebar`)
 - `/profile` — профиль
 - `/invitations` — приглашения
 - `/my-teams` — мои команды
+- `/design-system` — внутренний “каталог компонентов” (для разработки)
 

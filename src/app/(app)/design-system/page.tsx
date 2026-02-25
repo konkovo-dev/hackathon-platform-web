@@ -1,36 +1,26 @@
 import { Button } from '@/shared/ui/Button'
 import { Card, CardContent, CardHeader } from '@/shared/ui/Card'
 import { Checkbox } from '@/shared/ui/Checkbox'
+import { FormField } from '@/shared/ui/FormField'
+import { Icon } from '@/shared/ui/Icon'
 import { Input } from '@/shared/ui/Input'
+import { InputLabel } from '@/shared/ui/InputLabel'
 import { Label } from '@/shared/ui/Label'
+import { Logo } from '@/shared/ui/Logo'
+import { MenuItem } from '@/shared/ui/MenuItem'
 import { Radio } from '@/shared/ui/Radio'
+import { Switch } from '@/shared/ui/Switch'
 import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
 
 export default function DesignSystemPage() {
   return (
-    <div className="min-h-screen bg-bg-default p-8">
-      <div className="container mx-auto max-w-7xl">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <Typography variant="display-xl" className="mb-2">
-              Design System
-            </Typography>
-            <Typography variant="body-md-regular" className="text-text-secondary">
-              Компоненты дизайн-системы Hackathon Platform
-            </Typography>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="typography-body-md-medium text-link-default hover:text-link-hover"
-            >
-              На главную
-            </Link>
-          </div>
-        </div>
+    <div className="container mx-auto max-w-7xl p-8">
+      <div className="mb-8 flex items-center justify-between">
+        <Typography variant="display-xl">Design System</Typography>
+      </div>
 
-        <div className="space-y-12">
+      <div className="space-y-12">
           {/* Buttons */}
           <section>
             <Typography variant="heading-lg" className="mb-6">
@@ -42,9 +32,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Primary</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Основная кнопка. При hover/active меняется только фон.
-                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap items-center gap-4">
@@ -68,10 +55,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Secondary</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Вторичная кнопка. При hover/active меняется цвет обводки и текста (secondary →
-                    primary).
-                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap items-center gap-4">
@@ -95,9 +78,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Action</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Кнопка действия с иконкой &gt;. При hover/active меняется только фон.
-                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap items-center gap-4">
@@ -118,10 +98,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Secondary Action</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Вторичная кнопка действия с иконкой /. При hover/active меняется цвет обводки
-                    и текста.
-                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap items-center gap-4">
@@ -152,17 +128,11 @@ export default function DesignSystemPage() {
                   <Typography variant="display-2xl" className="mb-2">
                     Display 2XL Semibold
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-display-2xl
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="display-xl" className="mb-2">
                     Display XL Semibold
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-display-xl
                   </Typography>
                 </div>
 
@@ -170,17 +140,11 @@ export default function DesignSystemPage() {
                   <Typography variant="heading-lg" className="mb-2">
                     Heading Large Semibold
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-heading-lg
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="heading-md" className="mb-2">
                     Heading Medium Semibold
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-heading-md
                   </Typography>
                 </div>
 
@@ -188,17 +152,11 @@ export default function DesignSystemPage() {
                   <Typography variant="heading-sm" className="mb-2">
                     Heading Small Semibold
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-heading-sm
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="title-lg" className="mb-2">
                     Title Large Semibold
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-title-lg
                   </Typography>
                 </div>
 
@@ -206,17 +164,11 @@ export default function DesignSystemPage() {
                   <Typography variant="title-md" className="mb-2">
                     Title Medium Semibold
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-title-md
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="title-sm" className="mb-2">
                     Title Small Semibold
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-title-sm
                   </Typography>
                 </div>
 
@@ -224,17 +176,11 @@ export default function DesignSystemPage() {
                   <Typography variant="body-lg-regular" className="mb-2">
                     Body Large Regular
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-lg-regular
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="body-lg-medium" className="mb-2">
                     Body Large Medium
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-lg-medium
                   </Typography>
                 </div>
 
@@ -242,17 +188,11 @@ export default function DesignSystemPage() {
                   <Typography variant="body-md-regular" className="mb-2">
                     Body Medium Regular
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-md-regular
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="body-md-medium" className="mb-2">
                     Body Medium Medium
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-md-medium
                   </Typography>
                 </div>
 
@@ -260,17 +200,11 @@ export default function DesignSystemPage() {
                   <Typography variant="body-sm-regular" className="mb-2">
                     Body Small Regular
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-sm-regular
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="body-sm-medium" className="mb-2">
                     Body Small Medium
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-body-sm-medium
                   </Typography>
                 </div>
 
@@ -278,17 +212,11 @@ export default function DesignSystemPage() {
                   <Typography variant="label-lg" className="mb-2">
                     Label Large Medium
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-label-lg
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="label-md" className="mb-2">
                     Label Medium Medium
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-label-md
                   </Typography>
                 </div>
 
@@ -296,17 +224,11 @@ export default function DesignSystemPage() {
                   <Typography variant="label-sm" className="mb-2">
                     Label Small Medium
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-label-sm
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="label-xs" className="mb-2">
                     Label XS Semibold
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-label-xs
                   </Typography>
                 </div>
 
@@ -314,17 +236,11 @@ export default function DesignSystemPage() {
                   <Typography variant="caption-sm-regular" className="mb-2">
                     Caption Small Regular
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-caption-sm-regular
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="caption-sm-medium" className="mb-2">
                     Caption Small Medium
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-caption-sm-medium
                   </Typography>
                 </div>
 
@@ -332,26 +248,17 @@ export default function DesignSystemPage() {
                   <Typography variant="caption-xs" className="mb-2">
                     Caption XS Regular
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-caption-xs
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="overline-xs" className="mb-2">
                     Overline XS Semibold
                   </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-overline-xs
-                  </Typography>
                 </div>
 
                 <div>
                   <Typography variant="code-sm" className="mb-2">
                     Code Small Regular
-                  </Typography>
-                  <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                    typography-code-sm
                   </Typography>
                 </div>
               </CardContent>
@@ -369,9 +276,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Text Input</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Текстовое поле ввода. При фокусе меняется цвет обводки на border-focus.
-                  </Typography>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -397,9 +301,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Search Input</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Поле поиска с иконкой поиска слева.
-                  </Typography>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -417,9 +318,6 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Checkbox</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Чекбокс с поддержкой label. При выборе меняется цвет обводки и фона.
-                  </Typography>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Checkbox label="Не выбранный чекбокс" />
@@ -433,15 +331,152 @@ export default function DesignSystemPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="title-md">Radio</Typography>
-                  <Typography variant="body-sm-regular" className="text-text-secondary">
-                    Радио-кнопка с поддержкой label. При выборе меняется цвет обводки и появляется индикатор.
-                  </Typography>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Radio name="radio-group" label="Вариант 1" />
                   <Radio name="radio-group" label="Вариант 2" defaultChecked />
                   <Radio name="radio-group-disabled" label="Отключенный" disabled />
                   <Radio name="radio-group-disabled" label="Отключенный выбранный" defaultChecked disabled />
+                </CardContent>
+              </Card>
+
+              {/* Switch */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Switch</Typography>
+                </CardHeader>
+                <CardContent className="flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    <Switch />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      Default
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Switch defaultChecked />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      Checked
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Switch disabled />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      Disabled
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Switch defaultChecked disabled />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      Disabled checked
+                    </Typography>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* InputLabel */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">InputLabel</Typography>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <InputLabel label="Email" inputPlaceholder="Введите email" inputType="email" />
+                  <InputLabel label="Password" inputPlaceholder="Введите пароль" inputType="password" />
+                </CardContent>
+              </Card>
+
+              {/* FormField */}
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">FormField</Typography>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <FormField label="Username" labelFor="ff-username">
+                    <Input id="ff-username" variant="text" />
+                  </FormField>
+                  <FormField label="Username" labelFor="ff-username-error" error="Validation error">
+                    <Input id="ff-username-error" variant="text" error />
+                  </FormField>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          {/* Branding */}
+          <section>
+            <Typography variant="heading-lg" className="mb-6">
+              Branding
+            </Typography>
+
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Logo</Typography>
+                </CardHeader>
+                <CardContent className="flex flex-wrap items-center gap-6">
+                  <Logo size="md" />
+                  <Logo size="sm" />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">Icon</Typography>
+                </CardHeader>
+                <CardContent className="flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    <Icon src="/icons/icon-profile/icon-profile-md.svg" size="sm" />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      sm
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Icon src="/icons/icon-profile/icon-profile-md.svg" size="md" />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      md
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Icon src="/icons/icon-profile/icon-profile-md.svg" size="lg" />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      lg
+                    </Typography>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Icon src="/icons/icon-settings/icon-settings-md.svg" size="md" color="secondary" />
+                    <Typography variant="body-sm-regular" className="text-text-secondary">
+                      secondary
+                    </Typography>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          {/* Navigation */}
+          <section>
+            <Typography variant="heading-lg" className="mb-6">
+              Navigation
+            </Typography>
+
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <Typography variant="title-md">MenuItem</Typography>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <MenuItem
+                    href="/hackathons"
+                    iconSrc="/icons/icon-search/icon-search-md.svg"
+                    title="hackathons"
+                    active
+                  />
+                  <MenuItem href="/profile" iconSrc="/icons/icon-profile/icon-profile-md.svg" title="profile" />
+                  <MenuItem
+                    href="/my-teams"
+                    iconSrc="/icons/icon-team/iton-team-md.svg"
+                    title="my teams"
+                    collapsed
+                  />
                 </CardContent>
               </Card>
             </div>
@@ -464,27 +499,18 @@ export default function DesignSystemPage() {
                     <div className="h-12 w-12 rounded-md bg-brand-primary"></div>
                     <div>
                       <Typography variant="body-sm-medium">brand-primary</Typography>
-                      <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                        Primary brand color
-                      </Typography>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-md bg-brand-secondary"></div>
                     <div>
                       <Typography variant="body-sm-medium">brand-secondary</Typography>
-                      <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                        Secondary brand color
-                      </Typography>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-md bg-brand-accent"></div>
                     <div>
                       <Typography variant="body-sm-medium">brand-accent</Typography>
-                      <Typography variant="caption-sm-regular" className="text-text-tertiary">
-                        Accent color
-                      </Typography>
                     </div>
                   </div>
                 </CardContent>
@@ -545,7 +571,6 @@ export default function DesignSystemPage() {
               </Card>
             </div>
           </section>
-        </div>
       </div>
     </div>
   )
