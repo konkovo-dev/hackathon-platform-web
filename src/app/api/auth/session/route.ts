@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
-import { getAccessTokenFromCookies } from '@/shared/lib/auth/server'
+import { clearAuthCookies, getAccessTokenFromCookies } from '@/shared/lib/auth/server'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
 
 type IntrospectResponse = AuthGatewayComponents['schemas']['IntrospectResponse']
@@ -16,6 +16,9 @@ export async function GET() {
   })
 
   if (!result.ok) {
+    if (result.response.status === 401 || result.response.status === 403) {
+      clearAuthCookies()
+    }
     return NextResponse.json({ active: false })
   }
 

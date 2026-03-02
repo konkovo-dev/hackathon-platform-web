@@ -24,7 +24,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             'relative inline-flex h-m12 w-m20 items-center rounded-full',
             'bg-bg-default',
             'border border-border-strong peer-checked:border-border-focus',
-            'transition-colors',
+            'transition-all duration-200',
             disabled && 'opacity-50',
             trackClassName
           )}
@@ -33,7 +33,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           className={cn(
             'pointer-events-none absolute left-[var(--spacing-m2)] top-1/2 h-m8 w-m8 -translate-y-1/2 rounded-full',
             'bg-brand-primary',
-            'transition-transform',
+            'transition-all duration-200',
             'peer-checked:translate-x-[var(--spacing-m8)]',
             disabled && 'opacity-50',
             thumbClassName
