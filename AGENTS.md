@@ -272,6 +272,89 @@ API (gRPC-gateway с `json_names_for_fields=true`) всегда использу
 - `Identity.UpdateMe.Skills` — `auth && is_me` — skills + skills_visibility
 - `Identity.UpdateMe.Contacts` — `auth && is_me` — contacts + contacts_visibility + per_contact_visibility
 
+## Тестирование
+
+**Правило: тесты обязательны для всей критичной логики.** Unit-тесты для утилит и policy, integration-тесты для компонентов и features.
+
+### Быстрые команды
+
+- `pnpm test` — запуск всех unit/integration тестов (Vitest)
+- `pnpm test:watch` — watch mode для разработки
+- `pnpm test:coverage` — coverage report
+- `pnpm test:e2e` — E2E тесты (Playwright)
+- `pnpm test:e2e:ui` — Playwright UI mode
+
+### Стек
+
+- **Vitest** — unit/integration тесты (быстрее Jest, нативный ESM/TypeScript)
+- **@testing-library/react** — тестирование React-компонентов
+- **MSW** — моки API (Mock Service Worker)
+- **Playwright** — E2E тесты
+
+### Архитектура тестов
+
+**Colocation** — тесты лежат рядом с кодом:
+
+```
+src/entities/user/
+  model/
+    types.ts
+    types.test.ts          # unit: утилиты getSkillName, getContactTypeLabel
+  api/
+    getMe.ts
+    getMe.test.ts          # unit: API функции
+  policy/
+    userPolicy.ts
+    userPolicy.test.ts     # unit: policy rules
+
+src/features/profile/ui/
+  EditNameSection.tsx
+  EditNameSection.test.tsx # integration: компонент + взаимодействия
+
+src/shared/ui/
+  Button.tsx
+  Button.test.tsx          # integration: UI примитив
+```
+
+**Централизованная папка `tests/`** для общих ресурсов:
+
+```
+tests/
+  setup/
+    vitest.setup.ts        # глобальный setup (MSW, matchers)
+    msw.ts                 # MSW handlers
+    test-utils.tsx         # renderWithProviders
+  fixtures/
+    mockUser.ts            # переиспользуемые моки
+    mockSkills.ts
+  e2e/
+    profile.spec.ts        # Playwright E2E
+```
+
+### Что тестировать
+
+| Тип теста | Что | Где | Пример |
+|---|---|---|---|
+| **Unit** | Утилиты, хелперы, валидаторы, policy | Рядом с кодом | `getSkillName()`, `cn()`, `teamPolicy.canCreate()` |
+| **Integration** | React-компоненты, hooks, формы | Рядом с кодом | `<Button />`, `useProfileQuery()`, `<EditNameSection />` |
+| **E2E** | Критичные флоу (регистрация, профиль) | `tests/e2e/` | Регистрация → вход → редактирование профиля |
+
+### Важные правила
+
+1. **Не тестировать реализацию** — тестируй публичный API, а не internal детали
+2. **Использовать fixtures** — не дублировать моки, переиспользовать из `tests/fixtures/`
+3. **Изолировать тесты** — каждый тест независим, порядок выполнения не важен
+4. **Минимум E2E** — только критичные пользовательские сценарии (E2E медленные и хрупкие)
+5. **MSW для моков** — не мокать `fetch` напрямую, использовать MSW handlers
+
+### Coverage цели
+
+- **Unit** (shared/lib, entities/*/model): 80%+
+- **Integration** (features, shared/ui): 60%+
+- **E2E**: критичные флоу
+
+Подробная документация: `docs/testing.md`
+
 ## Типовые грабли
 
 - После переноса роутов в `src/app/**` Next может оставить устаревшие типы в `.next/types`.
