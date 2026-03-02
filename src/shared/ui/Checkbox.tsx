@@ -37,7 +37,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <Icon
             src="/icons/icon-tick/icon-tick-sm.svg"
             size="sm"
-            colorClassName="bg-border-focus"
+            colorClassName="bg-icon-primary"
             className={cn(
               'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
               'pointer-events-none',
