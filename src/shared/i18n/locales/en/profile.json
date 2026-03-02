@@ -5,6 +5,57 @@
   "signed_in_as": "Signed in as: {name}",
   "me_load_failed": "Failed to load profile: {message}",
   "actions": {
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "logout_full": "sign out of account",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "add_contacts": "add contacts",
+    "add_skills": "add skills",
+    "choose_avatar": "choose"
+  },
+  "sections": {
+    "info": "basic information",
+    "contacts": "contacts",
+    "skills": "skills",
+    "hackathons": "active hackathons"
+  },
+  "completion": {
+    "percent": "your account is {percent}% complete",
+    "photo": "add a profile photo",
+    "contacts": "add contacts",
+    "skills": "add skills"
+  },
+  "info": {
+    "first_name": "first name",
+    "last_name": "last name",
+    "timezone": "timezone"
+  },
+  "contact_types": {
+    "CONTACT_TYPE_EMAIL": "Email",
+    "CONTACT_TYPE_TELEGRAM": "Telegram",
+    "CONTACT_TYPE_GITHUB": "GitHub",
+    "CONTACT_TYPE_LINKEDIN": "LinkedIn"
+  },
+  "visibility": {
+    "label": "visibility",
+    "public": "public",
+    "private": "private",
+    "skills_label": "skills visible to all",
+    "contacts_label": "contacts visible to all"
+  },
+  "empty_states": {
+    "skills": "no skills added",
+    "contacts": "no contacts added",
+    "hackathons": "no active hackathons"
+  },
+  "edit": {
+    "skills_title": "edit skills",
+    "contacts_title": "edit contacts",
+    "skills_search": "search skills",
+    "add_skill": "add skill"
+  },
+  "hackathons": {
+    "find": "find hackathon"
   }
 }
