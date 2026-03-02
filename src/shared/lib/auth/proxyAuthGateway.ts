@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { envServer } from '@/shared/config/env.server'
+import { getEffectiveAuthGatewayUrl } from '@/shared/lib/debug/backendTarget'
 
 type Json = Record<string, unknown>
 
@@ -21,7 +21,7 @@ export async function authGatewayPost<TResponse extends Json>(
   | { ok: true; data: TResponse; status: number }
   | { ok: false; error: Json; status: number }
 > {
-  const url = `${envServer.authGatewayBaseUrl}${path}`
+  const url = `${getEffectiveAuthGatewayUrl()}${path}`
 
   try {
     const res = await fetch(url, {
