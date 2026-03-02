@@ -1,8 +1,8 @@
 import 'server-only'
 
 import { NextResponse } from 'next/server'
-import { envServer } from '@/shared/config/env.server'
-import { getAccessTokenFromCookies, getRefreshTokenFromCookies, setAuthCookies } from '@/shared/lib/auth/server'
+import { getEffectivePlatformApiUrl } from '@/shared/lib/debug/backendTarget'
+import { clearAuthCookies, getAccessTokenFromCookies, getRefreshTokenFromCookies, setAuthCookies } from '@/shared/lib/auth/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
 
@@ -23,6 +23,7 @@ function filterRequestHeaders(headers: Headers) {
   out.delete('host')
   out.delete('connection')
   out.delete('content-length')
+  out.delete('cookie')
   return out
 }
 
@@ -33,7 +34,7 @@ function filterResponseHeaders(headers: Headers) {
   return out
 }
 
-async function proxyOnce(req: Request, upstreamUrl: URL, accessToken?: string) {
+async function proxyOnce(req: Request, upstreamUrl: URL, accessToken: string | undefined, body?: ArrayBuffer) {
   const headers = filterRequestHeaders(req.headers)
   if (accessToken) {
     headers.set('authorization', `Bearer ${accessToken}`)
@@ -48,7 +49,7 @@ async function proxyOnce(req: Request, upstreamUrl: URL, accessToken?: string) {
   }
 
   if (shouldHaveBody(req.method)) {
-    init.body = await req.arrayBuffer()
+    init.body = body ?? (await req.arrayBuffer())
   }
 
   return fetch(upstreamUrl, init)
@@ -59,7 +60,12 @@ async function tryRefreshTokens(): Promise<{ ok: true; accessToken?: string } | 
   if (!refreshToken) return { ok: false }
 
   const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/refresh', { refresh_token: refreshToken })
-  if (!result.ok) return { ok: false }
+  if (!result.ok) {
+    if (result.response.status === 401 || result.response.status === 403) {
+      clearAuthCookies()
+    }
+    return { ok: false }
+  }
 
   setAuthCookies(result.data)
   return { ok: true, accessToken: result.data.accessToken }
@@ -69,13 +75,15 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
   const url = new URL(req.url)
   const path = params.path.join('/')
 
-  const upstream = new URL(joinUrl(envServer.platformApiBaseUrl, path))
+  const upstream = new URL(joinUrl(getEffectivePlatformApiUrl(), path))
   upstream.search = url.search
+
+  const body = shouldHaveBody(req.method) ? await req.arrayBuffer() : undefined
 
   let res: Response
   try {
     const accessToken = getAccessTokenFromCookies()
-    res = await proxyOnce(req, upstream, accessToken)
+    res = await proxyOnce(req, upstream, accessToken, body)
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Upstream fetch failed'
     return NextResponse.json(
@@ -92,7 +100,7 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
     const refreshed = await tryRefreshTokens()
     if (refreshed.ok) {
       try {
-        res = await proxyOnce(req, upstream, refreshed.accessToken ?? getAccessTokenFromCookies())
+        res = await proxyOnce(req, upstream, refreshed.accessToken ?? getAccessTokenFromCookies(), body)
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Upstream fetch failed'
         return NextResponse.json(
@@ -107,8 +115,8 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
     }
   }
 
-  const body = await res.arrayBuffer()
-  return new NextResponse(body, { status: res.status, headers: filterResponseHeaders(res.headers) })
+  const responseBody = await res.arrayBuffer()
+  return new NextResponse(responseBody, { status: res.status, headers: filterResponseHeaders(res.headers) })
 }
 
 export async function GET(req: Request, ctx: { params: { path: string[] } }) {

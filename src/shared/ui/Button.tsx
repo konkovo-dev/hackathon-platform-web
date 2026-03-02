@@ -2,7 +2,7 @@ import { cn } from '@/shared/lib/cn'
 import { cloneElement, forwardRef, isValidElement, type ButtonHTMLAttributes } from 'react'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'action' | 'secondary-action' | 'icon'
-export type ButtonSize = 'sm' | 'md' | 'lg'
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   variant?: ButtonVariant
@@ -69,6 +69,8 @@ const getSizeStyles = (size: ButtonSize, isActionType: boolean, isIcon: boolean)
   const gap = isActionType ? 'gap-m2' : 'gap-m5'
   if (isIcon) {
     switch (size) {
+      case 'xs':
+        return { container: 'p-m2', text: 'typography-caption-sm-medium' }
       case 'sm':
         return { container: 'h-m16 w-m16 p-0', text: 'typography-caption-sm-medium' }
       case 'md':
@@ -79,8 +81,13 @@ const getSizeStyles = (size: ButtonSize, isActionType: boolean, isIcon: boolean)
         return { container: '', text: '' }
     }
   }
-  
+
   switch (size) {
+    case 'xs':
+      return {
+        container: `p-m2 ${gap}`,
+        text: 'typography-caption-sm-medium',
+      }
     case 'sm':
       return {
         container: `h-m16 px-m4 ${gap}`,
@@ -138,7 +145,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const displayText = asChild ? text : children || text
 
     const baseClassName = cn(
-      'inline-flex items-center justify-center transition-colors',
+      'inline-flex items-center justify-center transition-all duration-150',
       'rounded-[var(--spacing-m4)]',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2',
       disabled && 'pointer-events-none cursor-not-allowed',

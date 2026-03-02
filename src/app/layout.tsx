@@ -6,6 +6,7 @@ import { Providers } from './providers'
 import { getServerMessages } from '@/shared/i18n/server'
 import { Sidebar } from '@/widgets/sidebar/Sidebar'
 import { getServerSession } from '@/entities/auth/model/server'
+import { DebugBackendSwitcher } from '@/features/debug/ui/DebugBackendSwitcher'
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600'],
@@ -53,6 +54,7 @@ export default async function RootLayout({
             <Sidebar initialSession={session} />
             <main className="flex-1 bg-bg-surface">{children}</main>
           </div>
+          {process.env.NODE_ENV === 'development' && <DebugBackendSwitcher />}
         </Providers>
       </body>
     </html>

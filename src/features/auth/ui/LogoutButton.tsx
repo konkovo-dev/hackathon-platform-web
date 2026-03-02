@@ -13,10 +13,10 @@ export function LogoutButton({ className }: { className?: string }) {
   return (
     <Button
       className={className}
-      variant="secondary"
+      variant="secondary-action"
       size="md"
       type="button"
-      text={t('profile.actions.logout')}
+      text={t('profile.actions.logout_full')}
       disabled={logout.isPending}
       onClick={async () => {
         try {
