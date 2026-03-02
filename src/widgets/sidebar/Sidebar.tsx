@@ -136,9 +136,9 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
         )}
       </nav>
 
-      <div className="mt-auto p-m8">
+      {/* <div className="mt-auto p-m8">
         {!collapsed && <div className="text-text-tertiary typography-caption-xs">{t('sidebar.footer')}</div>}
-      </div>
+      </div> */}
     </aside>
   )
 }

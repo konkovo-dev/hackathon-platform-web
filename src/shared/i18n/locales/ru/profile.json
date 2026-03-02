@@ -5,6 +5,57 @@
   "signed_in_as": "Вы вошли как: {name}",
   "me_load_failed": "Не удалось загрузить профиль: {message}",
   "actions": {
-    "logout": "Выйти"
+    "logout": "Выйти",
+    "logout_full": "выйти из аккаунта",
+    "edit": "Редактировать",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "add_contacts": "добавить контакты",
+    "add_skills": "добавить навыки",
+    "choose_avatar": "выбрать"
+  },
+  "sections": {
+    "info": "основная информация",
+    "contacts": "контакты",
+    "skills": "навыки",
+    "hackathons": "активные хакатоны"
+  },
+  "completion": {
+    "percent": "вы заполнили аккаунт на {percent}%",
+    "photo": "выберите фото профиля",
+    "contacts": "добавьте контакты",
+    "skills": "укажите навыки"
+  },
+  "info": {
+    "first_name": "имя",
+    "last_name": "фамилия",
+    "timezone": "часовой пояс"
+  },
+  "contact_types": {
+    "CONTACT_TYPE_EMAIL": "Email",
+    "CONTACT_TYPE_TELEGRAM": "Telegram",
+    "CONTACT_TYPE_GITHUB": "GitHub",
+    "CONTACT_TYPE_LINKEDIN": "LinkedIn"
+  },
+  "visibility": {
+    "label": "видимость",
+    "public": "публичный",
+    "private": "приватный",
+    "skills_label": "навыки видны всем",
+    "contacts_label": "контакты видны всем"
+  },
+  "empty_states": {
+    "skills": "навыки не добавлены",
+    "contacts": "контакты не добавлены",
+    "hackathons": "нет активных хакатонов"
+  },
+  "edit": {
+    "skills_title": "изменение навыков",
+    "contacts_title": "изменение контактов",
+    "skills_search": "поиск навыков",
+    "add_skill": "добавить навык"
+  },
+  "hackathons": {
+    "find": "найти хакатон"
   }
 }

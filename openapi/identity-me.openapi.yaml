@@ -1,0 +1,284 @@
+openapi: 3.0.0
+info:
+  title: identity/v1/me_service.proto
+  version: version not set
+tags:
+  - name: identity.v1.MeService
+paths:
+  /v1/users/me:
+    get:
+      summary: Get my profile
+      description: Returns the authenticated user's full profile including skills,
+        contacts, and visibility settings.
+      operationId: MeService_GetMe
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1GetMeResponse"
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rpcStatus"
+      tags:
+        - Users
+    put:
+      summary: Update my profile
+      description: Updates basic profile fields (first name, last name, avatar URL,
+        timezone) for the authenticated user.
+      operationId: MeService_UpdateMe
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1UpdateMeResponse"
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rpcStatus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/v1UpdateMeRequest"
+        required: true
+      tags:
+        - Users
+  /v1/users/me/contacts:
+    put:
+      summary: Replace my contacts
+      description: Replaces the authenticated user's contact list entirely
+        (replace-all semantics). Also updates contacts visibility.
+      operationId: MeService_UpdateMyContacts
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1UpdateMyContactsResponse"
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rpcStatus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/v1UpdateMyContactsRequest"
+        required: true
+      tags:
+        - Users
+  /v1/users/me/skills:
+    put:
+      summary: Replace my skills
+      description: Replaces the authenticated user's skill set entirely (replace-all
+        semantics). Also updates skills visibility.
+      operationId: MeService_UpdateMySkills
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1UpdateMySkillsResponse"
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rpcStatus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/v1UpdateMySkillsRequest"
+        required: true
+      tags:
+        - Users
+components:
+  schemas:
+    identityV1Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/v1ContactType"
+        value:
+          type: string
+    protobufAny:
+      type: object
+      properties:
+        "@type":
+          type: string
+      additionalProperties: {}
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/protobufAny"
+    v1CatalogSkill:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    v1ContactType:
+      type: string
+      enum:
+        - CONTACT_TYPE_UNSPECIFIED
+        - CONTACT_TYPE_EMAIL
+        - CONTACT_TYPE_TELEGRAM
+        - CONTACT_TYPE_GITHUB
+        - CONTACT_TYPE_LINKEDIN
+      default: CONTACT_TYPE_UNSPECIFIED
+    v1CustomSkill:
+      type: object
+      properties:
+        name:
+          type: string
+    v1GetMeResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/v1User"
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1Skill"
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1MyContact"
+        visibility:
+          $ref: "#/components/schemas/v1VisibilitySettings"
+    v1IdempotencyKey:
+      type: object
+      properties:
+        key:
+          type: string
+    v1MyContact:
+      type: object
+      properties:
+        contact:
+          $ref: "#/components/schemas/identityV1Contact"
+        visibility:
+          $ref: "#/components/schemas/v1VisibilityLevel"
+    v1Skill:
+      type: object
+      properties:
+        catalog:
+          $ref: "#/components/schemas/v1CatalogSkill"
+        custom:
+          $ref: "#/components/schemas/v1CustomSkill"
+    v1UpdateMeRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatarUrl:
+          type: string
+        timezone:
+          type: string
+        idempotencyKey:
+          $ref: "#/components/schemas/v1IdempotencyKey"
+    v1UpdateMeResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/v1User"
+    v1UpdateMyContactsRequest:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1MyContact"
+        contactsVisibility:
+          $ref: "#/components/schemas/v1VisibilityLevel"
+        idempotencyKey:
+          $ref: "#/components/schemas/v1IdempotencyKey"
+    v1UpdateMyContactsResponse:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1MyContact"
+        visibility:
+          $ref: "#/components/schemas/v1VisibilitySettings"
+    v1UpdateMySkillsRequest:
+      type: object
+      properties:
+        catalogSkillIds:
+          type: array
+          items:
+            type: string
+          title: "Replace-all semantics:"
+        userSkills:
+          type: array
+          items:
+            type: string
+        skillsVisibility:
+          $ref: "#/components/schemas/v1VisibilityLevel"
+        idempotencyKey:
+          $ref: "#/components/schemas/v1IdempotencyKey"
+    v1UpdateMySkillsResponse:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1Skill"
+        visibility:
+          $ref: "#/components/schemas/v1VisibilitySettings"
+    v1User:
+      type: object
+      properties:
+        userId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        avatarUrl:
+          type: string
+        timezone:
+          type: string
+    v1VisibilityLevel:
+      type: string
+      enum:
+        - VISIBILITY_LEVEL_UNSPECIFIED
+        - VISIBILITY_LEVEL_PRIVATE
+        - VISIBILITY_LEVEL_PUBLIC
+      default: VISIBILITY_LEVEL_UNSPECIFIED
+    v1VisibilitySettings:
+      type: object
+      properties:
+        skills:
+          $ref: "#/components/schemas/v1VisibilityLevel"
+        contacts:
+          $ref: "#/components/schemas/v1VisibilityLevel"
