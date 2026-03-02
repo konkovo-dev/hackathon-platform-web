@@ -11,7 +11,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 const getVariantStyles = (variant: InputVariant, error: boolean) => {
-  const baseStyles = 'flex items-center h-m16 overflow-hidden border border-solid'
+  const baseStyles = 'flex items-center min-h-m16 overflow-hidden border border-solid transition-all duration-150'
   const borderRadius = 'rounded-[var(--spacing-m4)]' // 8px
   
   if (error) {
@@ -54,7 +54,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div
         className={cn(
           variantStyles.container,
-          'pr-m4 pl-m4 py-1',
+          'px-m4 py-m2',
           isSearch ? 'gap-m2' : '',
           disabled && 'opacity-50 cursor-not-allowed',
           className
