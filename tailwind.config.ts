@@ -298,6 +298,40 @@ const config: Config = {
       }
       addUtilities(typographyUtilities)
     },
+    function ({ addUtilities }: any) {
+      addUtilities({
+        '@keyframes enter': {
+          from: {
+            opacity: 'var(--tw-enter-opacity, 1)',
+            transform:
+              'translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1))',
+          },
+        },
+        '.animate-in': {
+          animationName: 'enter',
+          animationDuration: '150ms',
+          '--tw-enter-opacity': 'initial',
+          '--tw-enter-scale': 'initial',
+          '--tw-enter-translate-x': 'initial',
+          '--tw-enter-translate-y': 'initial',
+        },
+        // Opacity
+        '.fade-in': { '--tw-enter-opacity': '0' },
+        // Scale
+        '.zoom-in-90': { '--tw-enter-scale': '0.90' },
+        '.zoom-in-95': { '--tw-enter-scale': '0.95' },
+        // Slide
+        '.slide-in-from-bottom-2': { '--tw-enter-translate-y': '0.5rem' },
+        '.slide-in-from-bottom-4': { '--tw-enter-translate-y': '1rem' },
+        // Duration overrides
+        '.duration-75': { animationDuration: '75ms' },
+        '.duration-100': { animationDuration: '100ms' },
+        '.duration-150': { animationDuration: '150ms' },
+        '.duration-200': { animationDuration: '200ms' },
+        '.duration-300': { animationDuration: '300ms' },
+        '.duration-500': { animationDuration: '500ms' },
+      })
+    },
   ],
 }
 export default config
