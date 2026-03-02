@@ -9,6 +9,16 @@
       "name": "auth-bff",
       "input": "./openapi/auth-bff.openapi.yaml",
       "output": "./src/shared/api/authBff.schema.ts"
+    },
+    {
+      "name": "identity-me",
+      "input": "./openapi/identity-me.openapi.yaml",
+      "output": "./src/shared/api/identityMe.schema.ts"
+    },
+    {
+      "name": "identity-skills",
+      "input": "./openapi/identity-skills.openapi.yaml",
+      "output": "./src/shared/api/identitySkills.schema.ts"
     }
   ]
 }

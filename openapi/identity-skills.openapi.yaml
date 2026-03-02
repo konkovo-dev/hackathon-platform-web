@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: identity/v1/skills_service.proto
+  version: version not set
+tags:
+  - name: identity.v1.SkillsService
+paths:
+  /v1/skills/list:
+    post:
+      summary: List skill catalog
+      description: Returns a paginated list of skills from the global catalog. Use
+        when displaying a skill picker.
+      operationId: SkillsService_ListSkillCatalog
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1ListSkillCatalogResponse"
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/rpcStatus"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/v1ListSkillCatalogRequest"
+        required: true
+      tags:
+        - Skills
+components:
+  schemas:
+    protobufAny:
+      type: object
+      properties:
+        "@type":
+          type: string
+      additionalProperties: {}
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/protobufAny"
+    v1CatalogSkill:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    v1Filter:
+      type: object
+      properties:
+        field:
+          type: string
+        operation:
+          $ref: "#/components/schemas/v1FilterOperation"
+        stringValue:
+          type: string
+        int64Value:
+          type: string
+          format: int64
+        boolValue:
+          type: boolean
+        stringList:
+          $ref: "#/components/schemas/v1StringList"
+    v1FilterGroup:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1Filter"
+    v1FilterOperation:
+      type: string
+      enum:
+        - FILTER_OPERATION_UNSPECIFIED
+        - FILTER_OPERATION_EQUAL
+        - FILTER_OPERATION_IN
+        - FILTER_OPERATION_CONTAINS
+        - FILTER_OPERATION_PREFIX
+      default: FILTER_OPERATION_UNSPECIFIED
+    v1ListSkillCatalogRequest:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/v1Query"
+    v1ListSkillCatalogResponse:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1CatalogSkill"
+        page:
+          $ref: "#/components/schemas/v1PageResponse"
+    v1PageRequest:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int64
+        pageToken:
+          type: string
+    v1PageResponse:
+      type: object
+      properties:
+        nextPageToken:
+          type: string
+    v1Query:
+      type: object
+      properties:
+        q:
+          type: string
+        filterGroups:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1FilterGroup"
+          description: OR between groups, AND inside group.
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/v1Sort"
+        page:
+          $ref: "#/components/schemas/v1PageRequest"
+    v1Sort:
+      type: object
+      properties:
+        field:
+          type: string
+        direction:
+          $ref: "#/components/schemas/v1SortDirection"
+    v1SortDirection:
+      type: string
+      enum:
+        - SORT_DIRECTION_UNSPECIFIED
+        - SORT_DIRECTION_ASC
+        - SORT_DIRECTION_DESC
+      default: SORT_DIRECTION_UNSPECIFIED
+    v1StringList:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
