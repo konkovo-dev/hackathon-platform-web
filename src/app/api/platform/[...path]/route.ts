@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { NextResponse } from 'next/server'
-import { envServer } from '@/shared/config/env.server'
+import { getEffectivePlatformApiUrl } from '@/shared/lib/debug/backendTarget'
 import { clearAuthCookies, getAccessTokenFromCookies, getRefreshTokenFromCookies, setAuthCookies } from '@/shared/lib/auth/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
@@ -75,7 +75,7 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
   const url = new URL(req.url)
   const path = params.path.join('/')
 
-  const upstream = new URL(joinUrl(envServer.platformApiBaseUrl, path))
+  const upstream = new URL(joinUrl(getEffectivePlatformApiUrl(), path))
   upstream.search = url.search
 
   const body = shouldHaveBody(req.method) ? await req.arrayBuffer() : undefined

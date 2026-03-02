@@ -13,8 +13,9 @@ const TARGET_DIRS = [
 ]
 
 const IGNORE_PATH_PARTS = [
-  `${path.sep}app${path.sep}design-system${path.sep}`, // демо-страница, пока без локализации
-  `${path.sep}app${path.sep}(app)${path.sep}design-system${path.sep}`, // демо-страница в app-group, пока без локализации
+  `${path.sep}app${path.sep}design-system${path.sep}`, // демо-страница, без локализации
+  `${path.sep}app${path.sep}(app)${path.sep}design-system${path.sep}`, // демо-страница в app-group, без локализации
+  `${path.sep}features${path.sep}debug${path.sep}`, // dev-only инструменты, без локализации
 ]
 
 const IGNORE_ATTRS = new Set([
@@ -23,6 +24,7 @@ const IGNORE_ATTRS = new Set([
   'strategy',
   'href',
   'src',
+  'iconSrc',
   'type',
   'name',
   'value',
