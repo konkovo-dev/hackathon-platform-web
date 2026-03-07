@@ -11,6 +11,7 @@ export {
 export { Checkbox, type CheckboxProps } from './Checkbox'
 export { Chip, type ChipProps } from './Chip'
 export { ChipList, type ChipListProps } from './ChipList'
+export { Divider, type DividerProps } from './Divider'
 export { FormField, type FormFieldProps } from './FormField'
 export { Icon, type IconProps } from './Icon'
 export { Input, type InputProps, type InputVariant } from './Input'
