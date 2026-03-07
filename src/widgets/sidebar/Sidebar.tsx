@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/Button'
+import { Divider } from '@/shared/ui/Divider'
 import { Icon } from '@/shared/ui/Icon'
 import { Logo } from '@/shared/ui/Logo'
 import { MenuItem } from '@/shared/ui/MenuItem'
@@ -56,24 +57,28 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
   const sessionQuery = useSessionQueryWithInitial(initialSession)
   const isAuthed = sessionQuery.data?.active === true
 
-  const items: SidebarItem[] = useMemo(() => {
-    const base: SidebarItem[] = [{ key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code }]
+  const menuGroups = useMemo(() => {
+    const groups: SidebarItem[][] = []
 
     if (isAuthed) {
-      base.push(
-        { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
-        { key: 'teams', href: '/my-teams', iconSrc: ICONS.team },
-        { key: 'profile', href: '/profile', iconSrc: ICONS.profile }
-      )
+      groups.push([{ key: 'profile', href: '/profile', iconSrc: ICONS.profile }])
     } else {
-      base.push({ key: 'auth', href: '/login', iconSrc: ICONS.auth })
+      groups.push([{ key: 'auth', href: '/login', iconSrc: ICONS.auth }])
     }
 
+    const otherGroup: SidebarItem[] = [{ key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code }]
+    if (isAuthed) {
+      otherGroup.push(
+        { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
+        { key: 'teams', href: '/my-teams', iconSrc: ICONS.team }
+      )
+    }
     if (debug) {
-      base.push({ key: 'design_system', href: '/design-system', iconSrc: ICONS.designSystem })
+      otherGroup.push({ key: 'design_system', href: '/design-system', iconSrc: ICONS.designSystem })
     }
+    groups.push(otherGroup)
 
-    return base
+    return groups
   }, [debug, isAuthed])
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
@@ -109,15 +114,20 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
           'px-m4 gap-m2'
         )}
       >
-        {items.map((item) => (
-          <MenuItem
-            key={item.key}
-            href={item.href}
-            iconSrc={item.iconSrc}
-            title={t(LABEL_KEY[item.key])}
-            active={isActive(item.href)}
-            collapsed={collapsed}
-          />
+        {menuGroups.map((group, groupIndex) => (
+          <div key={groupIndex} className="w-full flex flex-col gap-m2">
+            {group.map((item) => (
+              <MenuItem
+                key={item.key}
+                href={item.href}
+                iconSrc={item.iconSrc}
+                title={t(LABEL_KEY[item.key])}
+                active={isActive(item.href)}
+                collapsed={collapsed}
+              />
+            ))}
+            {groupIndex < menuGroups.length - 1 && <Divider className="my-m2" />}
+          </div>
         ))}
 
         <SidebarSettings collapsed={collapsed} pathname={pathname} debug={debug} setDebug={setDebug} />
