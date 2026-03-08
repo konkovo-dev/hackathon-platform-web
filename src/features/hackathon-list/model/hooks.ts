@@ -25,12 +25,5 @@ export function useInfiniteHackathonListQuery(
       return lastPage.page.hasMore ? lastPage.page.nextPageToken : undefined
     },
     initialPageParam: undefined as string | undefined,
-    initialData: initialData
-      ? {
-          pages: [initialData],
-          pageParams: [undefined],
-        }
-      : undefined,
-    staleTime: 60_000,
   })
 }
