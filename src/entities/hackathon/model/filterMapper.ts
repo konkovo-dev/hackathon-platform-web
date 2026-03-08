@@ -1,9 +1,4 @@
-import type {
-  HackathonListFilters,
-  HackathonListQuery,
-  Filter,
-  FilterGroup,
-} from './types'
+import type { HackathonListFilters, HackathonListQuery, Filter, FilterGroup } from './types'
 
 /**
  * Маппит UI-фильтры в API query для списка хакатонов
@@ -46,18 +41,20 @@ export function buildQueryFromFilters(
       sort: [
         {
           field: 'dates.startsAt',
-          direction:
-            filters.sortDirection === 'asc' ? 'SORT_DIRECTION_ASC' : 'SORT_DIRECTION_DESC',
+          direction: filters.sortDirection === 'asc' ? 'SORT_DIRECTION_ASC' : 'SORT_DIRECTION_DESC',
         },
       ],
+      page:
+        pageToken || pageSize
+          ? {
+              pageToken,
+              pageSize,
+            }
+          : undefined,
     },
     includeDescription: false,
     includeLinks: false,
     includeLimits: true,
-    page: pageToken || pageSize ? {
-      pageToken,
-      pageSize,
-    } : undefined,
   }
 }
 
@@ -76,7 +73,13 @@ function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
         field: 'stage',
         operation: 'FILTER_OPERATION_IN',
         stringList: {
-          values: ['UPCOMING', 'REGISTRATION', 'PRESTART', 'RUNNING', 'JUDGING'],
+          values: [
+            'HACKATHON_STAGE_UPCOMING',
+            'HACKATHON_STAGE_REGISTRATION',
+            'HACKATHON_STAGE_PRESTART',
+            'HACKATHON_STAGE_RUNNING',
+            'HACKATHON_STAGE_JUDGING',
+          ],
         },
       },
     ]
@@ -87,7 +90,7 @@ function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
       {
         field: 'stage',
         operation: 'FILTER_OPERATION_EQUAL',
-        stringValue: 'REGISTRATION',
+        stringValue: 'HACKATHON_STAGE_REGISTRATION',
       },
     ]
   }
@@ -98,7 +101,11 @@ function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
         field: 'stage',
         operation: 'FILTER_OPERATION_IN',
         stringList: {
-          values: ['PRESTART', 'RUNNING', 'JUDGING'],
+          values: [
+            'HACKATHON_STAGE_PRESTART',
+            'HACKATHON_STAGE_RUNNING',
+            'HACKATHON_STAGE_JUDGING',
+          ],
         },
       },
     ]
@@ -109,7 +116,7 @@ function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
       {
         field: 'stage',
         operation: 'FILTER_OPERATION_EQUAL',
-        stringValue: 'FINISHED',
+        stringValue: 'HACKATHON_STAGE_FINISHED',
       },
     ]
   }

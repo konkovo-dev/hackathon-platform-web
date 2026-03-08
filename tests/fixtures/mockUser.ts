@@ -2,11 +2,11 @@ import type { MeProfile } from '@/entities/user/model/types'
 
 export const mockUser: MeProfile = {
   user: {
-    id: 'user-1',
+    userId: 'user-1',
     username: 'testuser',
     firstName: 'Иван',
     lastName: 'Иванов',
-    avatarUrl: null,
+    avatarUrl: undefined,
     timezone: 'Europe/Moscow',
   },
   skills: [
@@ -15,31 +15,37 @@ export const mockUser: MeProfile = {
         id: 'skill-1',
         name: 'React',
       },
-      custom: null,
+      custom: undefined,
     },
     {
       catalog: {
         id: 'skill-2',
         name: 'TypeScript',
       },
-      custom: null,
+      custom: undefined,
     },
   ],
   contacts: [
     {
-      type: 'CONTACT_TYPE_EMAIL',
-      value: 'test@example.com',
+      contact: {
+        id: 'contact-1',
+        type: 'CONTACT_TYPE_EMAIL',
+        value: 'test@example.com',
+      },
       visibility: 'VISIBILITY_LEVEL_PUBLIC',
     },
     {
-      type: 'CONTACT_TYPE_GITHUB',
-      value: 'testuser',
+      contact: {
+        id: 'contact-2',
+        type: 'CONTACT_TYPE_GITHUB',
+        value: 'testuser',
+      },
       visibility: 'VISIBILITY_LEVEL_PUBLIC',
     },
   ],
   visibility: {
-    skillsVisibility: 'VISIBILITY_LEVEL_PUBLIC',
-    contactsVisibility: 'VISIBILITY_LEVEL_PUBLIC',
+    skills: 'VISIBILITY_LEVEL_PUBLIC',
+    contacts: 'VISIBILITY_LEVEL_PUBLIC',
   },
 }
 
@@ -48,7 +54,7 @@ export const mockUserWithoutSkills: MeProfile = {
   skills: [],
   visibility: {
     ...mockUser.visibility,
-    skillsVisibility: 'VISIBILITY_LEVEL_PRIVATE',
+    skills: 'VISIBILITY_LEVEL_PRIVATE',
   },
 }
 
@@ -56,13 +62,16 @@ export const mockUserWithPrivateContacts: MeProfile = {
   ...mockUser,
   contacts: [
     {
-      type: 'CONTACT_TYPE_EMAIL',
-      value: 'private@example.com',
+      contact: {
+        id: 'contact-1',
+        type: 'CONTACT_TYPE_EMAIL',
+        value: 'private@example.com',
+      },
       visibility: 'VISIBILITY_LEVEL_PRIVATE',
     },
   ],
   visibility: {
     ...mockUser.visibility,
-    contactsVisibility: 'VISIBILITY_LEVEL_PRIVATE',
+    contacts: 'VISIBILITY_LEVEL_PRIVATE',
   },
 }

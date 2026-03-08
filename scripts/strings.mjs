@@ -35,6 +35,7 @@ const IGNORE_ATTRS = new Set([
   'colorClassName',
   'inputType',
   'inputId',
+  'orientation',
 ])
 
 const hasLettersOrDigits = (s) => /[\p{L}\p{N}]/u.test(s)

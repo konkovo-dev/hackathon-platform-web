@@ -35,7 +35,7 @@ export function EditNameSection({
       <div className="flex-1">
         <Input
           value={firstName}
-          onChange={(e) => onFirstNameChange(e.target.value)}
+          onChange={e => onFirstNameChange(e.target.value)}
           placeholder={t('profile.info.first_name')}
           disabled={isPending}
         />
@@ -43,7 +43,7 @@ export function EditNameSection({
       <div className="flex-1">
         <Input
           value={lastName}
-          onChange={(e) => onLastNameChange(e.target.value)}
+          onChange={e => onLastNameChange(e.target.value)}
           placeholder={t('profile.info.last_name')}
           disabled={isPending}
         />

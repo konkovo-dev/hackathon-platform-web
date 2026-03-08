@@ -31,11 +31,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
       role="dialog"
       aria-modal="true"
     >
-      <div
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
       <div
         className={cn(
           'relative z-10 bg-bg-elevated rounded-[var(--spacing-m8)] flex flex-col w-[512px]',
@@ -56,9 +52,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
             <Icon src="/icons/icon-cross/icon-cross-xs.svg" size="xs" color="secondary" />
           </Button>
         </div>
-        <div className="flex-1 overflow-y-auto p-m8 min-h-0 flex flex-col gap-m6">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto p-m8 min-h-0 flex flex-col gap-m6">{children}</div>
       </div>
     </div>
   )

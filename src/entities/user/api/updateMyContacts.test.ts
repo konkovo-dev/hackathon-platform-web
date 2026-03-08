@@ -16,7 +16,7 @@ describe('updateMyContacts', () => {
     const input = {
       contacts: [
         {
-          contact: { type: 'CONTACT_TYPE_EMAIL' as const, value: 'test@example.com' },
+          contact: { id: 'c1', type: 'CONTACT_TYPE_EMAIL' as const, value: 'test@example.com' },
           visibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
         },
       ],
@@ -25,7 +25,7 @@ describe('updateMyContacts', () => {
 
     const mockResponse = {
       contacts: input.contacts,
-      visibility: { contactsVisibility: input.contactsVisibility },
+      visibility: { contacts: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -44,19 +44,19 @@ describe('updateMyContacts', () => {
     const input = {
       contacts: [
         {
-          contact: { type: 'CONTACT_TYPE_EMAIL' as const, value: 'test@example.com' },
+          contact: { id: 'c1', type: 'CONTACT_TYPE_EMAIL' as const, value: 'test@example.com' },
           visibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
         },
         {
-          contact: { type: 'CONTACT_TYPE_GITHUB' as const, value: 'testuser' },
+          contact: { id: 'c2', type: 'CONTACT_TYPE_GITHUB' as const, value: 'testuser' },
           visibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
         },
         {
-          contact: { type: 'CONTACT_TYPE_TELEGRAM' as const, value: '@testuser' },
-          visibility: 'VISIBILITY_LEVEL_TEAM' as const,
+          contact: { id: 'c3', type: 'CONTACT_TYPE_TELEGRAM' as const, value: '@testuser' },
+          visibility: 'VISIBILITY_LEVEL_PRIVATE' as const,
         },
         {
-          contact: { type: 'CONTACT_TYPE_LINKEDIN' as const, value: 'testuser' },
+          contact: { id: 'c4', type: 'CONTACT_TYPE_LINKEDIN' as const, value: 'testuser' },
           visibility: 'VISIBILITY_LEVEL_PRIVATE' as const,
         },
       ],
@@ -65,7 +65,7 @@ describe('updateMyContacts', () => {
 
     const mockResponse = {
       contacts: input.contacts,
-      visibility: { contactsVisibility: input.contactsVisibility },
+      visibility: { contacts: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -79,7 +79,7 @@ describe('updateMyContacts', () => {
     const input = {
       contacts: [
         {
-          contact: { type: 'CONTACT_TYPE_EMAIL' as const, value: 'private@example.com' },
+          contact: { id: 'c1', type: 'CONTACT_TYPE_EMAIL' as const, value: 'private@example.com' },
           visibility: 'VISIBILITY_LEVEL_PRIVATE' as const,
         },
       ],
@@ -88,14 +88,14 @@ describe('updateMyContacts', () => {
 
     const mockResponse = {
       contacts: input.contacts,
-      visibility: { contactsVisibility: 'VISIBILITY_LEVEL_PRIVATE' },
+      visibility: { contacts: 'VISIBILITY_LEVEL_PRIVATE' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
 
     const result = await updateMyContacts(input)
 
-    expect(result.visibility.contactsVisibility).toBe('VISIBILITY_LEVEL_PRIVATE')
+    expect(result.visibility?.contacts).toBe('VISIBILITY_LEVEL_PRIVATE')
   })
 
   it('should successfully clear all contacts', async () => {
@@ -106,7 +106,7 @@ describe('updateMyContacts', () => {
 
     const mockResponse = {
       contacts: [],
-      visibility: { contactsVisibility: input.contactsVisibility },
+      visibility: { contacts: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -120,15 +120,15 @@ describe('updateMyContacts', () => {
     const input = {
       contacts: [
         {
-          contact: { type: 'CONTACT_TYPE_EMAIL' as const, value: 'public@example.com' },
+          contact: { id: 'c1', type: 'CONTACT_TYPE_EMAIL' as const, value: 'public@example.com' },
           visibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
         },
         {
-          contact: { type: 'CONTACT_TYPE_GITHUB' as const, value: 'testuser' },
-          visibility: 'VISIBILITY_LEVEL_TEAM' as const,
+          contact: { id: 'c2', type: 'CONTACT_TYPE_GITHUB' as const, value: 'testuser' },
+          visibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
         },
         {
-          contact: { type: 'CONTACT_TYPE_TELEGRAM' as const, value: '@testuser' },
+          contact: { id: 'c3', type: 'CONTACT_TYPE_TELEGRAM' as const, value: '@testuser' },
           visibility: 'VISIBILITY_LEVEL_PRIVATE' as const,
         },
       ],
@@ -137,16 +137,16 @@ describe('updateMyContacts', () => {
 
     const mockResponse = {
       contacts: input.contacts,
-      visibility: { contactsVisibility: input.contactsVisibility },
+      visibility: { contacts: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
 
     const result = await updateMyContacts(input)
 
-    expect(result.contacts[0].visibility).toBe('VISIBILITY_LEVEL_PUBLIC')
-    expect(result.contacts[1].visibility).toBe('VISIBILITY_LEVEL_TEAM')
-    expect(result.contacts[2].visibility).toBe('VISIBILITY_LEVEL_PRIVATE')
+    expect(result.contacts?.[0]?.visibility).toBe('VISIBILITY_LEVEL_PUBLIC')
+    expect(result.contacts?.[1]?.visibility).toBe('VISIBILITY_LEVEL_PUBLIC')
+    expect(result.contacts?.[2]?.visibility).toBe('VISIBILITY_LEVEL_PRIVATE')
   })
 
   it('should handle API errors', async () => {

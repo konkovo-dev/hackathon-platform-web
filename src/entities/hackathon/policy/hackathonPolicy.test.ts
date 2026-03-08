@@ -6,21 +6,26 @@ describe('canReadDraft', () => {
   it('should deny if context is null', () => {
     const decision = canReadDraft(null)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
   })
 
   it('should deny if context is undefined', () => {
     const decision = canReadDraft(undefined)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
   })
 
   it('should allow owner to read draft', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'DRAFT',
       roles: ['OWNER'],
-      particip: { kind: 'NONE' },
-      policy: {},
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
@@ -29,10 +34,11 @@ describe('canReadDraft', () => {
 
   it('should allow organizer to read draft', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'DRAFT',
       roles: ['ORGANIZER'],
-      particip: { kind: 'NONE' },
-      policy: {},
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
@@ -41,62 +47,75 @@ describe('canReadDraft', () => {
 
   it('should deny if stage is not draft', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'REGISTRATION',
       roles: ['OWNER'],
-      particip: { kind: 'NONE' },
-      policy: {},
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('STAGE_RULE')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('STAGE_RULE')
+    }
   })
 
   it('should deny if user has no required role', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'DRAFT',
       roles: [],
-      particip: { kind: 'NONE' },
-      policy: {},
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('ROLE_REQUIRED')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
   it('should deny participant in draft stage', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'DRAFT',
       roles: [],
-      particip: { kind: 'INDIVIDUAL' },
-      policy: {},
+      particip: { kind: 'SINGLE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('ROLE_REQUIRED')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
   it('should deny if stage is running', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'RUNNING',
       roles: ['OWNER'],
-      particip: { kind: 'NONE' },
-      policy: {},
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)
     expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('STAGE_RULE')
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('STAGE_RULE')
+    }
   })
 
   it('should allow owner even if participates', () => {
     const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
       stage: 'DRAFT',
       roles: ['OWNER'],
-      particip: { kind: 'TEAM', teamId: 'team-1' },
-      policy: {},
+      particip: { kind: 'TEAM', team_id: 'team-1' },
+      policy: { allow_team: true, allow_individual: true },
     }
 
     const decision = canReadDraft(ctx)

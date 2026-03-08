@@ -40,7 +40,8 @@ export function EditSkillsModal({
 
   const { data: catalogData } = useSkillCatalogQuery()
   const catalogSkills = useMemo(
-    () => catalogData?.skills?.map((s) => s.name).filter((name): name is string => Boolean(name)) ?? [],
+    () =>
+      catalogData?.skills?.map(s => s.name).filter((name): name is string => Boolean(name)) ?? [],
     [catalogData]
   )
 
@@ -56,18 +57,18 @@ export function EditSkillsModal({
   const filteredSkills = useMemo(() => {
     const q = search.toLowerCase().trim()
     if (!q) return catalogSkills
-    return catalogSkills.filter((s) => s.toLowerCase().includes(q))
+    return catalogSkills.filter(s => s.toLowerCase().includes(q))
   }, [search, catalogSkills])
 
   const addSkill = (name: string) => {
     const trimmed = name.trim()
     if (!trimmed || draft.includes(trimmed) || !catalogSkills.includes(trimmed)) return
-    setDraft((prev) => [...prev, trimmed])
+    setDraft(prev => [...prev, trimmed])
     setSearch('')
   }
 
   const removeSkill = (name: string) => {
-    setDraft((prev) => prev.filter((s) => s !== name))
+    setDraft(prev => prev.filter(s => s !== name))
   }
 
   const toggleSkill = (name: string) => {
@@ -87,12 +88,8 @@ export function EditSkillsModal({
       {draft.length > 0 && (
         <>
           <ChipList>
-            {draft.map((skill) => (
-              <Chip
-                key={skill}
-                label={skill}
-                onRemove={() => removeSkill(skill)}
-              />
+            {draft.map(skill => (
+              <Chip key={skill} label={skill} onRemove={() => removeSkill(skill)} />
             ))}
           </ChipList>
           <Divider />
@@ -102,14 +99,14 @@ export function EditSkillsModal({
       <Input
         variant="search"
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={e => setSearch(e.target.value)}
         placeholder={t('profile.edit.skills_search')}
       />
 
       {filteredSkills.length > 0 ? (
         <div className="flex-1 overflow-y-auto min-h-0 -mx-m8 px-m8">
           <SelectList>
-            {filteredSkills.map((skill) => {
+            {filteredSkills.map(skill => {
               const isSelected = draft.includes(skill)
               return (
                 <SelectListItem
@@ -128,7 +125,7 @@ export function EditSkillsModal({
 
       <SwitchField
         checked={visibility === 'VISIBILITY_LEVEL_PUBLIC'}
-        onChange={(checked) =>
+        onChange={checked =>
           setVisibility(checked ? 'VISIBILITY_LEVEL_PUBLIC' : 'VISIBILITY_LEVEL_PRIVATE')
         }
         label={t('profile.visibility.skills_label')}

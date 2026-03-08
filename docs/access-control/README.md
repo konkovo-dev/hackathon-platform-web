@@ -14,13 +14,14 @@
 На бекенде политика описана как:
 
 - **действие** (`<ACTION>`)
-- + **предикаты** (роль/участие/стадия/принадлежность/поля)
+- - **предикаты** (роль/участие/стадия/принадлежность/поля)
 
 На фронте делаем то же самое: любой доступ в UI выражаем **через action** и проверяем единым policy-слоем:
 
 - `can(action, ctx, target?) -> { allowed, reason }`
 
 Где:
+
 - `ctx` — контекст “актора” и окружения (auth, roles, participation, stage, policy, …)
 - `target` — “цель” (конкретная команда/инвайт/тикет), если правило зависит от неё.
 
@@ -44,12 +45,15 @@
 Чтобы корректно принимать UI-решения по правилам из `docs/rules/*`, фронту нужен **снимок контекста на хакатон**:
 
 ### 1) Глобальный контекст (Auth)
+
 Берём из `GET /api/auth/session`:
+
 - `active`
 - `userId`
 - `expiresAt`
 
 ### 2) HackathonContext (на конкретный `hackathonId`)
+
 Должен приходить из продуктового API (или через отдельный BFF-агрегатор).
 Минимально:
 
@@ -109,7 +113,7 @@
 
 - **`<RequireAccess action=... redirectTo=...>`** (для страниц):
   - если нельзя — редирект/404 (зависит от типа страницы)
-  - предпочтительно делать *server-side* там, где это оправдано (меньше мерцаний)
+  - предпочтительно делать _server-side_ там, где это оправдано (меньше мерцаний)
 
 Правило команды:
 
@@ -120,7 +124,6 @@
 
 ## Текущее состояние реализации в коде
 
-
 - `src/shared/policy/decision.ts` — `Decision` + `ReasonCode`
 - `src/shared/policy/useCan.ts` — `useCan(action, params?)` (связывает session + hackathon context)
 - `src/shared/policy/AccessGate.tsx` — минимальный UI-gate
@@ -128,7 +131,6 @@
 - Примеры policy:
   - `src/entities/team/policy/teamPolicy.ts` (`Team.Create`)
   - `src/entities/hackathon/policy/hackathonPolicy.ts` (`Hackathon.ReadDraft`)
-
 
 ---
 
@@ -233,4 +235,3 @@ Policy-функции должны тестироваться **таблично
 - `hackaton-platform-api/docs/rules/submissions.md`
 - `hackaton-platform-api/docs/rules/support.md`
 - `hackaton-platform-api/docs/rules/identity.md`
-

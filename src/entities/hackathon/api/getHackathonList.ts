@@ -9,7 +9,9 @@ export async function getHackathonList(
   pageToken?: string,
   pageSize: number = DEFAULT_PAGE_SIZE
 ): Promise<HackathonListResponse> {
-  const query = filters ? buildQueryFromFilters(filters, pageToken, pageSize) : buildQueryFromFilters(getDefaultFilters(), pageToken, pageSize)
+  const query = filters
+    ? buildQueryFromFilters(filters, pageToken, pageSize)
+    : buildQueryFromFilters(getDefaultFilters(), pageToken, pageSize)
 
   return platformFetchJson('/v1/hackathons/list', {
     method: 'POST',

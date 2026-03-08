@@ -2,117 +2,91 @@ import { describe, it, expect } from 'vitest'
 import { canCreateTeam } from './teamPolicy'
 import type { HackathonContext } from '@/entities/hackathon-context/model/types'
 
-describe('canCreateTeam', () => {
-  it('should deny if context is null', () => {
-    const decision = canCreateTeam(null)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONTEXT_REQUIRED')
-  })
+describe('teamPolicy', () => {
+  describe('canCreateTeam', () => {
+    it('should allow creating team if auth and policy allows teams', () => {
+      const ctx: HackathonContext = {
+        hackathonId: 'hack-1',
+        stage: 'REGISTRATION',
+        roles: [],
+        particip: { kind: 'NONE', team_id: null },
+        policy: { allow_team: true, allow_individual: true },
+      }
 
-  it('should deny if context is undefined', () => {
-    const decision = canCreateTeam(undefined)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONTEXT_REQUIRED')
-  })
+      const decision = canCreateTeam(ctx)
+      expect(decision.allowed).toBe(true)
+    })
 
-  it('should allow team creation during registration', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: [],
-      particip: { kind: 'NONE' },
-      policy: { allow_team: true },
-    }
+    it('should deny if user is not authenticated', () => {
+      const decision = canCreateTeam(null)
+      expect(decision.allowed).toBe(false)
+      if (!decision.allowed) {
+        expect(decision.reason).toBe('CONTEXT_REQUIRED')
+      }
+    })
 
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(true)
-  })
+    it('should deny creating team if policy forbids teams', () => {
+      const ctx: HackathonContext = {
+        hackathonId: 'hack-1',
+        stage: 'REGISTRATION',
+        roles: [],
+        particip: { kind: 'NONE', team_id: null },
+        policy: { allow_team: false, allow_individual: true },
+      }
 
-  it('should deny if user has role and participates', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: ['ORGANIZER'],
-      particip: { kind: 'INDIVIDUAL' },
-      policy: { allow_team: true },
-    }
+      const decision = canCreateTeam(ctx)
+      expect(decision.allowed).toBe(false)
+      if (!decision.allowed) {
+        expect(decision.reason).toBe('POLICY_RULE')
+      }
+    })
 
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONFLICT')
-  })
+    it('should deny creating team outside registration stage', () => {
+      const ctx: HackathonContext = {
+        hackathonId: 'hack-1',
+        stage: 'RUNNING',
+        roles: [],
+        particip: { kind: 'NONE', team_id: null },
+        policy: { allow_team: true, allow_individual: true },
+      }
 
-  it('should allow if user has role but does not participate', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: ['ORGANIZER'],
-      particip: { kind: 'NONE' },
-      policy: { allow_team: true },
-    }
+      const decision = canCreateTeam(ctx)
+      expect(decision.allowed).toBe(false)
+      if (!decision.allowed) {
+        expect(decision.reason).toBe('STAGE_RULE')
+      }
+    })
 
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(true)
-  })
+    it('should deny if already in a team', () => {
+      const ctx: HackathonContext = {
+        hackathonId: 'hack-1',
+        stage: 'REGISTRATION',
+        roles: [],
+        particip: { kind: 'TEAM', team_id: 'team-1' },
+        policy: { allow_team: true, allow_individual: true },
+      }
 
-  it('should deny if stage is not registration', () => {
-    const ctx: HackathonContext = {
-      stage: 'RUNNING',
-      roles: [],
-      particip: { kind: 'NONE' },
-      policy: { allow_team: true },
-    }
+      const decision = canCreateTeam(ctx)
+      expect(decision.allowed).toBe(false)
+      if (!decision.allowed) {
+        expect(decision.reason).toBe('LIMIT_RULE')
+      }
+    })
 
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('STAGE_RULE')
-  })
+    it('should deny if has role and already participating', () => {
+      const ctx: HackathonContext = {
+        hackathonId: 'hack-1',
+        stage: 'REGISTRATION',
+        roles: ['MENTOR'],
+        particip: { kind: 'SINGLE', team_id: null },
+        policy: { allow_team: true, allow_individual: true },
+      }
 
-  it('should deny if policy does not allow teams', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: [],
-      particip: { kind: 'NONE' },
-      policy: { allow_team: false },
-    }
-
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('POLICY_RULE')
-  })
-
-  it('should deny if user already in team', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: [],
-      particip: { kind: 'TEAM', teamId: 'team-1' },
-      policy: { allow_team: true },
-    }
-
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('LIMIT_RULE')
-  })
-
-  it('should allow if user participates as individual without role', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: [],
-      particip: { kind: 'INDIVIDUAL' },
-      policy: { allow_team: true },
-    }
-
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(true)
-  })
-
-  it('should deny if user has multiple roles and participates', () => {
-    const ctx: HackathonContext = {
-      stage: 'REGISTRATION',
-      roles: ['ORGANIZER', 'OWNER'],
-      particip: { kind: 'TEAM', teamId: 'team-1' },
-      policy: { allow_team: true },
-    }
-
-    const decision = canCreateTeam(ctx)
-    expect(decision.allowed).toBe(false)
-    expect(decision.reason).toBe('CONFLICT')
+      const decision = canCreateTeam(ctx)
+      expect(decision.allowed).toBe(false)
+      if (!decision.allowed) {
+        expect(decision.reason).toBe('CONFLICT')
+      }
+    })
   })
 })

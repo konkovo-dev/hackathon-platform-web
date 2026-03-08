@@ -12,7 +12,15 @@ export interface ChipProps {
   className?: string
 }
 
-export function Chip({ label = '', variant = 'primary', icon, onRemove, onClick, href, className }: ChipProps) {
+export function Chip({
+  label = '',
+  variant = 'primary',
+  icon,
+  onRemove,
+  onClick,
+  href,
+  className,
+}: ChipProps) {
   const isInteractive = Boolean(href || onClick)
 
   const baseClass = cn(
@@ -31,26 +39,34 @@ export function Chip({ label = '', variant = 'primary', icon, onRemove, onClick,
 
   const content = (
     <>
-      {icon && <span className="flex-shrink-0 w-m8 h-m8 flex items-center justify-center">{icon}</span>}
+      {icon && (
+        <span className="flex-shrink-0 w-m8 h-m8 flex items-center justify-center">{icon}</span>
+      )}
       {label && (
-        <span className={cn(
-          'typography-caption-sm-medium',
-          variant === 'primary' ? 'text-text-primary' : 'text-text-secondary'
-        )}>
+        <span
+          className={cn(
+            'typography-caption-sm-medium',
+            variant === 'primary' ? 'text-text-primary' : 'text-text-secondary'
+          )}
+        >
           {label}
         </span>
       )}
       {onRemove && (
         <button
           type="button"
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             onRemove()
           }}
           className="flex-shrink-0 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
           aria-label="remove"
         >
-          <Icon src="/icons/icon-cross/icon-cross-xs.svg" size="xs" color={variant === 'primary' ? 'primary' : 'secondary'} />
+          <Icon
+            src="/icons/icon-cross/icon-cross-xs.svg"
+            size="xs"
+            color={variant === 'primary' ? 'primary' : 'secondary'}
+          />
         </button>
       )}
     </>
@@ -58,12 +74,7 @@ export function Chip({ label = '', variant = 'primary', icon, onRemove, onClick,
 
   if (href) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={baseClass}
-      >
+      <a href={href} target="_blank" rel="noopener noreferrer" className={baseClass}>
         {content}
       </a>
     )
@@ -77,7 +88,7 @@ export function Chip({ label = '', variant = 'primary', icon, onRemove, onClick,
       tabIndex={onClick ? 0 : undefined}
       onKeyDown={
         onClick
-          ? (e) => {
+          ? e => {
               if (e.key === 'Enter' || e.key === ' ') onClick()
             }
           : undefined

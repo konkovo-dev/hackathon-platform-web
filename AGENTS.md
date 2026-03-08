@@ -7,7 +7,29 @@
 - `pnpm dev` — dev server
 - `pnpm typecheck` — TypeScript check
 - `pnpm lint` — ESLint + `i18n:check` + `strings:check`
+- `pnpm test` — запуск всех unit/integration тестов
 - `pnpm api:gen` — генерация типов из OpenAPI
+
+## Проверки после каждого изменения
+
+**Обязательно запускать перед коммитом:**
+
+1. **`pnpm typecheck`** — проверка типов TypeScript
+2. **`pnpm lint`** — комплексная проверка качества кода
+3. **`pnpm test`** — запуск всех тестов
+
+**При изменении API-типов:**
+
+- `pnpm api:gen` — регенерация типов из OpenAPI (если обновился spec)
+- `pnpm i18n:gen` — регенерация типобезопасных ключей переводов (если добавились новые ключи)
+
+**Итоговая проверка перед коммитом:**
+
+```bash
+pnpm typecheck && pnpm lint && pnpm test
+```
+
+Все три команды должны выполниться успешно (exit code 0).
 
 ## Архитектура (FSD-lite)
 
@@ -40,7 +62,7 @@
 - `src/features/auth/model/hooks.ts` — React Query хуки для auth
 - `src/entities/auth/model/server.ts` — `getServerSession()` для SSR
 
-## Product API (через /api/platform/*)
+## Product API (через /api/platform/\*)
 
 Почему так: access token хранится в httpOnly cookie и не доступен из JS, поэтому продуктовые запросы идут через BFF.
 
@@ -57,7 +79,6 @@
 
 - `PLATFORM_API_BASE_URL` — base url продуктового API (server-only)
 - `AUTH_GATEWAY_BASE_URL` — base url auth gateway (server-only)
- 
 
 ## Policy / Access Control
 
@@ -77,13 +98,13 @@
 
 ### Куда класть компонент
 
-| Что | Куда |
-|---|---|
-| Примитив без бизнес-логики (кнопка, поле, чип, аватар) | `shared/ui/` |
-| Паттерн из нескольких примитивов без доменного смысла (модал с заголовком, переключатель с подписью, строка-пункт списка) | `shared/ui/` |
-| Компонент с доменной логикой одной фичи (форма редактирования профиля, модал навыков) | `features/<name>/ui/` |
-| Компонент, который собирает несколько фич и отображается на нескольких страницах | `widgets/` |
-| Компонент, специфичный ровно для одной страницы и не переиспользуемый | `features/<name>/ui/` или прямо в `app/` |
+| Что                                                                                                                       | Куда                                     |
+| ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Примитив без бизнес-логики (кнопка, поле, чип, аватар)                                                                    | `shared/ui/`                             |
+| Паттерн из нескольких примитивов без доменного смысла (модал с заголовком, переключатель с подписью, строка-пункт списка) | `shared/ui/`                             |
+| Компонент с доменной логикой одной фичи (форма редактирования профиля, модал навыков)                                     | `features/<name>/ui/`                    |
+| Компонент, который собирает несколько фич и отображается на нескольких страницах                                          | `widgets/`                               |
+| Компонент, специфичный ровно для одной страницы и не переиспользуемый                                                     | `features/<name>/ui/` или прямо в `app/` |
 
 ### Правило: сначала проверить `shared/ui`
 
@@ -91,32 +112,34 @@
 
 Текущая палитра:
 
-| Компонент | Назначение |
-|---|---|
-| `Avatar` | Аватар с fallback-инициалой |
-| `Button` | Кнопка (`primary`, `secondary`, `action`, `secondary-action`, `icon`) |
-| `Checkbox` | Чекбокс |
-| `Chip` | Pill-тег с опциональными иконкой, кнопкой удаления и href |
-| `ChipList` | Flex-обёртка для списка чипов с gap-m4 |
-| `FormField` | Обёртка для поля ввода с label и ошибкой |
-| `Icon` | SVG-иконка через CSS mask |
-| `Input` | Поле ввода (`text`, `search`) |
-| `InputLabel` | Подпись к полю |
-| `Modal` | Модальное окно с backdrop, Escape и анимацией |
-| `Section` | Bordered-секция с title и опциональным action-слотом |
-| `SelectListItem` | Выбираемая строка списка с индикатором выбора |
-| `Switch` | Переключатель |
-| `SwitchField` | Переключатель с подписью |
-| `UserName` | Отображение имени пользователя: «Имя Фамилия / @username» |
+| Компонент        | Назначение                                                            |
+| ---------------- | --------------------------------------------------------------------- |
+| `Avatar`         | Аватар с fallback-инициалой                                           |
+| `Button`         | Кнопка (`primary`, `secondary`, `action`, `secondary-action`, `icon`) |
+| `Checkbox`       | Чекбокс                                                               |
+| `Chip`           | Pill-тег с опциональными иконкой, кнопкой удаления и href             |
+| `ChipList`       | Flex-обёртка для списка чипов с gap-m4                                |
+| `FormField`      | Обёртка для поля ввода с label и ошибкой                              |
+| `Icon`           | SVG-иконка через CSS mask                                             |
+| `Input`          | Поле ввода (`text`, `search`)                                         |
+| `InputLabel`     | Подпись к полю                                                        |
+| `Modal`          | Модальное окно с backdrop, Escape и анимацией                         |
+| `Section`        | Bordered-секция с title и опциональным action-слотом                  |
+| `SelectListItem` | Выбираемая строка списка с индикатором выбора                         |
+| `Switch`         | Переключатель                                                         |
+| `SwitchField`    | Переключатель с подписью                                              |
+| `UserName`       | Отображение имени пользователя: «Имя Фамилия / @username»             |
 
 ### Когда выносить новый компонент в `shared/ui`
 
 Вынести если:
+
 - паттерн встречается в двух и более местах (даже в разных фичах), **или**
 - он не содержит доменных типов и переводов (ничего из `entities/`, ничего из i18n-неймспейса фичи), **или**
 - он напрямую соответствует компоненту в Figma — проверить имя слоя (Section, ListItem, Chip, ProfileImage и т.п.)
 
 Оставить в feature если компонент:
+
 - знает о доменных типах (`MeUser`, `Skill`, `Team` и т.п.)
 - использует ключи i18n конкретного неймспейса (`profile.*`, `teams.*`)
 - вызывает хуки данных (`useProfileQuery`, `useTeamQuery`)
@@ -134,6 +157,7 @@
 ### Принципы
 
 **✅ Правильно:**
+
 ```tsx
 // Анимация встроена в компонент
 <Chip label="React" />
@@ -141,6 +165,7 @@
 ```
 
 **❌ Неправильно:**
+
 ```tsx
 // Анимация прокидывается извне — дублирование, хрупкость
 <Chip label="React" className="animate-in fade-in zoom-in-95 duration-150" />
@@ -148,20 +173,21 @@
 
 ### Где встраивать анимации
 
-| Компонент | Анимация | Механизм |
-|---|---|---|
-| `Chip` | `animate-in fade-in zoom-in-95 duration-150` | Встроена в `baseClass` |
-| `Avatar` | `animate-in fade-in zoom-in-95 duration-200` | Встроена в container `div` |
-| `Section` | `animate-in fade-in slide-in-from-bottom-2 duration-200` | Встроена в root `div` |
-| `Modal` | `animate-in fade-in duration-200` (backdrop)<br/>`animate-in zoom-in-95 slide-in-from-bottom-4 duration-200` (content) | Встроена в backdrop и content |
-| `Button` | `transition-all duration-150` | Встроена в `baseClassName` для hover/active |
-| `Input` | `transition-all duration-150` | Встроена в container для focus |
-| `Switch` | `transition-all duration-200` | Встроена в track + thumb |
-| `SelectListItem` | `transition-all duration-150` | Встроена в root, checkmark имеет `animate-in` |
+| Компонент        | Анимация                                                                                                               | Механизм                                      |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `Chip`           | `animate-in fade-in zoom-in-95 duration-150`                                                                           | Встроена в `baseClass`                        |
+| `Avatar`         | `animate-in fade-in zoom-in-95 duration-200`                                                                           | Встроена в container `div`                    |
+| `Section`        | `animate-in fade-in slide-in-from-bottom-2 duration-200`                                                               | Встроена в root `div`                         |
+| `Modal`          | `animate-in fade-in duration-200` (backdrop)<br/>`animate-in zoom-in-95 slide-in-from-bottom-4 duration-200` (content) | Встроена в backdrop и content                 |
+| `Button`         | `transition-all duration-150`                                                                                          | Встроена в `baseClassName` для hover/active   |
+| `Input`          | `transition-all duration-150`                                                                                          | Встроена в container для focus                |
+| `Switch`         | `transition-all duration-200`                                                                                          | Встроена в track + thumb                      |
+| `SelectListItem` | `transition-all duration-150`                                                                                          | Встроена в root, checkmark имеет `animate-in` |
 
 ### Важно: только enter-анимации
 
 Exit-анимации **намеренно не используются**, потому что:
+
 - Они усложняют код (нужны useState, useRef, setTimeout)
 - Создают баги с unmount'ом children
 
@@ -170,6 +196,7 @@ Exit-анимации **намеренно не используются**, по
 ### Доступные утилиты (tailwind.config.ts)
 
 **Базовые классы:**
+
 - `animate-in` / `animate-out` — запуск анимации появления/исчезновения
 - `fade-in` / `fade-out` — изменение прозрачности
 - `zoom-in-95` / `zoom-in-90` / `zoom-out-95` — масштабирование
@@ -177,6 +204,7 @@ Exit-анимации **намеренно не используются**, по
 - `duration-75` / `duration-100` / `duration-150` / `duration-200` / `duration-300` и т.д.
 
 **Для transitions:**
+
 - `transition-all duration-150` — универсальный плавный переход (hover, active, focus)
 - `transition-colors` / `transition-opacity` / `transition-transform` — специфичные
 
@@ -215,7 +243,11 @@ Exit-анимации **намеренно не используются**, по
    ```
 3. Добавить запись в `openapi/openapi.config.json`:
    ```json
-   { "name": "<name>", "input": "./openapi/<name>.openapi.yaml", "output": "./src/shared/api/<name>.schema.ts" }
+   {
+     "name": "<name>",
+     "input": "./openapi/<name>.openapi.yaml",
+     "output": "./src/shared/api/<name>.schema.ts"
+   }
    ```
 4. Запустить `pnpm api:gen`
 5. В `entities/<domain>/model/types.ts` импортировать и переэкспортировать нужные типы под именами приложения:
@@ -230,11 +262,11 @@ API (gRPC-gateway с `json_names_for_fields=true`) всегда использу
 
 ### Текущие схемы
 
-| Файл схемы | Источник | Сервис |
-|---|---|---|
-| `authGateway.schema.ts` | `openapi/auth-gateway.openapi.yaml` | Auth Gateway |
-| `authBff.schema.ts` | `openapi/auth-bff.openapi.yaml` | Auth BFF |
-| `identityMe.schema.ts` | `openapi/identity-me.openapi.yaml` | Identity Me-service |
+| Файл схемы                 | Источник                               | Сервис                  |
+| -------------------------- | -------------------------------------- | ----------------------- |
+| `authGateway.schema.ts`    | `openapi/auth-gateway.openapi.yaml`    | Auth Gateway            |
+| `authBff.schema.ts`        | `openapi/auth-bff.openapi.yaml`        | Auth BFF                |
+| `identityMe.schema.ts`     | `openapi/identity-me.openapi.yaml`     | Identity Me-service     |
 | `identitySkills.schema.ts` | `openapi/identity-skills.openapi.yaml` | Identity Skills-service |
 
 ## Profile Feature
@@ -333,11 +365,11 @@ tests/
 
 ### Что тестировать
 
-| Тип теста | Что | Где | Пример |
-|---|---|---|---|
-| **Unit** | Утилиты, хелперы, валидаторы, policy | Рядом с кодом | `getSkillName()`, `cn()`, `teamPolicy.canCreate()` |
-| **Integration** | React-компоненты, hooks, формы | Рядом с кодом | `<Button />`, `useProfileQuery()`, `<EditNameSection />` |
-| **E2E** | Критичные флоу (регистрация, профиль) | `tests/e2e/` | Регистрация → вход → редактирование профиля |
+| Тип теста       | Что                                   | Где           | Пример                                                   |
+| --------------- | ------------------------------------- | ------------- | -------------------------------------------------------- |
+| **Unit**        | Утилиты, хелперы, валидаторы, policy  | Рядом с кодом | `getSkillName()`, `cn()`, `teamPolicy.canCreate()`       |
+| **Integration** | React-компоненты, hooks, формы        | Рядом с кодом | `<Button />`, `useProfileQuery()`, `<EditNameSection />` |
+| **E2E**         | Критичные флоу (регистрация, профиль) | `tests/e2e/`  | Регистрация → вход → редактирование профиля              |
 
 ### Важные правила
 
@@ -349,7 +381,7 @@ tests/
 
 ### Coverage цели
 
-- **Unit** (shared/lib, entities/*/model): 80%+
+- **Unit** (shared/lib, entities/\*/model): 80%+
 - **Integration** (features, shared/ui): 60%+
 - **E2E**: критичные флоу
 

@@ -26,7 +26,11 @@ export function mapAuthGatewayErrorToBff(error: unknown): BffErrorResponse {
   const msgLower = msg.toLowerCase()
 
   if (msgLower === 'invalid password') {
-    return { message: msg, code: 'INVALID_PASSWORD', fieldErrors: { password: ['INVALID_PASSWORD'] } }
+    return {
+      message: msg,
+      code: 'INVALID_PASSWORD',
+      fieldErrors: { password: ['INVALID_PASSWORD'] },
+    }
   }
 
   if (msgLower === 'invalid credentials') {
@@ -38,11 +42,19 @@ export function mapAuthGatewayErrorToBff(error: unknown): BffErrorResponse {
   }
 
   if (msgLower === 'user already exists') {
-    return { message: msg, code: 'USER_ALREADY_EXISTS', fieldErrors: { username: ['USER_ALREADY_EXISTS'], email: ['USER_ALREADY_EXISTS'] } }
+    return {
+      message: msg,
+      code: 'USER_ALREADY_EXISTS',
+      fieldErrors: { username: ['USER_ALREADY_EXISTS'], email: ['USER_ALREADY_EXISTS'] },
+    }
   }
 
   if (msgLower === 'invalid username') {
-    return { message: msg, code: 'INVALID_USERNAME', fieldErrors: { username: ['INVALID_USERNAME'] } }
+    return {
+      message: msg,
+      code: 'INVALID_USERNAME',
+      fieldErrors: { username: ['INVALID_USERNAME'] },
+    }
   }
 
   if (msgLower === 'invalid email') {
