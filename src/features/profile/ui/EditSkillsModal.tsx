@@ -5,6 +5,7 @@ import { Modal } from '@/shared/ui/Modal'
 import { Button } from '@/shared/ui/Button'
 import { Chip } from '@/shared/ui/Chip'
 import { ChipList } from '@/shared/ui/ChipList'
+import { Divider } from '@/shared/ui/Divider'
 import { Input } from '@/shared/ui/Input'
 import { SelectListItem } from '@/shared/ui/SelectListItem'
 import { SelectList } from '@/shared/ui/SelectList'
@@ -94,7 +95,7 @@ export function EditSkillsModal({
               />
             ))}
           </ChipList>
-          <div className="h-px bg-divider" />
+          <Divider />
         </>
       )}
 

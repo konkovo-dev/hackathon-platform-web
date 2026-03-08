@@ -2,6 +2,7 @@ import { getServerI18n } from '@/shared/i18n/server'
 import { getServerSession } from '@/entities/auth/model/server'
 import { getMe } from '@/entities/user/api/getMe'
 import { ProfileClient } from '@/features/profile/ui/ProfileClient'
+import { PageContainer } from '@/shared/ui'
 
 export default async function ProfilePage() {
   const { t } = await getServerI18n(['profile'])
@@ -9,10 +10,10 @@ export default async function ProfilePage() {
 
   if (!session.active) {
     return (
-      <div className="container mx-auto p-8">
+      <PageContainer>
         <h1 className="mb-6 text-3xl font-bold">{t('profile.title')}</h1>
         <p className="text-text-secondary">{t('profile.auth_required')}</p>
-      </div>
+      </PageContainer>
     )
   }
 
@@ -24,8 +25,8 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="flex justify-center w-full py-m32 px-m16">
+    <PageContainer>
       <ProfileClient initialData={initialData} />
-    </div>
+    </PageContainer>
   )
 }

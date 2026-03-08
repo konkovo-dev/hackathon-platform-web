@@ -1,0 +1,389 @@
+[
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Москва",
+    "cityEn": "Moscow",
+    "population": 10381222,
+    "latitude": "55.75222",
+    "longitude": "37.61556"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Санкт-Петербург",
+    "cityEn": "St Petersburg",
+    "population": 5351935,
+    "latitude": "59.93863",
+    "longitude": "30.31413"
+  },
+  {
+    "country": "Казахстан",
+    "countryCode": "KZ",
+    "cityRu": "Алматы",
+    "cityEn": "Almaty",
+    "population": 1977011,
+    "latitude": "43.25",
+    "longitude": "76.91667"
+  },
+  {
+    "country": "Беларусь",
+    "countryCode": "BY",
+    "cityRu": "Минск",
+    "cityEn": "Minsk",
+    "population": 1742124,
+    "latitude": "53.9",
+    "longitude": "27.56667"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Новосибирск",
+    "cityEn": "Novosibirsk",
+    "population": 1612833,
+    "latitude": "55.03442",
+    "longitude": "82.94339"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Екатеринбург",
+    "cityEn": "Yekaterinburg",
+    "population": 1495066,
+    "latitude": "56.8519",
+    "longitude": "60.6122"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Нижний Новгород",
+    "cityEn": "Nizhny Novgorod",
+    "population": 1259013,
+    "latitude": "56.32867",
+    "longitude": "44.00205"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Казань",
+    "cityEn": "Kazan’",
+    "population": 1243500,
+    "latitude": "55.78874",
+    "longitude": "49.12214"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Челябинск",
+    "cityEn": "Chelyabinsk",
+    "population": 1202371,
+    "latitude": "55.15402",
+    "longitude": "61.42915"
+  },
+  {
+    "country": "Казахстан",
+    "countryCode": "KZ",
+    "cityRu": "Шымкент",
+    "cityEn": "Shymkent",
+    "population": 1200000,
+    "latitude": "42.3",
+    "longitude": "69.6"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Омск",
+    "cityEn": "Omsk",
+    "population": 1172070,
+    "latitude": "54.99244",
+    "longitude": "73.36859"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Самара",
+    "cityEn": "Samara",
+    "population": 1163399,
+    "latitude": "53.20007",
+    "longitude": "50.15"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Ростов-на-Дону",
+    "cityEn": "Rostov-on-Don",
+    "population": 1130305,
+    "latitude": "47.23135",
+    "longitude": "39.72328"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Уфа",
+    "cityEn": "Ufa",
+    "population": 1120547,
+    "latitude": "54.74306",
+    "longitude": "55.96779"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Красноярск",
+    "cityEn": "Krasnoyarsk",
+    "population": 1090811,
+    "latitude": "56.02668",
+    "longitude": "92.90765"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Воронеж",
+    "cityEn": "Voronezh",
+    "population": 1047549,
+    "latitude": "51.67204",
+    "longitude": "39.1843"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Волгоград",
+    "cityEn": "Volgograd",
+    "population": 1013533,
+    "latitude": "48.71939",
+    "longitude": "44.50183"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Пермь",
+    "cityEn": "Perm",
+    "population": 982419,
+    "latitude": "58.01046",
+    "longitude": "56.25017"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Краснодар",
+    "cityEn": "Krasnodar",
+    "population": 899541,
+    "latitude": "45.04484",
+    "longitude": "38.97603"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Саратов",
+    "cityEn": "Saratov",
+    "population": 844858,
+    "latitude": "51.54056",
+    "longitude": "46.00861"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Тюмень",
+    "cityEn": "Tyumen",
+    "population": 768358,
+    "latitude": "57.15222",
+    "longitude": "65.52722"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Тольятти",
+    "cityEn": "Tolyatti",
+    "population": 702879,
+    "latitude": "53.5303",
+    "longitude": "49.3461"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Ижевск",
+    "cityEn": "Izhevsk",
+    "population": 648213,
+    "latitude": "56.84976",
+    "longitude": "53.20448"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Барнаул",
+    "cityEn": "Barnaul",
+    "population": 632372,
+    "latitude": "53.3598",
+    "longitude": "83.7456"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Ульяновск",
+    "cityEn": "Ulyanovsk",
+    "population": 626540,
+    "latitude": "54.32824",
+    "longitude": "48.38657"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Иркутск",
+    "cityEn": "Irkutsk",
+    "population": 623869,
+    "latitude": "52.29795",
+    "longitude": "104.29585"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Хабаровск",
+    "cityEn": "Khabarovsk",
+    "population": 618150,
+    "latitude": "48.48271",
+    "longitude": "135.08379"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Ярославль",
+    "cityEn": "Yaroslavl",
+    "population": 608722,
+    "latitude": "57.62987",
+    "longitude": "39.87368"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Владивосток",
+    "cityEn": "Vladivostok",
+    "population": 604901,
+    "latitude": "43.10562",
+    "longitude": "131.87353"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Махачкала",
+    "cityEn": "Makhachkala",
+    "population": 596356,
+    "latitude": "42.97638",
+    "longitude": "47.50236"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Хабаровск Второй",
+    "cityEn": "Khabarovsk Vtoroy",
+    "population": 578303,
+    "latitude": "48.43787",
+    "longitude": "135.12994"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Томск",
+    "cityEn": "Tomsk",
+    "population": 574002,
+    "latitude": "56.50032",
+    "longitude": "84.98204"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Оренбург",
+    "cityEn": "Orenburg",
+    "population": 564773,
+    "latitude": "51.7727",
+    "longitude": "55.0988"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Кемерово",
+    "cityEn": "Kemerovo",
+    "population": 558973,
+    "latitude": "55.33333",
+    "longitude": "86.08333"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Новокузнецк",
+    "cityEn": "Novokuznetsk",
+    "population": 539616,
+    "latitude": "53.75752",
+    "longitude": "87.13599"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Рязань",
+    "cityEn": "Ryazan",
+    "population": 538962,
+    "latitude": "54.6269",
+    "longitude": "39.6916"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Астрахань",
+    "cityEn": "Astrakhan",
+    "population": 533925,
+    "latitude": "46.34968",
+    "longitude": "48.04076"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Пенза",
+    "cityEn": "Penza",
+    "population": 523553,
+    "latitude": "53.20066",
+    "longitude": "45.00464"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Набережные Челны",
+    "cityEn": "Naberezhnye Chelny",
+    "population": 509870,
+    "latitude": "55.72545",
+    "longitude": "52.41122"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Липецк",
+    "cityEn": "Lipetsk",
+    "population": 509735,
+    "latitude": "52.60311",
+    "longitude": "39.57076"
+  },
+  {
+    "country": "Россия",
+    "countryCode": "RU",
+    "cityRu": "Киров",
+    "cityEn": "Kirov",
+    "population": 507155,
+    "latitude": "58.59665",
+    "longitude": "49.66007"
+  },
+  {
+    "country": "Беларусь",
+    "countryCode": "BY",
+    "cityRu": "Гомель",
+    "cityEn": "Homyel",
+    "population": 501102,
+    "latitude": "52.4345",
+    "longitude": "30.9754"
+  },
+  {
+    "country": "Казахстан",
+    "countryCode": "KZ",
+    "cityRu": "Актобе",
+    "cityEn": "Aktobe",
+    "population": 500757,
+    "latitude": "50.27969",
+    "longitude": "57.20718"
+  }
+]

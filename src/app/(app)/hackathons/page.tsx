@@ -1,14 +1,24 @@
 import { getServerI18n } from '@/shared/i18n/server'
+import { getHackathonList } from '@/entities/hackathon/api/getHackathonList'
+import { HackathonList } from '@/features/hackathon-list/ui/HackathonList'
+import { PageContainer } from '@/shared/ui'
 
 export default async function HackathonsPage() {
   const { t } = await getServerI18n(['hackathons'])
 
+  let initialData
+  try {
+    initialData = await getHackathonList()
+  } catch (error) {
+    console.error('Failed to fetch hackathons:', error)
+  }
+
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="mb-6 text-3xl font-bold">{t('hackathons.list.title')}</h1>
-      <div className="text-text-secondary">
-        <p>{t('hackathons.list.empty')}</p>
-      </div>
-    </div>
+    <PageContainer>
+      <h1 className="typography-heading-lg text-text-primary mb-m12">
+        {t('hackathons.list.title')}
+      </h1>
+      <HackathonList initialData={initialData} />
+    </PageContainer>
   )
 }
