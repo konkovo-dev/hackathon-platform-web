@@ -13,6 +13,7 @@
     "i18n:check": "node scripts/i18n.mjs check",
     "i18n:gen": "node scripts/i18n.mjs gen",
     "strings:check": "node scripts/strings.mjs check",
+    "cities:gen": "node scripts/generate-cities.mjs",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",

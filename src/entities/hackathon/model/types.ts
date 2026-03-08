@@ -64,3 +64,60 @@ export type HackathonListResponse = {
     nextPageToken: string
   }
 }
+
+export type HackathonStageFilter = 'all' | 'registration' | 'running' | 'finished'
+export type HackathonFormat = 'online' | 'offline'
+
+export type HackathonListFilters = {
+  stage: HackathonStageFilter
+  formats: HackathonFormat[]
+  city?: string
+  sortDirection: 'asc' | 'desc'
+}
+
+export type HackathonListQuery = {
+  query?: {
+    filterGroups?: FilterGroup[]
+    sort?: Sort[]
+  }
+  includeDescription: boolean
+  includeLinks: boolean
+  includeLimits: boolean
+  page?: {
+    pageToken?: string
+    pageSize?: number
+  }
+}
+
+export type FilterGroup = {
+  filters: Filter[]
+}
+
+export type Filter = {
+  field: string
+  operation: FilterOperation
+  stringValue?: string
+  boolValue?: boolean
+  stringList?: StringList
+}
+
+export type FilterOperation =
+  | 'FILTER_OPERATION_UNSPECIFIED'
+  | 'FILTER_OPERATION_EQUAL'
+  | 'FILTER_OPERATION_IN'
+  | 'FILTER_OPERATION_CONTAINS'
+  | 'FILTER_OPERATION_PREFIX'
+
+export type StringList = {
+  values: string[]
+}
+
+export type Sort = {
+  field: string
+  direction: SortDirection
+}
+
+export type SortDirection =
+  | 'SORT_DIRECTION_UNSPECIFIED'
+  | 'SORT_DIRECTION_ASC'
+  | 'SORT_DIRECTION_DESC'
