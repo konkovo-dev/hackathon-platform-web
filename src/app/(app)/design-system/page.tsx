@@ -9,6 +9,7 @@ import { Chip } from '@/shared/ui/Chip'
 import { ChipList } from '@/shared/ui/ChipList'
 import { FormField } from '@/shared/ui/FormField'
 import { Icon } from '@/shared/ui/Icon'
+import { IconCompletion } from '@/shared/ui/IconCompletion'
 import { Input } from '@/shared/ui/Input'
 import { InputLabel } from '@/shared/ui/InputLabel'
 import { Label } from '@/shared/ui/Label'
@@ -23,6 +24,8 @@ import { Switch } from '@/shared/ui/Switch'
 import { SwitchField } from '@/shared/ui/SwitchField'
 import { Typography } from '@/shared/ui/Typography'
 import { UserName } from '@/shared/ui/UserName'
+import { HackathonCard } from '@/features/hackathon-list/ui/HackathonCard'
+import type { Hackathon } from '@/entities/hackathon/model/types'
 import Link from 'next/link'
 
 export default function DesignSystemPage() {
@@ -30,8 +33,41 @@ export default function DesignSystemPage() {
   const [switchFieldChecked, setSwitchFieldChecked] = useState(false)
   const [selectedBackend, setSelectedBackend] = useState<'remote' | 'local'>('remote')
 
+  const mockHackathons: Hackathon[] = [
+    {
+      hackathonId: '1',
+      name: 'Хакатон по AI',
+      location: { online: true, city: 'Москва', country: 'Россия' },
+      dates: { startsAt: '2026-04-01T00:00:00Z', endsAt: '2026-04-03T00:00:00Z' },
+      limits: { teamSizeMax: 5 },
+      registrationPolicy: { allowIndividual: true, allowTeam: true },
+      stage: 'REGISTRATION',
+      state: 'PUBLISHED',
+    },
+    {
+      hackathonId: '2',
+      name: 'Web3 Challenge',
+      location: { online: false, city: 'Санкт-Петербург', country: 'Россия' },
+      dates: { startsAt: '2026-05-10T00:00:00Z', endsAt: '2026-05-12T00:00:00Z' },
+      limits: { teamSizeMax: 4 },
+      registrationPolicy: { allowIndividual: false, allowTeam: true },
+      stage: 'RUNNING',
+      state: 'PUBLISHED',
+    },
+    {
+      hackathonId: '3',
+      name: 'Mobile Dev Hackathon',
+      location: { online: true, country: 'Россия' },
+      dates: { startsAt: '2026-06-15T00:00:00Z', endsAt: '2026-06-17T00:00:00Z' },
+      limits: { teamSizeMax: 6 },
+      registrationPolicy: { allowIndividual: true, allowTeam: true },
+      stage: 'UPCOMING',
+      state: 'PUBLISHED',
+    },
+  ]
+
   return (
-    <div className="container mx-auto max-w-7xl p-8">
+    <div className="container mx-auto max-w-[1080px] p-8">
       <div className="mb-8 flex items-center justify-between">
         <Typography variant="display-xl">Design System</Typography>
       </div>
@@ -666,6 +702,49 @@ export default function DesignSystemPage() {
                 </Button>
               </div>
             </Modal>
+          </section>
+
+          {/* IconCompletion */}
+          <section>
+            <Typography variant="heading-lg" className="mb-6">
+              IconCompletion
+            </Typography>
+            <Card>
+              <CardHeader>
+                <Typography variant="title-md">Progress Icons (0-6)</Typography>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap items-center gap-8">
+                  {([0, 1, 2, 3, 4, 5, 6] as const).map((progress) => (
+                    <div key={progress} className="flex flex-col items-center gap-2">
+                      <IconCompletion progress={progress} />
+                      <Typography variant="caption-xs" className="text-text-secondary">
+                        {progress}/6
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* HackathonCard */}
+          <section>
+            <Typography variant="heading-lg" className="mb-6">
+              HackathonCard
+            </Typography>
+            <Card>
+              <CardHeader>
+                <Typography variant="title-md">Hackathon Cards</Typography>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-[repeat(auto-fill,258px)] gap-m8">
+                  {mockHackathons.map((hackathon) => (
+                    <HackathonCard key={hackathon.hackathonId} hackathon={hackathon} />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Colors */}
