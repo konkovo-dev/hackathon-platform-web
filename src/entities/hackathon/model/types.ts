@@ -1,0 +1,66 @@
+import type { HackathonStage } from '@/entities/hackathon-context/model/types'
+
+export type HackathonLocation = {
+  city?: string
+  country?: string
+  online: boolean
+  venue?: string
+}
+
+export type HackathonDates = {
+  startsAt?: string
+  endsAt?: string
+  registrationOpensAt?: string
+  registrationClosesAt?: string
+  submissionsOpensAt?: string
+  submissionsClosesAt?: string
+  judgingEndsAt?: string
+}
+
+export type HackathonLimits = {
+  teamSizeMax?: number
+}
+
+export type HackathonRegistrationPolicy = {
+  allowIndividual: boolean
+  allowTeam: boolean
+}
+
+export type HackathonLink = {
+  title: string
+  url: string
+}
+
+export type HackathonState = 
+  | 'HACKATHON_STATE_UNSPECIFIED'
+  | 'DRAFT'
+  | 'PUBLISHED'
+  | 'ARCHIVED'
+
+export type Hackathon = {
+  hackathonId: string
+  name: string
+  shortDescription?: string
+  description?: string
+  location: HackathonLocation
+  dates: HackathonDates
+  limits: HackathonLimits
+  registrationPolicy: HackathonRegistrationPolicy
+  stage: HackathonStage
+  state: HackathonState
+  links?: HackathonLink[]
+  publishedAt?: string
+  createdAt?: string
+  updatedAt?: string
+  result?: string
+  resultPublishedAt?: string
+  task?: string
+}
+
+export type HackathonListResponse = {
+  hackathons: Hackathon[]
+  page: {
+    hasMore: boolean
+    nextPageToken: string
+  }
+}
