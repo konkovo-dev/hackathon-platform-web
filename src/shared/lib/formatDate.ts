@@ -1,4 +1,8 @@
-export function formatDateRange(startDate?: string, endDate?: string, locale: string = 'ru'): string {
+export function formatDateRange(
+  startDate?: string,
+  endDate?: string,
+  locale: string = 'ru'
+): string {
   if (!startDate || !endDate) {
     return ''
   }
@@ -22,7 +26,7 @@ export function formatDateRange(startDate?: string, endDate?: string, locale: st
 
     const startMonth = start.toLocaleDateString(locale, { month: 'long' })
     const endMonth = end.toLocaleDateString(locale, { month: 'long' })
-    
+
     if (start.getFullYear() === end.getFullYear()) {
       return `${startDay} ${startMonth} - ${endDay} ${endMonth} ${year}`
     }
@@ -33,7 +37,11 @@ export function formatDateRange(startDate?: string, endDate?: string, locale: st
   }
 }
 
-export function formatLocation(location: { online: boolean; city?: string; country?: string }): string {
+export function formatLocation(location: {
+  online: boolean
+  city?: string
+  country?: string
+}): string {
   const parts: string[] = []
 
   if (location.online) {

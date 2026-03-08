@@ -18,8 +18,7 @@ export async function authGatewayPost<TResponse extends Json>(
   path: string,
   body: Json
 ): Promise<
-  | { ok: true; data: TResponse; status: number }
-  | { ok: false; error: Json; status: number }
+  { ok: true; data: TResponse; status: number } | { ok: false; error: Json; status: number }
 > {
   const url = `${getEffectiveAuthGatewayUrl()}${path}`
 
@@ -37,7 +36,9 @@ export async function authGatewayPost<TResponse extends Json>(
     if (!res.ok) {
       const json = (await tryParseJson(res)) || {}
       const message =
-        (typeof json.message === 'string' && json.message.trim()) || res.statusText || 'Auth request failed'
+        (typeof json.message === 'string' && json.message.trim()) ||
+        res.statusText ||
+        'Auth request failed'
       return { ok: false, error: { ...json, message }, status: res.status }
     }
 
@@ -52,7 +53,9 @@ export async function authGatewayPost<TResponse extends Json>(
 export async function proxyAuthPost<TResponse extends Json>(
   path: string,
   body: Json
-): Promise<{ ok: true; data: TResponse } | { ok: false; response: import('next/server').NextResponse }> {
+): Promise<
+  { ok: true; data: TResponse } | { ok: false; response: import('next/server').NextResponse }
+> {
   const { NextResponse } = await import('next/server')
   const result = await authGatewayPost<TResponse>(path, body)
 

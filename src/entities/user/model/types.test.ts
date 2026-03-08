@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { getSkillName, getContactTypeLabel, getContactHref, type Skill, type ContactType } from './types'
+import {
+  getSkillName,
+  getContactTypeLabel,
+  getContactHref,
+  type Skill,
+  type ContactType,
+} from './types'
 
 describe('getSkillName', () => {
   it('should return catalog name if present', () => {
@@ -8,14 +14,14 @@ describe('getSkillName', () => {
         id: 'skill-1',
         name: 'React',
       },
-      custom: null,
+      custom: undefined,
     }
     expect(getSkillName(skill)).toBe('React')
   })
 
   it('should fallback to custom name', () => {
     const skill: Skill = {
-      catalog: null,
+      catalog: undefined,
       custom: {
         name: 'ReactJS',
       },
@@ -38,8 +44,8 @@ describe('getSkillName', () => {
 
   it('should return empty string if both are null', () => {
     const skill: Skill = {
-      catalog: null,
-      custom: null,
+      catalog: undefined,
+      custom: undefined,
     }
     expect(getSkillName(skill)).toBe('')
   })
@@ -90,7 +96,9 @@ describe('getContactHref', () => {
   })
 
   it('should create linkedin URL', () => {
-    expect(getContactHref('CONTACT_TYPE_LINKEDIN', 'username')).toBe('https://linkedin.com/in/username')
+    expect(getContactHref('CONTACT_TYPE_LINKEDIN', 'username')).toBe(
+      'https://linkedin.com/in/username'
+    )
   })
 
   it('should preserve full linkedin URL', () => {

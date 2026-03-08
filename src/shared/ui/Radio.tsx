@@ -17,13 +17,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
         )}
       >
         <div className="relative flex-shrink-0">
-          <input
-            ref={ref}
-            type="radio"
-            disabled={disabled}
-            className="sr-only peer"
-            {...props}
-          />
+          <input ref={ref} type="radio" disabled={disabled} className="sr-only peer" {...props} />
           <div
             className={cn(
               'w-m8 h-m8 rounded-[var(--spacing-m4)] border border-solid', // 8px (круг)

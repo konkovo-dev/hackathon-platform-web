@@ -19,16 +19,16 @@ export function Section({ title, action, hoverAction, children, className }: Sec
       )}
     >
       {action && (
-        <div className="absolute top-m4 right-m4 flex items-center gap-m2 animate-in fade-in zoom-in-95 duration-150">{action}</div>
+        <div className="absolute top-m4 right-m4 flex items-center gap-m2 animate-in fade-in zoom-in-95 duration-150">
+          {action}
+        </div>
       )}
       {!action && hoverAction && (
         <div className="absolute top-m4 right-m4 opacity-0 group-hover:opacity-100 transition-all duration-200">
           {hoverAction}
         </div>
       )}
-      {title && (
-        <span className="typography-body-sm-regular text-text-secondary">{title}</span>
-      )}
+      {title && <span className="typography-body-sm-regular text-text-secondary">{title}</span>}
       {children}
     </div>
   )

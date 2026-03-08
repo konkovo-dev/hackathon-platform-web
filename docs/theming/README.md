@@ -30,9 +30,7 @@ tailwind.config.ts (маппинг в Tailwind классы)
 
 ```tsx
 <div className="bg-bg-default text-text-primary border-border-default">
-  <button className="bg-brand-primary text-text-inverse hover:bg-brand-primary-hover">
-    ...
-  </button>
+  <button className="bg-brand-primary text-text-inverse hover:bg-brand-primary-hover">...</button>
 </div>
 ```
 

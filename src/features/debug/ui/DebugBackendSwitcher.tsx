@@ -23,7 +23,7 @@ export function DebugBackendSwitcher() {
 
   useEffect(() => {
     fetch('/api/debug/backend')
-      .then((r) => r.json())
+      .then(r => r.json())
       .then(setState)
       .catch(() => null)
   }, [])
@@ -65,7 +65,7 @@ export function DebugBackendSwitcher() {
       )}
 
       <button
-        onClick={() => setExpanded((v) => !v)}
+        onClick={() => setExpanded(v => !v)}
         className={cn(
           'flex items-center gap-m2 px-m4 py-m2 rounded-full border typography-caption-sm-medium',
           isRemote

@@ -14,7 +14,11 @@ export async function POST(req: Request) {
 
   if (!login || !password) {
     return NextResponse.json(
-      { message: 'Invalid payload', code: 'INVALID_PAYLOAD', fieldErrors: { login: ['INVALID_PAYLOAD'], password: ['INVALID_PAYLOAD'] } },
+      {
+        message: 'Invalid payload',
+        code: 'INVALID_PAYLOAD',
+        fieldErrors: { login: ['INVALID_PAYLOAD'], password: ['INVALID_PAYLOAD'] },
+      },
       { status: 400 }
     )
   }

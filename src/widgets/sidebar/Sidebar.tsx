@@ -18,13 +18,7 @@ import { useDebugFlag } from './useDebugFlag'
 type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
-  key:
-    | 'hackathons'
-    | 'invitations'
-    | 'teams'
-    | 'profile'
-    | 'auth'
-    | 'design_system'
+  key: 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system'
   href: string
   iconSrc: string
 }
@@ -66,7 +60,9 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
       groups.push([{ key: 'auth', href: '/login', iconSrc: ICONS.auth }])
     }
 
-    const otherGroup: SidebarItem[] = [{ key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code }]
+    const otherGroup: SidebarItem[] = [
+      { key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code },
+    ]
     if (isAuthed) {
       otherGroup.push(
         { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
@@ -92,7 +88,13 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
         collapsed ? 'w-[80px]' : 'w-[240px]'
       )}
     >
-      <div className={cn('flex items-center', collapsed ? 'justify-center' : 'justify-between', 'p-m8')}>
+      <div
+        className={cn(
+          'flex items-center',
+          collapsed ? 'justify-center' : 'justify-between',
+          'p-m8'
+        )}
+      >
         <Logo size={collapsed ? 'sm' : 'md'} />
         {!collapsed && (
           <Button
@@ -116,7 +118,7 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
       >
         {menuGroups.map((group, groupIndex) => (
           <div key={groupIndex} className="w-full flex flex-col gap-m2">
-            {group.map((item) => (
+            {group.map(item => (
               <MenuItem
                 key={item.key}
                 href={item.href}
@@ -130,7 +132,12 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
           </div>
         ))}
 
-        <SidebarSettings collapsed={collapsed} pathname={pathname} debug={debug} setDebug={setDebug} />
+        <SidebarSettings
+          collapsed={collapsed}
+          pathname={pathname}
+          debug={debug}
+          setDebug={setDebug}
+        />
 
         {collapsed && (
           <Button

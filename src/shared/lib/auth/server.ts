@@ -46,8 +46,20 @@ export function setAuthCookies(tokens: TokenPair) {
 export function clearAuthCookies() {
   const store = cookies()
 
-  store.set(AUTH_COOKIE_ACCESS, '', { httpOnly: true, secure: isProd, sameSite: 'lax', path: '/', maxAge: 0 })
-  store.set(AUTH_COOKIE_REFRESH, '', { httpOnly: true, secure: isProd, sameSite: 'lax', path: '/', maxAge: 0 })
+  store.set(AUTH_COOKIE_ACCESS, '', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  })
+  store.set(AUTH_COOKIE_REFRESH, '', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  })
 }
 
 export function getAccessTokenFromCookies(): string | undefined {

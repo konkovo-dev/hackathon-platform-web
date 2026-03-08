@@ -2,7 +2,12 @@ import 'server-only'
 
 import { NextResponse } from 'next/server'
 import { getEffectivePlatformApiUrl } from '@/shared/lib/debug/backendTarget'
-import { clearAuthCookies, getAccessTokenFromCookies, getRefreshTokenFromCookies, setAuthCookies } from '@/shared/lib/auth/server'
+import {
+  clearAuthCookies,
+  getAccessTokenFromCookies,
+  getRefreshTokenFromCookies,
+  setAuthCookies,
+} from '@/shared/lib/auth/server'
 import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
 
@@ -34,7 +39,12 @@ function filterResponseHeaders(headers: Headers) {
   return out
 }
 
-async function proxyOnce(req: Request, upstreamUrl: URL, accessToken: string | undefined, body?: ArrayBuffer) {
+async function proxyOnce(
+  req: Request,
+  upstreamUrl: URL,
+  accessToken: string | undefined,
+  body?: ArrayBuffer
+) {
   const headers = filterRequestHeaders(req.headers)
   if (accessToken) {
     headers.set('authorization', `Bearer ${accessToken}`)
@@ -59,7 +69,9 @@ async function tryRefreshTokens(): Promise<{ ok: true; accessToken?: string } | 
   const refreshToken = getRefreshTokenFromCookies()
   if (!refreshToken) return { ok: false }
 
-  const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/refresh', { refresh_token: refreshToken })
+  const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/refresh', {
+    refresh_token: refreshToken,
+  })
   if (!result.ok) {
     if (result.response.status === 401 || result.response.status === 403) {
       clearAuthCookies()
@@ -100,7 +112,12 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
     const refreshed = await tryRefreshTokens()
     if (refreshed.ok) {
       try {
-        res = await proxyOnce(req, upstream, refreshed.accessToken ?? getAccessTokenFromCookies(), body)
+        res = await proxyOnce(
+          req,
+          upstream,
+          refreshed.accessToken ?? getAccessTokenFromCookies(),
+          body
+        )
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Upstream fetch failed'
         return NextResponse.json(
@@ -116,7 +133,10 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
   }
 
   const responseBody = await res.arrayBuffer()
-  return new NextResponse(responseBody, { status: res.status, headers: filterResponseHeaders(res.headers) })
+  return new NextResponse(responseBody, {
+    status: res.status,
+    headers: filterResponseHeaders(res.headers),
+  })
 }
 
 export async function GET(req: Request, ctx: { params: { path: string[] } }) {

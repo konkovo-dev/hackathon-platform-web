@@ -58,8 +58,10 @@ function SectionIconButton({
       disabled={disabled}
       aria-label={label}
       className={cn(
-        isPrimary && 'bg-brand-primary text-text-primary hover:bg-brand-primary-hover active:bg-brand-primary-active',
-        isSecondary && 'border border-border-strong hover:border-border-focus active:border-border-focus',
+        isPrimary &&
+          'bg-brand-primary text-text-primary hover:bg-brand-primary-hover active:bg-brand-primary-active',
+        isSecondary &&
+          'border border-border-strong hover:border-border-focus active:border-border-focus',
         isGhost && 'border border-border-strong hover:border-border-focus'
       )}
     >
@@ -82,18 +84,24 @@ function ProfileCompletion({ hasAvatar, hasContacts, hasSkills }: ProfileComplet
     { done: hasSkills, label: t('profile.completion.skills') },
   ].sort((a, b) => Number(b.done) - Number(a.done))
 
-  if (items.every((i) => i.done)) return null
+  if (items.every(i => i.done)) return null
 
   return (
-    <Section title={t('profile.completion.percent', { percent: String(Math.round((items.filter((i) => i.done).length / items.length) * 100)) })}>
+    <Section
+      title={t('profile.completion.percent', {
+        percent: String(Math.round((items.filter(i => i.done).length / items.length) * 100)),
+      })}
+    >
       <div className="flex gap-m8 items-center">
-        {items.map((item) => (
+        {items.map(item => (
           <div key={item.label} className="flex flex-col gap-m6 flex-1 min-w-0">
             <span className="typography-body-sm-regular text-primary truncate">{item.label}</span>
-            <div className={cn(
-              'h-px w-full transition-all duration-300',
-              item.done ? 'bg-state-success' : 'bg-border-default'
-            )} />
+            <div
+              className={cn(
+                'h-px w-full transition-all duration-300',
+                item.done ? 'bg-state-success' : 'bg-border-default'
+              )}
+            />
           </div>
         ))}
       </div>
@@ -157,7 +165,10 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
   }
 
   // --- Контакты ---
-  const handleContactsSave = async (contactInputs: ContactInput[], contactsVisibility: VisibilityLevel) => {
+  const handleContactsSave = async (
+    contactInputs: ContactInput[],
+    contactsVisibility: VisibilityLevel
+  ) => {
     await updateContacts.mutateAsync({
       contacts: contactInputs,
       contactsVisibility,
@@ -176,11 +187,7 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
   }
 
   // --- Хедер-кнопки ---
-  const sectionEditActions = (
-    onCancel: () => void,
-    onSave: () => void,
-    isPending: boolean
-  ) => (
+  const sectionEditActions = (onCancel: () => void, onSave: () => void, isPending: boolean) => (
     <>
       <SectionIconButton
         variant="secondary"
@@ -218,7 +225,10 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
         {hasAvatar ? (
           <Avatar src={user?.avatarUrl} name={user?.firstName} size="xl" />
         ) : (
-          <div className="aspect-[3/4] self-stretch relative z-10 border border-border-default rounded-[var(--spacing-m4)] bg-bg-default overflow-hidden" style={{ minHeight: 0, minWidth: 0 }}>
+          <div
+            className="aspect-[3/4] self-stretch relative z-10 border border-border-default rounded-[var(--spacing-m4)] bg-bg-default overflow-hidden"
+            style={{ minHeight: 0, minWidth: 0 }}
+          >
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-m8">
               <Icon src="/icons/icon-profile/icon-profile-lg.svg" size="lg" color="secondary" />
               <Button variant="action" size="sm">
@@ -232,7 +242,11 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
           {/* Информация */}
           <Section
             title={t('profile.sections.info')}
-            action={nameEditing ? sectionEditActions(handleNameCancel, handleNameSave, updateProfile.isPending) : undefined}
+            action={
+              nameEditing
+                ? sectionEditActions(handleNameCancel, handleNameSave, updateProfile.isPending)
+                : undefined
+            }
             hoverAction={!nameEditing && user ? sectionHoverEdit(handleNameEdit) : undefined}
           >
             {user ? (
@@ -275,7 +289,12 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
                 })}
               </ChipList>
             ) : (
-              <Button variant="action" size="sm" className="self-start" onClick={() => setContactsModalOpen(true)}>
+              <Button
+                variant="action"
+                size="sm"
+                className="self-start"
+                onClick={() => setContactsModalOpen(true)}
+              >
                 {t('profile.actions.add_contacts')}
               </Button>
             )}
@@ -288,13 +307,18 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
           >
             {hasSkills ? (
               <ChipList>
-                {skills.map((skill) => {
+                {skills.map(skill => {
                   const name = getSkillName(skill)
                   return <Chip key={name} label={name} />
                 })}
               </ChipList>
             ) : (
-              <Button variant="action" size="sm" className="self-start" onClick={() => setSkillsModalOpen(true)}>
+              <Button
+                variant="action"
+                size="sm"
+                className="self-start"
+                onClick={() => setSkillsModalOpen(true)}
+              >
                 {t('profile.actions.add_skills')}
               </Button>
             )}
@@ -303,7 +327,13 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
       </div>
 
       <Section title={t('profile.sections.hackathons')} className="w-full">
-        <Button variant="action" size="sm" className="self-start" asChild text={t('profile.hackathons.find')}>
+        <Button
+          variant="action"
+          size="sm"
+          className="self-start"
+          asChild
+          text={t('profile.hackathons.find')}
+        >
           <Link href="/hackathons" />
         </Button>
       </Section>

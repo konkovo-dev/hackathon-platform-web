@@ -21,9 +21,10 @@ export function useInfiniteHackathonListQuery(
   return useInfiniteQuery({
     queryKey: ['hackathons', 'list', 'infinite', filters],
     queryFn: ({ pageParam }) => getHackathonList(filters, pageParam),
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: lastPage => {
       return lastPage.page.hasMore ? lastPage.page.nextPageToken : undefined
     },
     initialPageParam: undefined as string | undefined,
+    initialData: initialData ? { pages: [initialData], pageParams: [undefined] } : undefined,
   })
 }

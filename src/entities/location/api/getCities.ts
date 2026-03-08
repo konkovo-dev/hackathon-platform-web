@@ -12,7 +12,7 @@ export function searchCities(query: string): City[] {
 
   const lowerQuery = query.toLowerCase()
   return getCities().filter(
-    (city) =>
+    city =>
       city.cityRu.toLowerCase().includes(lowerQuery) ||
       city.cityEn.toLowerCase().includes(lowerQuery) ||
       city.country.toLowerCase().includes(lowerQuery)
@@ -21,6 +21,6 @@ export function searchCities(query: string): City[] {
 
 export function getUniqueCountries(): string[] {
   const countries = new Set<string>()
-  getCities().forEach((city) => countries.add(city.country))
+  getCities().forEach(city => countries.add(city.country))
   return Array.from(countries).sort()
 }

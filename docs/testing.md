@@ -23,6 +23,7 @@ pnpm test:e2e          # E2E тесты
 **Colocation:** тесты рядом с кодом (`Button.tsx` → `Button.test.tsx`)
 
 **Централизованная папка `tests/`:**
+
 - `setup/` — MSW, test-utils, моки
 - `fixtures/` — mockUser, mockSkills
 - `e2e/` — Playwright тесты
@@ -38,7 +39,10 @@ import { afterEach, beforeAll, afterAll, vi } from 'vitest'
 import { server } from './msw'
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
-afterEach(() => { cleanup(); server.resetHandlers() })
+afterEach(() => {
+  cleanup()
+  server.resetHandlers()
+})
 afterAll(() => server.close())
 
 vi.mock('next/navigation', () => ({
@@ -97,7 +101,7 @@ describe('getSkillName', () => {
   it('should return catalog name if present', () => {
     expect(getSkillName({ catalogName: 'React', customName: null })).toBe('React')
   })
-  
+
   it('should fallback to custom name', () => {
     expect(getSkillName({ catalogName: null, customName: 'ReactJS' })).toBe('ReactJS')
   })
@@ -125,13 +129,13 @@ describe('Button', () => {
   it('should call onClick when clicked', async () => {
     const user = userEvent.setup()
     const handleClick = vi.fn()
-    
+
     renderWithProviders(<Button onClick={handleClick}>Click</Button>)
-    
+
     await user.click(screen.getByRole('button'))
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
-  
+
   it('should be disabled', () => {
     renderWithProviders(<Button disabled>Click</Button>)
     expect(screen.getByRole('button')).toBeDisabled()
@@ -152,12 +156,12 @@ test.describe('Profile page', () => {
     await page.click('button[type="submit"]')
     await page.waitForURL('/profile')
   })
-  
+
   test('should edit name', async ({ page }) => {
     await page.click('button:has-text("Edit")')
     await page.fill('input[name="firstName"]', 'Пётр')
     await page.click('button:has-text("Save")')
-    
+
     await expect(page.locator('text=Пётр')).toBeVisible()
   })
 })
@@ -174,10 +178,10 @@ test.describe('Profile page', () => {
 
 ## Troubleshooting
 
-| Проблема | Решение |
-|---|---|
-| "Cannot find module" | Добавь алиас в `vitest.config.ts`: `alias: { '@': path.resolve('./src') }` |
-| "Window is not defined" | Используй `environment: 'happy-dom'` |
-| MSW не работает | Проверь `beforeAll(() => server.listen())` в setup |
-| Тест висит | Используй `waitFor` с timeout |
-| "Unable to find role" | Используй `getByText` или добавь `role` в элемент |
+| Проблема                | Решение                                                                    |
+| ----------------------- | -------------------------------------------------------------------------- |
+| "Cannot find module"    | Добавь алиас в `vitest.config.ts`: `alias: { '@': path.resolve('./src') }` |
+| "Window is not defined" | Используй `environment: 'happy-dom'`                                       |
+| MSW не работает         | Проверь `beforeAll(() => server.listen())` в setup                         |
+| Тест висит              | Используй `waitFor` с timeout                                              |
+| "Unable to find role"   | Используй `getByText` или добавь `role` в элемент                          |

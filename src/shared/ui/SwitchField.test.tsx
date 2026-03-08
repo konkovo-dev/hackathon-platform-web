@@ -6,7 +6,9 @@ import { SwitchField } from './SwitchField'
 
 describe('SwitchField', () => {
   it('should render label', () => {
-    renderWithProviders(<SwitchField checked={false} onChange={vi.fn()} label="Enable notifications" />)
+    renderWithProviders(
+      <SwitchField checked={false} onChange={vi.fn()} label="Enable notifications" />
+    )
     expect(screen.getByText('Enable notifications')).toBeInTheDocument()
   })
 

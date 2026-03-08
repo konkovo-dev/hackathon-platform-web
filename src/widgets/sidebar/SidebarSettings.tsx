@@ -41,7 +41,7 @@ export function SidebarSettings({ collapsed, pathname, debug, setDebug }: Sideba
         title={t('sidebar.items.settings')}
         active={open}
         collapsed={collapsed}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(v => !v)}
       />
 
       {open && (
@@ -58,7 +58,7 @@ export function SidebarSettings({ collapsed, pathname, debug, setDebug }: Sideba
               </div>
               <Switch
                 checked={debug}
-                onChange={(e) => {
+                onChange={e => {
                   const next = e.target.checked
                   setDebug(next)
 
@@ -78,7 +78,7 @@ export function SidebarSettings({ collapsed, pathname, debug, setDebug }: Sideba
               <Switch
                 checked={mounted ? theme === 'dark' : false}
                 disabled={!mounted}
-                onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
+                onChange={e => setTheme(e.target.checked ? 'dark' : 'light')}
               />
             </div>
 

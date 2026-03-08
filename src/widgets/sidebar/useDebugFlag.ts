@@ -11,8 +11,8 @@ const getCookieValue = (name: string): string | undefined => {
   if (typeof document === 'undefined') return undefined
   return document.cookie
     .split(';')
-    .map((p) => p.trim())
-    .find((p) => p.startsWith(`${name}=`))
+    .map(p => p.trim())
+    .find(p => p.startsWith(`${name}=`))
     ?.split('=')[1]
 }
 

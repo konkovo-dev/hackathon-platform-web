@@ -13,4 +13,3 @@
 - [Локализация (i18n) и запрет “сырого” текста](i18n/README.md)
 - [Assets (иконки)](assets/README.md)
 - [Motion (анимации)](motion/README.md)
-

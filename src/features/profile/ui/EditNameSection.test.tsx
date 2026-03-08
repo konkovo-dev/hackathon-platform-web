@@ -49,7 +49,9 @@ describe('EditNameSection', () => {
     const user = userEvent.setup()
     const handleLastNameChange = vi.fn()
 
-    renderWithProviders(<EditNameSection {...defaultProps} editing={true} onLastNameChange={handleLastNameChange} />)
+    renderWithProviders(
+      <EditNameSection {...defaultProps} editing={true} onLastNameChange={handleLastNameChange} />
+    )
 
     const input = screen.getByDisplayValue('Иванов')
     await user.clear(input)

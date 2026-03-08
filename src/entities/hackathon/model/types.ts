@@ -31,11 +31,7 @@ export type HackathonLink = {
   url: string
 }
 
-export type HackathonState = 
-  | 'HACKATHON_STATE_UNSPECIFIED'
-  | 'DRAFT'
-  | 'PUBLISHED'
-  | 'ARCHIVED'
+export type HackathonState = 'HACKATHON_STATE_UNSPECIFIED' | 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
 
 export type Hackathon = {
   hackathonId: string

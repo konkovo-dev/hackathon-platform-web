@@ -7,9 +7,5 @@ export interface ChipListProps {
 }
 
 export function ChipList({ children, className }: ChipListProps) {
-  return (
-    <div className={cn('flex flex-wrap gap-m4', className)}>
-      {children}
-    </div>
-  )
+  return <div className={cn('flex flex-wrap gap-m4', className)}>{children}</div>
 }

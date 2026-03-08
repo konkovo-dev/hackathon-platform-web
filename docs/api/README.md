@@ -149,4 +149,3 @@ Cookie-флаги:
 Переменные окружения:
 
 - `PLATFORM_API_BASE_URL` — base url продуктового API (server-only)
- 
