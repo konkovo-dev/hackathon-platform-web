@@ -6,7 +6,7 @@ describe('filterMapper', () => {
   describe('getDefaultFilters', () => {
     it('should return default filter values', () => {
       const filters = getDefaultFilters()
-      
+
       expect(filters).toEqual({
         stage: 'all',
         formats: [],
@@ -30,7 +30,7 @@ describe('filterMapper', () => {
       expect(query.includeDescription).toBe(false)
       expect(query.includeLinks).toBe(false)
       expect(query.includeLimits).toBe(true)
-      
+
       expect(query.query?.filterGroups).toHaveLength(3)
       expect(query.query?.sort).toEqual([
         { field: 'dates.startsAt', direction: 'SORT_DIRECTION_DESC' },
@@ -50,11 +50,11 @@ describe('filterMapper', () => {
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_IN')
       expect(stageFilter?.stringList?.values).toEqual([
-        'UPCOMING',
-        'REGISTRATION',
-        'PRESTART',
-        'RUNNING',
-        'JUDGING',
+        'HACKATHON_STAGE_UPCOMING',
+        'HACKATHON_STAGE_REGISTRATION',
+        'HACKATHON_STAGE_PRESTART',
+        'HACKATHON_STAGE_RUNNING',
+        'HACKATHON_STAGE_JUDGING',
       ])
     })
 
@@ -70,7 +70,7 @@ describe('filterMapper', () => {
 
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
-      expect(stageFilter?.stringValue).toBe('REGISTRATION')
+      expect(stageFilter?.stringValue).toBe('HACKATHON_STAGE_REGISTRATION')
     })
 
     it('should map stage "running" to PRESTART, RUNNING, JUDGING', () => {
@@ -85,7 +85,11 @@ describe('filterMapper', () => {
 
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_IN')
-      expect(stageFilter?.stringList?.values).toEqual(['PRESTART', 'RUNNING', 'JUDGING'])
+      expect(stageFilter?.stringList?.values).toEqual([
+        'HACKATHON_STAGE_PRESTART',
+        'HACKATHON_STAGE_RUNNING',
+        'HACKATHON_STAGE_JUDGING',
+      ])
     })
 
     it('should map stage "finished" to FINISHED', () => {
@@ -100,7 +104,7 @@ describe('filterMapper', () => {
 
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
-      expect(stageFilter?.stringValue).toBe('FINISHED')
+      expect(stageFilter?.stringValue).toBe('HACKATHON_STAGE_FINISHED')
     })
 
     it('should filter by online format', () => {
@@ -111,8 +115,8 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.find((group) =>
-        group.filters.some((f) => f.field === 'location.online')
+      const formatFilter = query.query?.filterGroups?.find(group =>
+        group.filters.some(f => f.field === 'location.online')
       )?.filters[0]
 
       expect(formatFilter?.field).toBe('location.online')
@@ -128,8 +132,8 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.find((group) =>
-        group.filters.some((f) => f.field === 'location.online')
+      const formatFilter = query.query?.filterGroups?.find(group =>
+        group.filters.some(f => f.field === 'location.online')
       )?.filters[0]
 
       expect(formatFilter?.field).toBe('location.online')
@@ -145,8 +149,8 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const hasFormatFilter = query.query?.filterGroups?.some((group) =>
-        group.filters.some((f) => f.field === 'location.online')
+      const hasFormatFilter = query.query?.filterGroups?.some(group =>
+        group.filters.some(f => f.field === 'location.online')
       )
 
       expect(hasFormatFilter).toBe(false)
@@ -161,8 +165,8 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const cityFilter = query.query?.filterGroups?.find((group) =>
-        group.filters.some((f) => f.field === 'location.city')
+      const cityFilter = query.query?.filterGroups?.find(group =>
+        group.filters.some(f => f.field === 'location.city')
       )?.filters[0]
 
       expect(cityFilter?.field).toBe('location.city')

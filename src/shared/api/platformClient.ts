@@ -29,7 +29,10 @@ export async function platformFetchJson<TResponse>(
 ): Promise<TResponse> {
   const urlPath = joinPath(env.apiBaseUrl, path)
   const isServer = typeof window === 'undefined'
-  const url = isServer && urlPath.startsWith('/') ? new URL(urlPath, await getServerOrigin()).toString() : urlPath
+  const url =
+    isServer && urlPath.startsWith('/')
+      ? new URL(urlPath, await getServerOrigin()).toString()
+      : urlPath
 
   const cookieHeader = isServer ? await getServerCookieHeader() : undefined
 

@@ -42,7 +42,7 @@ export function LoginForm() {
     <div className="flex w-full min-h-screen items-center justify-center bg-bg-surface p-m16">
       <form
         className="flex flex-col w-full max-w-[364px] items-center justify-center gap-m10"
-        onSubmit={async (e) => {
+        onSubmit={async e => {
           e.preventDefault()
           setFormError(null)
           setFieldError({})
@@ -92,7 +92,7 @@ export function LoginForm() {
                 name: 'login',
                 autoComplete: 'username',
                 value: login,
-                onChange: (e) => setLogin(e.target.value),
+                onChange: e => setLogin(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.login === true}
@@ -107,15 +107,12 @@ export function LoginForm() {
                 name: 'password',
                 autoComplete: 'current-password',
                 value: password,
-                onChange: (e) => setPassword(e.target.value),
+                onChange: e => setPassword(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.password === true}
             />
-            <Checkbox
-              label={t('auth.remember_me')}
-              disabled={isPending}
-            />
+            <Checkbox label={t('auth.remember_me')} disabled={isPending} />
           </div>
         </div>
 
@@ -130,7 +127,12 @@ export function LoginForm() {
         )}
 
         <div className="flex items-center gap-m4 self-stretch w-full relative flex-[0_0_auto]">
-          <Button className="flex-1 flex grow" variant="secondary-action" text={t('common.actions.register')} asChild>
+          <Button
+            className="flex-1 flex grow"
+            variant="secondary-action"
+            text={t('common.actions.register')}
+            asChild
+          >
             <Link href="/register" />
           </Button>
           <Button

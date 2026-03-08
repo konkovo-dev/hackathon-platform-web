@@ -19,7 +19,7 @@ import type { MeProfile } from '@/entities/user/model/types'
 
 const mockProfile: MeProfile = {
   user: {
-    id: 'user-1',
+    userId: 'user-1',
     username: 'testuser',
     firstName: 'Иван',
     lastName: 'Иванов',

@@ -9,7 +9,11 @@ import { Button } from '@/shared/ui/Button'
 import { InputLabel } from '@/shared/ui/InputLabel'
 import { useRegisterMutation } from '../model/hooks'
 
-function getAuthErrorText(t: ReturnType<typeof useT>, code: string, passwordMinLength: number): string {
+function getAuthErrorText(
+  t: ReturnType<typeof useT>,
+  code: string,
+  passwordMinLength: number
+): string {
   switch (code) {
     case 'INVALID_PASSWORD':
       return t('auth.errors.invalid_password', { min: passwordMinLength })
@@ -67,7 +71,7 @@ export function RegisterForm() {
     <div className="flex w-full min-h-screen items-center justify-center bg-bg-surface p-m16">
       <form
         className="flex flex-col w-full max-w-[364px] items-center justify-center gap-m10"
-        onSubmit={async (e) => {
+        onSubmit={async e => {
           e.preventDefault()
           setFormError(null)
           setFieldError({})
@@ -78,7 +82,13 @@ export function RegisterForm() {
           const lastNameMissing = !lastName.trim()
           const passwordMissing = !password
 
-          if (usernameMissing || emailMissing || firstNameMissing || lastNameMissing || passwordMissing) {
+          if (
+            usernameMissing ||
+            emailMissing ||
+            firstNameMissing ||
+            lastNameMissing ||
+            passwordMissing
+          ) {
             setFieldError({
               username: usernameMissing,
               email: emailMissing,
@@ -152,7 +162,7 @@ export function RegisterForm() {
                 name: usernameId,
                 autoComplete: 'username',
                 value: username,
-                onChange: (e) => setUsername(e.target.value),
+                onChange: e => setUsername(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.username === true}
@@ -167,7 +177,7 @@ export function RegisterForm() {
                 name: firstNameId,
                 autoComplete: 'given-name',
                 value: firstName,
-                onChange: (e) => setFirstName(e.target.value),
+                onChange: e => setFirstName(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.firstName === true}
@@ -182,7 +192,7 @@ export function RegisterForm() {
                 name: lastNameId,
                 autoComplete: 'family-name',
                 value: lastName,
-                onChange: (e) => setLastName(e.target.value),
+                onChange: e => setLastName(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.lastName === true}
@@ -197,7 +207,7 @@ export function RegisterForm() {
                 name: emailId,
                 autoComplete: 'email',
                 value: email,
-                onChange: (e) => setEmail(e.target.value),
+                onChange: e => setEmail(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.email === true}
@@ -213,7 +223,7 @@ export function RegisterForm() {
                 name: passwordId,
                 autoComplete: 'new-password',
                 value: password,
-                onChange: (e) => setPassword(e.target.value),
+                onChange: e => setPassword(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.password === true}
@@ -229,7 +239,7 @@ export function RegisterForm() {
                 name: confirmPasswordId,
                 autoComplete: 'new-password',
                 value: confirmPassword,
-                onChange: (e) => setConfirmPassword(e.target.value),
+                onChange: e => setConfirmPassword(e.target.value),
                 disabled: isPending,
               }}
               error={fieldError.confirmPassword === true}
@@ -248,7 +258,12 @@ export function RegisterForm() {
         )}
 
         <div className="flex items-center gap-m4 self-stretch w-full relative flex-[0_0_auto]">
-          <Button className="flex-1 flex grow" variant="secondary-action" text={t('common.actions.login')} asChild>
+          <Button
+            className="flex-1 flex grow"
+            variant="secondary-action"
+            text={t('common.actions.login')}
+            asChild
+          >
             <Link href="/login" />
           </Button>
           <Button

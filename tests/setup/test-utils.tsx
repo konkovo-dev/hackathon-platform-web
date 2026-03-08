@@ -16,11 +16,6 @@ function AllTheProviders({ children }: { children: React.ReactNode }) {
         retry: false,
       },
     },
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
   })
 
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

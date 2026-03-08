@@ -31,11 +31,7 @@ export type HackathonLink = {
   url: string
 }
 
-export type HackathonState = 
-  | 'HACKATHON_STATE_UNSPECIFIED'
-  | 'DRAFT'
-  | 'PUBLISHED'
-  | 'ARCHIVED'
+export type HackathonState = 'HACKATHON_STATE_UNSPECIFIED' | 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
 
 export type Hackathon = {
   hackathonId: string
@@ -79,14 +75,14 @@ export type HackathonListQuery = {
   query?: {
     filterGroups?: FilterGroup[]
     sort?: Sort[]
+    page?: {
+      pageToken?: string
+      pageSize?: number
+    }
   }
   includeDescription: boolean
   includeLinks: boolean
   includeLimits: boolean
-  page?: {
-    pageToken?: string
-    pageSize?: number
-  }
 }
 
 export type FilterGroup = {

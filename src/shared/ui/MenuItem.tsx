@@ -52,7 +52,12 @@ export function MenuItem({
   }
 
   return (
-    <button type="button" className={base} aria-current={active ? 'page' : undefined} onClick={onClick}>
+    <button
+      type="button"
+      className={base}
+      aria-current={active ? 'page' : undefined}
+      onClick={onClick}
+    >
       {content}
     </button>
   )

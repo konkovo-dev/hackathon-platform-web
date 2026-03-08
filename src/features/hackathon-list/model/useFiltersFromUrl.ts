@@ -12,7 +12,7 @@ import { getCities } from '@/entities/location'
  */
 export function useFiltersFromUrl(): [
   HackathonListFilters,
-  (filters: HackathonListFilters) => void
+  (filters: HackathonListFilters) => void,
 ] {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -20,23 +20,23 @@ export function useFiltersFromUrl(): [
 
   const filters = useMemo(() => {
     const parsed = parseFiltersFromUrl(searchParams)
-    
+
     if (!parsed.city) {
       const cities = getCities()
-      
-      if (geolocation.latitude && geolocation.longitude && !geolocation.loading) {
-        const nearestCity = findNearestCity(geolocation.latitude, geolocation.longitude, cities)
-        
-        if (nearestCity) {
-          return { ...parsed, city: nearestCity }
+
+      if (cities.length > 0) {
+        if (geolocation.latitude && geolocation.longitude && !geolocation.loading) {
+          const nearestCity = findNearestCity(geolocation.latitude, geolocation.longitude, cities)
+
+          if (nearestCity) {
+            return { ...parsed, city: nearestCity }
+          }
         }
-      }
-      
-      if (cities.length > 0 && !geolocation.loading) {
+
         return { ...parsed, city: cities[0].cityRu }
       }
     }
-    
+
     return parsed
   }, [searchParams, geolocation.latitude, geolocation.longitude, geolocation.loading])
 
@@ -68,9 +68,9 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
         ? stage
         : defaults.stage,
     formats: formatParam
-      ? (formatParam.split(',').filter((f) => f === 'online' || f === 'offline') as HackathonFormat[])
+      ? (formatParam.split(',').filter(f => f === 'online' || f === 'offline') as HackathonFormat[])
       : defaults.formats,
-    city: city || undefined,
+    city: city ? city : undefined,
     sortDirection: sort === 'desc' ? 'desc' : 'asc',
   }
 }

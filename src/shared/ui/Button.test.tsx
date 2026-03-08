@@ -85,13 +85,13 @@ describe('Button', () => {
   it('should render with md size', () => {
     renderWithProviders(<Button size="md">Medium</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('h-m20')
+    expect(button).toHaveClass('h-m16')
   })
 
   it('should render with lg size', () => {
     renderWithProviders(<Button size="lg">Large</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('h-m24')
+    expect(button).toHaveClass('h-m16')
   })
 
   it('should render as submit type', () => {

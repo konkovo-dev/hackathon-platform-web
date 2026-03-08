@@ -29,10 +29,10 @@ export function useGeolocation() {
       return
     }
 
-    setState((prev) => ({ ...prev, loading: true }))
+    setState(prev => ({ ...prev, loading: true }))
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -40,7 +40,7 @@ export function useGeolocation() {
           loading: false,
         })
       },
-      (error) => {
+      error => {
         setState({
           latitude: null,
           longitude: null,
@@ -70,13 +70,13 @@ export function findNearestCity(
   let nearestCity: string | null = null
   let minDistance = Infinity
 
-  cities.forEach((cityData) => {
+  cities.forEach(cityData => {
     const cityLat = parseFloat(cityData.latitude)
     const cityLon = parseFloat(cityData.longitude)
-    
+
     const latDiff = latitude - cityLat
     const lonDiff = longitude - cityLon
-    
+
     const distance = Math.sqrt(latDiff * latDiff + lonDiff * lonDiff)
 
     if (distance < minDistance) {

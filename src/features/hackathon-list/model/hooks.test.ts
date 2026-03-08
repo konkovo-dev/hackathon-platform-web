@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { describe, it, expect, beforeEach } from 'vitest'
+import { createElement, type ReactNode } from 'react'
 import { useInfiniteHackathonListQuery } from './hooks'
 import type { HackathonListFilters } from '@/entities/hackathon/model/types'
 
@@ -10,9 +11,11 @@ function createWrapper() {
       queries: { retry: false },
     },
   })
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  const Wrapper = ({ children }: { children: ReactNode }) => {
+    return createElement(QueryClientProvider, { client: queryClient }, children)
+  }
+  Wrapper.displayName = 'TestWrapper'
+  return Wrapper
 }
 
 describe('useInfiniteHackathonListQuery', () => {
@@ -56,7 +59,7 @@ describe('useInfiniteHackathonListQuery', () => {
 
     await waitFor(() => expect(result.current.data?.pages).toHaveLength(1))
 
-    const allHackathons = result.current.data?.pages.flatMap((page) => page.hackathons) ?? []
+    const allHackathons = result.current.data?.pages.flatMap(page => page.hackathons) ?? []
     expect(allHackathons.length).toBeGreaterThan(0)
   })
 
@@ -80,12 +83,9 @@ describe('useInfiniteHackathonListQuery', () => {
       },
     }
 
-    const { result } = renderHook(
-      () => useInfiniteHackathonListQuery(filters, initialData),
-      {
-        wrapper: createWrapper(),
-      }
-    )
+    const { result } = renderHook(() => useInfiniteHackathonListQuery(filters, initialData), {
+      wrapper: createWrapper(),
+    })
 
     expect(result.current.data?.pages).toHaveLength(1)
     expect(result.current.data?.pages[0].hackathons[0].hackathonId).toBe('test-1')

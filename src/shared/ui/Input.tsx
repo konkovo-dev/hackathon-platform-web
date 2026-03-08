@@ -11,9 +11,10 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 const getVariantStyles = (variant: InputVariant, error: boolean) => {
-  const baseStyles = 'flex items-center min-h-m16 overflow-hidden border border-solid transition-all duration-150'
+  const baseStyles =
+    'flex items-center min-h-m16 overflow-hidden border border-solid transition-all duration-150'
   const borderRadius = 'rounded-[var(--spacing-m4)]' // 8px
-  
+
   if (error) {
     return {
       container: `${baseStyles} ${borderRadius} border-state-error`,
@@ -44,7 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, variant = 'text', error = false, disabled, placeholder, ...props }, ref) => {
     const variantStyles = getVariantStyles(variant, error)
     const isSearch = variant === 'search'
-    
+
     const processedPlaceholder =
       !isSearch && typeof placeholder === 'string' && placeholder.length > 0
         ? `# ${placeholder}`
@@ -60,9 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className
         )}
       >
-        {isSearch && (
-          <Icon src="/icons/icon-search/icon-search-sm.svg" size="sm" />
-        )}
+        {isSearch && <Icon src="/icons/icon-search/icon-search-sm.svg" size="sm" />}
 
         <input
           ref={ref}

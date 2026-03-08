@@ -31,7 +31,7 @@ describe('IconCompletion', () => {
   it('renders all progress states', () => {
     const progressValues: Array<0 | 1 | 2 | 3 | 4 | 5 | 6> = [0, 1, 2, 3, 4, 5, 6]
 
-    progressValues.forEach((progress) => {
+    progressValues.forEach(progress => {
       const { container } = render(<IconCompletion progress={progress} />)
       const svg = container.querySelector('svg')
       expect(svg).toBeInTheDocument()

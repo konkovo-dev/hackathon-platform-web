@@ -34,9 +34,7 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
       )}
     >
       <div className="flex flex-col gap-m8 flex-1">
-        <h3 className="typography-title-md text-text-primary">
-          {hackathon.name}
-        </h3>
+        <h3 className="typography-title-md text-text-primary">{hackathon.name}</h3>
 
         <div className="flex flex-col gap-m6">
           {location && (
