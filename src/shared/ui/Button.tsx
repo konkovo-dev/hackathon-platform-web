@@ -95,12 +95,12 @@ const getSizeStyles = (size: ButtonSize, isActionType: boolean, isIcon: boolean)
       }
     case 'md':
       return {
-        container: `h-m20 px-m8 ${gap}`,
+        container: `h-m16 px-m8 ${gap}`,
         text: 'typography-caption-sm-medium',
       }
     case 'lg':
       return {
-        container: `h-m24 px-m12 ${gap}`,
+        container: `h-m16 px-m12 ${gap}`,
         text: 'typography-caption-sm-medium',
       }
     default:

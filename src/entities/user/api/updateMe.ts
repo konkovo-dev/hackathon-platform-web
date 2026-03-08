@@ -10,4 +10,5 @@ export async function updateMe(input: UpdateMeInput): Promise<UpdateMeResponse> 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   })
+  return response
 }

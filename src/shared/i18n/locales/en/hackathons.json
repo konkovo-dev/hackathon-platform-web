@@ -1,10 +1,49 @@
 {
   "list": {
-    "title": "Hackathons",
-    "empty": "Hackathon list will be here"
+    "title": "hackathons",
+    "empty": "no matching hackathons found",
+    "loading": "loading...",
+    "loadingMore": "loading more...",
+    "loadMore": "load more",
+    "allLoaded": "all hackathons loaded",
+    "error": "error loading hackathons",
+    "authRequired": "Authentication required. Please log in to view hackathons."
   },
   "detail": {
     "title": "Hackathon #{hackathonId}",
     "empty": "Hackathon main page will be here"
+  },
+  "card": {
+    "details": "details",
+    "teamSize": "up to {{count}} people"
+  },
+  "stage": {
+    "draft": "draft",
+    "upcoming": "upcoming",
+    "registration": "registration",
+    "prestart": "awaiting start",
+    "running": "running",
+    "judging": "judging",
+    "finished": "finished"
+  },
+  "filters": {
+    "stage": {
+      "all": "all",
+      "registration": "registration",
+      "running": "running",
+      "finished": "finished"
+    },
+    "format": {
+      "online": "online",
+      "offline": "offline"
+    },
+    "city": {
+      "placeholder": "select city",
+      "search": "search cities",
+      "modalTitle": "city"
+    },
+    "sort": {
+      "date": "date"
+    }
   }
 }
