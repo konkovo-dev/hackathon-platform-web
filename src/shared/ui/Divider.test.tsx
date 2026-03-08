@@ -3,26 +3,31 @@ import { render } from '@testing-library/react'
 import { Divider } from './Divider'
 
 describe('Divider', () => {
-  it('should render with default classes', () => {
+  it('renders horizontal divider by default', () => {
     const { container } = render(<Divider />)
     const divider = container.firstChild as HTMLElement
-    
-    expect(divider).toBeInTheDocument()
-    expect(divider.tagName).toBe('DIV')
-    expect(divider).toHaveClass('h-px', 'bg-divider')
+
+    expect(divider).toHaveClass('bg-border-default')
+    expect(divider).toHaveClass('h-px')
+    expect(divider).toHaveClass('w-full')
+    expect(divider).toHaveAttribute('role', 'separator')
+    expect(divider).toHaveAttribute('aria-orientation', 'horizontal')
   })
 
-  it('should accept additional className', () => {
-    const { container } = render(<Divider className="my-custom-class" />)
+  it('renders vertical divider', () => {
+    const { container } = render(<Divider orientation="vertical" />)
     const divider = container.firstChild as HTMLElement
-    
-    expect(divider).toHaveClass('h-px', 'bg-divider', 'my-custom-class')
+
+    expect(divider).toHaveClass('bg-border-default')
+    expect(divider).toHaveClass('w-px')
+    expect(divider).toHaveClass('h-m8')
+    expect(divider).toHaveAttribute('aria-orientation', 'vertical')
   })
 
-  it('should merge className with default classes', () => {
-    const { container } = render(<Divider className="mt-4 mb-4" />)
+  it('applies custom className', () => {
+    const { container } = render(<Divider className="custom-class" />)
     const divider = container.firstChild as HTMLElement
-    
-    expect(divider).toHaveClass('h-px', 'bg-divider', 'mt-4', 'mb-4')
+
+    expect(divider).toHaveClass('custom-class')
   })
 })
