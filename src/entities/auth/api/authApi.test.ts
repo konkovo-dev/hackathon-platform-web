@@ -15,18 +15,18 @@ describe('authApi', () => {
 
   describe('login', () => {
     it('should successfully login with correct credentials', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true }
       fetchSpy.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       } as Response)
 
-      const result = await authApi.login({ username: 'test', password: '123456' })
+      const result = await authApi.login({ login: 'test', password: '123456' })
 
       expect(fetch).toHaveBeenCalledWith('/api/auth/login', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ username: 'test', password: '123456' }),
+        body: JSON.stringify({ login: 'test', password: '123456' }),
       })
       expect(result).toEqual(mockResponse)
     })
@@ -48,27 +48,28 @@ describe('authApi', () => {
         }),
       } as any)
 
-      await expect(
-        authApi.login({ username: 'wrong', password: 'wrong' })
-      ).rejects.toThrow(ApiError)
+      await expect(authApi.login({ login: 'wrong', password: 'wrong' })).rejects.toThrow(ApiError)
     })
 
     it('should handle network errors', async () => {
       fetchSpy.mockRejectedValueOnce(new Error('Network error'))
 
-      await expect(
-        authApi.login({ username: 'test', password: '123456' })
-      ).rejects.toThrow('Network error')
+      await expect(authApi.login({ login: 'test', password: '123456' })).rejects.toThrow(
+        'Network error'
+      )
     })
   })
 
   describe('register', () => {
     it('should successfully register new user', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true }
       const input = {
         username: 'newuser',
-        password: '123456',
         email: 'test@example.com',
+        password: '123456',
+        firstName: 'Иван',
+        lastName: 'Иванов',
+        timezone: 'Europe/Moscow',
       }
 
       fetchSpy.mockResolvedValueOnce({
@@ -104,14 +105,21 @@ describe('authApi', () => {
       } as any)
 
       await expect(
-        authApi.register({ username: 'existing', password: '123456', email: 'test@example.com' })
+        authApi.register({
+          username: 'existing',
+          email: 'test@example.com',
+          password: '123456',
+          firstName: 'Иван',
+          lastName: 'Иванов',
+          timezone: 'Europe/Moscow',
+        })
       ).rejects.toThrow(ApiError)
     })
   })
 
   describe('logout', () => {
     it('should successfully logout', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true }
       fetchSpy.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
@@ -141,7 +149,7 @@ describe('authApi', () => {
 
   describe('refresh', () => {
     it('should successfully refresh token', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true }
       fetchSpy.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
@@ -179,7 +187,7 @@ describe('authApi', () => {
       const mockResponse = {
         active: true,
         userId: 'user-123',
-        username: 'testuser',
+        expiresAt: '2026-04-01T00:00:00Z',
       }
 
       fetchSpy.mockResolvedValueOnce({

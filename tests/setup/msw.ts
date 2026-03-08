@@ -2,23 +2,28 @@ import { setupServer } from 'msw/node'
 import { http, HttpResponse } from 'msw'
 import { mockUser } from '../fixtures/mockUser'
 import { mockSkills } from '../fixtures/mockSkills'
+import { mockHackathons } from '../fixtures/mockHackathons'
 
 export const handlers = [
   // ===== Auth endpoints =====
   http.post('/api/auth/login', () => {
-    return HttpResponse.json({ success: true })
+    return HttpResponse.json({ ok: true })
   }),
 
   http.post('/api/auth/register', () => {
-    return HttpResponse.json({ success: true })
+    return HttpResponse.json({ ok: true })
   }),
 
   http.post('/api/auth/logout', () => {
-    return HttpResponse.json({ success: true })
+    return HttpResponse.json({ ok: true })
   }),
 
   http.get('/api/auth/session', () => {
-    return HttpResponse.json(mockUser)
+    return HttpResponse.json({
+      active: true,
+      userId: 'user-1',
+      expiresAt: '2026-04-01T00:00:00Z',
+    })
   }),
 
   // ===== Platform API proxy =====
@@ -36,7 +41,10 @@ export const handlers = [
     return HttpResponse.json({
       ...mockUser,
       skills: body.userSkills || [],
-      skillsVisibility: body.skillsVisibility || mockUser.skillsVisibility,
+      visibility: {
+        ...mockUser.visibility,
+        skills: body.skillsVisibility || mockUser.visibility.skills,
+      },
     })
   }),
 
@@ -45,12 +53,24 @@ export const handlers = [
     return HttpResponse.json({
       ...mockUser,
       contacts: body.contacts || [],
-      contactsVisibility: body.contactsVisibility || mockUser.contactsVisibility,
+      visibility: {
+        ...mockUser.visibility,
+        contacts: body.contactsVisibility || mockUser.visibility.contacts,
+      },
     })
   }),
 
   http.get('/api/platform/v1/skills/catalog', () => {
     return HttpResponse.json({ skills: mockSkills })
+  }),
+
+  http.post('/api/platform/v1/hackathons/list', () => {
+    return HttpResponse.json({
+      hackathons: mockHackathons,
+      page: {
+        hasMore: false,
+      },
+    })
   }),
 ]
 

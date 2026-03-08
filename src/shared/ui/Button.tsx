@@ -39,13 +39,15 @@ const getVariantStyles = (variant: ButtonVariant, disabled: boolean) => {
       }
     case 'action':
       return {
-        container: 'bg-brand-primary text-text-primary hover:bg-brand-primary-hover active:bg-brand-primary-active border-0',
+        container:
+          'bg-brand-primary text-text-primary hover:bg-brand-primary-hover active:bg-brand-primary-active border-0',
         text: 'text-text-primary lowercase',
         icon: 'text-text-secondary',
       }
     case 'secondary-action':
       return {
-        container: 'bg-transparent border border-border-strong hover:border-border-focus active:border-border-focus group',
+        container:
+          'bg-transparent border border-border-strong hover:border-border-focus active:border-border-focus group',
         text: 'text-text-tertiary lowercase group-hover:text-text-primary group-active:text-text-primary',
         icon: 'text-text-tertiary group-hover:text-text-primary group-active:text-text-primary',
       }
@@ -194,13 +196,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button
-        ref={ref}
-        type={type}
-        disabled={disabled}
-        className={baseClassName}
-        {...props}
-      >
+      <button ref={ref} type={type} disabled={disabled} className={baseClassName} {...props}>
         {content}
       </button>
     )

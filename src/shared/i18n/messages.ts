@@ -31,7 +31,7 @@ export const loadNamespaces = async (locale: Locale, namespaces: readonly Namesp
   const safeLocale = loaders[locale] ? locale : DEFAULT_LOCALE
 
   const entries = await Promise.all(
-    namespaces.map(async (ns) => {
+    namespaces.map(async ns => {
       const mod = await loaders[safeLocale][ns]()
       return [ns, mod.default] as const
     })

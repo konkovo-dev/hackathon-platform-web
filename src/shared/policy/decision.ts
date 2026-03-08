@@ -9,7 +9,9 @@ export type ReasonCode =
   | 'CONFLICT'
   | 'CONTEXT_REQUIRED'
 
-export type Decision<R extends string = ReasonCode> = { allowed: true } | { allowed: false; reason: R }
+export type Decision<R extends string = ReasonCode> =
+  | { allowed: true }
+  | { allowed: false; reason: R }
 
 export const allow = (): Decision => ({ allowed: true })
 export const deny = <R extends ReasonCode>(reason: R): Decision<R> => ({ allowed: false, reason })

@@ -1,9 +1,4 @@
-import type {
-  HackathonListFilters,
-  HackathonListQuery,
-  Filter,
-  FilterGroup,
-} from './types'
+import type { HackathonListFilters, HackathonListQuery, Filter, FilterGroup } from './types'
 
 /**
  * Маппит UI-фильтры в API query для списка хакатонов
@@ -46,14 +41,16 @@ export function buildQueryFromFilters(
       sort: [
         {
           field: 'dates.startsAt',
-          direction:
-            filters.sortDirection === 'asc' ? 'SORT_DIRECTION_ASC' : 'SORT_DIRECTION_DESC',
+          direction: filters.sortDirection === 'asc' ? 'SORT_DIRECTION_ASC' : 'SORT_DIRECTION_DESC',
         },
       ],
-      page: pageToken || pageSize ? {
-        pageToken,
-        pageSize,
-      } : undefined,
+      page:
+        pageToken || pageSize
+          ? {
+              pageToken,
+              pageSize,
+            }
+          : undefined,
     },
     includeDescription: false,
     includeLinks: false,

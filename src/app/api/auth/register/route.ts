@@ -8,16 +8,14 @@ type TokenPairResponse = AuthGatewayComponents['schemas']['TokenPairResponse']
 type RegisterRequest = AuthGatewayComponents['schemas']['RegisterRequest']
 
 export async function POST(req: Request) {
-  const raw = (await req.json().catch(() => null)) as
-    | {
-        username?: string
-        email?: string
-        password?: string
-        firstName?: string
-        lastName?: string
-        timezone?: string
-      }
-    | null
+  const raw = (await req.json().catch(() => null)) as {
+    username?: string
+    email?: string
+    password?: string
+    firstName?: string
+    lastName?: string
+    timezone?: string
+  } | null
 
   const username = raw?.username?.trim()
   const email = raw?.email?.trim()
@@ -27,7 +25,10 @@ export async function POST(req: Request) {
   const timezone = raw?.timezone?.trim()
 
   if (!username || !email || !password || !firstName || !lastName || !timezone) {
-    return NextResponse.json({ message: 'Invalid payload', code: 'INVALID_PAYLOAD' }, { status: 400 })
+    return NextResponse.json(
+      { message: 'Invalid payload', code: 'INVALID_PAYLOAD' },
+      { status: 400 }
+    )
   }
 
   const payload: RegisterRequest = {

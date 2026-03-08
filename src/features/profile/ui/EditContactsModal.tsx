@@ -8,7 +8,11 @@ import { Input } from '@/shared/ui/Input'
 import { SwitchField } from '@/shared/ui/SwitchField'
 import { useT } from '@/shared/i18n/useT'
 import type { components } from '@/shared/api/identityMe.schema'
-import type { ContactWithVisibility, ContactType, VisibilityLevel } from '@/entities/user/model/types'
+import type {
+  ContactWithVisibility,
+  ContactType,
+  VisibilityLevel,
+} from '@/entities/user/model/types'
 
 type ContactInput = components['schemas']['v1MyContact']
 
@@ -60,14 +64,16 @@ export function EditContactsModal({
   }, [open])
 
   const handleChange = (type: ContactType, value: string) => {
-    setValues((prev) => ({ ...prev, [type]: value }))
+    setValues(prev => ({ ...prev, [type]: value }))
   }
 
   const handleSave = async () => {
     const contactInputs: ContactInput[] = CONTACT_FIELDS.flatMap(({ type }) => {
       const value = values[type]?.trim()
       if (!value) return []
-      return [{ contact: { type, value }, visibility: 'VISIBILITY_LEVEL_PUBLIC' as VisibilityLevel }]
+      return [
+        { contact: { type, value }, visibility: 'VISIBILITY_LEVEL_PUBLIC' as VisibilityLevel },
+      ]
     })
     await onSave(contactInputs, visibility)
   }
@@ -82,7 +88,7 @@ export function EditContactsModal({
           >
             <Input
               value={values[type] ?? ''}
-              onChange={(e) => handleChange(type, e.target.value)}
+              onChange={e => handleChange(type, e.target.value)}
               placeholder={type.replace('CONTACT_TYPE_', '').toLowerCase()}
             />
           </FormField>
@@ -90,7 +96,7 @@ export function EditContactsModal({
 
         <SwitchField
           checked={visibility === 'VISIBILITY_LEVEL_PUBLIC'}
-          onChange={(checked) =>
+          onChange={checked =>
             setVisibility(checked ? 'VISIBILITY_LEVEL_PUBLIC' : 'VISIBILITY_LEVEL_PRIVATE')
           }
           label={t('profile.visibility.contacts_label')}

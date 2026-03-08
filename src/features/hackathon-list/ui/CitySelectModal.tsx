@@ -27,7 +27,7 @@ export function CitySelectModal({ open, onClose, onSelect, currentCity }: CitySe
 
     const lowerQuery = searchQuery.toLowerCase()
     return cities.filter(
-      (city) =>
+      city =>
         city.cityRu.toLowerCase().includes(lowerQuery) ||
         city.cityEn.toLowerCase().includes(lowerQuery) ||
         city.country.toLowerCase().includes(lowerQuery)
@@ -46,16 +46,16 @@ export function CitySelectModal({ open, onClose, onSelect, currentCity }: CitySe
           type="search"
           placeholder={t('hackathons.filters.city.search')}
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           autoFocus
         />
 
         <div className="max-h-[400px] overflow-y-auto">
           <SelectList>
-            {filteredCities.map((city) => {
+            {filteredCities.map(city => {
               const cityName = getCityName(city, locale)
               const displayName = `${cityName}, ${city.country}`
-              
+
               return (
                 <SelectListItem
                   key={`${city.countryCode}-${city.cityRu}`}

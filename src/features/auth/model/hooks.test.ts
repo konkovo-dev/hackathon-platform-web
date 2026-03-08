@@ -40,7 +40,7 @@ describe('auth hooks', () => {
 
   describe('useSessionQuery', () => {
     it('should fetch session data', async () => {
-      const mockSession = { active: true, userId: 'user-123', username: 'testuser' }
+      const mockSession = { active: true, userId: 'user-123', expiresAt: '2026-04-01T00:00:00Z' }
       vi.mocked(authApi.session).mockResolvedValue(mockSession)
 
       const { result } = renderHook(() => useSessionQuery(), { wrapper: createWrapper() })
@@ -62,7 +62,7 @@ describe('auth hooks', () => {
     })
 
     it('should use staleTime of 15 seconds', async () => {
-      const mockSession = { active: true, userId: 'user-123', username: 'testuser' }
+      const mockSession = { active: true, userId: 'user-123', expiresAt: '2026-04-01T00:00:00Z' }
       vi.mocked(authApi.session).mockResolvedValue(mockSession)
 
       const { result } = renderHook(() => useSessionQuery(), { wrapper: createWrapper() })
@@ -75,7 +75,7 @@ describe('auth hooks', () => {
 
   describe('useSessionQueryWithInitial', () => {
     it('should use initial data when provided', async () => {
-      const initialData = { active: true, userId: 'user-123', username: 'testuser' }
+      const initialData = { active: true, userId: 'user-123', expiresAt: '2026-04-01T00:00:00Z' }
 
       const { result } = renderHook(() => useSessionQueryWithInitial(initialData), {
         wrapper: createWrapper(),
@@ -86,7 +86,7 @@ describe('auth hooks', () => {
     })
 
     it('should have correct staleTime configuration', async () => {
-      const initialData = { active: true, userId: 'user-123', username: 'testuser' }
+      const initialData = { active: true, userId: 'user-123', expiresAt: '2026-04-01T00:00:00Z' }
 
       const { result } = renderHook(() => useSessionQueryWithInitial(initialData), {
         wrapper: createWrapper(),
@@ -98,16 +98,16 @@ describe('auth hooks', () => {
 
   describe('useLoginMutation', () => {
     it('should successfully login and invalidate session', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true as const }
       vi.mocked(authApi.login).mockResolvedValue(mockResponse)
 
       const { result } = renderHook(() => useLoginMutation(), { wrapper: createWrapper() })
 
-      result.current.mutate({ username: 'test', password: '123456' })
+      result.current.mutate({ login: 'test', password: '123456' })
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-      expect(authApi.login).toHaveBeenCalledWith({ username: 'test', password: '123456' })
+      expect(authApi.login).toHaveBeenCalledWith({ login: 'test', password: '123456' })
       expect(result.current.data).toEqual(mockResponse)
     })
 
@@ -117,7 +117,7 @@ describe('auth hooks', () => {
 
       const { result } = renderHook(() => useLoginMutation(), { wrapper: createWrapper() })
 
-      result.current.mutate({ username: 'wrong', password: 'wrong' })
+      result.current.mutate({ login: 'wrong', password: 'wrong' })
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
@@ -127,8 +127,15 @@ describe('auth hooks', () => {
 
   describe('useRegisterMutation', () => {
     it('should successfully register and invalidate session', async () => {
-      const mockResponse = { success: true }
-      const input = { username: 'newuser', password: '123456', email: 'test@example.com' }
+      const mockResponse = { ok: true as const }
+      const input = {
+        username: 'newuser',
+        email: 'test@example.com',
+        password: '123456',
+        firstName: 'Иван',
+        lastName: 'Иванов',
+        timezone: 'Europe/Moscow',
+      }
 
       vi.mocked(authApi.register).mockResolvedValue(mockResponse)
 
@@ -148,7 +155,14 @@ describe('auth hooks', () => {
 
       const { result } = renderHook(() => useRegisterMutation(), { wrapper: createWrapper() })
 
-      result.current.mutate({ username: 'existing', password: '123456', email: 'test@example.com' })
+      result.current.mutate({
+        username: 'existing',
+        email: 'test@example.com',
+        password: '123456',
+        firstName: 'Иван',
+        lastName: 'Иванов',
+        timezone: 'Europe/Moscow',
+      })
 
       await waitFor(() => expect(result.current.isError).toBe(true))
 
@@ -158,7 +172,7 @@ describe('auth hooks', () => {
 
   describe('useLogoutMutation', () => {
     it('should successfully logout and invalidate session', async () => {
-      const mockResponse = { success: true }
+      const mockResponse = { ok: true as const }
       vi.mocked(authApi.logout).mockResolvedValue(mockResponse)
 
       const { result } = renderHook(() => useLogoutMutation(), { wrapper: createWrapper() })

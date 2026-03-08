@@ -14,17 +14,17 @@ describe('updateMySkills', () => {
 
   it('should successfully update skills with catalog skills', async () => {
     const input = {
-      userSkills: [
-        { catalog: { id: 'skill-1', name: 'React' }, custom: null },
-        { catalog: { id: 'skill-2', name: 'TypeScript' }, custom: null },
-      ],
+      userSkills: [],
       catalogSkillIds: ['skill-1', 'skill-2'],
       skillsVisibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
     }
 
     const mockResponse = {
-      skills: input.userSkills,
-      visibility: { skillsVisibility: input.skillsVisibility },
+      skills: [
+        { catalog: { id: 'skill-1', name: 'React' }, custom: undefined },
+        { catalog: { id: 'skill-2', name: 'TypeScript' }, custom: undefined },
+      ],
+      visibility: { skills: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -41,16 +41,14 @@ describe('updateMySkills', () => {
 
   it('should successfully update skills with custom skills', async () => {
     const input = {
-      userSkills: [
-        { catalog: null, custom: { id: 'custom-1', name: 'My Custom Skill' } },
-      ],
+      userSkills: ['My Custom Skill'],
       catalogSkillIds: [],
-      skillsVisibility: 'VISIBILITY_LEVEL_TEAM' as const,
+      skillsVisibility: 'VISIBILITY_LEVEL_PRIVATE' as const,
     }
 
     const mockResponse = {
-      skills: input.userSkills,
-      visibility: { skillsVisibility: input.skillsVisibility },
+      skills: [{ catalog: undefined, custom: { id: 'custom-1', name: 'My Custom Skill' } }],
+      visibility: { skills: 'VISIBILITY_LEVEL_PRIVATE' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -74,14 +72,14 @@ describe('updateMySkills', () => {
 
     const mockResponse = {
       skills: [],
-      visibility: { skillsVisibility: 'VISIBILITY_LEVEL_PRIVATE' },
+      visibility: { skills: 'VISIBILITY_LEVEL_PRIVATE' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
 
     const result = await updateMySkills(input)
 
-    expect(result.visibility.skillsVisibility).toBe('VISIBILITY_LEVEL_PRIVATE')
+    expect(result.visibility?.skills).toBe('VISIBILITY_LEVEL_PRIVATE')
   })
 
   it('should successfully clear all skills', async () => {
@@ -93,7 +91,7 @@ describe('updateMySkills', () => {
 
     const mockResponse = {
       skills: [],
-      visibility: { skillsVisibility: input.skillsVisibility },
+      visibility: { skills: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -105,18 +103,18 @@ describe('updateMySkills', () => {
 
   it('should handle mixed catalog and custom skills', async () => {
     const input = {
-      userSkills: [
-        { catalog: { id: 'skill-1', name: 'React' }, custom: null },
-        { catalog: null, custom: { id: 'custom-1', name: 'My Custom Skill' } },
-        { catalog: { id: 'skill-2', name: 'TypeScript' }, custom: null },
-      ],
+      userSkills: ['My Custom Skill'],
       catalogSkillIds: ['skill-1', 'skill-2'],
       skillsVisibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
     }
 
     const mockResponse = {
-      skills: input.userSkills,
-      visibility: { skillsVisibility: input.skillsVisibility },
+      skills: [
+        { catalog: { id: 'skill-1', name: 'React' }, custom: undefined },
+        { catalog: undefined, custom: { id: 'custom-1', name: 'My Custom Skill' } },
+        { catalog: { id: 'skill-2', name: 'TypeScript' }, custom: undefined },
+      ],
+      visibility: { skills: 'VISIBILITY_LEVEL_PUBLIC' },
     }
 
     vi.mocked(platformFetchJson).mockResolvedValue(mockResponse)
@@ -140,7 +138,7 @@ describe('updateMySkills', () => {
 
   it('should use camelCase field names in request body', async () => {
     const input = {
-      userSkills: [{ catalog: { id: 'skill-1', name: 'React' }, custom: null }],
+      userSkills: ['My Skill'],
       catalogSkillIds: ['skill-1'],
       skillsVisibility: 'VISIBILITY_LEVEL_PUBLIC' as const,
     }

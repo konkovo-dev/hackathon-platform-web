@@ -14,9 +14,21 @@ export interface InputLabelProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const InputLabel = forwardRef<HTMLDivElement, InputLabelProps>(
-  ({ className, label, inputPlaceholder, inputId, inputType = 'text', error, inputProps, ...props }, ref) => {
+  (
+    {
+      className,
+      label,
+      inputPlaceholder,
+      inputId,
+      inputType = 'text',
+      error,
+      inputProps,
+      ...props
+    },
+    ref
+  ) => {
     const id = inputId || `input-${label.toLowerCase().replace(/\s+/g, '-')}`
-    
+
     return (
       <div ref={ref} className={cn('flex flex-col gap-m6', className)} {...props}>
         <Label htmlFor={id} className="typography-label-md text-text-primary lowercase">

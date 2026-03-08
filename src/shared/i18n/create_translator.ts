@@ -19,7 +19,10 @@ export type Translator = {
   t: (key: I18nKey, params?: MessageParams) => string
 }
 
-export const createTranslator = (messages: MessagesTree, locale: Locale = DEFAULT_LOCALE): Translator => {
+export const createTranslator = (
+  messages: MessagesTree,
+  locale: Locale = DEFAULT_LOCALE
+): Translator => {
   const flat: FlatMessages = flattenMessages(messages)
   const pluralRules = new Intl.PluralRules(locale)
 
