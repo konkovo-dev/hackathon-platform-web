@@ -5,10 +5,16 @@
 ## Быстрые команды
 
 - `pnpm dev` — dev server
+- `pnpm build` — production build
+- `pnpm start` — production server
 - `pnpm typecheck` — TypeScript check
 - `pnpm lint` — ESLint + `i18n:check` + `strings:check`
 - `pnpm test` — запуск всех unit/integration тестов
+- `pnpm test:e2e` — E2E тесты (Playwright)
 - `pnpm api:gen` — генерация типов из OpenAPI
+- `make docker-build` — сборка Docker образа
+- `make docker-up` — запуск через Docker Compose
+- `make deploy-check` — проверка перед деплоем
 
 ## Проверки после каждого изменения
 
