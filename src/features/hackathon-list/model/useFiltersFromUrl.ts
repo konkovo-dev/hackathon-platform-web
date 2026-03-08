@@ -24,15 +24,15 @@ export function useFiltersFromUrl(): [
     if (!parsed.city) {
       const cities = getCities()
       
-      if (geolocation.latitude && geolocation.longitude && !geolocation.loading) {
-        const nearestCity = findNearestCity(geolocation.latitude, geolocation.longitude, cities)
-        
-        if (nearestCity) {
-          return { ...parsed, city: nearestCity }
+      if (cities.length > 0) {
+        if (geolocation.latitude && geolocation.longitude && !geolocation.loading) {
+          const nearestCity = findNearestCity(geolocation.latitude, geolocation.longitude, cities)
+          
+          if (nearestCity) {
+            return { ...parsed, city: nearestCity }
+          }
         }
-      }
-      
-      if (cities.length > 0 && !geolocation.loading) {
+        
         return { ...parsed, city: cities[0].cityRu }
       }
     }
@@ -70,7 +70,7 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
     formats: formatParam
       ? (formatParam.split(',').filter((f) => f === 'online' || f === 'offline') as HackathonFormat[])
       : defaults.formats,
-    city: city || undefined,
+    city: city ? city : undefined,
     sortDirection: sort === 'desc' ? 'desc' : 'asc',
   }
 }

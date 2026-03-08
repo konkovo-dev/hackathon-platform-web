@@ -79,14 +79,14 @@ export type HackathonListQuery = {
   query?: {
     filterGroups?: FilterGroup[]
     sort?: Sort[]
+    page?: {
+      pageToken?: string
+      pageSize?: number
+    }
   }
   includeDescription: boolean
   includeLinks: boolean
   includeLimits: boolean
-  page?: {
-    pageToken?: string
-    pageSize?: number
-  }
 }
 
 export type FilterGroup = {
