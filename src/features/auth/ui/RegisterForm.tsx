@@ -122,7 +122,8 @@ export function RegisterForm() {
               timezone,
             })
 
-            router.push('/profile')
+            // Hard redirect чтобы браузер получил cookies
+            window.location.href = '/profile'
           } catch (err) {
             const api = err instanceof ApiError ? err.data : null
 
