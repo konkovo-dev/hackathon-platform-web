@@ -62,5 +62,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd /opt/hackathon-platform
-            docker-compose pull web
-            docker-compose up -d web
+            docker compose pull web
+            docker compose up -d web
