@@ -13,6 +13,7 @@ type TokenPair = {
 }
 
 const isProd = process.env.NODE_ENV === 'production'
+const isSecure = isProd && process.env.FORCE_SECURE_COOKIES === 'true'
 
 function toMaxAgeSeconds(expiresAtIso?: string): number | undefined {
   if (!expiresAtIso) return undefined
@@ -28,7 +29,7 @@ export function setAuthCookies(tokens: TokenPair) {
 
   store.set(AUTH_COOKIE_ACCESS, tokens.accessToken, {
     httpOnly: true,
-    secure: isProd,
+    secure: isSecure,
     sameSite: 'lax',
     path: '/',
     maxAge: toMaxAgeSeconds(tokens.accessExpiresAt),
@@ -36,7 +37,7 @@ export function setAuthCookies(tokens: TokenPair) {
 
   store.set(AUTH_COOKIE_REFRESH, tokens.refreshToken, {
     httpOnly: true,
-    secure: isProd,
+    secure: isSecure,
     sameSite: 'lax',
     path: '/',
     maxAge: toMaxAgeSeconds(tokens.refreshExpiresAt),
@@ -48,14 +49,14 @@ export function clearAuthCookies() {
 
   store.set(AUTH_COOKIE_ACCESS, '', {
     httpOnly: true,
-    secure: isProd,
+    secure: isSecure,
     sameSite: 'lax',
     path: '/',
     maxAge: 0,
   })
   store.set(AUTH_COOKIE_REFRESH, '', {
     httpOnly: true,
-    secure: isProd,
+    secure: isSecure,
     sameSite: 'lax',
     path: '/',
     maxAge: 0,
