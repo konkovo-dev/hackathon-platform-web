@@ -16,8 +16,8 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
   const t = useT()
 
   const location = formatLocation(hackathon.location)
-  const dateRange = formatDateRange(hackathon.dates.startsAt, hackathon.dates.endsAt)
-  const teamSize = hackathon.limits.teamSizeMax
+  const dateRange = formatDateRange(hackathon.dates?.startsAt, hackathon.dates?.endsAt)
+  const teamSize = hackathon.limits?.teamSizeMax
     ? t('hackathons.card.teamSize', { count: hackathon.limits.teamSizeMax })
     : null
 
