@@ -9,13 +9,39 @@
     "error": "ошибка загрузки хакатонов",
     "authRequired": "Требуется авторизация. Войдите в систему для просмотра хакатонов."
   },
+  "breadcrumb": {
+    "hackathons": "хакатоны"
+  },
   "detail": {
     "title": "Хакатон #{hackathonId}",
-    "empty": "Главная страница хакатона будет здесь"
+    "empty": "главная страница хакатона будет здесь",
+    "register": "регистрация",
+    "no_description": "описание отсутствует",
+    "announcements_coming_soon": "объявления будут добавлены позже",
+    "info": {
+      "title": "основная информация",
+      "dates": "даты",
+      "limits": "ограничения",
+      "links": "ссылки",
+      "description": "описание",
+      "submission": "сабмишен",
+      "format": "формат",
+      "team_size": "размер команды",
+      "format_team": "командный формат",
+      "format_individual": "индивидуальный формат",
+      "format_both": "командный и индивидуальный формат"
+    },
+    "timeline": {
+      "title": "стадии хакатона"
+    },
+    "tabs": {
+      "description": "описание",
+      "announcements": "объявления"
+    }
   },
   "card": {
     "details": "подробнее",
-    "teamSize": "до {{count}} человек"
+    "teamSize": "до {count} человек"
   },
   "stage": {
     "draft": "черновик",

@@ -9,13 +9,39 @@
     "error": "error loading hackathons",
     "authRequired": "Authentication required. Please log in to view hackathons."
   },
+  "breadcrumb": {
+    "hackathons": "hackathons"
+  },
   "detail": {
     "title": "Hackathon #{hackathonId}",
-    "empty": "Hackathon main page will be here"
+    "empty": "hackathon main page will be here",
+    "register": "register",
+    "no_description": "no description",
+    "announcements_coming_soon": "announcements coming soon",
+    "info": {
+      "title": "general information",
+      "dates": "dates",
+      "limits": "limits",
+      "links": "links",
+      "description": "description",
+      "submission": "submission",
+      "format": "format",
+      "team_size": "team size",
+      "format_team": "team format",
+      "format_individual": "individual format",
+      "format_both": "team and individual format"
+    },
+    "timeline": {
+      "title": "hackathon stages"
+    },
+    "tabs": {
+      "description": "description",
+      "announcements": "announcements"
+    }
   },
   "card": {
     "details": "details",
-    "teamSize": "up to {{count}} people"
+    "teamSize": "up to {count} people"
   },
   "stage": {
     "draft": "draft",

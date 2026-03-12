@@ -38,10 +38,10 @@ export type Hackathon = {
   name: string
   shortDescription?: string
   description?: string
-  location: HackathonLocation
-  dates: HackathonDates
-  limits: HackathonLimits
-  registrationPolicy: HackathonRegistrationPolicy
+  location?: HackathonLocation
+  dates?: HackathonDates
+  limits?: HackathonLimits
+  registrationPolicy?: HackathonRegistrationPolicy
   stage: HackathonStage
   state: HackathonState
   links?: HackathonLink[]
