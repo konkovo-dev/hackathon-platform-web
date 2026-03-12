@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Modal, Input, SelectList, SelectListItem } from '@/shared/ui'
+import { Modal, Input, SelectList, ListItem } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { getCities, getCityName } from '@/entities/location'
 import { useLocale } from '@/shared/i18n/useLocale'
@@ -57,10 +57,12 @@ export function CitySelectModal({ open, onClose, onSelect, currentCity }: CitySe
               const displayName = `${cityName}, ${city.country}`
 
               return (
-                <SelectListItem
+                <ListItem
                   key={`${city.countryCode}-${city.cityRu}`}
-                  label={displayName}
+                  text={displayName}
+                  selectable
                   selected={currentCity === city.cityRu}
+                  variant="bordered"
                   onClick={() => handleSelect(city.cityRu)}
                 />
               )

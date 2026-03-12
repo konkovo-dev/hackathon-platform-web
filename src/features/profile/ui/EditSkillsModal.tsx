@@ -7,7 +7,7 @@ import { Chip } from '@/shared/ui/Chip'
 import { ChipList } from '@/shared/ui/ChipList'
 import { Divider } from '@/shared/ui/Divider'
 import { Input } from '@/shared/ui/Input'
-import { SelectListItem } from '@/shared/ui/SelectListItem'
+import { ListItem } from '@/shared/ui/ListItem'
 import { SelectList } from '@/shared/ui/SelectList'
 import { SwitchField } from '@/shared/ui/SwitchField'
 import { useT } from '@/shared/i18n/useT'
@@ -109,10 +109,12 @@ export function EditSkillsModal({
             {filteredSkills.map(skill => {
               const isSelected = draft.includes(skill)
               return (
-                <SelectListItem
+                <ListItem
                   key={skill}
-                  label={skill}
+                  text={skill}
+                  selectable
                   selected={isSelected}
+                  variant="bordered"
                   onClick={() => toggleSkill(skill)}
                 />
               )

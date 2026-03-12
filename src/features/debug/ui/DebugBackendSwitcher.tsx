@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useTransition } from 'react'
 import { cn } from '@/shared/lib/cn'
-import { SelectListItem, SelectList } from '@/shared/ui'
+import { ListItem, SelectList } from '@/shared/ui'
 
 type BackendTarget = 'remote' | 'local'
 
@@ -53,10 +53,12 @@ export function DebugBackendSwitcher() {
           <p className="typography-overline-xs text-text-tertiary px-m2 mb-m4">backend</p>
           <SelectList>
             {BACKENDS.map(({ target, label }) => (
-              <SelectListItem
+              <ListItem
                 key={target}
-                label={label}
+                text={label}
+                selectable
                 selected={state.target === target}
+                variant="bordered"
                 onClick={() => !isPending && switchTo(target)}
               />
             ))}

@@ -18,7 +18,7 @@ import { MenuItem } from '@/shared/ui/MenuItem'
 import { Modal } from '@/shared/ui/Modal'
 import { Radio } from '@/shared/ui/Radio'
 import { Section } from '@/shared/ui/Section'
-import { SelectListItem } from '@/shared/ui/SelectListItem'
+import { ListItem } from '@/shared/ui/ListItem'
 import { SelectList } from '@/shared/ui/SelectList'
 import { Switch } from '@/shared/ui/Switch'
 import { SwitchField } from '@/shared/ui/SwitchField'
@@ -674,22 +674,26 @@ export default function DesignSystemPage() {
           </div>
         </section>
 
-        {/* SelectListItem */}
+        {/* ListItem (selectable) */}
         <section>
           <Typography variant="heading-lg" className="mb-6">
-            SelectListItem
+            ListItem (selectable)
           </Typography>
           <Card>
             <CardContent className="max-w-sm">
               <SelectList>
-                <SelectListItem
-                  label="remote  ·  178.154.192.57:8080"
+                <ListItem
+                  text="remote  ·  178.154.192.57:8080"
+                  selectable
                   selected={selectedBackend === 'remote'}
+                  variant="bordered"
                   onClick={() => setSelectedBackend('remote')}
                 />
-                <SelectListItem
-                  label="local  ·  localhost:8080"
+                <ListItem
+                  text="local  ·  localhost:8080"
+                  selectable
                   selected={selectedBackend === 'local'}
+                  variant="bordered"
                   onClick={() => setSelectedBackend('local')}
                 />
               </SelectList>
