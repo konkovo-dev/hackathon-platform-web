@@ -36,6 +36,13 @@ const IGNORE_ATTRS = new Set([
   'inputType',
   'inputId',
   'orientation',
+  'role',
+  'aria-label',
+  'aria-labelledby',
+  'aria-selected',
+  'aria-controls',
+  'aria-current',
+  'aria-hidden',
 ])
 
 const hasLettersOrDigits = (s) => /[\p{L}\p{N}]/u.test(s)
