@@ -10,6 +10,7 @@ export const routes = {
     list: '/hackathons',
     create: '/hackathons/create',
     detail: (id: string) => `/hackathons/${id}`,
+    edit: (id: string) => `/hackathons/${id}/edit`,
   },
   profile: '/profile',
   teams: '/my-teams',

@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { publishHackathon } from '@/entities/hackathon/api/publishHackathon'
-import { ApiError } from '@/shared/api/errors'
 
 export function usePublishHackathonMutation(hackathonId: string) {
   const queryClient = useQueryClient()
@@ -8,14 +7,16 @@ export function usePublishHackathonMutation(hackathonId: string) {
   return useMutation({
     mutationFn: () =>
       publishHackathon(hackathonId, {
-        idempotencyKey: crypto.randomUUID(),
+        idempotencyKey: {
+          key: crypto.randomUUID(),
+        },
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['hackathons'] })
       queryClient.invalidateQueries({ queryKey: ['hackathon', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: ['hackathon', 'detail', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-context', hackathonId] })
-    },
-    onError: (error: ApiError) => {
-      console.error('Failed to publish hackathon:', error)
+      queryClient.invalidateQueries({ queryKey: ['hackathon', 'validate', hackathonId] })
     },
   })
 }

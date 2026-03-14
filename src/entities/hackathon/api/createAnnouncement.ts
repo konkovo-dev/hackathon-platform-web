@@ -1,7 +1,9 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 
 export type CreateAnnouncementRequest = {
-  idempotencyKey: string
+  idempotencyKey: {
+    key: string
+  }
   title: string
   body: string
 }

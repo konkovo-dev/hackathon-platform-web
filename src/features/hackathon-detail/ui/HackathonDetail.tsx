@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
+import { Breadcrumb, Tabs, type Tab, Button } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
@@ -115,7 +115,7 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
                 </p>
               </div>
             ) : (
-              <AnnouncementsList announcements={announcements} />
+              <AnnouncementsList announcements={announcements} hackathonId={hackathonId} />
             )}
           </>
         )}

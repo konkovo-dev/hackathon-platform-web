@@ -29,7 +29,10 @@ export function useHackathonDetailQuery(
   })
 }
 
-export function useHackathonAnnouncementsQuery(hackathonId: string | null | undefined) {
+export function useHackathonAnnouncementsQuery(
+  hackathonId: string | null | undefined,
+  enabled: boolean = true
+) {
   return useQuery({
     queryKey: hackathonId ? announcementsKey(hackathonId) : ['hackathon', 'announcements', 'none'],
     queryFn: async () => {
@@ -43,7 +46,7 @@ export function useHackathonAnnouncementsQuery(hackathonId: string | null | unde
         throw error
       }
     },
-    enabled: Boolean(hackathonId),
+    enabled: Boolean(hackathonId) && enabled,
     staleTime: 60_000,
     retry: (failureCount, error: any) => {
       if (error?.status === 403) return false

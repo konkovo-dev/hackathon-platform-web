@@ -1,7 +1,9 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 
 export type PublishHackathonRequest = {
-  idempotencyKey: string
+  idempotencyKey?: {
+    key: string
+  }
 }
 
 export type PublishHackathonResponse = {
@@ -16,6 +18,9 @@ export async function publishHackathon(
     `/v1/hackathons/${hackathonId}/publish`,
     {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(request),
     }
   )

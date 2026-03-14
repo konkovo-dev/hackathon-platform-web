@@ -2,7 +2,9 @@ import { platformFetchJson } from '@/shared/api/platformClient'
 import type { HackathonRole } from './listHackathonStaff'
 
 export type CreateStaffInvitationRequest = {
-  idempotencyKey: string
+  idempotencyKey: {
+    key: string
+  }
   targetUserId: string
   requestedRole: HackathonRole
   message?: string
