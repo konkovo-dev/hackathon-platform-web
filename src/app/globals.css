@@ -5,11 +5,11 @@
 @layer base {
   :root[data-theme='light'] {
     /* Brand colors */
-    --color-brand-primary: 213 94% 65%;
-    --color-brand-primary-hover: 213 94% 55%;
-    --color-brand-primary-active: 213 94% 45%;
+    --color-brand-primary: 213 94% 72%;
+    --color-brand-primary-hover: 213 94% 62%;
+    --color-brand-primary-active: 213 94% 52%;
     --color-brand-secondary: 220 9% 46%;
-    --color-brand-accent: 213 94% 46%;
+    --color-brand-accent: 213 94% 72%;
 
     /* Background colors */
     --color-bg-default: 0 0% 100%;
@@ -36,32 +36,32 @@
     --color-icon-secondary: 220 10% 35%;
 
     /* State colors */
-    --color-state-success: 142 60% 40%;
-    --color-state-success-bg: 142 60% 40%;
-    --color-state-warning: 38 95% 55%;
-    --color-state-warning-bg: 38 95% 55%;
-    --color-state-error: 0 84% 60%;
-    --color-state-error-bg: 0 84% 60%;
-    --color-state-info: 213 94% 46%;
-    --color-state-info-bg: 213 94% 46%;
+    --color-state-success: 142 60% 50%;
+    --color-state-success-bg: 142 60% 50%;
+    --color-state-warning: 38 95% 62%;
+    --color-state-warning-bg: 38 95% 62%;
+    --color-state-error: 0 84% 68%;
+    --color-state-error-bg: 0 84% 68%;
+    --color-state-info: 213 94% 72%;
+    --color-state-info-bg: 213 94% 72%;
 
     /* Status colors */
-    --color-status-new: 213 94% 46%;
-    --color-status-in-progress: 213 80% 42%;
+    --color-status-new: 213 94% 72%;
+    --color-status-in-progress: 213 80% 52%;
     --color-status-closed: 220 6% 45%;
     --color-status-draft: 220 8% 60%;
-    --color-status-submitted: 213 94% 46%;
-    --color-status-overdue: 0 84% 60%;
+    --color-status-submitted: 213 94% 72%;
+    --color-status-overdue: 0 84% 68%;
     --color-status-pending: 220 8% 60%;
-    --color-status-accepted: 142 60% 40%;
-    --color-status-declined: 0 84% 60%;
+    --color-status-accepted: 142 60% 50%;
+    --color-status-declined: 0 84% 68%;
     --color-status-expired: 220 8% 60%;
     --color-status-canceled: 220 6% 45%;
 
     /* Link colors */
-    --color-link-default: 213 94% 46%;
-    --color-link-hover: 213 94% 38%;
-    --color-focus-ring: 213 94% 46%;
+    --color-link-default: 213 94% 52%;
+    --color-link-hover: 213 94% 42%;
+    --color-focus-ring: 213 94% 52%;
 
     /* Overlay & Shadow */
     --color-overlay-scrim: rgba(0, 0, 0, 0.5);

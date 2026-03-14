@@ -19,6 +19,11 @@
       "name": "identity-skills",
       "input": "./openapi/identity-skills.openapi.yaml",
       "output": "./src/shared/api/identitySkills.schema.ts"
+    },
+    {
+      "name": "platform",
+      "input": "./openapi/platform.openapi.json",
+      "output": "./src/shared/api/platform.schema.ts"
     }
   ]
 }

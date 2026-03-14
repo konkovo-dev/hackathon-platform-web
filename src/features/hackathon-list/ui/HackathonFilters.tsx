@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Chip, ChipList, Divider, Icon } from '@/shared/ui'
+import { Chip, ChipList, Divider, Icon, CitySelectModal } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useLocale } from '@/shared/i18n/useLocale'
 import type {
@@ -10,7 +10,6 @@ import type {
   HackathonFormat,
 } from '@/entities/hackathon/model/types'
 import { getCities, getCityName } from '@/entities/location'
-import { CitySelectModal } from './CitySelectModal'
 
 export interface HackathonFiltersProps {
   filters: HackathonListFilters
