@@ -36,15 +36,26 @@ export async function platformFetchJson<TResponse>(
 
   const cookieHeader = isServer ? await getServerCookieHeader() : undefined
 
-  const res = await fetch(url, {
+  const fetchOptions: RequestInit = {
     ...init,
     headers: {
       accept: 'application/json',
       ...(init?.headers || {}),
-      ...(cookieHeader ? { cookie: cookieHeader } : null),
     },
     cache: 'no-store',
-  })
+  }
+
+  // На клиенте используем credentials для автоматической отправки cookies
+  if (!isServer) {
+    fetchOptions.credentials = 'same-origin'
+  }
+  
+  // На сервере явно передаем cookie header
+  if (isServer && cookieHeader) {
+    (fetchOptions.headers as Record<string, string>).cookie = cookieHeader
+  }
+
+  const res = await fetch(url, fetchOptions)
 
   if (!res.ok) {
     const err = await parseApiErrorResponse(res.clone())

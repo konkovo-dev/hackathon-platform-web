@@ -2,5 +2,10 @@
   "actions": {
     "login": "войти",
     "register": "регистрация"
+  },
+  "markdown": {
+    "editor": "редактор",
+    "preview": "предпросмотр",
+    "placeholder": "введите текст в формате Markdown..."
   }
 }

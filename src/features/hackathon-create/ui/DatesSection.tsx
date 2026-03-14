@@ -55,26 +55,6 @@ export function DatesSection({
 
   return (
     <div className="flex flex-col gap-m6">
-      {/* Хакатон */}
-      <div className="flex flex-col gap-m2">
-        <h3 className="typography-label-md text-text-primary lowercase">
-          {t('hackathons.create.dates.hackathon')}
-        </h3>
-        <DateRangeField
-          startLabel={t('hackathons.create.dates.from')}
-          endLabel={t('hackathons.create.dates.to')}
-          startValue={startsAt}
-          endValue={endsAt}
-          onStartChange={setStartsAt}
-          onEndChange={setEndsAt}
-          startId={startsAtId}
-          endId={endsAtId}
-          disabled={disabled}
-          startError={errors.startsAt}
-          endError={errors.endsAt}
-        />
-      </div>
-
       {/* Регистрация */}
       <div className="flex flex-col gap-m2">
         <h3 className="typography-label-md text-text-primary lowercase">
@@ -92,6 +72,26 @@ export function DatesSection({
           disabled={disabled}
           startError={errors.registrationOpensAt}
           endError={errors.registrationClosesAt}
+        />
+      </div>
+
+      {/* Хакатон */}
+      <div className="flex flex-col gap-m2">
+        <h3 className="typography-label-md text-text-primary lowercase">
+          {t('hackathons.create.dates.hackathon')}
+        </h3>
+        <DateRangeField
+          startLabel={t('hackathons.create.dates.from')}
+          endLabel={t('hackathons.create.dates.to')}
+          startValue={startsAt}
+          endValue={endsAt}
+          onStartChange={setStartsAt}
+          onEndChange={setEndsAt}
+          startId={startsAtId}
+          endId={endsAtId}
+          disabled={disabled}
+          startError={errors.startsAt}
+          endError={errors.endsAt}
         />
       </div>
 

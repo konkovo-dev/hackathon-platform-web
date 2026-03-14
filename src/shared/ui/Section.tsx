@@ -13,8 +13,9 @@ export function Section({ title, action, hoverAction, children, className }: Sec
   return (
     <div
       className={cn(
-        'relative group border border-border-default rounded-[var(--spacing-m4)] px-m8 py-m10 flex flex-col gap-m8',
+        'relative group border border-border-default rounded-[var(--spacing-m4)] px-m8 pb-m10 flex flex-col gap-m8',
         'animate-in fade-in slide-in-from-bottom-2 duration-200',
+        title ? 'pt-m6' : 'pt-m10',
         className
       )}
     >
