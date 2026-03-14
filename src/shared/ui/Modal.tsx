@@ -10,11 +10,13 @@ export interface ModalProps {
   open: boolean
   onClose: () => void
   title: string
+  subtitle?: string
   children: ReactNode
   className?: string
+  size?: 'md' | 'lg'
 }
 
-export function Modal({ open, onClose, title, children, className }: ModalProps) {
+export function Modal({ open, onClose, title, subtitle, children, className, size = 'md' }: ModalProps) {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -26,6 +28,11 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
 
   if (!open) return null
 
+  const sizeClasses = {
+    md: 'w-[512px]',
+    lg: 'w-[768px]',
+  }
+
   const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-200 p-m16"
@@ -35,14 +42,20 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
       <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
       <div
         className={cn(
-          'relative z-10 bg-bg-layer rounded-[var(--spacing-m8)] flex flex-col w-[512px]',
+          'relative z-10 bg-bg-layer rounded-[var(--spacing-m8)] flex flex-col',
+          sizeClasses[size],
           'max-h-full',
           'animate-in zoom-in-95 slide-in-from-bottom-4 duration-200',
           className
         )}
       >
-        <div className="flex items-center justify-between shrink-0 p-m8 pb-0">
-          <span className="typography-body-lg-medium text-text-primary">{title}</span>
+        <div className="flex items-start justify-between shrink-0 p-m8 pb-0">
+          <div className="flex flex-col gap-m2">
+            <span className="typography-body-lg-medium text-text-primary">{title}</span>
+            {subtitle && (
+              <span className="typography-caption-sm-regular text-text-secondary">{subtitle}</span>
+            )}
+          </div>
           <Button
             variant="icon"
             size="xs"

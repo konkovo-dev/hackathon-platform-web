@@ -42,7 +42,7 @@ export default function DesignSystemPage() {
       limits: { teamSizeMax: 5 },
       registrationPolicy: { allowIndividual: true, allowTeam: true },
       stage: 'REGISTRATION',
-      state: 'PUBLISHED',
+      state: 'HACKATHON_STATE_PUBLISHED',
     },
     {
       hackathonId: '2',
@@ -52,7 +52,7 @@ export default function DesignSystemPage() {
       limits: { teamSizeMax: 4 },
       registrationPolicy: { allowIndividual: false, allowTeam: true },
       stage: 'RUNNING',
-      state: 'PUBLISHED',
+      state: 'HACKATHON_STATE_PUBLISHED',
     },
     {
       hackathonId: '3',
@@ -62,7 +62,7 @@ export default function DesignSystemPage() {
       limits: { teamSizeMax: 6 },
       registrationPolicy: { allowIndividual: true, allowTeam: true },
       stage: 'UPCOMING',
-      state: 'PUBLISHED',
+      state: 'HACKATHON_STATE_PUBLISHED',
     },
   ]
 

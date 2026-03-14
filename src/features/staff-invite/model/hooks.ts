@@ -42,7 +42,9 @@ export function useCreateStaffInvitationMutation(hackathonId: string) {
   return useMutation({
     mutationFn: (params: { targetUserId: string; requestedRole: HackathonRole; message?: string }) =>
       createStaffInvitation(hackathonId, {
-        idempotencyKey: crypto.randomUUID(),
+        idempotencyKey: {
+          key: crypto.randomUUID(),
+        },
         ...params,
       }),
     onSuccess: () => {

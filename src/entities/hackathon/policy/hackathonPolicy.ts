@@ -11,9 +11,18 @@ export function canReadDraft(ctx: HackathonContext | null | undefined): Decision
 export function canViewAnnouncements(ctx: HackathonContext | null | undefined): Decision {
   if (!ctx) return deny('CONTEXT_REQUIRED')
   
+  if (ctx.stage === 'DRAFT') {
+    return deny('STAGE_RULE')
+  }
+  
+  const isStaff = ctx.roles.includes('OWNER') || 
+    ctx.roles.includes('ORGANIZER') || 
+    ctx.roles.includes('MENTOR') || 
+    ctx.roles.includes('JURY')
+  
   const isParticipant = ctx.particip.kind !== 'NONE'
   
-  if (isParticipant) {
+  if (isStaff || isParticipant) {
     return allow()
   }
   

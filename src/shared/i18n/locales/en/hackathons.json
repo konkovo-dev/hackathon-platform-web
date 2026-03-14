@@ -10,7 +10,9 @@
     "authRequired": "Authorization required. Please log in to view hackathons."
   },
   "breadcrumb": {
-    "hackathons": "hackathons"
+    "hackathons": "hackathons",
+    "create": "create",
+    "edit": "edit"
   },
   "detail": {
     "title": "Hackathon #{hackathonId}",
@@ -118,8 +120,30 @@
       "unknown": "unknown error"
     }
   },
+  "edit": {
+    "title": "edit hackathon",
+    "actions": {
+      "edit": "edit",
+      "edit_info": "edit information",
+      "save": "save changes",
+      "cancel": "cancel"
+    },
+    "errors": {
+      "load_failed": "failed to load hackathon",
+      "update_failed": "failed to update hackathon",
+      "unknown": "an unknown error occurred"
+    }
+  },
   "management": {
     "title": "management dashboard",
+    "actions": {
+      "title": "actions"
+    },
+    "info": {
+      "title": "information",
+      "stage": "stage",
+      "status": "status"
+    },
     "status": {
       "title": "hackathon status",
       "currentStage": "current stage"
@@ -127,8 +151,10 @@
     "publish": {
       "title": "publish hackathon",
       "button": "publish hackathon",
-      "confirm": "are you sure you want to publish the hackathon? It will become available to all users.",
-      "success": "hackathon published successfully"
+      "confirm_question": "are you sure you want to publish the hackathon?",
+      "confirm_info": "it will become available to all users",
+      "success": "hackathon published successfully",
+      "error": "failed to publish hackathon"
     },
     "staff": {
       "title": "organizer team",
@@ -160,10 +186,57 @@
     "announcements": {
       "title": "announcements",
       "create": "create announcement",
+      "edit": "edit announcement",
+      "save": "save",
       "empty": "no announcements yet",
       "titlePlaceholder": "announcement title",
       "bodyPlaceholder": "announcement text (Markdown supported)",
       "publish": "publish"
+    }
+  },
+  "state": {
+    "HACKATHON_STATE_UNSPECIFIED": "unspecified",
+    "HACKATHON_STATE_DRAFT": "draft",
+    "HACKATHON_STATE_PUBLISHED": "published",
+    "HACKATHON_STATE_ARCHIVED": "archived"
+  },
+  "task": {
+    "edit": {
+      "title": "edit task",
+      "description": "the task will be displayed to hackathon participants. use markdown for formatting.",
+      "placeholder": "describe the task for participants...",
+      "save": "save task"
+    },
+    "errors": {
+      "update_failed": "failed to update task"
+    }
+  },
+  "validation": {
+    "title": "ready to publish",
+    "ready": "hackathon is ready to publish",
+    "description": "fix the following errors before publishing:",
+    "errors": {
+      "REQUIRED": "required field is not filled",
+      "TIME_RULE": "time rule violation",
+      "TIME_LOCKED": "time change is locked",
+      "TYPE_RULE": "type rule violation",
+      "POLICY_RULE": "policy rule violation",
+      "FORBIDDEN": "action forbidden at current stage",
+      "FORMAT": "invalid format"
+    },
+    "fields": {
+      "name": "hackathon name",
+      "location": "location",
+      "registration_opens_at": "registration opening date",
+      "registration_closes_at": "registration closing date",
+      "starts_at": "hackathon start date",
+      "ends_at": "hackathon end date",
+      "judging_ends_at": "judging end date",
+      "task": "task for participants",
+      "registration_policy": "registration policy",
+      "team_size_max": "maximum team size",
+      "links": "links",
+      "dates": "dates"
     }
   }
 }

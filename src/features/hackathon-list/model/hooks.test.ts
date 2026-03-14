@@ -74,7 +74,7 @@ describe('useInfiniteHackathonListQuery', () => {
           limits: {},
           registrationPolicy: { allowIndividual: true, allowTeam: true },
           stage: 'REGISTRATION' as const,
-          state: 'PUBLISHED' as const,
+          state: 'HACKATHON_STATE_PUBLISHED' as const,
         },
       ],
       page: {

@@ -30,7 +30,7 @@ export function Timeline({ stages, className }: TimelineProps) {
           <div
             className={cn(
               'typography-body-sm whitespace-nowrap',
-              (stage.status === 'completed' || stage.status === 'current') && 'text-brand-primary',
+              (stage.status === 'completed' || stage.status === 'current') && 'text-text-primary',
               stage.status === 'upcoming' && 'text-text-secondary'
             )}
           >

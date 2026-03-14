@@ -2,8 +2,8 @@ import { platformFetchJson } from '@/shared/api/platformClient'
 
 export interface HackathonAnnouncement {
   announcementId: string
-  hackathonId: string
-  text: string
+  title: string
+  body: string
   createdAt: string
   updatedAt?: string
 }

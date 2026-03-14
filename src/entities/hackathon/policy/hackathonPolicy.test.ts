@@ -147,7 +147,7 @@ describe('canViewAnnouncements', () => {
     }
   })
 
-  it('should deny owner without participation to view announcements', () => {
+  it('should allow owner to view announcements (even without participation)', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -157,13 +157,10 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(false)
-    if (!decision.allowed) {
-      expect(decision.reason).toBe('ROLE_REQUIRED')
-    }
+    expect(decision.allowed).toBe(true)
   })
 
-  it('should deny organizer without participation to view announcements', () => {
+  it('should allow organizer to view announcements (even without participation)', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -173,13 +170,10 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(false)
-    if (!decision.allowed) {
-      expect(decision.reason).toBe('ROLE_REQUIRED')
-    }
+    expect(decision.allowed).toBe(true)
   })
 
-  it('should deny mentor without participation to view announcements', () => {
+  it('should allow mentor to view announcements (even without participation)', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -189,13 +183,10 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(false)
-    if (!decision.allowed) {
-      expect(decision.reason).toBe('ROLE_REQUIRED')
-    }
+    expect(decision.allowed).toBe(true)
   })
 
-  it('should deny jury without participation to view announcements', () => {
+  it('should allow jury to view announcements (even without participation)', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'JUDGING',
@@ -205,10 +196,7 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(false)
-    if (!decision.allowed) {
-      expect(decision.reason).toBe('ROLE_REQUIRED')
-    }
+    expect(decision.allowed).toBe(true)
   })
 
   it('should allow single participant to view announcements', () => {
@@ -277,6 +265,38 @@ describe('canViewAnnouncements', () => {
 
     const decision = canViewAnnouncements(ctx)
     expect(decision.allowed).toBe(true)
+  })
+
+  it('should deny viewing announcements in DRAFT stage (even for staff)', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canViewAnnouncements(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('STAGE_RULE')
+    }
+  })
+
+  it('should deny viewing announcements in DRAFT stage (even for participants)', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: [],
+      particip: { kind: 'SINGLE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canViewAnnouncements(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('STAGE_RULE')
+    }
   })
 })
 
