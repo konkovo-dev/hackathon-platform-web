@@ -1,6 +1,7 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import type { HackathonContext, ParticipationKind, StaffRole } from '../model/types'
+import { normalizeHackathonStage } from '../model/types'
 
 /**
  * Participation status из API
@@ -61,12 +62,17 @@ function mapParticipationStatus(status: ParticipationStatus): ParticipationKind 
 function mapStaffRole(role: string): StaffRole | null {
   switch (role) {
     case 'HACKATHON_ROLE_OWNER':
+    case 'HX_ROLE_OWNER':
       return 'OWNER'
     case 'HACKATHON_ROLE_ORGANIZER':
+    case 'HX_ROLE_ORGANIZER':
       return 'ORGANIZER'
     case 'HACKATHON_ROLE_MENTOR':
+    case 'HX_ROLE_MENTOR':
       return 'MENTOR'
     case 'HACKATHON_ROLE_JURY':
+    case 'HX_ROLE_JUDGE':
+    case 'HX_ROLE_JURY':
       return 'JURY'
     default:
       return null
@@ -82,9 +88,11 @@ function mapStaffRole(role: string): StaffRole | null {
  * 3. GET /v1/hackathons/{id}/staff - staff roles (опционально)
  */
 export async function getHackathonContext(hackathonId: string): Promise<HackathonContext> {
-  const hackathon = await platformFetchJson<Hackathon>(`/v1/hackathons/${hackathonId}`, {
+  const response = await platformFetchJson<{ hackathon: Hackathon }>(`/v1/hackathons/${hackathonId}`, {
     method: 'GET',
   })
+
+  const hackathon = response.hackathon
 
   let participationKind: ParticipationKind = 'NONE'
   let teamId: string | null = null
@@ -97,6 +105,7 @@ export async function getHackathonContext(hackathonId: string): Promise<Hackatho
     participationKind = mapParticipationStatus(participationData.participation.status)
     teamId = participationData.participation.teamId || null
   } catch (error) {
+    // 403 is expected for non-participants
   }
 
   let roles: StaffRole[] = []
@@ -113,11 +122,14 @@ export async function getHackathonContext(hackathonId: string): Promise<Hackatho
         .filter((role): role is StaffRole => role !== null)
     }
   } catch (error) {
+    // 403 is expected for non-staff users
   }
+
+  const normalizedStage = normalizeHackathonStage(hackathon.stage)
 
   return {
     hackathonId,
-    stage: hackathon.stage,
+    stage: normalizedStage,
     policy: {
       allow_team: hackathon.registrationPolicy?.allowTeam ?? false,
       allow_individual: hackathon.registrationPolicy?.allowIndividual ?? false,

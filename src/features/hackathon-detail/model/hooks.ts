@@ -32,11 +32,22 @@ export function useHackathonDetailQuery(
 export function useHackathonAnnouncementsQuery(hackathonId: string | null | undefined) {
   return useQuery({
     queryKey: hackathonId ? announcementsKey(hackathonId) : ['hackathon', 'announcements', 'none'],
-    queryFn: () => {
+    queryFn: async () => {
       if (!hackathonId) throw new Error('hackathonId is required')
-      return getHackathonAnnouncements(hackathonId)
+      try {
+        return await getHackathonAnnouncements(hackathonId)
+      } catch (error: any) {
+        if (error?.status === 403) {
+          return []
+        }
+        throw error
+      }
     },
     enabled: Boolean(hackathonId),
     staleTime: 60_000,
+    retry: (failureCount, error: any) => {
+      if (error?.status === 403) return false
+      return failureCount < 3
+    },
   })
 }

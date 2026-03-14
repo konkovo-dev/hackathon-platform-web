@@ -25,6 +25,7 @@ const config: Config = {
           default: 'hsl(var(--color-bg-default))',
           surface: 'hsl(var(--color-bg-surface))',
           elevated: 'hsl(var(--color-bg-elevated))',
+          layer: 'hsl(var(--color-bg-layer))',
           hover: 'hsl(var(--color-bg-hover))',
           selected: 'hsl(var(--color-bg-selected))',
         },

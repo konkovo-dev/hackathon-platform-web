@@ -8,13 +8,14 @@ import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
 import { AnnouncementsList } from './AnnouncementsList'
+import { HackathonManagementDashboard } from '@/widgets/hackathon-management-dashboard/ui/HackathonManagementDashboard'
 
 export interface HackathonDetailProps {
   hackathonId: string
   initialData?: Hackathon
 }
 
-type HackathonTab = 'description' | 'announcements'
+type HackathonTab = 'description' | 'announcements' | 'management'
 
 export function HackathonDetail({ hackathonId, initialData }: HackathonDetailProps) {
   const t = useT()
@@ -25,6 +26,11 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
     hackathonId 
   })
   const canSeeAnnouncements = canViewAnnouncementsDecision.allowed
+
+  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan('Hackathon.Manage', {
+    hackathonId
+  })
+  const canManage = canManageDecision.allowed
   
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)
@@ -37,9 +43,13 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
     if (canSeeAnnouncements) {
       baseTabs.push({ id: 'announcements', label: t('hackathons.detail.tabs.announcements') })
     }
+
+    if (canManage) {
+      baseTabs.push({ id: 'management', label: t('hackathons.detail.tabs.management') })
+    }
     
     return baseTabs
-  }, [canSeeAnnouncements, t])
+  }, [canSeeAnnouncements, canManage, t])
 
   if (isLoading && !initialData) {
     return (
@@ -108,6 +118,9 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
               <AnnouncementsList announcements={announcements} />
             )}
           </>
+        )}
+        {activeTab === 'management' && canManage && (
+          <HackathonManagementDashboard hackathon={hackathon} />
         )}
       </div>
     </div>

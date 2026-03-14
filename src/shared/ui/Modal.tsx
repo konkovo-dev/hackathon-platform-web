@@ -1,6 +1,7 @@
 'use client'
 
 import { type ReactNode, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '@/shared/lib/cn'
 import { Button } from './Button'
 import { Icon } from './Icon'
@@ -25,7 +26,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
 
   if (!open) return null
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-200 p-m16"
       role="dialog"
@@ -34,7 +35,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
       <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
       <div
         className={cn(
-          'relative z-10 bg-bg-elevated rounded-[var(--spacing-m8)] flex flex-col w-[512px]',
+          'relative z-10 bg-bg-layer rounded-[var(--spacing-m8)] flex flex-col w-[512px]',
           'max-h-full',
           'animate-in zoom-in-95 slide-in-from-bottom-4 duration-200',
           className
@@ -56,4 +57,6 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }

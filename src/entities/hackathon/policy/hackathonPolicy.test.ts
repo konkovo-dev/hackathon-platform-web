@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { canReadDraft, canViewAnnouncements } from './hackathonPolicy'
+import {
+  canReadDraft,
+  canViewAnnouncements,
+  canManageHackathon,
+  canPublishHackathon,
+  canCreateAnnouncement,
+  canInviteStaff,
+} from './hackathonPolicy'
 import type { HackathonContext } from '@/entities/hackathon-context/model/types'
 
 describe('canReadDraft', () => {
@@ -140,7 +147,7 @@ describe('canViewAnnouncements', () => {
     }
   })
 
-  it('should allow owner to view announcements', () => {
+  it('should deny owner without participation to view announcements', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -150,10 +157,13 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(true)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
-  it('should allow organizer to view announcements', () => {
+  it('should deny organizer without participation to view announcements', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -163,10 +173,13 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(true)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
-  it('should allow mentor to view announcements', () => {
+  it('should deny mentor without participation to view announcements', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'RUNNING',
@@ -176,10 +189,13 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(true)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
-  it('should allow jury to view announcements', () => {
+  it('should deny jury without participation to view announcements', () => {
     const ctx: HackathonContext = {
       hackathonId: 'hack-1',
       stage: 'JUDGING',
@@ -189,7 +205,10 @@ describe('canViewAnnouncements', () => {
     }
 
     const decision = canViewAnnouncements(ctx)
-    expect(decision.allowed).toBe(true)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 
   it('should allow single participant to view announcements', () => {
@@ -258,5 +277,269 @@ describe('canViewAnnouncements', () => {
 
     const decision = canViewAnnouncements(ctx)
     expect(decision.allowed).toBe(true)
+  })
+})
+
+describe('canManageHackathon', () => {
+  it('should deny if context is null', () => {
+    const decision = canManageHackathon(null)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
+  })
+
+  it('should deny if context is undefined', () => {
+    const decision = canManageHackathon(undefined)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
+  })
+
+  it('should allow owner to manage hackathon', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canManageHackathon(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should allow organizer to manage hackathon', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['ORGANIZER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canManageHackathon(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should deny mentor to manage hackathon', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['MENTOR'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canManageHackathon(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
+  })
+
+  it('should deny jury to manage hackathon', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'JUDGING',
+      roles: ['JURY'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canManageHackathon(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
+  })
+
+  it('should deny participant to manage hackathon', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: [],
+      particip: { kind: 'TEAM', team_id: 'team-1' },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canManageHackathon(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
+  })
+})
+
+describe('canPublishHackathon', () => {
+  it('should deny if context is null', () => {
+    const decision = canPublishHackathon(null)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
+  })
+
+  it('should allow owner to publish draft', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canPublishHackathon(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should allow organizer to publish draft', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: ['ORGANIZER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canPublishHackathon(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should deny if stage is not draft', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'REGISTRATION',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canPublishHackathon(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('STAGE_RULE')
+    }
+  })
+
+  it('should deny if user has no required role', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: ['MENTOR'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canPublishHackathon(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
+  })
+})
+
+describe('canCreateAnnouncement', () => {
+  it('should deny if context is null', () => {
+    const decision = canCreateAnnouncement(null)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
+  })
+
+  it('should allow owner to create announcement', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canCreateAnnouncement(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should allow organizer to create announcement', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['ORGANIZER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canCreateAnnouncement(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should deny mentor to create announcement', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['MENTOR'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canCreateAnnouncement(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
+  })
+})
+
+describe('canInviteStaff', () => {
+  it('should deny if context is null', () => {
+    const decision = canInviteStaff(null)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('CONTEXT_REQUIRED')
+    }
+  })
+
+  it('should allow owner to invite staff', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'DRAFT',
+      roles: ['OWNER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canInviteStaff(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should allow organizer to invite staff', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'REGISTRATION',
+      roles: ['ORGANIZER'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canInviteStaff(ctx)
+    expect(decision.allowed).toBe(true)
+  })
+
+  it('should deny mentor to invite staff', () => {
+    const ctx: HackathonContext = {
+      hackathonId: 'hack-1',
+      stage: 'RUNNING',
+      roles: ['MENTOR'],
+      particip: { kind: 'NONE', team_id: null },
+      policy: { allow_team: true, allow_individual: true },
+    }
+
+    const decision = canInviteStaff(ctx)
+    expect(decision.allowed).toBe(false)
+    if (!decision.allowed) {
+      expect(decision.reason).toBe('ROLE_REQUIRED')
+    }
   })
 })
