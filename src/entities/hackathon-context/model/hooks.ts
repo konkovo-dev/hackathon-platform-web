@@ -14,8 +14,6 @@ export function useHackathonContextQuery(hackathonId: string | null | undefined)
     },
     enabled: Boolean(hackathonId),
     staleTime: 15_000,
-    // Временно: не выбрасывать ошибку, пока endpoint не реализован на бэкенде
-    retry: false,
-    throwOnError: false,
+    retry: 1,
   })
 }

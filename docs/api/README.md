@@ -39,9 +39,14 @@ pnpm api:gen
 
 Важно: продуктовые запросы идут **через BFF-прокси**:
 
-- браузер → `/api/platform/*`
-- Next.js → `{PLATFORM_API_BASE_URL}/*` (с подстановкой access token из httpOnly cookies)
+- браузер → `/api/platform/*` (с `credentials: 'same-origin'` для автоматической отправки cookies)
+- Next.js SSR → `/api/platform/*` (с явной передачей cookie header, т.к. credentials не работает для внутренних запросов)
+- BFF → `{PLATFORM_API_BASE_URL}/*` (с подстановкой access token из httpOnly cookies в Authorization header)
 - при `401` выполняется `POST /api/auth/refresh` и **повтор запроса 1 раз**
+
+**Критично:** 
+- **Клиент**: `credentials: 'same-origin'` → браузер автоматически отправляет `hp_access_token` cookie
+- **Сервер (SSR)**: явная передача `cookie` header → Next.js не передает cookies автоматически во внутренних fetch к `/api/*`
 
 ## Ошибки: формат и обработка
 
