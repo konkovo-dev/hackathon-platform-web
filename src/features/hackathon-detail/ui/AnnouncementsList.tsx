@@ -1,17 +1,21 @@
 'use client'
 
+import { useState } from 'react'
 import { ListItem } from '@/shared/ui'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
 import { useT } from '@/shared/i18n/useT'
 import type { HackathonAnnouncement } from '@/entities/hackathon/api/getHackathonAnnouncements'
+import { AnnouncementModal } from './AnnouncementModal'
 
 export interface AnnouncementsListProps {
   announcements: HackathonAnnouncement[]
+  hackathonId: string
   locale?: string
 }
 
-export function AnnouncementsList({ announcements, locale = 'ru' }: AnnouncementsListProps) {
+export function AnnouncementsList({ announcements, hackathonId, locale = 'ru' }: AnnouncementsListProps) {
   const t = useT()
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null)
 
   if (announcements.length === 0) {
     return (
@@ -24,14 +28,26 @@ export function AnnouncementsList({ announcements, locale = 'ru' }: Announcement
   }
 
   return (
-    <div className="flex flex-col">
-      {announcements.map(announcement => (
-        <ListItem
-          key={announcement.announcementId}
-          text={announcement.text}
-          caption={formatRelativeTime(announcement.createdAt, locale)}
-        />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col gap-m4">
+        {announcements.map(announcement => (
+          <ListItem
+            key={announcement.announcementId}
+            text={announcement.title}
+            caption={formatRelativeTime(announcement.createdAt, locale)}
+            variant="section"
+            onClick={() => setSelectedAnnouncementId(announcement.announcementId)}
+          />
+        ))}
+      </div>
+
+      <AnnouncementModal
+        open={!!selectedAnnouncementId}
+        onClose={() => setSelectedAnnouncementId(null)}
+        announcementId={selectedAnnouncementId}
+        hackathonId={hackathonId}
+        locale={locale}
+      />
+    </>
   )
 }

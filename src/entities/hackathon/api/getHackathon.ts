@@ -1,4 +1,5 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import type { Hackathon } from '../model/types'
 
 export interface GetHackathonOptions {
@@ -32,5 +33,8 @@ export async function getHackathon(
     method: 'GET',
   })
 
-  return response.hackathon
+  return {
+    ...response.hackathon,
+    stage: normalizeHackathonStage(response.hackathon.stage as any),
+  }
 }

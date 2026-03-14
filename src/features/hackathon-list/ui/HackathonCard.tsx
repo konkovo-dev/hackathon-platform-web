@@ -31,6 +31,7 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
         'bg-bg-elevated rounded-[var(--spacing-m4)] overflow-hidden',
         'animate-in fade-in zoom-in-95 duration-150',
         'transition-all duration-200 ease-out',
+        'hover:bg-bg-hover',
         'hover:scale-[1.02] hover:-translate-y-1',
         'hover:shadow-[0_8px_24px_-4px_var(--color-shadow-color)]',
         'cursor-pointer',

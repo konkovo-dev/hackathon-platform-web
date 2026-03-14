@@ -15,6 +15,7 @@
     --color-bg-default: 0 0% 100%;
     --color-bg-surface: 220 20% 98%;
     --color-bg-elevated: 220 16% 96%;
+    --color-bg-layer: 0 0% 100%;
     --color-bg-hover: 220 14% 93%;
     --color-bg-selected: 220 12% 90%;
 
@@ -260,9 +261,10 @@
     /* Background colors */
     --color-bg-default: 0 0% 5%;
     --color-bg-surface: 220 18% 8%;
-    --color-bg-elevated: 220 16% 12%;
-    --color-bg-hover: 220 14% 16%;
-    --color-bg-selected: 220 12% 20%;
+    --color-bg-elevated: 220 17% 10%;
+    --color-bg-layer: 220 16% 15%;
+    --color-bg-hover: 220 16% 13%;
+    --color-bg-selected: 220 14% 16%;
 
     /* Text colors */
     --color-text-primary: 0 0% 96%;
@@ -499,9 +501,10 @@
   :root:not([data-theme]) {
     --color-bg-default: 0 0% 5%;
     --color-bg-surface: 220 18% 8%;
-    --color-bg-elevated: 220 16% 12%;
-    --color-bg-hover: 220 14% 16%;
-    --color-bg-selected: 220 12% 20%;
+    --color-bg-elevated: 220 17% 10%;
+    --color-bg-layer: 220 16% 15%;
+    --color-bg-hover: 220 16% 13%;
+    --color-bg-selected: 220 14% 16%;
     --color-text-primary: 0 0% 96%;
     --color-text-secondary: 220 10% 75%;
     --color-text-tertiary: 220 8% 62%;

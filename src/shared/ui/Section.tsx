@@ -7,14 +7,21 @@ export interface SectionProps {
   hoverAction?: ReactNode
   children: ReactNode
   className?: string
+  variant?: 'elevated' | 'outlined'
 }
 
-export function Section({ title, action, hoverAction, children, className }: SectionProps) {
+export function Section({ title, action, hoverAction, children, className, variant = 'elevated' }: SectionProps) {
+  const isElevated = variant === 'elevated'
+  const isOutlined = variant === 'outlined'
+
   return (
     <div
       className={cn(
-        'relative group border border-border-default rounded-[var(--spacing-m4)] px-m8 pb-m10 flex flex-col gap-m8',
+        'relative group rounded-[var(--spacing-m4)] px-m8 pb-m10 flex flex-col gap-m8',
         'animate-in fade-in slide-in-from-bottom-2 duration-200',
+        'transition-all duration-300 ease-out',
+        isElevated && 'bg-bg-elevated hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
+        isOutlined && 'border border-border-default hover:border-border-strong',
         title ? 'pt-m6' : 'pt-m10',
         className
       )}

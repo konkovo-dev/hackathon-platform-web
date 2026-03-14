@@ -1,4 +1,5 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import type { HackathonListResponse, HackathonListFilters } from '../model/types'
 import { buildQueryFromFilters, getDefaultFilters } from '../model/filterMapper'
 
@@ -13,11 +14,19 @@ export async function getHackathonList(
     ? buildQueryFromFilters(filters, pageToken, pageSize)
     : buildQueryFromFilters(getDefaultFilters(), pageToken, pageSize)
 
-  return platformFetchJson('/v1/hackathons/list', {
+  const response = await platformFetchJson<HackathonListResponse>('/v1/hackathons/list', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(query),
   })
+
+  return {
+    ...response,
+    hackathons: response.hackathons.map(h => ({
+      ...h,
+      stage: normalizeHackathonStage(h.stage as any),
+    })),
+  }
 }

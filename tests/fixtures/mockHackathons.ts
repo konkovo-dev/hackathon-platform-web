@@ -5,7 +5,7 @@ export const mockHackathons: Hackathon[] = [
     hackathonId: 'hack-1',
     name: 'Тестовый Хакатон 1',
     stage: 'REGISTRATION',
-    state: 'PUBLISHED',
+    state: 'HACKATHON_STATE_PUBLISHED',
     location: {
       online: true,
       city: 'Москва',
@@ -28,7 +28,7 @@ export const mockHackathons: Hackathon[] = [
     hackathonId: 'hack-2',
     name: 'Онлайн Хакатон 2',
     stage: 'UPCOMING',
-    state: 'PUBLISHED',
+    state: 'HACKATHON_STATE_PUBLISHED',
     location: {
       online: true,
     },
@@ -46,7 +46,7 @@ export const mockHackathons: Hackathon[] = [
     hackathonId: 'hack-3',
     name: 'Офлайн Хакатон в СПб',
     stage: 'RUNNING',
-    state: 'PUBLISHED',
+    state: 'HACKATHON_STATE_PUBLISHED',
     location: {
       online: false,
       city: 'Санкт-Петербург',
