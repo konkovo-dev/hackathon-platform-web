@@ -4,8 +4,7 @@ import { useState, useMemo } from 'react'
 import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import type { Hackathon } from '@/entities/hackathon/model/types'
-import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
-import { canViewAnnouncements } from '@/entities/hackathon/policy/hackathonPolicy'
+import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
 import { AnnouncementsList } from './AnnouncementsList'
@@ -21,14 +20,11 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const t = useT()
   const [activeTab, setActiveTab] = useState<HackathonTab>('description')
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId, initialData)
-  const { data: context } = useHackathonContextQuery(hackathonId)
   
-  const canSeeAnnouncements = useMemo(() => {
-    if (!context && hackathon?.state !== 'DRAFT') {
-      return true
-    }
-    return canViewAnnouncements(context).allowed
-  }, [context, hackathon?.state])
+  const { decision: canViewAnnouncementsDecision } = useCan('Hackathon.ViewAnnouncements', { 
+    hackathonId 
+  })
+  const canSeeAnnouncements = canViewAnnouncementsDecision.allowed
   
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)

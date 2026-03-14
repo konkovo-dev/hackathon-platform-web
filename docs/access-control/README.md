@@ -124,13 +124,88 @@
 
 ## Текущее состояние реализации в коде
 
+### Композитный HackathonContext
+
+**Файл:** `src/entities/hackathon-context/api/getHackathonContext.ts`
+
+Контекст собирается из **3 источников**:
+
+1. **GET `/v1/hackathons/{id}`** - основные данные:
+   - `stage` - стадия хакатона
+   - `policy` - политика регистрации (allow_team, allow_individual, team_size_max)
+   - `resultPublishedAt` - дата публикации результатов
+
+2. **GET `/v1/hackathons/{id}/participations/me`** - данные участия:
+   - `status` → маппится в `particip.kind`
+   - `teamId` → `particip.team_id`
+   - Graceful: 404 → `particip.kind = NONE` (пользователь не участник)
+
+3. **GET `/v1/hackathons/{id}/staff`** - staff роли:
+   - `roles[]` → маппится в массив `StaffRole[]`
+   - Graceful: 403/404 → `roles = []` (пользователь не staff)
+
+### Основные компоненты
+
 - `src/shared/policy/decision.ts` — `Decision` + `ReasonCode`
 - `src/shared/policy/useCan.ts` — `useCan(action, params?)` (связывает session + hackathon context)
-- `src/shared/policy/AccessGate.tsx` — минимальный UI-gate
-- `src/entities/hackathon-context/**` — типы + query `useHackathonContextQuery`
-- Примеры policy:
-  - `src/entities/team/policy/teamPolicy.ts` (`Team.Create`)
-  - `src/entities/hackathon/policy/hackathonPolicy.ts` (`Hackathon.ReadDraft`)
+- `src/shared/policy/AccessGate.tsx` — условный рендеринг
+- `src/entities/hackathon-context/` — композитный контекст
+  - `api/getHackathonContext.ts` — агрегация из 3 endpoints
+  - `model/hooks.ts` — `useHackathonContextQuery(hackathonId)`
+  - `model/types.ts` — типы контекста
+- `src/features/auth/model/hooks.ts` — `useSessionQuery()` для глобальной сессии
+
+### Примеры policy
+
+- `src/entities/team/policy/teamPolicy.ts` — `canCreateTeam()`
+- `src/entities/hackathon/policy/hackathonPolicy.ts` — `canReadDraft()`, `canViewAnnouncements()`
+
+### Использование в UI
+
+**Файл:** `src/shared/policy/useCan.ts`
+
+`useCan(action, params)` - хук для проверки доступа, возвращает `{ decision, isLoading }`:
+- `decision.allowed` - булево значение
+- `decision.reason` - причина отказа (если `allowed === false`)
+- `isLoading` - идёт загрузка session/context
+
+**Доступные Actions:**
+- `'Session.Authenticated'` - проверка авторизации
+- `'Hackathon.Create'` - создание хакатона
+- `'Hackathon.ReadDraft'` - просмотр черновика
+- `'Hackathon.ViewAnnouncements'` - просмотр объявлений
+- `'Team.Create'` - создание команды
+
+**AccessGate** (`src/shared/policy/AccessGate.tsx`) - условный рендеринг:
+
+```typescript
+<AccessGate 
+  decision={useCan('Team.Create', { hackathonId }).decision}
+  fallback={<div>Недоступно</div>}
+>
+  <CreateTeamForm />
+</AccessGate>
+```
+
+**Правило:** Никаких прямых проверок `roles/stage/particip` в UI, только через `useCan` + `AccessGate`.
+
+### Защита маршрутов
+
+**Уровень 1: Middleware** (`src/middleware.ts`)
+- Проверяет `hp_access_token` до рендера страницы
+- Редиректит на `/login` с сохранением пути
+
+**Уровень 2: Global Error Handler** (`src/app/providers.tsx`)
+- Перехватывает 401 от всех API запросов
+- Автоматический редирект через `window.location.href`
+
+**Уровень 3: UI Level**
+- Проактивно скрывает/делает disabled недоступные элементы
+- Использует `getServerSession()` для server-side проверок
+
+**Централизованные маршруты:** `src/shared/config/routes.ts`
+- Типобезопасный конфиг всех путей
+- Хелперы: `getLoginUrl()`, `isPublicRoute()`
 
 ---
 
