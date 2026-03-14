@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Section } from '@/shared/ui/Section'
 import { Button } from '@/shared/ui/Button'
-import { Textarea } from '@/shared/ui/Textarea'
+import { MarkdownEditor } from '@/shared/ui/MarkdownEditor'
 import { useT } from '@/shared/i18n/useT'
 import { ApiError } from '@/shared/api/errors'
 import { useCreateHackathonMutation } from '../model/hooks'
@@ -191,12 +191,11 @@ export function HackathonCreateForm() {
       </Section>
 
       <Section title={t('hackathons.create.sections.description')}>
-        <Textarea
+        <MarkdownEditor
           placeholder={t('hackathons.create.fields.description')}
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          onChange={setDescription}
           disabled={isPending}
-          rows={6}
           error={fieldErrors.description}
         />
       </Section>

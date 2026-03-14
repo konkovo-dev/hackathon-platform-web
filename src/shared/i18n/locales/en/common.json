@@ -2,5 +2,10 @@
   "actions": {
     "login": "sign in",
     "register": "sign up"
+  },
+  "markdown": {
+    "editor": "editor",
+    "preview": "preview",
+    "placeholder": "enter text in Markdown format..."
   }
 }

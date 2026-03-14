@@ -6,7 +6,12 @@ import { canCreateTeam } from '@/entities/team/policy/teamPolicy'
 import { canReadDraft } from '@/entities/hackathon/policy/hackathonPolicy'
 import { deny, type Decision } from './decision'
 
-export type Action = 'Session.Authenticated' | 'Team.Create' | 'Hackathon.ReadDraft'
+export type Action = 
+  | 'Session.Authenticated' 
+  | 'Team.Create' 
+  | 'Hackathon.ReadDraft'
+  | 'Hackathon.ViewAnnouncements'
+  | 'Hackathon.Create'
 
 export type UseCanResult = {
   decision: Decision

@@ -1,6 +1,6 @@
 'use client'
 
-import { Chip, Icon, IconText, InfoRow, Section, Timeline, type TimelineStage } from '@/shared/ui'
+import { Chip, Icon, IconText, InfoRow, Section, Timeline, MarkdownContent, type TimelineStage } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { getStageProgress, getStageLabel } from '@/entities/hackathon/model/utils'
 import { formatDateRange, formatLocation } from '@/shared/lib/formatDate'
@@ -219,9 +219,7 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
       {/* Description */}
       {hackathon.description && (
         <Section title={t('hackathons.detail.info.description')}>
-          <div className="typography-body-md-regular text-text-primary whitespace-pre-wrap">
-            {hackathon.description}
-          </div>
+          <MarkdownContent>{hackathon.description}</MarkdownContent>
         </Section>
       )}
     </div>
