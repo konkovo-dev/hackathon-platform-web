@@ -4,286 +4,284 @@
  */
 
 export interface paths {
-  '/v1/auth/register': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations['authRegister']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/auth/login': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations['authLogin']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/auth/introspect': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations['authIntrospect']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/auth/refresh': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations['authRefresh']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/auth/logout': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations['authLogout']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/v1/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["authRegister"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["authLogin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/introspect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["authIntrospect"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["authRefresh"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["authLogout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    ErrorResponse: {
-      message: string
-    } & {
-      [key: string]: unknown
-    }
-    IdempotencyKey: {
-      key: string
-    }
-    RegisterRequest: {
-      username: string
-      email: string
-      password: string
-      first_name: string
-      last_name: string
-      timezone: string
-      idempotency_key?: components['schemas']['IdempotencyKey']
-    }
-    /** @description Login by username or email */
-    LoginRequest:
-      | {
-          username: string
-          password: string
-        }
-      | {
-          email: string
-          password: string
-        }
-    IntrospectRequest: {
-      access_token: string
-    }
-    IntrospectActive: {
-      /** @enum {boolean} */
-      active: true
-      userId: string
-      /** Format: date-time */
-      expiresAt: string
-    }
-    IntrospectResponse: components['schemas']['IntrospectActive'] | Record<string, never>
-    RefreshRequest: {
-      refresh_token: string
-    }
-    LogoutRequest: {
-      refresh_token: string
-    }
-    TokenPairResponse: {
-      accessToken: string
-      refreshToken: string
-      /** Format: date-time */
-      accessExpiresAt?: string
-      /** Format: date-time */
-      refreshExpiresAt?: string
-    }
-  }
-  responses: {
-    /** @description Error response */
-    Error: {
-      headers: {
-        [name: string]: unknown
-      }
-      content: {
-        'application/json': components['schemas']['ErrorResponse']
-      }
-    }
-  }
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        ErrorResponse: {
+            message: string;
+        } & {
+            [key: string]: unknown;
+        };
+        IdempotencyKey: {
+            key: string;
+        };
+        RegisterRequest: {
+            username: string;
+            email: string;
+            password: string;
+            first_name: string;
+            last_name: string;
+            timezone: string;
+            idempotency_key?: components["schemas"]["IdempotencyKey"];
+        };
+        /** @description Login by username or email */
+        LoginRequest: {
+            username: string;
+            password: string;
+        } | {
+            email: string;
+            password: string;
+        };
+        IntrospectRequest: {
+            access_token: string;
+        };
+        IntrospectActive: {
+            /** @enum {boolean} */
+            active: true;
+            userId: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        IntrospectResponse: components["schemas"]["IntrospectActive"] | Record<string, never>;
+        RefreshRequest: {
+            refresh_token: string;
+        };
+        LogoutRequest: {
+            refresh_token: string;
+        };
+        TokenPairResponse: {
+            accessToken: string;
+            refreshToken: string;
+            /** Format: date-time */
+            accessExpiresAt?: string;
+            /** Format: date-time */
+            refreshExpiresAt?: string;
+        };
+    };
+    responses: {
+        /** @description Error response */
+        Error: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorResponse"];
+            };
+        };
+    };
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
-  authRegister: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RegisterRequest']
-      }
-    }
-    responses: {
-      /** @description Token pair */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['TokenPairResponse']
-        }
-      }
-      400: components['responses']['Error']
-    }
-  }
-  authLogin: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['LoginRequest']
-      }
-    }
-    responses: {
-      /** @description Token pair */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['TokenPairResponse']
-        }
-      }
-      400: components['responses']['Error']
-      401: components['responses']['Error']
-    }
-  }
-  authIntrospect: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['IntrospectRequest']
-      }
-    }
-    responses: {
-      /** @description Protobuf3: при невалидном токене сервер может вернуть пустой объект `{}`. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['IntrospectResponse']
-        }
-      }
-      400: components['responses']['Error']
-    }
-  }
-  authRefresh: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RefreshRequest']
-      }
-    }
-    responses: {
-      /** @description Token pair */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['TokenPairResponse']
-        }
-      }
-      400: components['responses']['Error']
-      401: components['responses']['Error']
-    }
-  }
-  authLogout: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['LogoutRequest']
-      }
-    }
-    responses: {
-      /** @description Empty object */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': Record<string, never>
-        }
-      }
-      400: components['responses']['Error']
-    }
-  }
+    authRegister: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterRequest"];
+            };
+        };
+        responses: {
+            /** @description Token pair */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPairResponse"];
+                };
+            };
+            400: components["responses"]["Error"];
+        };
+    };
+    authLogin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Token pair */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPairResponse"];
+                };
+            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+        };
+    };
+    authIntrospect: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IntrospectRequest"];
+            };
+        };
+        responses: {
+            /** @description Protobuf3: при невалидном токене сервер может вернуть пустой объект `{}`. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntrospectResponse"];
+                };
+            };
+            400: components["responses"]["Error"];
+        };
+    };
+    authRefresh: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RefreshRequest"];
+            };
+        };
+        responses: {
+            /** @description Token pair */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPairResponse"];
+                };
+            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+        };
+    };
+    authLogout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LogoutRequest"];
+            };
+        };
+        responses: {
+            /** @description Empty object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: components["responses"]["Error"];
+        };
+    };
 }
