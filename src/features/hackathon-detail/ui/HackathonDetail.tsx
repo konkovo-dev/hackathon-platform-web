@@ -24,8 +24,11 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const { data: context } = useHackathonContextQuery(hackathonId)
   
   const canSeeAnnouncements = useMemo(() => {
+    if (!context && hackathon?.state !== 'DRAFT') {
+      return true
+    }
     return canViewAnnouncements(context).allowed
-  }, [context])
+  }, [context, hackathon?.state])
   
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)

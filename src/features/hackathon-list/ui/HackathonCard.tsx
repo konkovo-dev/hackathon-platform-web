@@ -30,8 +30,15 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
         'flex flex-col p-m8 w-[258px] h-full',
         'bg-bg-elevated rounded-[var(--spacing-m4)] overflow-hidden',
         'animate-in fade-in zoom-in-95 duration-150',
+        'transition-all duration-200 ease-out',
+        'hover:scale-[1.02] hover:-translate-y-1',
+        'hover:shadow-[0_8px_24px_-4px_var(--color-shadow-color)]',
+        'cursor-pointer',
         className
       )}
+      onClick={() => {
+        window.location.href = `/hackathons/${hackathon.hackathonId}`
+      }}
     >
       <div className="flex flex-col gap-m8 flex-1">
         <h3 className="typography-title-md text-text-primary">{hackathon.name}</h3>
@@ -69,7 +76,8 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
         variant="action"
         size="lg"
         className="w-full mt-m8"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation()
           window.location.href = `/hackathons/${hackathon.hackathonId}`
         }}
       >

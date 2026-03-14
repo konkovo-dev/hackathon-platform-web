@@ -1,8 +1,10 @@
 'use client'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
 import { I18nProvider } from '@/shared/i18n/I18nProvider'
+import { ApiError } from '@/shared/api/errors'
+import { getLoginUrl, isPublicRoute } from '@/shared/config/routes'
 import type { Locale } from '@/shared/i18n/config'
 import type { MessagesTree } from '@/shared/i18n/types'
 
@@ -25,6 +27,16 @@ export function Providers({
             refetchOnWindowFocus: false,
           },
         },
+        mutationCache: new MutationCache({
+          onError: (error: Error) => {
+            handleGlobalError(error)
+          },
+        }),
+        queryCache: new QueryCache({
+          onError: (error: Error) => {
+            handleGlobalError(error)
+          },
+        }),
       })
   )
 
@@ -35,4 +47,20 @@ export function Providers({
       </I18nProvider>
     </QueryClientProvider>
   )
+}
+
+function handleGlobalError(error: unknown) {
+  if (error instanceof ApiError) {
+    const code = error.data?.code
+    const status = error.data?.status
+    
+    // 401 Unauthorized или gRPC Unauthenticated (16)
+    if (status === 401 || code === '16' || code === 'UNAUTHENTICATED') {
+      const currentPath = window.location.pathname
+      
+      if (!isPublicRoute(currentPath)) {
+        window.location.href = getLoginUrl(currentPath)
+      }
+    }
+  }
 }

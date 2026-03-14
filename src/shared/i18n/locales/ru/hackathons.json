@@ -71,5 +71,50 @@
     "sort": {
       "date": "дата"
     }
+  },
+  "create": {
+    "title": "создать хакатон",
+    "auth_required": "авторизуйтесь, чтобы создать хакатон",
+    "auth_required_tooltip": "для создания хакатона необходимо войти в систему",
+    "sections": {
+      "basic_info": "основная информация",
+      "description": "описание",
+      "location": "локация",
+      "dates": "даты",
+      "registration_policy": "формат участия",
+      "limits": "ограничения",
+      "links": "полезные ссылки"
+    },
+    "dates": {
+      "hackathon": "хакатон",
+      "registration": "регистрация",
+      "submissions": "сабмишены",
+      "judging": "оценка",
+      "from": "с",
+      "to": "до",
+      "until": "до"
+    },
+    "fields": {
+      "name": "название хакатона",
+      "shortDescription": "краткое описание",
+      "description": "полное описание",
+      "city": "город",
+      "venue": "место проведения",
+      "online": "онлайн хакатон",
+      "teamSizeMax": "максимальный размер команды",
+      "allowTeam": "команды",
+      "allowIndividual": "индивидуальное участие",
+      "linkTitle": "название ссылки",
+      "linkUrl": "url"
+    },
+    "actions": {
+      "submit": "создать хакатон",
+      "cancel": "отменить"
+    },
+    "errors": {
+      "required": "обязательное поле",
+      "invalid_dates": "дата окончания должна быть позже даты начала",
+      "unknown": "неизвестная ошибка"
+    }
   }
 }
