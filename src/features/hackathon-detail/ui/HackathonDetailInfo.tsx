@@ -113,7 +113,7 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
     hackathon.dates?.submissionsOpensAt ||
     hackathon.dates?.judgingEndsAt
 
-  const hasLimits = hackathon.limits?.teamSizeMax || formatLabel
+  const hasLimits = (hackathon.limits?.teamSizeMax && hackathon.limits.teamSizeMax > 0) || formatLabel
 
   return (
     <div className="flex flex-col gap-m8">
@@ -125,6 +125,14 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
       {/* Основная информация */}
       <Section title={t('hackathons.detail.info.title')}>
         <div className="flex flex-col gap-m6">
+          <h2 className="typography-body-lg-medium text-text-primary">{hackathon.name}</h2>
+          
+          {hackathon.shortDescription && (
+            <p className="typography-body-md-regular text-text-secondary">
+              {hackathon.shortDescription}
+            </p>
+          )}
+          
           {location && (
             <IconText
               icon={<Icon src="/icons/icon-location/icon-location-md.svg" size="md" />}
@@ -145,12 +153,6 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
         {hasDates && (
           <Section title={t('hackathons.detail.info.dates')} className="flex-1">
             <div className="flex flex-col gap-m6">
-              {hackathon.dates?.startsAt && hackathon.dates?.endsAt && (
-                <InfoRow
-                  label={t('hackathons.stage.running')}
-                  value={formatDateRange(hackathon.dates.startsAt, hackathon.dates.endsAt)}
-                />
-              )}
               {hackathon.dates?.registrationOpensAt && hackathon.dates?.registrationClosesAt && (
                 <InfoRow
                   label={t('hackathons.stage.registration')}
@@ -158,6 +160,12 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
                     hackathon.dates.registrationOpensAt,
                     hackathon.dates.registrationClosesAt
                   )}
+                />
+              )}
+              {hackathon.dates?.startsAt && hackathon.dates?.endsAt && (
+                <InfoRow
+                  label={t('hackathons.stage.running')}
+                  value={formatDateRange(hackathon.dates.startsAt, hackathon.dates.endsAt)}
                 />
               )}
               {hackathon.dates?.submissionsOpensAt && hackathon.dates?.submissionsClosesAt && (
@@ -190,7 +198,7 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
               {formatLabel && (
                 <InfoRow label={t('hackathons.detail.info.format')} value={formatLabel} />
               )}
-              {hackathon.limits?.teamSizeMax && (
+              {hackathon.limits?.teamSizeMax && hackathon.limits.teamSizeMax > 0 && (
                 <InfoRow
                   label={t('hackathons.detail.info.team_size')}
                   value={t('hackathons.card.teamSize', { count: hackathon.limits.teamSizeMax })}

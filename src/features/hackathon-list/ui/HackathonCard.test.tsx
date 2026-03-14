@@ -23,7 +23,7 @@ const mockHackathon: Hackathon = {
     allowTeam: true,
   },
   stage: 'UPCOMING',
-  state: 'PUBLISHED',
+  state: 'HACKATHON_STATE_PUBLISHED',
 }
 
 describe('HackathonCard', () => {
