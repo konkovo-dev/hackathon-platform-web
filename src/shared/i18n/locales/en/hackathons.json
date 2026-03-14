@@ -1,13 +1,13 @@
 {
   "list": {
-    "title": "hackathons",
+    "title": "hackathon catalog",
     "empty": "no matching hackathons found",
     "loading": "loading...",
     "loadingMore": "loading more...",
     "loadMore": "load more",
     "allLoaded": "all hackathons loaded",
     "error": "error loading hackathons",
-    "authRequired": "Authentication required. Please log in to view hackathons."
+    "authRequired": "Authorization required. Please log in to view hackathons."
   },
   "breadcrumb": {
     "hackathons": "hackathons"
@@ -17,7 +17,7 @@
     "empty": "hackathon main page will be here",
     "register": "register",
     "no_description": "no description",
-    "announcements_coming_soon": "announcements coming soon",
+    "announcements_coming_soon": "announcements will be added later",
     "info": {
       "title": "general information",
       "dates": "dates",
@@ -47,7 +47,7 @@
     "draft": "draft",
     "upcoming": "upcoming",
     "registration": "registration",
-    "prestart": "awaiting start",
+    "prestart": "waiting to start",
     "running": "running",
     "judging": "judging",
     "finished": "finished"
@@ -70,6 +70,51 @@
     },
     "sort": {
       "date": "date"
+    }
+  },
+  "create": {
+    "title": "create hackathon",
+    "auth_required": "sign in to create a hackathon",
+    "auth_required_tooltip": "you need to sign in to create a hackathon",
+    "sections": {
+      "basic_info": "basic information",
+      "description": "description",
+      "location": "location",
+      "dates": "dates",
+      "registration_policy": "participation format",
+      "limits": "limits",
+      "links": "useful links"
+    },
+    "dates": {
+      "hackathon": "hackathon",
+      "registration": "registration",
+      "submissions": "submissions",
+      "judging": "judging",
+      "from": "from",
+      "to": "to",
+      "until": "until"
+    },
+    "fields": {
+      "name": "hackathon name",
+      "shortDescription": "short description",
+      "description": "full description",
+      "city": "city",
+      "venue": "venue",
+      "online": "online hackathon",
+      "teamSizeMax": "maximum team size",
+      "allowTeam": "teams",
+      "allowIndividual": "individual participation",
+      "linkTitle": "link title",
+      "linkUrl": "url"
+    },
+    "actions": {
+      "submit": "create hackathon",
+      "cancel": "cancel"
+    },
+    "errors": {
+      "required": "required field",
+      "invalid_dates": "end date must be after start date",
+      "unknown": "unknown error"
     }
   }
 }

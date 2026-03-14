@@ -4,309 +4,301 @@
  */
 
 export interface paths {
-  '/v1/users/me': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Get my profile
-     * @description Returns the authenticated user's full profile including skills, contacts, and visibility settings.
-     */
-    get: operations['MeService_GetMe']
-    /**
-     * Update my profile
-     * @description Updates basic profile fields (first name, last name, avatar URL, timezone) for the authenticated user.
-     */
-    put: operations['MeService_UpdateMe']
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/users/me/contacts': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    /**
-     * Replace my contacts
-     * @description Replaces the authenticated user's contact list entirely (replace-all semantics). Also updates contacts visibility.
-     */
-    put: operations['MeService_UpdateMyContacts']
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/v1/users/me/skills': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    /**
-     * Replace my skills
-     * @description Replaces the authenticated user's skill set entirely (replace-all semantics). Also updates skills visibility.
-     */
-    put: operations['MeService_UpdateMySkills']
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/v1/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get my profile
+         * @description Returns the authenticated user's full profile including skills, contacts, and visibility settings.
+         */
+        get: operations["MeService_GetMe"];
+        /**
+         * Update my profile
+         * @description Updates basic profile fields (first name, last name, avatar URL, timezone) for the authenticated user.
+         */
+        put: operations["MeService_UpdateMe"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/me/contacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Replace my contacts
+         * @description Replaces the authenticated user's contact list entirely (replace-all semantics). Also updates contacts visibility.
+         */
+        put: operations["MeService_UpdateMyContacts"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/me/skills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Replace my skills
+         * @description Replaces the authenticated user's skill set entirely (replace-all semantics). Also updates skills visibility.
+         */
+        put: operations["MeService_UpdateMySkills"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    identityV1Contact: {
-      id?: string
-      type?: components['schemas']['v1ContactType']
-      value?: string
-    }
-    protobufAny: {
-      '@type'?: string
-    } & {
-      [key: string]: unknown
-    }
-    rpcStatus: {
-      /** Format: int32 */
-      code?: number
-      message?: string
-      details?: components['schemas']['protobufAny'][]
-    }
-    v1CatalogSkill: {
-      id?: string
-      name?: string
-    }
-    /**
-     * @default CONTACT_TYPE_UNSPECIFIED
-     * @enum {string}
-     */
-    v1ContactType:
-      | 'CONTACT_TYPE_UNSPECIFIED'
-      | 'CONTACT_TYPE_EMAIL'
-      | 'CONTACT_TYPE_TELEGRAM'
-      | 'CONTACT_TYPE_GITHUB'
-      | 'CONTACT_TYPE_LINKEDIN'
-    v1CustomSkill: {
-      name?: string
-    }
-    v1GetMeResponse: {
-      user?: components['schemas']['v1User']
-      skills?: components['schemas']['v1Skill'][]
-      contacts?: components['schemas']['v1MyContact'][]
-      visibility?: components['schemas']['v1VisibilitySettings']
-    }
-    v1IdempotencyKey: {
-      key?: string
-    }
-    v1MyContact: {
-      contact?: components['schemas']['identityV1Contact']
-      visibility?: components['schemas']['v1VisibilityLevel']
-    }
-    v1Skill: {
-      catalog?: components['schemas']['v1CatalogSkill']
-      custom?: components['schemas']['v1CustomSkill']
-    }
-    v1UpdateMeRequest: {
-      firstName?: string
-      lastName?: string
-      avatarUrl?: string
-      timezone?: string
-      idempotencyKey?: components['schemas']['v1IdempotencyKey']
-    }
-    v1UpdateMeResponse: {
-      user?: components['schemas']['v1User']
-    }
-    v1UpdateMyContactsRequest: {
-      contacts?: components['schemas']['v1MyContact'][]
-      contactsVisibility?: components['schemas']['v1VisibilityLevel']
-      idempotencyKey?: components['schemas']['v1IdempotencyKey']
-    }
-    v1UpdateMyContactsResponse: {
-      contacts?: components['schemas']['v1MyContact'][]
-      visibility?: components['schemas']['v1VisibilitySettings']
-    }
-    v1UpdateMySkillsRequest: {
-      /** Replace-all semantics: */
-      catalogSkillIds?: string[]
-      userSkills?: string[]
-      skillsVisibility?: components['schemas']['v1VisibilityLevel']
-      idempotencyKey?: components['schemas']['v1IdempotencyKey']
-    }
-    v1UpdateMySkillsResponse: {
-      skills?: components['schemas']['v1Skill'][]
-      visibility?: components['schemas']['v1VisibilitySettings']
-    }
-    v1User: {
-      userId?: string
-      firstName?: string
-      lastName?: string
-      username?: string
-      avatarUrl?: string
-      timezone?: string
-    }
-    /**
-     * @default VISIBILITY_LEVEL_UNSPECIFIED
-     * @enum {string}
-     */
-    v1VisibilityLevel:
-      | 'VISIBILITY_LEVEL_UNSPECIFIED'
-      | 'VISIBILITY_LEVEL_PRIVATE'
-      | 'VISIBILITY_LEVEL_PUBLIC'
-    v1VisibilitySettings: {
-      skills?: components['schemas']['v1VisibilityLevel']
-      contacts?: components['schemas']['v1VisibilityLevel']
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        identityV1Contact: {
+            id?: string;
+            type?: components["schemas"]["v1ContactType"];
+            value?: string;
+        };
+        protobufAny: {
+            "@type"?: string;
+        } & {
+            [key: string]: unknown;
+        };
+        rpcStatus: {
+            /** Format: int32 */
+            code?: number;
+            message?: string;
+            details?: components["schemas"]["protobufAny"][];
+        };
+        v1CatalogSkill: {
+            id?: string;
+            name?: string;
+        };
+        /**
+         * @default CONTACT_TYPE_UNSPECIFIED
+         * @enum {string}
+         */
+        v1ContactType: "CONTACT_TYPE_UNSPECIFIED" | "CONTACT_TYPE_EMAIL" | "CONTACT_TYPE_TELEGRAM" | "CONTACT_TYPE_GITHUB" | "CONTACT_TYPE_LINKEDIN";
+        v1CustomSkill: {
+            name?: string;
+        };
+        v1GetMeResponse: {
+            user?: components["schemas"]["v1User"];
+            skills?: components["schemas"]["v1Skill"][];
+            contacts?: components["schemas"]["v1MyContact"][];
+            visibility?: components["schemas"]["v1VisibilitySettings"];
+        };
+        v1IdempotencyKey: {
+            key?: string;
+        };
+        v1MyContact: {
+            contact?: components["schemas"]["identityV1Contact"];
+            visibility?: components["schemas"]["v1VisibilityLevel"];
+        };
+        v1Skill: {
+            catalog?: components["schemas"]["v1CatalogSkill"];
+            custom?: components["schemas"]["v1CustomSkill"];
+        };
+        v1UpdateMeRequest: {
+            firstName?: string;
+            lastName?: string;
+            avatarUrl?: string;
+            timezone?: string;
+            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
+        };
+        v1UpdateMeResponse: {
+            user?: components["schemas"]["v1User"];
+        };
+        v1UpdateMyContactsRequest: {
+            contacts?: components["schemas"]["v1MyContact"][];
+            contactsVisibility?: components["schemas"]["v1VisibilityLevel"];
+            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
+        };
+        v1UpdateMyContactsResponse: {
+            contacts?: components["schemas"]["v1MyContact"][];
+            visibility?: components["schemas"]["v1VisibilitySettings"];
+        };
+        v1UpdateMySkillsRequest: {
+            /** Replace-all semantics: */
+            catalogSkillIds?: string[];
+            userSkills?: string[];
+            skillsVisibility?: components["schemas"]["v1VisibilityLevel"];
+            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
+        };
+        v1UpdateMySkillsResponse: {
+            skills?: components["schemas"]["v1Skill"][];
+            visibility?: components["schemas"]["v1VisibilitySettings"];
+        };
+        v1User: {
+            userId?: string;
+            firstName?: string;
+            lastName?: string;
+            username?: string;
+            avatarUrl?: string;
+            timezone?: string;
+        };
+        /**
+         * @default VISIBILITY_LEVEL_UNSPECIFIED
+         * @enum {string}
+         */
+        v1VisibilityLevel: "VISIBILITY_LEVEL_UNSPECIFIED" | "VISIBILITY_LEVEL_PRIVATE" | "VISIBILITY_LEVEL_PUBLIC";
+        v1VisibilitySettings: {
+            skills?: components["schemas"]["v1VisibilityLevel"];
+            contacts?: components["schemas"]["v1VisibilityLevel"];
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
-  MeService_GetMe: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description A successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['v1GetMeResponse']
-        }
-      }
-      /** @description An unexpected error response. */
-      default: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['rpcStatus']
-        }
-      }
-    }
-  }
-  MeService_UpdateMe: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['v1UpdateMeRequest']
-      }
-    }
-    responses: {
-      /** @description A successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['v1UpdateMeResponse']
-        }
-      }
-      /** @description An unexpected error response. */
-      default: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['rpcStatus']
-        }
-      }
-    }
-  }
-  MeService_UpdateMyContacts: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['v1UpdateMyContactsRequest']
-      }
-    }
-    responses: {
-      /** @description A successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['v1UpdateMyContactsResponse']
-        }
-      }
-      /** @description An unexpected error response. */
-      default: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['rpcStatus']
-        }
-      }
-    }
-  }
-  MeService_UpdateMySkills: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['v1UpdateMySkillsRequest']
-      }
-    }
-    responses: {
-      /** @description A successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['v1UpdateMySkillsResponse']
-        }
-      }
-      /** @description An unexpected error response. */
-      default: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['rpcStatus']
-        }
-      }
-    }
-  }
+    MeService_GetMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetMeResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    MeService_UpdateMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1UpdateMeRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1UpdateMeResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    MeService_UpdateMyContacts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1UpdateMyContactsRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1UpdateMyContactsResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    MeService_UpdateMySkills: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1UpdateMySkillsRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1UpdateMySkillsResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
 }
