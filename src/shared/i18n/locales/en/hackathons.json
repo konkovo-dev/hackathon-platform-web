@@ -36,7 +36,8 @@
     },
     "tabs": {
       "description": "description",
-      "announcements": "announcements"
+      "announcements": "announcements",
+      "management": "management"
     }
   },
   "card": {
@@ -115,6 +116,54 @@
       "required": "required field",
       "invalid_dates": "end date must be after start date",
       "unknown": "unknown error"
+    }
+  },
+  "management": {
+    "title": "management dashboard",
+    "status": {
+      "title": "hackathon status",
+      "currentStage": "current stage"
+    },
+    "publish": {
+      "title": "publish hackathon",
+      "button": "publish hackathon",
+      "confirm": "are you sure you want to publish the hackathon? It will become available to all users.",
+      "success": "hackathon published successfully"
+    },
+    "staff": {
+      "title": "organizer team",
+      "invite": "invite",
+      "empty": "no team members yet",
+      "searchUser": "search user",
+      "searchPlaceholder": "enter name or email",
+      "selectRole": "select role",
+      "message": "message (optional)",
+      "messagePlaceholder": "add a message to the invitation",
+      "roles": {
+        "owner": "owner",
+        "organizer": "organizer",
+        "mentor": "mentor",
+        "jury": "jury"
+      }
+    },
+    "teams": {
+      "title": "participants and teams",
+      "total": "total participants",
+      "viewAll": "view all",
+      "empty": "no participants yet",
+      "status": {
+        "lookingForTeam": "looking for team",
+        "single": "individual participation",
+        "team": "in a team"
+      }
+    },
+    "announcements": {
+      "title": "announcements",
+      "create": "create announcement",
+      "empty": "no announcements yet",
+      "titlePlaceholder": "announcement title",
+      "bodyPlaceholder": "announcement text (Markdown supported)",
+      "publish": "publish"
     }
   }
 }
