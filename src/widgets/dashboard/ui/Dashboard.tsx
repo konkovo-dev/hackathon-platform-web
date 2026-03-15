@@ -33,22 +33,13 @@ export function Dashboard() {
 
         <div className="flex flex-col gap-m8">
           <HackathonRoleSection
-            title={t('dashboard.sections.organizer')}
-            hackathons={organizerHackathons}
-            isLoading={organizer.isLoading}
-            error={organizer.error}
-            emptyMessage={t('dashboard.empty.organizer')}
-            emptyActionLabel={t('dashboard.empty.organizer_action')}
-            emptyActionHref={routes.hackathons.create}
-          />
-
-          <HackathonRoleSection
-            title={t('dashboard.sections.jury')}
-            hackathons={juryHackathons}
-            isLoading={jury.isLoading}
-            error={jury.error}
-            emptyMessage={t('dashboard.empty.jury')}
-            emptyHint={t('dashboard.empty.jury_hint')}
+            title={t('dashboard.sections.participant')}
+            hackathons={participantHackathons}
+            isLoading={participant.isLoading}
+            error={participant.error}
+            emptyMessage={t('dashboard.empty.participant')}
+            emptyActionLabel={t('dashboard.empty.participant_action')}
+            emptyActionHref={routes.hackathons.list}
           />
 
           <HackathonRoleSection
@@ -61,13 +52,22 @@ export function Dashboard() {
           />
 
           <HackathonRoleSection
-            title={t('dashboard.sections.participant')}
-            hackathons={participantHackathons}
-            isLoading={participant.isLoading}
-            error={participant.error}
-            emptyMessage={t('dashboard.empty.participant')}
-            emptyActionLabel={t('dashboard.empty.participant_action')}
-            emptyActionHref={routes.hackathons.list}
+            title={t('dashboard.sections.jury')}
+            hackathons={juryHackathons}
+            isLoading={jury.isLoading}
+            error={jury.error}
+            emptyMessage={t('dashboard.empty.jury')}
+            emptyHint={t('dashboard.empty.jury_hint')}
+          />
+
+          <HackathonRoleSection
+            title={t('dashboard.sections.organizer')}
+            hackathons={organizerHackathons}
+            isLoading={organizer.isLoading}
+            error={organizer.error}
+            emptyMessage={t('dashboard.empty.organizer')}
+            emptyActionLabel={t('dashboard.empty.organizer_action')}
+            emptyActionHref={routes.hackathons.create}
           />
         </div>
       </div>
