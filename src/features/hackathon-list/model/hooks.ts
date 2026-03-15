@@ -7,7 +7,7 @@ export function useHackathonListQuery(
   initialData?: HackathonListResponse
 ) {
   return useQuery({
-    queryKey: ['hackathons', 'list', filters],
+    queryKey: ['hackathons', 'list', filters.stage, filters.formats, filters.city, filters.sortDirection],
     queryFn: () => getHackathonList(filters),
     staleTime: 60_000,
     initialData,
@@ -19,10 +19,10 @@ export function useInfiniteHackathonListQuery(
   initialData?: HackathonListResponse
 ) {
   return useInfiniteQuery({
-    queryKey: ['hackathons', 'list', 'infinite', filters],
+    queryKey: ['hackathons', 'list', 'infinite', filters.stage, filters.formats, filters.city, filters.sortDirection],
     queryFn: ({ pageParam }) => getHackathonList(filters, pageParam),
     getNextPageParam: lastPage => {
-      return lastPage.page.hasMore ? lastPage.page.nextPageToken : undefined
+      return lastPage.page?.hasMore ? lastPage.page?.nextPageToken : undefined
     },
     initialPageParam: undefined as string | undefined,
     initialData: initialData ? { pages: [initialData], pageParams: [undefined] } : undefined,

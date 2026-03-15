@@ -56,8 +56,8 @@ Developer → Git push → GitHub Actions → SSH → Production Server
 ### Environment Variables (.env на сервере)
 
 ```bash
-AUTH_GATEWAY_BASE_URL=http://178.154.192.57:8080
-PLATFORM_API_BASE_URL=http://178.154.192.57:8080
+AUTH_GATEWAY_BASE_URL=http://api.hackplatform.ru:8080
+PLATFORM_API_BASE_URL=http://api.hackplatform.ru:8080
 NODE_ENV=production
 # FORCE_SECURE_COOKIES=true  # Только для HTTPS!
 ```

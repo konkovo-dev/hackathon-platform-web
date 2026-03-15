@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Section, Button, Icon, InfoRow, ListItem } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCan } from '@/shared/policy/useCan'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
+import { routes } from '@/shared/config/routes'
 import { HackathonValidationChecklist } from '@/features/hackathon-validation/ui/HackathonValidationChecklist'
 import { EditTaskModal } from '@/features/hackathon-task-edit/ui/EditTaskModal'
 import { StaffList } from '@/features/staff-invite/ui/StaffList'
@@ -38,14 +40,19 @@ function ManageableAnnouncementItem({
   onClick,
   onEdit,
 }: ManageableAnnouncementItemProps) {
+  const t = useT()
   const queryClient = useQueryClient()
   const [isHovered, setIsHovered] = useState(false)
 
   const deleteMutation = useMutation({
-    mutationFn: () =>
-      deleteAnnouncement(hackathonId, announcement.announcementId, {
-        idempotencyKey: { key: crypto.randomUUID() },
-      }),
+    mutationFn: () => {
+      if (!announcement.announcementId) {
+        throw new Error('Announcement ID is required')
+      }
+      return deleteAnnouncement(hackathonId, announcement.announcementId, {
+        'idempotencyKey.key': crypto.randomUUID(),
+      })
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hackathon', 'announcements', hackathonId] })
     },
@@ -96,7 +103,7 @@ function ManageableAnnouncementItem({
   return (
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <ListItem
-        text={announcement.title}
+        text={announcement.title ?? t('common.fallback.untitled')}
         caption={!rightContent ? caption : undefined}
         variant="bordered"
         onClick={onClick}
@@ -108,6 +115,7 @@ function ManageableAnnouncementItem({
 
 export function HackathonManagementDashboard({ hackathon }: HackathonManagementDashboardProps) {
   const t = useT()
+  const router = useRouter()
   const locale = 'ru'
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
@@ -132,14 +140,14 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
 
   // Загружаем объявления только для опубликованных хакатонов
   const { data: announcements = [] } = useHackathonAnnouncementsQuery(
-    hackathon.hackathonId,
-    !isDraft
+    hackathon.hackathonId ?? '',
+    !isDraft && !!hackathon.hackathonId
   )
 
   return (
     <div className="flex flex-col gap-m8">
       {/* Готовность к публикации */}
-      {shouldShowValidation && (
+      {shouldShowValidation && hackathon.hackathonId && (
         <HackathonValidationChecklist hackathonId={hackathon.hackathonId} />
       )}
 
@@ -151,7 +159,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
               <Button
                 variant="secondary-action"
                 text={t('hackathons.edit.actions.edit_info')}
-                onClick={() => window.location.href = `/hackathons/${hackathon.hackathonId}/edit`}
+                onClick={() => hackathon.hackathonId && router.push(routes.hackathons.edit(hackathon.hackathonId))}
               />
               <Button
                 variant="secondary-action"
@@ -178,7 +186,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
       </div>
 
       {/* Staff */}
-      <StaffList hackathonId={hackathon.hackathonId} />
+      <StaffList hackathonId={hackathon.hackathonId ?? ''} />
 
       {/* Объявления */}
       {shouldShowAnnouncements && (
@@ -199,11 +207,11 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
             <div className="flex flex-col gap-m4">
               {announcements.map(announcement => (
                 <ManageableAnnouncementItem
-                  key={announcement.announcementId}
+                  key={announcement.announcementId ?? 'unknown'}
                   announcement={announcement}
-                  hackathonId={hackathon.hackathonId}
-                  caption={formatRelativeTime(announcement.createdAt, locale)}
-                  onClick={() => setSelectedAnnouncementId(announcement.announcementId)}
+                  hackathonId={hackathon.hackathonId ?? ''}
+                  caption={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : ''}
+                  onClick={() => announcement.announcementId && setSelectedAnnouncementId(announcement.announcementId)}
                   onEdit={() => setEditingAnnouncement(announcement)}
                 />
               ))}
@@ -217,7 +225,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
       )}
 
       {/* Участники и команды */}
-      <TeamModerationList hackathonId={hackathon.hackathonId} />
+      <TeamModerationList hackathonId={hackathon.hackathonId ?? ''} />
 
       <AnnouncementFormModal
         open={isAnnouncementModalOpen || !!editingAnnouncement}
@@ -225,7 +233,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
           setIsAnnouncementModalOpen(false)
           setEditingAnnouncement(null)
         }}
-        hackathonId={hackathon.hackathonId}
+        hackathonId={hackathon.hackathonId ?? ''}
         announcement={editingAnnouncement}
       />
 
@@ -233,14 +241,14 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
         open={!!selectedAnnouncementId}
         onClose={() => setSelectedAnnouncementId(null)}
         announcementId={selectedAnnouncementId}
-        hackathonId={hackathon.hackathonId}
+        hackathonId={hackathon.hackathonId ?? ''}
         locale={locale}
       />
 
       <EditTaskModal
         open={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
-        hackathonId={hackathon.hackathonId}
+        hackathonId={hackathon.hackathonId ?? ''}
         currentTask={hackathon.task}
       />
     </div>

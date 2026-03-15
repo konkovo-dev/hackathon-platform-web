@@ -1,7 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { Button, Icon, IconCompletion, IconText } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { getStageProgress, getStageLabel } from '@/entities/hackathon/model/utils'
 import { formatDateRange, formatLocation } from '@/shared/lib/formatDate'
@@ -14,6 +16,7 @@ export interface HackathonCardProps {
 
 export function HackathonCard({ hackathon, className }: HackathonCardProps) {
   const t = useT()
+  const router = useRouter()
 
   const location = formatLocation(hackathon.location)
   const dateRange = formatDateRange(hackathon.dates?.startsAt, hackathon.dates?.endsAt)
@@ -23,6 +26,12 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
 
   const stageProgress = getStageProgress(hackathon.stage)
   const stageLabel = getStageLabel(hackathon.stage)
+
+  const handleNavigate = () => {
+    if (hackathon.hackathonId) {
+      router.push(routes.hackathons.detail(hackathon.hackathonId))
+    }
+  }
 
   return (
     <div
@@ -37,9 +46,7 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
         'cursor-pointer',
         className
       )}
-      onClick={() => {
-        window.location.href = `/hackathons/${hackathon.hackathonId}`
-      }}
+      onClick={handleNavigate}
     >
       <div className="flex flex-col gap-m8 flex-1">
         <h3 className="typography-title-md text-text-primary">{hackathon.name}</h3>
@@ -79,7 +86,7 @@ export function HackathonCard({ hackathon, className }: HackathonCardProps) {
         className="w-full mt-m8"
         onClick={(e) => {
           e.stopPropagation()
-          window.location.href = `/hackathons/${hackathon.hackathonId}`
+          handleNavigate()
         }}
       >
         {t('hackathons.card.details')}

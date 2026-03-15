@@ -1,16 +1,11 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import type { operations } from '@/shared/api/platform.schema'
 
-export type UpdateAnnouncementRequest = {
-  idempotencyKey: {
-    key: string
-  }
-  title: string
-  body: string
-}
+export type UpdateAnnouncementRequest =
+  operations['HackathonService_UpdateHackathonAnnouncement']['requestBody']['content']['application/json']
 
-export type UpdateAnnouncementResponse = {
-  ok: boolean
-}
+export type UpdateAnnouncementResponse =
+  operations['HackathonService_UpdateHackathonAnnouncement']['responses']['200']['content']['application/json']
 
 export async function updateAnnouncement(
   hackathonId: string,

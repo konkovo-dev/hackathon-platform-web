@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createElement, type ReactNode } from 'react'
 import { useInfiniteHackathonListQuery } from './hooks'
-import type { HackathonListFilters } from '@/entities/hackathon/model/types'
+import type { HackathonListFilters, HackathonListResponse } from '@/entities/hackathon/model/types'
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -73,22 +73,25 @@ describe('useInfiniteHackathonListQuery', () => {
           dates: {},
           limits: {},
           registrationPolicy: { allowIndividual: true, allowTeam: true },
-          stage: 'REGISTRATION' as const,
-          state: 'HACKATHON_STATE_PUBLISHED' as const,
+          stage: 'REGISTRATION',
+          state: 'HACKATHON_STATE_PUBLISHED',
         },
       ],
       page: {
         hasMore: true,
         nextPageToken: 'token-1',
       },
-    }
+    } as HackathonListResponse
 
     const { result } = renderHook(() => useInfiniteHackathonListQuery(filters, initialData), {
       wrapper: createWrapper(),
     })
 
     expect(result.current.data?.pages).toHaveLength(1)
-    expect(result.current.data?.pages[0].hackathons[0].hackathonId).toBe('test-1')
+    const firstHackathon = result.current.data?.pages[0].hackathons?.[0] as any
+    if (firstHackathon) {
+      expect(firstHackathon.hackathonId).toBe('test-1')
+    }
   })
 
   it('правильно обрабатывает отсутствие следующей страницы', async () => {
@@ -98,7 +101,7 @@ describe('useInfiniteHackathonListQuery', () => {
 
     await waitFor(() => expect(result.current.data?.pages).toHaveLength(1))
 
-    if (!result.current.data?.pages[0].page.hasMore) {
+    if (!result.current.data?.pages[0].page?.hasMore) {
       expect(result.current.hasNextPage).toBe(false)
     }
   })

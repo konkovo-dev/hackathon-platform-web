@@ -14,5 +14,5 @@ export const envServer = {
     process.env.PLATFORM_API_BASE_URL ||
     process.env.NEXT_PUBLIC_API_BASE_URL ||
     'http://localhost:8080',
-  remoteApiBaseUrl: process.env.REMOTE_API_BASE_URL || 'http://178.154.192.57:8080',
+  remoteApiBaseUrl: process.env.REMOTE_API_BASE_URL || 'http://api.hackplatform.ru:8080',
 } as const

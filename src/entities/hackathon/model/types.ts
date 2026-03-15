@@ -1,67 +1,29 @@
+import type { components, operations } from '@/shared/api/platform.schema'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 
-export type HackathonLocation = {
-  city?: string
-  country?: string
-  online: boolean
-  venue?: string
-}
+// Базовые типы из OpenAPI
+export type HackathonLocation = components['schemas']['v1HackathonLocation']
+export type HackathonDates = components['schemas']['v1HackathonDates']
+export type HackathonLimits = components['schemas']['v1HackathonLimits']
+export type HackathonRegistrationPolicy = components['schemas']['v1HackathonRegistrationPolicy']
+export type HackathonLink = components['schemas']['v1HackathonLink']
+export type HackathonState = components['schemas']['v1HackathonState']
 
-export type HackathonDates = {
-  startsAt?: string
-  endsAt?: string
-  registrationOpensAt?: string
-  registrationClosesAt?: string
-  submissionsOpensAt?: string
-  submissionsClosesAt?: string
-  judgingEndsAt?: string
-}
+// Основной тип Hackathon с кастомным stage
+type HackathonFromAPI = components['schemas']['v1Hackathon']
 
-export type HackathonLimits = {
-  teamSizeMax?: number
-}
-
-export type HackathonRegistrationPolicy = {
-  allowIndividual: boolean
-  allowTeam: boolean
-}
-
-export type HackathonLink = {
-  title: string
-  url: string
-}
-
-export type HackathonState = 'HACKATHON_STATE_UNSPECIFIED' | 'HACKATHON_STATE_DRAFT' | 'HACKATHON_STATE_PUBLISHED' | 'HACKATHON_STATE_ARCHIVED'
-
-export type Hackathon = {
-  hackathonId: string
-  name: string
-  shortDescription?: string
-  description?: string
-  location?: HackathonLocation
-  dates?: HackathonDates
-  limits?: HackathonLimits
-  registrationPolicy?: HackathonRegistrationPolicy
+export type Hackathon = Omit<HackathonFromAPI, 'stage'> & {
   stage: HackathonStage
-  state: HackathonState
-  links?: HackathonLink[]
-  publishedAt?: string
-  createdAt?: string
-  updatedAt?: string
-  result?: string
-  resultPublishedAt?: string
-  task?: string
 }
 
-export type HackathonListResponse = {
-  hackathons: Hackathon[]
-  page: {
-    hasMore: boolean
-    nextPageToken: string
+// Типы для списка хакатонов
+export type HackathonListResponse = 
+  operations['HackathonService_ListHackathons']['responses']['200']['content']['application/json'] & {
+    hackathons: Hackathon[]
   }
-}
 
-export type HackathonStageFilter = 'all' | 'registration' | 'running' | 'finished'
+// Типы для фильтрации (клиентские)
+export type HackathonStageFilter = 'all' | 'upcoming' | 'registration' | 'running' | 'finished'
 export type HackathonFormat = 'online' | 'offline'
 
 export type HackathonListFilters = {
@@ -71,49 +33,13 @@ export type HackathonListFilters = {
   sortDirection: 'asc' | 'desc'
 }
 
-export type HackathonListQuery = {
-  query?: {
-    filterGroups?: FilterGroup[]
-    sort?: Sort[]
-    page?: {
-      pageToken?: string
-      pageSize?: number
-    }
-  }
-  includeDescription: boolean
-  includeLinks: boolean
-  includeLimits: boolean
-}
+// Типы для Query (из OpenAPI)
+export type HackathonListQuery = 
+  operations['HackathonService_ListHackathons']['requestBody']['content']['application/json']
 
-export type FilterGroup = {
-  filters: Filter[]
-}
-
-export type Filter = {
-  field: string
-  operation: FilterOperation
-  stringValue?: string
-  boolValue?: boolean
-  stringList?: StringList
-}
-
-export type FilterOperation =
-  | 'FILTER_OPERATION_UNSPECIFIED'
-  | 'FILTER_OPERATION_EQUAL'
-  | 'FILTER_OPERATION_IN'
-  | 'FILTER_OPERATION_CONTAINS'
-  | 'FILTER_OPERATION_PREFIX'
-
-export type StringList = {
-  values: string[]
-}
-
-export type Sort = {
-  field: string
-  direction: SortDirection
-}
-
-export type SortDirection =
-  | 'SORT_DIRECTION_UNSPECIFIED'
-  | 'SORT_DIRECTION_ASC'
-  | 'SORT_DIRECTION_DESC'
+export type FilterGroup = components['schemas']['v1FilterGroup']
+export type Filter = components['schemas']['v1Filter']
+export type FilterOperation = components['schemas']['v1FilterOperation']
+export type StringList = components['schemas']['v1StringList']
+export type Sort = components['schemas']['v1Sort']
+export type SortDirection = components['schemas']['v1SortDirection']

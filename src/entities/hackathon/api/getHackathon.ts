@@ -1,18 +1,13 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
+import type { operations } from '@/shared/api/platform.schema'
 import type { Hackathon } from '../model/types'
 
-export interface GetHackathonOptions {
-  includeDescription?: boolean
-  includeLinks?: boolean
-  includeLimits?: boolean
-  includeTask?: boolean
-  includeResult?: boolean
-}
+export type GetHackathonOptions =
+  operations['HackathonService_GetHackathon']['parameters']['query']
 
-interface GetHackathonResponse {
-  hackathon: Hackathon
-}
+type GetHackathonResponse =
+  operations['HackathonService_GetHackathon']['responses']['200']['content']['application/json']
 
 export async function getHackathon(
   hackathonId: string,
@@ -32,6 +27,10 @@ export async function getHackathon(
   const response = await platformFetchJson<GetHackathonResponse>(path, {
     method: 'GET',
   })
+
+  if (!response.hackathon) {
+    throw new Error('Hackathon not found in response')
+  }
 
   return {
     ...response.hackathon,

@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Modal, MarkdownContent } from '@/shared/ui'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
+import { useT } from '@/shared/i18n/useT'
 import type { HackathonAnnouncement } from '@/entities/hackathon/api/getHackathonAnnouncements'
 
 export interface AnnouncementModalProps {
@@ -20,6 +21,8 @@ export function AnnouncementModal({
   hackathonId,
   locale = 'ru',
 }: AnnouncementModalProps) {
+  const t = useT()
+  
   // Используем useQuery для реактивного получения данных из кэша
   const { data: announcements } = useQuery<HackathonAnnouncement[]>({
     queryKey: ['hackathon', 'announcements', hackathonId],
@@ -36,11 +39,11 @@ export function AnnouncementModal({
     <Modal
       open={open}
       onClose={onClose}
-      title={announcement.title}
-      subtitle={formatRelativeTime(announcement.createdAt, locale)}
+      title={announcement.title ?? t('common.fallback.untitled')}
+      subtitle={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : undefined}
       size="lg"
     >
-      <MarkdownContent>{announcement.body}</MarkdownContent>
+      <MarkdownContent>{announcement.body ?? ''}</MarkdownContent>
     </Modal>
   )
 }

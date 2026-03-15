@@ -7,7 +7,7 @@ import { getLoginUrl, isPublicRoute } from '@/shared/config/routes'
  */
 const protectedRoutes = [
   '/hackathons/create',
-  '/hackathons/:id',
+  '/hackathons/:id/edit',
   '/profile',
   '/my-teams',
   '/invitations',

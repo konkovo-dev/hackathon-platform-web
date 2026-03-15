@@ -49,6 +49,8 @@ src/
 - `pnpm api:gen` → генерация из OpenAPI спецификаций
 - Схемы: `src/shared/api/*.schema.ts` (не редактировать!)
 - API использует **camelCase** (`firstName`, `catalogSkillIds`), не snake_case
+- **Обязательно**: используйте `operations` и `components` из schema файлов
+- Подробные правила: [`.cursor/rules/openapi-types.md`](.cursor/rules/openapi-types.md)
 
 ### 2. i18n: запрет хардкода строк
 

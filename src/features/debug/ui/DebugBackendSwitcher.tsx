@@ -12,7 +12,7 @@ interface BackendState {
 }
 
 const BACKENDS: { target: BackendTarget; label: string }[] = [
-  { target: 'remote', label: 'remote  ·  178.154.192.57:8080' },
+  { target: 'remote', label: 'remote  ·  api.hackplatform.ru:8080' },
   { target: 'local', label: 'local  ·  localhost:8080' },
 ]
 

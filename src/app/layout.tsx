@@ -34,7 +34,7 @@ export default async function RootLayout({
   const session = await getServerSession()
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
         <Script
           id="theme-init"
@@ -52,7 +52,7 @@ export default async function RootLayout({
         <Providers locale={locale} messages={messages}>
           <div className="flex min-h-screen bg-bg-surface">
             <Sidebar initialSession={session} />
-            <main className="flex-1 bg-bg-surface">{children}</main>
+            <main className="flex-1 flex flex-col bg-bg-surface">{children}</main>
           </div>
           {process.env.NODE_ENV === 'development' && <DebugBackendSwitcher />}
         </Providers>

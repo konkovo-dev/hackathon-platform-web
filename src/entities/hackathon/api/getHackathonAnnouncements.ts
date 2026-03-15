@@ -1,16 +1,10 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import type { operations, components } from '@/shared/api/platform.schema'
 
-export interface HackathonAnnouncement {
-  announcementId: string
-  title: string
-  body: string
-  createdAt: string
-  updatedAt?: string
-}
+export type HackathonAnnouncement = components['schemas']['v1HackathonAnnouncement']
 
-interface ListHackathonAnnouncementsResponse {
-  announcements: HackathonAnnouncement[]
-}
+type ListHackathonAnnouncementsResponse =
+  operations['HackathonService_ListHackathonAnnouncements']['responses']['200']['content']['application/json']
 
 export async function getHackathonAnnouncements(
   hackathonId: string

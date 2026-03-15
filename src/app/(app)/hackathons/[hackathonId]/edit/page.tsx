@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery } from '@/features/hackathon-detail/model/hooks'
 import { HackathonEditForm } from '@/features/hackathon-edit/ui/HackathonEditForm'
@@ -27,7 +28,7 @@ export default function EditPage({ params }: EditPageProps) {
 
   useEffect(() => {
     if (!isLoadingCanManage && !canManage) {
-      router.push(`/hackathons/${hackathonId}`)
+      router.push(routes.hackathons.detail(hackathonId))
     }
   }, [canManage, isLoadingCanManage, hackathonId, router])
 

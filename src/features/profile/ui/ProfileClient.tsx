@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/shared/lib/cn'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import { Avatar } from '@/shared/ui/Avatar'
 import { Button } from '@/shared/ui/Button'
 import { Chip } from '@/shared/ui/Chip'
@@ -334,7 +335,7 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
           asChild
           text={t('profile.hackathons.find')}
         >
-          <Link href="/hackathons" />
+          <Link href={routes.hackathons.list} />
         </Button>
       </Section>
 

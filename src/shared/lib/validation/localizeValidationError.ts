@@ -3,7 +3,7 @@ import type { useT } from '@/shared/i18n/useT'
 export type ValidationError = {
   code?: string
   field?: string
-  message: string
+  message?: string
   meta?: Record<string, string>
 }
 
@@ -15,18 +15,20 @@ export function localizeValidationError(
   error: ValidationError,
   t: ReturnType<typeof useT>
 ): string {
-  // Если нет кода, возвращаем сообщение с сервера
+  if (!error.code && !error.message) {
+    return t('hackathons.validation.unknown_error')
+  }
+  
   if (!error.code) {
-    return error.message
+    return error.message ?? t('hackathons.validation.unknown_error')
   }
 
   // Пытаемся локализовать код ошибки
   const errorCodeKey = `hackathons.validation.errors.${error.code}`
   const localizedCode = t(errorCodeKey as any)
   
-  // Если перевода нет, используем сообщение с сервера
   if (localizedCode === errorCodeKey) {
-    return error.message
+    return error.message ?? error.code
   }
 
   // Если есть поле, пытаемся его локализовать и добавить к сообщению

@@ -12,12 +12,20 @@ pnpm api:gen
 
 Команда читает конфиг `openapi/openapi.config.json` и генерирует типы в `src/shared/api/**`.
 
+**Что происходит при генерации:**
+1. Скачивает актуальную OpenAPI спецификацию из удаленного источника (если указан `inputUrl`)
+2. Конвертирует Swagger 2.0 в OpenAPI 3.0 (если нужно)
+3. Сохраняет спецификацию локально как fallback в `openapi/`
+4. Генерирует TypeScript типы с помощью `openapi-typescript`
+
+**Fallback:** Если удаленный сервер недоступен, используются локальные копии из `openapi/*.json`
+
 ## Конфиг генерации
 
 Файлы:
 
 - `openapi/openapi.config.json` — список генераторов (input → output)
-- `scripts/openapi.mjs` — раннер, который прогоняет `openapi-typescript` по конфигу
+- `scripts/openapi.mjs` — раннер с поддержкой автозагрузки и конвертации Swagger 2.0 → OpenAPI 3.0
 
 ### Что генерируется сейчас
 
@@ -30,6 +38,46 @@ pnpm api:gen
   - spec: `openapi/auth-bff.openapi.yaml`
   - output: `src/shared/api/authBff.schema.ts`
   - endpoints: `/api/auth/*`
+
+- **Platform API (продуктовый API)**:
+  - spec URL: `http://api.hackplatform.ru:8080/swagger/api.json` (автозагрузка)
+  - fallback: `openapi/platform.openapi.json`
+  - output: `src/shared/api/platform.schema.ts`
+  - endpoints: `/v1/hackathons/*`, `/v1/identity/*`, и др.
+  - **ВАЖНО:** API отдает Swagger 2.0, автоматически конвертируется в OpenAPI 3.0
+
+### Использование OpenAPI типов
+
+**КРИТИЧНО: ВСЕГДА используйте сгенерированные типы вместо ручных определений.**
+
+Подробное руководство см. `.cursor/rules/openapi-types.md`
+
+#### Быстрый пример
+
+```typescript
+// Импорт типов
+import type { components, operations } from '@/shared/api/platform.schema'
+
+// Типизация запроса/ответа
+type CreateHackathonRequest = 
+  operations['HackathonService_CreateHackathon']['requestBody']['content']['application/json']
+
+type CreateHackathonResponse = 
+  operations['HackathonService_CreateHackathon']['responses']['200']['content']['application/json']
+
+// Типизация модели
+type Hackathon = components['schemas']['v1Hackathon']
+
+// Использование в функции
+export async function createHackathon(
+  request: CreateHackathonRequest
+): Promise<CreateHackathonResponse> {
+  return platformFetchJson<CreateHackathonResponse>(
+    '/v1/hackathons',
+    { method: 'POST', body: JSON.stringify(request) }
+  )
+}
+```
 
 ## Клиент продуктового API
 

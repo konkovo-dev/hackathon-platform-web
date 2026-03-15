@@ -57,7 +57,8 @@
   },
   "filters": {
     "stage": {
-      "all": "all",
+      "all": "all active",
+      "upcoming": "upcoming",
       "registration": "registration",
       "running": "running",
       "finished": "finished"
@@ -215,6 +216,7 @@
     "title": "ready to publish",
     "ready": "hackathon is ready to publish",
     "description": "fix the following errors before publishing:",
+    "unknown_error": "unknown validation error",
     "errors": {
       "REQUIRED": "required field is not filled",
       "TIME_RULE": "time rule violation",

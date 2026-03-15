@@ -22,7 +22,8 @@
     },
     {
       "name": "platform",
-      "input": "./openapi/platform.openapi.json",
+      "inputUrl": "http://api.hackplatform.ru:8080/swagger/api.json",
+      "inputFallback": "./openapi/platform.openapi.json",
       "output": "./src/shared/api/platform.schema.ts"
     }
   ]
