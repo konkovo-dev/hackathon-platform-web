@@ -1,65 +1,36 @@
-import Link from 'next/link'
 import { getServerI18n } from '@/shared/i18n/server'
 import { routes } from '@/shared/config/routes'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { getServerSession } from '@/entities/auth/model/server'
+import { Dashboard } from '@/widgets/dashboard'
+import { Button, Logo } from '@/shared/ui'
+import Link from 'next/link'
 
 export default async function Home() {
-  const debug = cookies().get('hp_debug')?.value === '1'
-  if (debug) {
-    redirect('/design-system')
-  }
+  const session = await getServerSession()
+  const { t } = await getServerI18n(['home', 'dashboard'])
 
-  const { t } = await getServerI18n(['home'])
+  if (session?.active) {
+    return <Dashboard />
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-8">
       <div className="w-full max-w-2xl space-y-8 text-center">
-        <h1 className="typography-display-xl">{t('home.title')}</h1>
+        <div className="flex justify-center">
+          <Logo size="lg" />
+        </div>
         <p className="typography-body-md-regular text-text-secondary">{t('home.subtitle')}</p>
 
         <nav className="flex flex-wrap justify-center gap-4">
-          <Link
-            href={routes.auth.login}
-            className="rounded-md bg-brand-primary px-4 py-2 text-text-inverse hover:bg-brand-primary-hover"
-          >
-            {t('home.nav.login')}
+          <Link href={routes.auth.login}>
+            <Button variant="primary" size="lg">
+              {t('home.login')}
+            </Button>
           </Link>
-          <Link
-            href={routes.auth.register}
-            className="rounded-md bg-bg-elevated px-4 py-2 text-text-primary hover:bg-bg-hover"
-          >
-            {t('home.nav.register')}
-          </Link>
-          <Link
-            href={routes.hackathons.list}
-            className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
-          >
-            {t('home.nav.hackathons')}
-          </Link>
-          <Link
-            href={routes.profile}
-            className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
-          >
-            {t('home.nav.profile')}
-          </Link>
-          <Link
-            href={routes.invitations}
-            className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
-          >
-            {t('home.nav.invitations')}
-          </Link>
-          <Link
-            href={routes.teams}
-            className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
-          >
-            {t('home.nav.my_teams')}
-          </Link>
-          <Link
-            href="/design-system"
-            className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
-          >
-            {t('home.nav.design_system')}
+          <Link href={routes.auth.register}>
+            <Button variant="secondary" size="lg">
+              {t('home.register')}
+            </Button>
           </Link>
         </nav>
       </div>
