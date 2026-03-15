@@ -1,13 +1,5 @@
 {
-  "title": "Hackathon Platform",
-  "subtitle": "Платформа для проведения хакатонов",
-  "nav": {
-    "login": "Войти",
-    "register": "Регистрация",
-    "hackathons": "Хакатоны",
-    "profile": "Профиль",
-    "invitations": "Приглашения",
-    "my_teams": "Мои команды",
-    "design_system": "Design System"
-  }
+  "subtitle": "платформа для проведения хакатонов",
+  "login": "войти",
+  "register": "регистрация"
 }

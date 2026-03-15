@@ -1,0 +1,50 @@
+{
+  "title": "home",
+  "sections": {
+    "organizer": "I'm an organizer",
+    "jury": "I'm a judge",
+    "mentor": "I'm a mentor",
+    "participant": "I'm a participant"
+  },
+  "empty": {
+    "organizer": "you don't have any hackathons yet",
+    "organizer_action": "create hackathon",
+    "jury": "you haven't been added as a judge yet",
+    "jury_hint": "organizers can invite you to evaluate projects",
+    "mentor": "you haven't been added as a mentor yet",
+    "mentor_hint": "organizers can invite you to help participants",
+    "participant": "you're not participating in any hackathons yet",
+    "participant_action": "find hackathon"
+  },
+  "quick_actions": {
+    "title": "quick actions",
+    "create_hackathon": "create hackathon",
+    "find_hackathons": "find hackathons",
+    "my_teams": "my teams",
+    "invitations": "invitations"
+  },
+  "stats": {
+    "title": "statistics",
+    "organized": "organized",
+    "judged": "projects evaluated",
+    "mentored": "teams mentored",
+    "participated": "hackathons participated",
+    "hackathons_count": "{count} hackathon(s)",
+    "projects_count": "{count} project(s)",
+    "teams_count": "{count} team(s)"
+  },
+  "upcoming": {
+    "title": "upcoming events",
+    "registration_ends": "registration closes",
+    "hackathon_starts": "hackathon starts",
+    "hackathon_ends": "hackathon ends",
+    "judging_ends": "judging ends",
+    "empty": "no upcoming events",
+    "in_days": "in {count} day(s)",
+    "today": "today",
+    "tomorrow": "tomorrow"
+  },
+  "loading": "loading...",
+  "error": "error loading data",
+  "retry": "retry"
+}
