@@ -21,7 +21,10 @@ export function useFiltersFromUrl(): [
   const filters = useMemo(() => {
     const parsed = parseFiltersFromUrl(searchParams)
 
-    if (!parsed.city) {
+    const hasCityInUrl = searchParams.has('city')
+    const hasAnyFilterInUrl = searchParams.toString().length > 0
+
+    if (!parsed.city && !hasCityInUrl && !hasAnyFilterInUrl) {
       const cities = getCities()
 
       if (cities.length > 0) {
@@ -64,7 +67,11 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
 
   return {
     stage:
-      stage === 'all' || stage === 'registration' || stage === 'running' || stage === 'finished'
+      stage === 'all' || 
+      stage === 'upcoming' || 
+      stage === 'registration' || 
+      stage === 'running' || 
+      stage === 'finished'
         ? stage
         : defaults.stage,
     formats: formatParam
@@ -97,9 +104,7 @@ function serializeFiltersToUrl(filters: HackathonListFilters): string {
   }
 
   // Сортировка
-  if (filters.sortDirection === 'desc') {
-    params.set('sort', 'desc')
-  }
+  params.set('sort', filters.sortDirection)
 
   return params.toString()
 }

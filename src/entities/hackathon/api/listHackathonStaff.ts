@@ -1,29 +1,12 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import type { operations, components } from '@/shared/api/platform.schema'
 
-export type HackathonRole = 
-  | 'HACKATHON_ROLE_UNSPECIFIED'
-  | 'HACKATHON_ROLE_OWNER' 
-  | 'HACKATHON_ROLE_ORGANIZER'
-  | 'HACKATHON_ROLE_MENTOR'
-  | 'HACKATHON_ROLE_JURY'
-  | 'HX_ROLE_OWNER'
-  | 'HX_ROLE_ORGANIZER'
-  | 'HX_ROLE_MENTOR'
-  | 'HX_ROLE_JUDGE'
-  | 'HX_ROLE_JURY'
+export type HackathonRole = components['schemas']['v1HackathonRole']
 
-export type HackathonStaffMember = {
-  userId: string
-  roles: HackathonRole[]
-}
+export type HackathonStaffMember = components['schemas']['v1HackathonStaffMember']
 
-export type ListHackathonStaffResponse = {
-  staff: HackathonStaffMember[]
-  page?: {
-    hasMore: boolean
-    nextPageToken: string
-  }
-}
+export type ListHackathonStaffResponse =
+  operations['StaffService_ListHackathonStaff']['responses']['200']['content']['application/json']
 
 export async function listHackathonStaff(
   hackathonId: string

@@ -683,7 +683,7 @@ export default function DesignSystemPage() {
             <CardContent className="max-w-sm">
               <SelectList>
                 <ListItem
-                  text="remote  ·  178.154.192.57:8080"
+                  text="remote  ·  api.hackplatform.ru:8080"
                   selectable
                   selected={selectedBackend === 'remote'}
                   variant="bordered"

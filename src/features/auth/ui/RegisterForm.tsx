@@ -7,6 +7,7 @@ import { ApiError } from '@/shared/api/errors'
 import { useT } from '@/shared/i18n/useT'
 import { Button } from '@/shared/ui/Button'
 import { InputLabel } from '@/shared/ui/InputLabel'
+import { setNavigatingAfterAuth } from '@/app/providers'
 import { useRegisterMutation } from '../model/hooks'
 
 function getAuthErrorText(
@@ -122,6 +123,7 @@ export function RegisterForm() {
               timezone,
             })
 
+            setNavigatingAfterAuth()
             // Hard redirect чтобы браузер получил cookies
             window.location.href = '/profile'
           } catch (err) {

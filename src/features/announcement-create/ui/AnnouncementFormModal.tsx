@@ -48,7 +48,7 @@ export function AnnouncementFormModal({
     { title: string; body: string }
   >({
     mutationFn: (params: { title: string; body: string }) => {
-      if (isEditMode) {
+      if (isEditMode && announcement?.announcementId) {
         return updateAnnouncement(hackathonId, announcement.announcementId, {
           idempotencyKey: { key: crypto.randomUUID() },
           ...params,

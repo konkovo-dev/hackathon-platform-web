@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/shared/lib/cn'
+import { routes } from '@/shared/config/routes'
 import { Button } from '@/shared/ui/Button'
 import { Divider } from '@/shared/ui/Divider'
 import { Icon } from '@/shared/ui/Icon'
@@ -55,18 +56,18 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
     const groups: SidebarItem[][] = []
 
     if (isAuthed) {
-      groups.push([{ key: 'profile', href: '/profile', iconSrc: ICONS.profile }])
+      groups.push([{ key: 'profile', href: routes.profile, iconSrc: ICONS.profile }])
     } else {
-      groups.push([{ key: 'auth', href: '/login', iconSrc: ICONS.auth }])
+      groups.push([{ key: 'auth', href: routes.auth.login, iconSrc: ICONS.auth }])
     }
 
     const otherGroup: SidebarItem[] = [
-      { key: 'hackathons', href: '/hackathons', iconSrc: ICONS.code },
+      { key: 'hackathons', href: routes.hackathons.list, iconSrc: ICONS.code },
     ]
     if (isAuthed) {
       otherGroup.push(
-        { key: 'invitations', href: '/invitations', iconSrc: ICONS.mail },
-        { key: 'teams', href: '/my-teams', iconSrc: ICONS.team }
+        { key: 'invitations', href: routes.invitations, iconSrc: ICONS.mail },
+        { key: 'teams', href: routes.teams, iconSrc: ICONS.team }
       )
     }
     if (debug) {

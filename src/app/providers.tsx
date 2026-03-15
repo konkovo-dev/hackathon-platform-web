@@ -8,6 +8,19 @@ import { getLoginUrl, isPublicRoute } from '@/shared/config/routes'
 import type { Locale } from '@/shared/i18n/config'
 import type { MessagesTree } from '@/shared/i18n/types'
 
+let isNavigatingAfterAuth = false
+
+export function setNavigatingAfterAuth() {
+  isNavigatingAfterAuth = true
+  setTimeout(() => {
+    isNavigatingAfterAuth = false
+  }, 1000)
+}
+
+export function resetNavigatingAfterAuth() {
+  isNavigatingAfterAuth = false
+}
+
 export function Providers({
   children,
   locale,
@@ -56,6 +69,10 @@ function handleGlobalError(error: unknown) {
     
     // 401 Unauthorized или gRPC Unauthenticated (16)
     if (status === 401 || code === '16' || code === 'UNAUTHENTICATED') {
+      if (isNavigatingAfterAuth) {
+        return
+      }
+      
       const currentPath = window.location.pathname
       
       if (!isPublicRoute(currentPath)) {

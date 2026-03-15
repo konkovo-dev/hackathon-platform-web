@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Section } from '@/shared/ui/Section'
+import { PageContainer } from '@/shared/ui/PageContainer'
 import { Button } from '@/shared/ui/Button'
 import { Breadcrumb } from '@/shared/ui/Breadcrumb'
 import { MarkdownEditor } from '@/shared/ui/MarkdownEditor'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import { ApiError } from '@/shared/api/errors'
 import { localizeValidationError } from '@/shared/lib/validation/localizeValidationError'
 import { useCreateHackathonMutation } from '@/features/hackathon-create/model/hooks'
@@ -79,7 +81,10 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
 
   const [links, setLinks] = useState<LinkItem[]>(
     initialData?.links && initialData.links.length > 0
-      ? initialData.links.map(link => ({ title: link.title, url: link.url }))
+      ? initialData.links.map(link => ({ 
+          title: link.title ?? '', 
+          url: link.url ?? '' 
+        })).filter(link => link.title && link.url)
       : [{ title: '', url: '' }]
   )
 
@@ -197,12 +202,12 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
 
       if (isEditMode) {
         if (!response.validationErrors || response.validationErrors.length === 0) {
-          router.push(`/hackathons/${hackathonId}`)
+          router.push(routes.hackathons.detail(hackathonId!))
           return
         }
       } else {
         if (response.hackathonId) {
-          router.push(`/hackathons/${response.hackathonId}`)
+          router.push(routes.hackathons.detail(response.hackathonId))
           return
         }
       }
@@ -235,9 +240,9 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
 
   const handleCancel = () => {
     if (isEditMode && hackathonId) {
-      router.push(`/hackathons/${hackathonId}`)
+      router.push(routes.hackathons.detail(hackathonId))
     } else {
-      router.push('/hackathons')
+      router.push(routes.hackathons.list)
     }
   }
 
@@ -247,13 +252,13 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
   const breadcrumbItems = [
     {
       label: t('hackathons.breadcrumb.hackathons'),
-      href: '/hackathons',
+      href: routes.hackathons.list,
     },
     ...(isEditMode && initialData
       ? [
           {
-            label: initialData.name,
-            href: `/hackathons/${hackathonId}`,
+            label: initialData.name ?? t('common.fallback.hackathon'),
+            href: routes.hackathons.detail(hackathonId!),
           },
           {
             label: t('hackathons.breadcrumb.edit'),
@@ -267,125 +272,127 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
   ]
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-m8">
-      <Breadcrumb items={breadcrumbItems} />
-      
-      <h1 className="typography-heading-lg text-text-primary">
-        {t(isEditMode ? 'hackathons.edit.title' : 'hackathons.create.title')}
-      </h1>
+    <PageContainer>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-m8">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        <h1 className="typography-heading-lg text-text-primary">
+          {t(isEditMode ? 'hackathons.edit.title' : 'hackathons.create.title')}
+        </h1>
 
-      <Section title={t('hackathons.create.sections.basic_info')}>
-        <BasicInfoSection
-          name={name}
-          setName={setName}
-          shortDescription={shortDescription}
-          setShortDescription={setShortDescription}
-          errors={fieldErrors}
-          disabled={isPending}
-        />
-      </Section>
-
-      <Section title={t('hackathons.create.sections.description')}>
-        <MarkdownEditor
-          placeholder={t('hackathons.create.fields.description')}
-          value={description}
-          onChange={setDescription}
-          disabled={isPending}
-          error={fieldErrors.description}
-        />
-      </Section>
-
-      <div className="grid grid-cols-2 gap-m8">
-        <Section title={t('hackathons.create.sections.location')}>
-          <LocationSection
-            city={city}
-            setCity={setCity}
-            venue={venue}
-            setVenue={setVenue}
-            online={online}
-            setOnline={setOnline}
+        <Section title={t('hackathons.create.sections.basic_info')}>
+          <BasicInfoSection
+            name={name}
+            setName={setName}
+            shortDescription={shortDescription}
+            setShortDescription={setShortDescription}
             errors={fieldErrors}
             disabled={isPending}
           />
         </Section>
 
-        <Section title={t('hackathons.create.sections.dates')}>
-          <DatesSection
-            startsAt={startsAt}
-            setStartsAt={setStartsAt}
-            endsAt={endsAt}
-            setEndsAt={setEndsAt}
-            registrationOpensAt={registrationOpensAt}
-            setRegistrationOpensAt={setRegistrationOpensAt}
-            registrationClosesAt={registrationClosesAt}
-            setRegistrationClosesAt={setRegistrationClosesAt}
-            submissionsOpensAt={submissionsOpensAt}
-            setSubmissionsOpensAt={setSubmissionsOpensAt}
-            submissionsClosesAt={submissionsClosesAt}
-            setSubmissionsClosesAt={setSubmissionsClosesAt}
-            judgingEndsAt={judgingEndsAt}
-            setJudgingEndsAt={setJudgingEndsAt}
-            errors={fieldErrors}
+        <Section title={t('hackathons.create.sections.description')}>
+          <MarkdownEditor
+            placeholder={t('hackathons.create.fields.description')}
+            value={description}
+            onChange={setDescription}
             disabled={isPending}
-          />
-        </Section>
-      </div>
-
-      <div className="grid grid-cols-2 gap-m8">
-        <Section 
-          title={t('hackathons.create.sections.registration_policy')}
-          className={!allowTeam ? 'col-span-2' : undefined}
-        >
-          <RegistrationPolicySection
-            allowIndividual={allowIndividual}
-            setAllowIndividual={setAllowIndividual}
-            allowTeam={allowTeam}
-            setAllowTeam={setAllowTeam}
-            disabled={isPending}
+            error={fieldErrors.description}
           />
         </Section>
 
-        {allowTeam && (
-          <Section title={t('hackathons.create.fields.teamSizeMax')}>
-            <LimitsSection
-              teamSizeMax={teamSizeMax}
-              setTeamSizeMax={setTeamSizeMax}
+        <div className="grid grid-cols-2 gap-m8">
+          <Section title={t('hackathons.create.sections.location')}>
+            <LocationSection
+              city={city}
+              setCity={setCity}
+              venue={venue}
+              setVenue={setVenue}
+              online={online}
+              setOnline={setOnline}
               errors={fieldErrors}
               disabled={isPending}
             />
           </Section>
-        )}
-      </div>
 
-      <Section title={t('hackathons.create.sections.links')}>
-        <LinksSection links={links} setLinks={setLinks} errors={fieldErrors} disabled={isPending} />
-      </Section>
-
-      {formError && (
-        <div
-          className="w-full typography-caption-sm-regular text-state-error"
-          role={alertRole}
-          aria-live={ariaLivePolite}
-        >
-          {formError}
+          <Section title={t('hackathons.create.sections.dates')}>
+            <DatesSection
+              startsAt={startsAt}
+              setStartsAt={setStartsAt}
+              endsAt={endsAt}
+              setEndsAt={setEndsAt}
+              registrationOpensAt={registrationOpensAt}
+              setRegistrationOpensAt={setRegistrationOpensAt}
+              registrationClosesAt={registrationClosesAt}
+              setRegistrationClosesAt={setRegistrationClosesAt}
+              submissionsOpensAt={submissionsOpensAt}
+              setSubmissionsOpensAt={setSubmissionsOpensAt}
+              submissionsClosesAt={submissionsClosesAt}
+              setSubmissionsClosesAt={setSubmissionsClosesAt}
+              judgingEndsAt={judgingEndsAt}
+              setJudgingEndsAt={setJudgingEndsAt}
+              errors={fieldErrors}
+              disabled={isPending}
+            />
+          </Section>
         </div>
-      )}
 
-      <div className="flex items-center gap-m4">
-        <Button
-          variant="secondary-action"
-          text={t(isEditMode ? 'hackathons.edit.actions.cancel' : 'hackathons.create.actions.cancel')}
-          onClick={handleCancel}
-          disabled={isPending}
-          type="button"
-        />
-        <Button
-          variant="action"
-          text={t(isEditMode ? 'hackathons.edit.actions.save' : 'hackathons.create.actions.submit')}
-          type="submit"
-          disabled={isPending}
-        />
-      </div>
-    </form>
+        <div className="grid grid-cols-2 gap-m8">
+          <Section 
+            title={t('hackathons.create.sections.registration_policy')}
+            className={!allowTeam ? 'col-span-2' : undefined}
+          >
+            <RegistrationPolicySection
+              allowIndividual={allowIndividual}
+              setAllowIndividual={setAllowIndividual}
+              allowTeam={allowTeam}
+              setAllowTeam={setAllowTeam}
+              disabled={isPending}
+            />
+          </Section>
+
+          {allowTeam && (
+            <Section title={t('hackathons.create.fields.teamSizeMax')}>
+              <LimitsSection
+                teamSizeMax={teamSizeMax}
+                setTeamSizeMax={setTeamSizeMax}
+                errors={fieldErrors}
+                disabled={isPending}
+              />
+            </Section>
+          )}
+        </div>
+
+        <Section title={t('hackathons.create.sections.links')}>
+          <LinksSection links={links} setLinks={setLinks} errors={fieldErrors} disabled={isPending} />
+        </Section>
+
+        {formError && (
+          <div
+            className="w-full typography-caption-sm-regular text-state-error"
+            role={alertRole}
+            aria-live={ariaLivePolite}
+          >
+            {formError}
+          </div>
+        )}
+
+        <div className="flex items-center gap-m4">
+          <Button
+            variant="secondary-action"
+            text={t(isEditMode ? 'hackathons.edit.actions.cancel' : 'hackathons.create.actions.cancel')}
+            onClick={handleCancel}
+            disabled={isPending}
+            type="button"
+          />
+          <Button
+            variant="action"
+            text={t(isEditMode ? 'hackathons.edit.actions.save' : 'hackathons.create.actions.submit')}
+            type="submit"
+            disabled={isPending}
+          />
+        </div>
+      </form>
+    </PageContainer>
   )
 }

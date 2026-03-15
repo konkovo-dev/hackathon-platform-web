@@ -8,6 +8,7 @@ import { Button } from '@/shared/ui/Button'
 import { Checkbox } from '@/shared/ui/Checkbox'
 import { InputLabel } from '@/shared/ui/InputLabel'
 import { ApiError } from '@/shared/api/errors'
+import { setNavigatingAfterAuth } from '@/app/providers'
 import { useLoginMutation } from '../model/hooks'
 
 function getAuthErrorText(t: ReturnType<typeof useT>, code: string): string {
@@ -58,6 +59,7 @@ export function LoginForm() {
 
           try {
             await loginMutation.mutateAsync({ login, password })
+            setNavigatingAfterAuth()
             // Hard redirect чтобы браузер получил cookies
             window.location.href = '/profile'
           } catch (err) {

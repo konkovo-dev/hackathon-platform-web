@@ -7,5 +7,11 @@
     "editor": "редактор",
     "preview": "предпросмотр",
     "placeholder": "введите текст в формате Markdown..."
+  },
+  "fallback": {
+    "untitled": "без названия",
+    "unknown_user": "неизвестный пользователь",
+    "unknown": "неизвестно",
+    "hackathon": "хакатон"
   }
 }

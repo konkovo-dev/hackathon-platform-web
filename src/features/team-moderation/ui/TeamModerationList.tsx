@@ -11,9 +11,10 @@ export interface TeamModerationListProps {
 }
 
 const STATUS_OPTIONS: ParticipationStatus[] = [
-  'LOOKING_FOR_TEAM',
-  'SINGLE',
-  'TEAM',
+  'PART_LOOKING_FOR_TEAM',
+  'PART_INDIVIDUAL',
+  'PART_TEAM_MEMBER',
+  'PART_TEAM_CAPTAIN',
 ]
 
 export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
@@ -25,7 +26,7 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
     selectedStatuses.length > 0 ? selectedStatuses : undefined
   )
 
-  const participations = useMemo(() => data?.participations || [], [data?.participations])
+  const participations = useMemo(() => data?.participants || [], [data?.participants])
 
   const toggleStatus = (status: ParticipationStatus) => {
     setSelectedStatuses(prev =>
@@ -35,11 +36,12 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
 
   const getStatusLabel = (status: ParticipationStatus) => {
     switch (status) {
-      case 'LOOKING_FOR_TEAM':
+      case 'PART_LOOKING_FOR_TEAM':
         return t('hackathons.management.teams.status.lookingForTeam')
-      case 'SINGLE':
+      case 'PART_INDIVIDUAL':
         return t('hackathons.management.teams.status.single')
-      case 'TEAM':
+      case 'PART_TEAM_MEMBER':
+      case 'PART_TEAM_CAPTAIN':
         return t('hackathons.management.teams.status.team')
       default:
         return status
@@ -49,7 +51,8 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
   const stats = useMemo(() => {
     const total = participations.length
     const byStatus = participations.reduce((acc, p) => {
-      acc[p.status] = (acc[p.status] || 0) + 1
+      const status = p.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED'
+      acc[status] = (acc[status] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
@@ -82,9 +85,9 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
           <SelectList>
             {participations.map(participation => (
               <ListItem
-                key={participation.userId}
-                text={participation.userId}
-                caption={`${getStatusLabel(participation.status)}${participation.teamId ? ` • Team: ${participation.teamId}` : ''}`}
+                key={participation.userId ?? 'unknown'}
+                text={participation.userId ?? t('common.fallback.unknown_user')}
+                caption={`${getStatusLabel(participation.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED')}${participation.teamId ? ` • Team: ${participation.teamId}` : ''}`}
                 variant="bordered"
               />
             ))}

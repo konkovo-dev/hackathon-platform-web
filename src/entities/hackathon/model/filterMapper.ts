@@ -10,30 +10,30 @@ export function buildQueryFromFilters(
 ): HackathonListQuery {
   const filterGroups: FilterGroup[] = []
 
-  // 1. Фильтр по стадии
-  const stageFilters = mapStageFilter(filters.stage)
-  if (stageFilters.length > 0) {
-    filterGroups.push({ filters: stageFilters })
-  }
+  // Фильтры по стадии с обязательным условием state=PUBLISHED
+  const stageFilterGroups = mapStageFilter(filters.stage)
+  filterGroups.push(...stageFilterGroups)
 
-  // 2. Фильтр по формату (online/offline)
-  const formatFilters = mapFormatFilter(filters.formats)
-  if (formatFilters.length > 0) {
-    filterGroups.push({ filters: formatFilters })
-  }
+  // Фильтр по формату (online/offline)
+  // TODO: API не поддерживает фильтрацию по формату (возвращает 500)
+  // const formatFilters = mapFormatFilter(filters.formats)
+  // if (formatFilters.length > 0) {
+  //   filterGroups.push({ filters: formatFilters })
+  // }
 
-  // 3. Фильтр по городу
-  if (filters.city) {
-    filterGroups.push({
-      filters: [
-        {
-          field: 'location.city',
-          operation: 'FILTER_OPERATION_EQUAL',
-          stringValue: filters.city,
-        },
-      ],
-    })
-  }
+  // Фильтр по городу
+  // TODO: API не поддерживает фильтрацию по городу 
+  // if (filters.city) {
+  //   filterGroups.push({
+  //     filters: [
+  //       {
+  //         field: 'location.city',
+  //         operation: 'FILTER_OPERATION_EQUAL',
+  //         stringValue: filters.city,
+  //       },
+  //     ],
+  //   })
+  // }
 
   return {
     query: {
@@ -60,27 +60,50 @@ export function buildQueryFromFilters(
 
 /**
  * Маппит UI-стадию на API-фильтры
- * - all → все кроме DRAFT, FINISHED
+ * Каждая группа включает условие state=PUBLISHED для фильтрации черновиков
+ * - all → все активные стадии (UPCOMING, REGISTRATION, PRESTART, RUNNING, JUDGING)
+ * - upcoming → UPCOMING (анонсы)
  * - registration → REGISTRATION
  * - running → PRESTART, RUNNING, JUDGING
  * - finished → FINISHED
  */
-function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
+function mapStageFilter(stage: HackathonListFilters['stage']): FilterGroup[] {
+  const publishedStateFilter: Filter = {
+    field: 'state',
+    operation: 'FILTER_OPERATION_EQUAL',
+    stringValue: 'HACKATHON_STATE_PUBLISHED',
+  }
+
   if (stage === 'all') {
-    // Все кроме DRAFT и FINISHED
+    return [
+      'HACKATHON_STAGE_UPCOMING',
+      'HACKATHON_STAGE_REGISTRATION',
+      'HACKATHON_STAGE_PRE_START',
+      'HACKATHON_STAGE_RUNNING',
+      'HACKATHON_STAGE_JUDGING',
+    ].map(stageValue => ({
+      filters: [
+        publishedStateFilter,
+        {
+          field: 'stage',
+          operation: 'FILTER_OPERATION_EQUAL',
+          stringValue: stageValue,
+        },
+      ],
+    }))
+  }
+
+  if (stage === 'upcoming') {
     return [
       {
-        field: 'stage',
-        operation: 'FILTER_OPERATION_IN',
-        stringList: {
-          values: [
-            'HACKATHON_STAGE_UPCOMING',
-            'HACKATHON_STAGE_REGISTRATION',
-            'HACKATHON_STAGE_PRESTART',
-            'HACKATHON_STAGE_RUNNING',
-            'HACKATHON_STAGE_JUDGING',
-          ],
-        },
+        filters: [
+          publishedStateFilter,
+          {
+            field: 'stage',
+            operation: 'FILTER_OPERATION_EQUAL',
+            stringValue: 'HACKATHON_STAGE_UPCOMING',
+          },
+        ],
       },
     ]
   }
@@ -88,35 +111,46 @@ function mapStageFilter(stage: HackathonListFilters['stage']): Filter[] {
   if (stage === 'registration') {
     return [
       {
-        field: 'stage',
-        operation: 'FILTER_OPERATION_EQUAL',
-        stringValue: 'HACKATHON_STAGE_REGISTRATION',
+        filters: [
+          publishedStateFilter,
+          {
+            field: 'stage',
+            operation: 'FILTER_OPERATION_EQUAL',
+            stringValue: 'HACKATHON_STAGE_REGISTRATION',
+          },
+        ],
       },
     ]
   }
 
   if (stage === 'running') {
     return [
-      {
-        field: 'stage',
-        operation: 'FILTER_OPERATION_IN',
-        stringList: {
-          values: [
-            'HACKATHON_STAGE_PRESTART',
-            'HACKATHON_STAGE_RUNNING',
-            'HACKATHON_STAGE_JUDGING',
-          ],
+      'HACKATHON_STAGE_PRE_START',
+      'HACKATHON_STAGE_RUNNING',
+      'HACKATHON_STAGE_JUDGING',
+    ].map(stageValue => ({
+      filters: [
+        publishedStateFilter,
+        {
+          field: 'stage',
+          operation: 'FILTER_OPERATION_EQUAL',
+          stringValue: stageValue,
         },
-      },
-    ]
+      ],
+    }))
   }
 
   if (stage === 'finished') {
     return [
       {
-        field: 'stage',
-        operation: 'FILTER_OPERATION_EQUAL',
-        stringValue: 'HACKATHON_STAGE_FINISHED',
+        filters: [
+          publishedStateFilter,
+          {
+            field: 'stage',
+            operation: 'FILTER_OPERATION_EQUAL',
+            stringValue: 'HACKATHON_STAGE_FINISHED',
+          },
+        ],
       },
     ]
   }

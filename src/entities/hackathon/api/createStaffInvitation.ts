@@ -1,18 +1,12 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import type { operations } from '@/shared/api/platform.schema'
 import type { HackathonRole } from './listHackathonStaff'
 
-export type CreateStaffInvitationRequest = {
-  idempotencyKey: {
-    key: string
-  }
-  targetUserId: string
-  requestedRole: HackathonRole
-  message?: string
-}
+export type CreateStaffInvitationRequest =
+  operations['StaffService_CreateStaffInvitation']['requestBody']['content']['application/json']
 
-export type CreateStaffInvitationResponse = {
-  invitationId: string
-}
+export type CreateStaffInvitationResponse =
+  operations['StaffService_CreateStaffInvitation']['responses']['200']['content']['application/json']
 
 export async function createStaffInvitation(
   hackathonId: string,
@@ -26,3 +20,5 @@ export async function createStaffInvitation(
     }
   )
 }
+
+export type { HackathonRole }

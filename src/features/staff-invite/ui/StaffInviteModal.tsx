@@ -13,16 +13,16 @@ export interface StaffInviteModalProps {
 }
 
 const STAFF_ROLES: HackathonRole[] = [
-  'HACKATHON_ROLE_ORGANIZER',
-  'HACKATHON_ROLE_MENTOR',
-  'HACKATHON_ROLE_JURY',
+  'HX_ROLE_ORGANIZER',
+  'HX_ROLE_MENTOR',
+  'HX_ROLE_JUDGE',
 ]
 
 export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModalProps) {
   const t = useT()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
-  const [selectedRole, setSelectedRole] = useState<HackathonRole>('HACKATHON_ROLE_ORGANIZER')
+  const [selectedRole, setSelectedRole] = useState<HackathonRole>('HX_ROLE_ORGANIZER')
   const [message, setMessage] = useState('')
 
   const { data: usersData, isLoading: isSearching } = useUsersSearchQuery(searchQuery)
@@ -50,11 +50,11 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
 
   const getRoleLabel = (role: HackathonRole) => {
     switch (role) {
-      case 'HACKATHON_ROLE_ORGANIZER':
+      case 'HX_ROLE_ORGANIZER':
         return t('hackathons.management.staff.roles.organizer')
-      case 'HACKATHON_ROLE_MENTOR':
+      case 'HX_ROLE_MENTOR':
         return t('hackathons.management.staff.roles.mentor')
-      case 'HACKATHON_ROLE_JURY':
+      case 'HX_ROLE_JUDGE':
         return t('hackathons.management.staff.roles.jury')
       default:
         return role

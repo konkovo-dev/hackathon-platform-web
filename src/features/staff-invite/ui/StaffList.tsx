@@ -17,7 +17,7 @@ export function StaffList({ hackathonId }: StaffListProps) {
   const { data, isLoading } = useStaffListQuery(hackathonId)
 
   const staff = useMemo(() => data?.staff || [], [data?.staff])
-  const userIds = useMemo(() => staff.map(s => s.userId), [staff])
+  const userIds = useMemo(() => staff.map(s => s.userId).filter((id): id is string => id != null), [staff])
   const { data: usersData, isLoading: isLoadingUsers } = useStaffUsersQuery(userIds)
   
   const usersMap = useMemo(() => {
@@ -27,25 +27,22 @@ export function StaffList({ hackathonId }: StaffListProps) {
 
   const getRoleLabel = (role: HackathonRole) => {
     switch (role) {
-      case 'HACKATHON_ROLE_OWNER':
       case 'HX_ROLE_OWNER':
         return t('hackathons.management.staff.roles.owner')
-      case 'HACKATHON_ROLE_ORGANIZER':
       case 'HX_ROLE_ORGANIZER':
         return t('hackathons.management.staff.roles.organizer')
-      case 'HACKATHON_ROLE_MENTOR':
       case 'HX_ROLE_MENTOR':
         return t('hackathons.management.staff.roles.mentor')
-      case 'HACKATHON_ROLE_JURY':
       case 'HX_ROLE_JUDGE':
-      case 'HX_ROLE_JURY':
         return t('hackathons.management.staff.roles.jury')
       default:
         return role
     }
   }
 
-  const getUserDisplayName = (userId: string) => {
+  const getUserDisplayName = (userId: string | undefined) => {
+    if (!userId) return t('common.fallback.unknown')
+    
     const user = usersMap.get(userId)
     if (!user) return userId
     
@@ -78,7 +75,7 @@ export function StaffList({ hackathonId }: StaffListProps) {
               <ListItem
                 key={member.userId}
                 text={getUserDisplayName(member.userId)}
-                caption={member.roles.map(getRoleLabel).join(', ')}
+                caption={(member.roles ?? []).map(getRoleLabel).join(', ')}
                 variant="bordered"
               />
             ))}

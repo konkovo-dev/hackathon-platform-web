@@ -32,11 +32,11 @@ export function AnnouncementsList({ announcements, hackathonId, locale = 'ru' }:
       <div className="flex flex-col gap-m4">
         {announcements.map(announcement => (
           <ListItem
-            key={announcement.announcementId}
-            text={announcement.title}
-            caption={formatRelativeTime(announcement.createdAt, locale)}
+            key={announcement.announcementId ?? 'unknown'}
+            text={announcement.title ?? t('common.fallback.untitled')}
+            caption={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : undefined}
             variant="section"
-            onClick={() => setSelectedAnnouncementId(announcement.announcementId)}
+            onClick={() => announcement.announcementId && setSelectedAnnouncementId(announcement.announcementId)}
           />
         ))}
       </div>

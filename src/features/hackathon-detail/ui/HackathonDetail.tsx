@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { Breadcrumb, Tabs, type Tab, Button } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
@@ -78,22 +79,19 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const breadcrumbItems = [
     {
       label: t('hackathons.breadcrumb.hackathons'),
-      href: '/hackathons',
+      href: routes.hackathons.list,
     },
     {
-      label: hackathon.name,
+      label: hackathon.name ?? t('common.fallback.hackathon'),
     },
   ]
 
   return (
     <div className="flex flex-col gap-m16">
-      {/* Breadcrumb */}
       <Breadcrumb items={breadcrumbItems} />
 
-      {/* Tabs */}
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-      {/* Tab Content */}
       <div
         role="tabpanel"
         id={`tabpanel-${activeTab}`}
@@ -102,7 +100,6 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
       >
         {activeTab === 'description' && (
           <div className="flex flex-col gap-m16">
-            {/* Main Info */}
             <HackathonDetailInfo hackathon={hackathon} />
           </div>
         )}

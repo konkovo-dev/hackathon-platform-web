@@ -16,7 +16,7 @@ export interface HackathonFiltersProps {
   onFiltersChange: (filters: HackathonListFilters) => void
 }
 
-const STAGES: HackathonStageFilter[] = ['all', 'registration', 'running', 'finished']
+const STAGES: HackathonStageFilter[] = ['all', 'upcoming', 'registration', 'running', 'finished']
 const FORMATS: HackathonFormat[] = ['online', 'offline']
 
 export function HackathonFilters({ filters, onFiltersChange }: HackathonFiltersProps) {

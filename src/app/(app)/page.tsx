@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getServerI18n } from '@/shared/i18n/server'
+import { routes } from '@/shared/config/routes'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -19,37 +20,37 @@ export default async function Home() {
 
         <nav className="flex flex-wrap justify-center gap-4">
           <Link
-            href="/login"
+            href={routes.auth.login}
             className="rounded-md bg-brand-primary px-4 py-2 text-text-inverse hover:bg-brand-primary-hover"
           >
             {t('home.nav.login')}
           </Link>
           <Link
-            href="/register"
+            href={routes.auth.register}
             className="rounded-md bg-bg-elevated px-4 py-2 text-text-primary hover:bg-bg-hover"
           >
             {t('home.nav.register')}
           </Link>
           <Link
-            href="/hackathons"
+            href={routes.hackathons.list}
             className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
           >
             {t('home.nav.hackathons')}
           </Link>
           <Link
-            href="/profile"
+            href={routes.profile}
             className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
           >
             {t('home.nav.profile')}
           </Link>
           <Link
-            href="/invitations"
+            href={routes.invitations}
             className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
           >
             {t('home.nav.invitations')}
           </Link>
           <Link
-            href="/my-teams"
+            href={routes.teams}
             className="rounded-md border border-border-default px-4 py-2 hover:bg-bg-hover"
           >
             {t('home.nav.my_teams')}

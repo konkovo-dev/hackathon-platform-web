@@ -39,7 +39,7 @@ export function formatDateRange(
 
 export function formatLocation(
   location?: {
-    online: boolean
+    online?: boolean
     city?: string
     country?: string
   }
