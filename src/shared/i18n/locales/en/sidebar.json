@@ -8,6 +8,7 @@
     "language": "language"
   },
   "items": {
+    "home": "home",
     "hackathons": "hackathons",
     "invitations": "invitations",
     "teams": "teams",

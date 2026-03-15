@@ -2,6 +2,7 @@
  * Централизованный конфиг маршрутов приложения
  */
 export const routes = {
+  home: '/',
   auth: {
     login: '/login',
     register: '/register',

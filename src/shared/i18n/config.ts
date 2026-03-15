@@ -16,5 +16,6 @@ export const NAMESPACES = [
   'teams',
   'sidebar',
   'settings',
+  'dashboard',
 ] as const
 export type Namespace = (typeof NAMESPACES)[number]
