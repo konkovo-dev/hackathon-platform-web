@@ -4,28 +4,33 @@ import { Checkbox } from './Checkbox'
 
 export interface ListItemProps {
   text: string
+  subtitle?: string
   caption?: string
   selectable?: boolean
   selected?: boolean
   onClick?: () => void
   rightContent?: ReactNode
+  leftContent?: ReactNode
   variant?: 'default' | 'bordered' | 'section'
   className?: string
 }
 
 export function ListItem({
   text,
+  subtitle,
   caption,
   selectable = false,
   selected = false,
   onClick,
   rightContent,
+  leftContent,
   variant = 'default',
   className,
 }: ListItemProps) {
   const isClickable = !!onClick
   const isBordered = variant === 'bordered'
   const isSection = variant === 'section'
+  const hasSubtitle = !!subtitle
 
   return (
     <div
@@ -54,7 +59,18 @@ export function ListItem({
         className
       )}
     >
-      <span className="typography-body-md-regular text-text-primary flex-1">{text}</span>
+      {leftContent && <div className="flex-shrink-0">{leftContent}</div>}
+      
+      <div className="flex-1 min-w-0">
+        <div className="typography-body-md-regular text-text-primary">
+          {text}
+        </div>
+        {hasSubtitle && (
+          <div className="typography-body-sm-regular text-text-secondary mt-m1">
+            {subtitle}
+          </div>
+        )}
+      </div>
       
       {selectable ? (
         <Checkbox checked={selected} readOnly className="pointer-events-none" />

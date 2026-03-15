@@ -13,6 +13,7 @@ const loaders = {
     teams: () => import('./locales/ru/teams.json'),
     sidebar: () => import('./locales/ru/sidebar.json'),
     settings: () => import('./locales/ru/settings.json'),
+    dashboard: () => import('./locales/ru/dashboard.json'),
   },
   en: {
     common: () => import('./locales/en/common.json'),
@@ -24,6 +25,7 @@ const loaders = {
     teams: () => import('./locales/en/teams.json'),
     sidebar: () => import('./locales/en/sidebar.json'),
     settings: () => import('./locales/en/settings.json'),
+    dashboard: () => import('./locales/en/dashboard.json'),
   },
 } satisfies Record<Locale, Record<Namespace, () => Promise<{ default: MessagesTree }>>>
 

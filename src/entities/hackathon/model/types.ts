@@ -43,3 +43,7 @@ export type FilterOperation = components['schemas']['v1FilterOperation']
 export type StringList = components['schemas']['v1StringList']
 export type Sort = components['schemas']['v1Sort']
 export type SortDirection = components['schemas']['v1SortDirection']
+
+// Типы для дашборда
+export type RoleFilter = 'owner' | 'organizer' | 'judge' | 'mentor'
+export type DashboardRole = 'organizer' | 'jury' | 'mentor' | 'participant'

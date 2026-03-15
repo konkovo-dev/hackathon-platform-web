@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { cn } from '@/shared/lib/cn'
 import { routes } from '@/shared/config/routes'
 import { Button } from '@/shared/ui/Button'
@@ -19,12 +20,13 @@ import { useDebugFlag } from './useDebugFlag'
 type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
-  key: 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system'
+  key: 'home' | 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system'
   href: string
   iconSrc: string
 }
 
 const ICONS = {
+  home: '/icons/icon-home/icon-home-md.svg',
   code: '/icons/icon-code/icon-code-md.svg',
   mail: '/icons/icon-mail/icon-mail-md.svg',
   team: '/icons/icon-team/iton-team-md.svg',
@@ -36,6 +38,7 @@ const ICONS = {
 } as const
 
 const LABEL_KEY: Record<SidebarItem['key'], I18nKey> = {
+  home: 'sidebar.items.home',
   hackathons: 'sidebar.items.hackathons',
   invitations: 'sidebar.items.invitations',
   teams: 'sidebar.items.teams',
@@ -56,7 +59,10 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
     const groups: SidebarItem[][] = []
 
     if (isAuthed) {
-      groups.push([{ key: 'profile', href: routes.profile, iconSrc: ICONS.profile }])
+      groups.push([
+        { key: 'home', href: routes.home, iconSrc: ICONS.home },
+        { key: 'profile', href: routes.profile, iconSrc: ICONS.profile },
+      ])
     } else {
       groups.push([{ key: 'auth', href: routes.auth.login, iconSrc: ICONS.auth }])
     }
@@ -96,7 +102,9 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
           'p-m8'
         )}
       >
-        <Logo size={collapsed ? 'sm' : 'md'} />
+        <Link href={routes.home}>
+          <Logo size={collapsed ? 'sm' : 'md'} />
+        </Link>
         {!collapsed && (
           <Button
             variant="icon"

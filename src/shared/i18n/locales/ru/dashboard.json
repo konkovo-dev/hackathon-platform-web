@@ -1,0 +1,50 @@
+{
+  "title": "главная",
+  "sections": {
+    "organizer": "я организатор",
+    "jury": "я жюри",
+    "mentor": "я ментор",
+    "participant": "я участник"
+  },
+  "empty": {
+    "organizer": "у вас пока нет хакатонов",
+    "organizer_action": "создать хакатон",
+    "jury": "вы пока не добавлены как жюри",
+    "jury_hint": "организаторы могут пригласить вас для оценки проектов",
+    "mentor": "вы пока не добавлены как ментор",
+    "mentor_hint": "организаторы могут пригласить вас для помощи участникам",
+    "participant": "вы ещё не участвуете в хакатонах",
+    "participant_action": "найти хакатон"
+  },
+  "quick_actions": {
+    "title": "быстрые действия",
+    "create_hackathon": "создать хакатон",
+    "find_hackathons": "найти хакатоны",
+    "my_teams": "мои команды",
+    "invitations": "приглашения"
+  },
+  "stats": {
+    "title": "статистика",
+    "organized": "организовано",
+    "judged": "оценено проектов",
+    "mentored": "команд менторил",
+    "participated": "участие в хакатонах",
+    "hackathons_count": "{count} хакатон(ов)",
+    "projects_count": "{count} проект(ов)",
+    "teams_count": "{count} команд(ы)"
+  },
+  "upcoming": {
+    "title": "ближайшие события",
+    "registration_ends": "закрытие регистрации",
+    "hackathon_starts": "начало хакатона",
+    "hackathon_ends": "окончание хакатона",
+    "judging_ends": "конец оценивания",
+    "empty": "нет запланированных событий",
+    "in_days": "через {count} дн.",
+    "today": "сегодня",
+    "tomorrow": "завтра"
+  },
+  "loading": "загрузка...",
+  "error": "ошибка загрузки данных",
+  "retry": "повторить"
+}
