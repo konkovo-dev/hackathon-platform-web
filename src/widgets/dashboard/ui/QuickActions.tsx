@@ -15,12 +15,6 @@ export function QuickActions({ className }: QuickActionsProps) {
 
   const actions = [
     {
-      label: t('dashboard.quick_actions.create_hackathon'),
-      href: routes.hackathons.create,
-      icon: '/icons/icon-plus/icon-plus-md.svg',
-      variant: 'primary' as const,
-    },
-    {
       label: t('dashboard.quick_actions.find_hackathons'),
       href: routes.hackathons.list,
       icon: '/icons/icon-search/icon-search-md.svg',
@@ -36,6 +30,12 @@ export function QuickActions({ className }: QuickActionsProps) {
       label: t('dashboard.quick_actions.invitations'),
       href: routes.invitations,
       icon: '/icons/icon-mail/icon-mail-md.svg',
+      variant: 'secondary' as const,
+    },
+    {
+      label: t('dashboard.quick_actions.create_hackathon'),
+      href: routes.hackathons.create,
+      icon: '/icons/icon-plus/icon-plus-md.svg',
       variant: 'secondary' as const,
     },
   ]
