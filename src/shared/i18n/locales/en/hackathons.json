@@ -175,6 +175,16 @@
         "organizer": "organizer",
         "mentor": "mentor",
         "jury": "jury"
+      },
+      "errors": {
+        "invite_failed": "failed to send invitation",
+        "user_not_found": "user not found",
+        "already_staff": "user is already a staff member",
+        "pending_invitation": "an active invitation already exists for this user",
+        "cannot_invite_self": "cannot invite yourself",
+        "invalid_role": "invalid role selected",
+        "unauthorized": "insufficient permissions to send invitation",
+        "forbidden": "you don't have access to this action"
       }
     },
     "teams": {
