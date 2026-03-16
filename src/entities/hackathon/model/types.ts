@@ -31,6 +31,8 @@ export type HackathonListFilters = {
   formats: HackathonFormat[]
   city?: string
   sortDirection: 'asc' | 'desc'
+  searchQuery?: string
+  skipStageFilter?: boolean
 }
 
 // Типы для Query (из OpenAPI)

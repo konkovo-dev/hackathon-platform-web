@@ -15,6 +15,7 @@
     "profile": "profile",
     "auth": "auth",
     "design_system": "design system",
-    "settings": "settings"
+    "settings": "settings",
+    "search": "search"
   }
 }

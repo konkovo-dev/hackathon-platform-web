@@ -11,8 +11,11 @@ export function buildQueryFromFilters(
   const filterGroups: FilterGroup[] = []
 
   // Фильтры по стадии с обязательным условием state=PUBLISHED
-  const stageFilterGroups = mapStageFilter(filters.stage)
-  filterGroups.push(...stageFilterGroups)
+  // Пропускаем для текстового поиска
+  if (!filters.skipStageFilter) {
+    const stageFilterGroups = mapStageFilter(filters.stage)
+    filterGroups.push(...stageFilterGroups)
+  }
 
   // Фильтр по формату (online/offline)
   // TODO: API не поддерживает фильтрацию по формату (возвращает 500)
@@ -38,6 +41,7 @@ export function buildQueryFromFilters(
   return {
     query: {
       filterGroups: filterGroups.length > 0 ? filterGroups : undefined,
+      q: filters.searchQuery,
       sort: [
         {
           field: 'dates.startsAt',
