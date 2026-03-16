@@ -6,6 +6,10 @@
     "mentor": "I'm a mentor",
     "participant": "I'm a participant"
   },
+  "organizer": {
+    "active": "active",
+    "drafts": "drafts"
+  },
   "empty": {
     "organizer": "you don't have any hackathons yet",
     "organizer_action": "create hackathon",

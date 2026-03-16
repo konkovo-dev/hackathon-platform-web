@@ -19,11 +19,27 @@ export interface ModalProps {
 export function Modal({ open, onClose, title, subtitle, children, className, size = 'md' }: ModalProps) {
   useEffect(() => {
     if (!open) return
+
+    const originalOverflow = document.body.style.overflow
+    const originalPaddingRight = document.body.style.paddingRight
+    
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = originalOverflow
+      document.body.style.paddingRight = originalPaddingRight
+    }
   }, [open, onClose])
 
   if (!open) return null
@@ -38,8 +54,16 @@ export function Modal({ open, onClose, title, subtitle, children, className, siz
       className="fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-200 p-m16"
       role="dialog"
       aria-modal="true"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
     >
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
+      <div 
+        className="absolute inset-0 bg-black/50" 
+        onClick={onClose} 
+        aria-hidden="true"
+        onWheel={(e) => e.preventDefault()}
+        onTouchMove={(e) => e.preventDefault()}
+      />
       <div
         className={cn(
           'relative z-10 bg-bg-layer rounded-[var(--spacing-m8)] flex flex-col',

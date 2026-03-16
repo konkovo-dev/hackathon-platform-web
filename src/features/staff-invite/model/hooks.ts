@@ -17,7 +17,12 @@ export function useStaffListQuery(hackathonId: string | null | undefined) {
 export function useStaffUsersQuery(userIds: string[]) {
   return useQuery({
     queryKey: ['users-batch', userIds],
-    queryFn: () => batchGetUsers({ userIds }),
+    queryFn: async () => {
+      const response = await batchGetUsers({ userIds })
+      return {
+        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null)
+      }
+    },
     enabled: userIds.length > 0,
   })
 }
@@ -25,13 +30,18 @@ export function useStaffUsersQuery(userIds: string[]) {
 export function useUsersSearchQuery(searchQuery: string) {
   return useQuery({
     queryKey: ['users-search', searchQuery],
-    queryFn: () =>
-      listUsers({
+    queryFn: async () => {
+      const response = await listUsers({
         query: {
           q: searchQuery,
           page: { pageSize: 20 },
         },
-      }),
+      })
+      return {
+        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null),
+        page: response.page,
+      }
+    },
     enabled: searchQuery.length >= 2,
   })
 }

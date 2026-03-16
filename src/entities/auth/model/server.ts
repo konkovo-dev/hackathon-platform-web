@@ -11,7 +11,7 @@ export type SessionSnapshot =
 type IntrospectResponse = AuthGatewayComponents['schemas']['IntrospectResponse']
 
 export async function getServerSession(): Promise<SessionSnapshot> {
-  const accessToken = getAccessTokenFromCookies()
+  const accessToken = await getAccessTokenFromCookies()
   if (!accessToken) return { active: false }
 
   const result = await authGatewayPost<IntrospectResponse>('/v1/auth/introspect', {

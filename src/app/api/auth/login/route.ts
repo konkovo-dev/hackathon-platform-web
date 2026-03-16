@@ -33,6 +33,6 @@ export async function POST(req: Request) {
     return NextResponse.json(mapAuthGatewayErrorToBff(json), { status: result.response.status })
   }
 
-  setAuthCookies(result.data)
+  await setAuthCookies(result.data)
   return NextResponse.json({ ok: true })
 }

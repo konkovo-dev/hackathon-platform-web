@@ -1,13 +1,13 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
-import type { User } from './listUsers'
+import type { operations, components } from '@/shared/api/platform.schema'
 
-export type BatchGetUsersRequest = {
-  userIds: string[]
-}
+export type BatchGetUsersRequest =
+  operations['UsersService_BatchGetUsers']['requestBody']['content']['application/json']
 
-export type BatchGetUsersResponse = {
-  users: User[]
-}
+export type BatchGetUsersResponse =
+  operations['UsersService_BatchGetUsers']['responses']['200']['content']['application/json']
+
+export type User = components['schemas']['v1User']
 
 export async function batchGetUsers(
   request: BatchGetUsersRequest

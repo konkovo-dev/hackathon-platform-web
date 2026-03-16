@@ -1,10 +1,11 @@
 'use client'
 
-import { Section, ListItem, SelectList, Button, Icon } from '@/shared/ui'
+import { Section, SelectList, Button, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useStaffListQuery, useStaffUsersQuery } from '../model/hooks'
 import { useState, useMemo } from 'react'
 import { StaffInviteModal } from './StaffInviteModal'
+import { UserListItem } from '@/entities/user'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
 
 export interface StaffListProps {
@@ -40,18 +41,6 @@ export function StaffList({ hackathonId }: StaffListProps) {
     }
   }
 
-  const getUserDisplayName = (userId: string | undefined) => {
-    if (!userId) return t('common.fallback.unknown')
-    
-    const user = usersMap.get(userId)
-    if (!user) return userId
-    
-    const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
-    const username = user.email?.split('@')[0] || userId
-    
-    return name ? `${name} / ${username}` : username
-  }
-
   return (
     <>
       <Section
@@ -72,9 +61,10 @@ export function StaffList({ hackathonId }: StaffListProps) {
         ) : staff.length > 0 ? (
           <SelectList>
             {staff.map(member => (
-              <ListItem
+              <UserListItem
                 key={member.userId}
-                text={getUserDisplayName(member.userId)}
+                userId={member.userId}
+                user={usersMap.get(member.userId ?? '')}
                 caption={(member.roles ?? []).map(getRoleLabel).join(', ')}
                 variant="bordered"
               />

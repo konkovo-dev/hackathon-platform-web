@@ -6,6 +6,10 @@
     "mentor": "я ментор",
     "participant": "я участник"
   },
+  "organizer": {
+    "active": "активные",
+    "drafts": "черновики"
+  },
   "empty": {
     "organizer": "у вас пока нет хакатонов",
     "organizer_action": "создать хакатон",
