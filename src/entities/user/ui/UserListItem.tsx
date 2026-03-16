@@ -1,7 +1,8 @@
-import { ListItem, Icon } from '@/shared/ui'
+import { ListItem, Icon, Chip } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useRouter } from 'next/navigation'
 import { routes } from '@/shared/config/routes'
+import { useSessionQuery } from '@/features/auth/model/hooks'
 import type { User } from '../api/listUsers'
 import type { ReactNode } from 'react'
 
@@ -15,6 +16,7 @@ export interface UserListItemProps {
   selected?: boolean
   variant?: 'default' | 'bordered' | 'section'
   showNavigationIcon?: boolean
+  badge?: string
 }
 
 export function UserListItem({
@@ -27,9 +29,13 @@ export function UserListItem({
   selected,
   variant = 'bordered',
   showNavigationIcon = false,
+  badge,
 }: UserListItemProps) {
   const t = useT()
   const router = useRouter()
+  const { data: session } = useSessionQuery()
+
+  const isCurrentUser = session?.active && session.userId === userId
 
   const getUserDisplayData = () => {
     if (!userId) {
@@ -49,8 +55,11 @@ export function UserListItem({
     const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
     const nickname = user.username || userId
 
+    const displayName = name || t('common.fallback.unknown_user')
+    const title = isCurrentUser ? `${displayName} / ${t('common.me')}` : displayName
+
     return {
-      title: name || t('common.fallback.unknown_user'),
+      title,
       subtitle: nickname,
     }
   }
@@ -66,7 +75,12 @@ export function UserListItem({
   const { title, subtitle } = getUserDisplayData()
 
   const defaultRightContent = showNavigationIcon ? (
-    <Icon src="/icons/icon-arrow/icon-arrow-right-md.svg" size="md" color="secondary" />
+    <div className="flex items-center gap-m4">
+      {badge && <Chip label={badge} variant="primary" />}
+      <Icon src="/icons/icon-arrow/icon-arrow-right-md.svg" size="md" color="secondary" />
+    </div>
+  ) : badge ? (
+    <Chip label={badge} variant="primary" />
   ) : undefined
 
   return (

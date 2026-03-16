@@ -1,14 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { cn } from '@/shared/lib/cn'
 import { useT } from '@/shared/i18n/useT'
-import { routes } from '@/shared/config/routes'
-import { Avatar } from '@/shared/ui/Avatar'
 import { Button } from '@/shared/ui/Button'
-import { Chip } from '@/shared/ui/Chip'
-import { ChipList } from '@/shared/ui/ChipList'
 import { Icon } from '@/shared/ui/Icon'
 import { Section } from '@/shared/ui/Section'
 import { LogoutButton } from '@/features/auth/ui/LogoutButton'
@@ -21,18 +16,15 @@ import {
 import { EditNameSection } from './EditNameSection'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditContactsModal } from './EditContactsModal'
-import type { MeProfile, ContactType, VisibilityLevel } from '@/entities/user/model/types'
-import { getSkillName, getContactHref } from '@/entities/user/model/types'
+import type { MeProfile, VisibilityLevel, ContactItem } from '@/entities/user/model/types'
 import type { components } from '@/shared/api/identityMe.schema'
+import {
+  ProfileAvatar,
+  ProfileContactsSection,
+  ProfileSkillsSection,
+} from '@/widgets/profile-view'
 
 type ContactInput = components['schemas']['v1MyContact']
-
-const CONTACT_ICONS: Partial<Record<ContactType, string>> = {
-  CONTACT_TYPE_EMAIL: '/icons/icon-mail/icon-mail-sm.svg',
-  CONTACT_TYPE_TELEGRAM: '/icons/icon-telegram/icon-telegram-sm.svg',
-  CONTACT_TYPE_GITHUB: '/icons/icon-github/icon-github-sm.svg',
-  CONTACT_TYPE_LINKEDIN: '/icons/icon-linkedin/icon-linkedin-sm.svg',
-}
 
 function SectionIconButton({
   variant,
@@ -149,6 +141,9 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
   const hasContacts = contacts.length > 0
   const hasSkills = skills.length > 0
 
+  // Преобразуем ContactWithVisibility в ContactItem для использования в ProfileContactsSection
+  const contactItems: ContactItem[] = contacts.map(c => c.contact).filter((c): c is ContactItem => c != null)
+
   // --- Имя ---
   const handleNameEdit = () => {
     setEditFirstName(user?.firstName ?? '')
@@ -223,21 +218,15 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
       </div>
 
       <div className="grid gap-m8 w-full items-center" style={{ gridTemplateColumns: 'auto 1fr' }}>
-        {hasAvatar ? (
-          <Avatar src={user?.avatarUrl} name={user?.firstName} size="xl" />
-        ) : (
-          <div
-            className="aspect-[3/4] self-stretch relative z-10 border border-border-default rounded-[var(--spacing-m4)] bg-bg-default overflow-hidden"
-            style={{ minHeight: 0, minWidth: 0 }}
-          >
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-m8">
-              <Icon src="/icons/icon-profile/icon-profile-lg.svg" size="lg" color="secondary" />
-              <Button variant="action" size="sm">
-                {t('profile.actions.choose_avatar')}
-              </Button>
-            </div>
-          </div>
-        )}
+        <ProfileAvatar
+          avatarUrl={user?.avatarUrl}
+          firstName={user?.firstName}
+          placeholder={
+            <Button variant="action" size="sm">
+              {t('profile.actions.choose_avatar')}
+            </Button>
+          }
+        />
 
         <div className="flex flex-col gap-m8 min-w-0 justify-center">
           {/* Информация */}
@@ -270,35 +259,19 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
             title={t('profile.sections.contacts')}
             hoverAction={sectionHoverEdit(() => setContactsModalOpen(true))}
           >
-            {hasContacts ? (
-              <ChipList>
-                {contacts.map(({ contact }, idx) => {
-                  if (!contact) return null
-                  const iconSrc = contact.type ? CONTACT_ICONS[contact.type] : undefined
-                  const href =
-                    contact.type && contact.value
-                      ? getContactHref(contact.type as ContactType, contact.value)
-                      : undefined
-                  return (
-                    <Chip
-                      key={contact.id || `${contact.type}-${contact.value}-${idx}`}
-                      label={contact.value ?? ''}
-                      icon={iconSrc ? <ContactIcon src={iconSrc} /> : undefined}
-                      href={href}
-                    />
-                  )
-                })}
-              </ChipList>
-            ) : (
-              <Button
-                variant="action"
-                size="sm"
-                className="self-start"
-                onClick={() => setContactsModalOpen(true)}
-              >
-                {t('profile.actions.add_contacts')}
-              </Button>
-            )}
+            <ProfileContactsSection
+              contacts={contactItems}
+              emptyState={
+                <Button
+                  variant="action"
+                  size="sm"
+                  className="self-start"
+                  onClick={() => setContactsModalOpen(true)}
+                >
+                  {t('profile.actions.add_contacts')}
+                </Button>
+              }
+            />
           </Section>
 
           {/* Навыки */}
@@ -306,38 +279,22 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
             title={t('profile.sections.skills')}
             hoverAction={sectionHoverEdit(() => setSkillsModalOpen(true))}
           >
-            {hasSkills ? (
-              <ChipList>
-                {skills.map(skill => {
-                  const name = getSkillName(skill)
-                  return <Chip key={name} label={name} />
-                })}
-              </ChipList>
-            ) : (
-              <Button
-                variant="action"
-                size="sm"
-                className="self-start"
-                onClick={() => setSkillsModalOpen(true)}
-              >
-                {t('profile.actions.add_skills')}
-              </Button>
-            )}
+            <ProfileSkillsSection
+              skills={skills}
+              emptyState={
+                <Button
+                  variant="action"
+                  size="sm"
+                  className="self-start"
+                  onClick={() => setSkillsModalOpen(true)}
+                >
+                  {t('profile.actions.add_skills')}
+                </Button>
+              }
+            />
           </Section>
         </div>
       </div>
-
-      <Section title={t('profile.sections.hackathons')} className="w-full">
-        <Button
-          variant="action"
-          size="sm"
-          className="self-start"
-          asChild
-          text={t('profile.hackathons.find')}
-        >
-          <Link href={routes.hackathons.list} />
-        </Button>
-      </Section>
 
       <LogoutButton />
 
@@ -361,20 +318,5 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
         isPending={updateSkills.isPending}
       />
     </div>
-  )
-}
-
-function ContactIcon({ src }: { src: string }) {
-  return (
-    <span
-      className="w-m8 h-m8 block bg-icon-primary"
-      style={{
-        maskImage: `url(${src})`,
-        WebkitMaskImage: `url(${src})`,
-        maskRepeat: 'no-repeat',
-        maskPosition: 'center',
-        maskSize: 'contain',
-      }}
-    />
   )
 }
