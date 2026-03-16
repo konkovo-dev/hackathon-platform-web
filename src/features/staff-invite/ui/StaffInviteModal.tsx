@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Modal, Input, SelectList, ListItem, Button, Section } from '@/shared/ui'
+import { Modal, Input, SelectList, ListItem, Button, Section, MarkdownEditor } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useUsersSearchQuery, useCreateStaffInvitationMutation } from '../model/hooks'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
@@ -62,43 +62,63 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={t('hackathons.management.staff.invite')}>
+    <Modal open={open} onClose={onClose} title={t('hackathons.management.staff.invite')} size="lg">
       <div className="flex flex-col gap-m6">
         <Section title={t('hackathons.management.staff.searchUser')} variant="outlined">
           <Input
-            type="search"
+            variant="search"
             placeholder={t('hackathons.management.staff.searchPlaceholder')}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
+            onClear={() => setSearchQuery('')}
             autoFocus
           />
 
-          {searchQuery.length >= 2 && (
-            <div className="max-h-[200px] overflow-y-auto mt-m4">
-              {isSearching ? (
+          <div className="h-[244px] mt-m4">
+            {searchQuery.length < 2 ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="typography-body-sm text-text-secondary">
+                  {t('hackathons.management.staff.searchPlaceholder')}
+                </p>
+              </div>
+            ) : isSearching ? (
+              <div className="flex items-center justify-center h-full">
                 <p className="typography-body-sm text-text-secondary">
                   {t('hackathons.list.loading')}
                 </p>
-              ) : users.length > 0 ? (
+              </div>
+            ) : users.length > 0 ? (
+              <div className="h-full overflow-y-auto">
                 <SelectList>
-                  {users.map(user => (
-                    <ListItem
-                      key={user.userId}
-                      text={`${user.firstName || ''} ${user.lastName || ''} (${user.email || user.userId})`}
-                      selectable
-                      selected={selectedUserId === user.userId}
-                      variant="bordered"
-                      onClick={() => setSelectedUserId(user.userId)}
-                    />
-                  ))}
+                  {users.map(user => {
+                    if (!user.userId) return null
+                    
+                    const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
+                    const displayText = name 
+                      ? `${name} (${user.username || user.userId})` 
+                      : (user.username || user.userId)
+                    
+                    return (
+                      <ListItem
+                        key={user.userId}
+                        text={displayText}
+                        selectable
+                        selected={selectedUserId === user.userId}
+                        variant="bordered"
+                        onClick={() => setSelectedUserId(user.userId!)}
+                      />
+                    )
+                  })}
                 </SelectList>
-              ) : (
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full">
                 <p className="typography-body-sm text-text-secondary">
-                  {t('hackathons.list.empty')}
+                  {t('hackathons.management.staff.noUsersFound')}
                 </p>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </Section>
 
         <Section title={t('hackathons.management.staff.selectRole')} variant="outlined">
@@ -117,11 +137,11 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
         </Section>
 
         <Section title={t('hackathons.management.staff.message')} variant="outlined">
-          <Input
-            type="text"
-            placeholder={t('hackathons.management.staff.messagePlaceholder')}
+          <MarkdownEditor
             value={message}
-            onChange={e => setMessage(e.target.value)}
+            onChange={setMessage}
+            placeholder={t('hackathons.management.staff.messagePlaceholder')}
+            rows={4}
           />
         </Section>
 

@@ -6,7 +6,7 @@ import type { components as AuthGatewayComponents } from '@/shared/api/authGatew
 type IntrospectResponse = AuthGatewayComponents['schemas']['IntrospectResponse']
 
 export async function GET() {
-  const accessToken = getAccessTokenFromCookies()
+  const accessToken = await getAccessTokenFromCookies()
   if (!accessToken) {
     return NextResponse.json({ active: false })
   }
@@ -17,7 +17,7 @@ export async function GET() {
 
   if (!result.ok) {
     if (result.response.status === 401 || result.response.status === 403) {
-      clearAuthCookies()
+      await clearAuthCookies()
     }
     return NextResponse.json({ active: false })
   }

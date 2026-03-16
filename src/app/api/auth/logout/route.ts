@@ -4,10 +4,10 @@ import { clearAuthCookies, getRefreshTokenFromCookies } from '@/shared/lib/auth/
 import { mapAuthGatewayErrorToBff } from '../_lib/errorMap'
 
 export async function POST() {
-  const refreshToken = getRefreshTokenFromCookies()
+  const refreshToken = await getRefreshTokenFromCookies()
 
   if (!refreshToken) {
-    clearAuthCookies()
+    await clearAuthCookies()
     return NextResponse.json({ ok: true })
   }
 
@@ -15,7 +15,7 @@ export async function POST() {
     refresh_token: refreshToken,
   })
 
-  clearAuthCookies()
+  await clearAuthCookies()
   if (!result.ok) {
     const json = await result.response.json().catch(() => ({}))
     return NextResponse.json(mapAuthGatewayErrorToBff(json), { status: result.response.status })

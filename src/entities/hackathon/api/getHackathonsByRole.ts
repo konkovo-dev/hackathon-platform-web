@@ -14,19 +14,26 @@ export async function getHackathonsByRole(
   role: RoleFilter,
   pageSize: number = DEFAULT_PAGE_SIZE
 ): Promise<HackathonListResponse> {
-  const query: ListHackathonsRequest = {
-    query: {
-      filterGroups: [
+  const filterGroups = [
+    {
+      filters: [
         {
-          filters: [
-            {
-              field: 'my_role',
-              operation: 'FILTER_OPERATION_EQUAL',
-              stringValue: role,
-            },
-          ],
+          field: 'my_role',
+          operation: 'FILTER_OPERATION_EQUAL' as const,
+          stringValue: role,
+        },
+        {
+          field: 'state',
+          operation: 'FILTER_OPERATION_EQUAL' as const,
+          stringValue: 'HACKATHON_STATE_PUBLISHED',
         },
       ],
+    },
+  ]
+
+  const query: ListHackathonsRequest = {
+    query: {
+      filterGroups,
       sort: [
         {
           field: 'starts_at',

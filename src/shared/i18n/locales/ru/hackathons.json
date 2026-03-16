@@ -20,6 +20,9 @@
     "register": "регистрация",
     "no_description": "описание отсутствует",
     "announcements_coming_soon": "объявления будут добавлены позже",
+    "errors": {
+      "access_denied": "у вас нет доступа к этому хакатону"
+    },
     "info": {
       "title": "основная информация",
       "dates": "даты",
@@ -163,6 +166,7 @@
       "empty": "пока нет членов команды",
       "searchUser": "поиск пользователя",
       "searchPlaceholder": "введите имя или email",
+      "noUsersFound": "пользователи не найдены",
       "selectRole": "выберите роль",
       "message": "сообщение (опционально)",
       "messagePlaceholder": "добавьте сообщение к приглашению",
