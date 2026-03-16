@@ -63,10 +63,18 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   }
 
   if (error) {
+    const isAccessDenied = 
+      error instanceof Error && 
+      'data' in error && 
+      typeof (error as any).data === 'object' &&
+      ((error as any).data.status === 401 || (error as any).data.status === 403)
+    
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <span className="typography-body-md text-state-error">
-          {t('hackathons.list.error')}
+          {isAccessDenied 
+            ? t('hackathons.detail.errors.access_denied')
+            : t('hackathons.list.error')}
         </span>
       </div>
     )

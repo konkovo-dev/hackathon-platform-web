@@ -1,6 +1,6 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Modal, MarkdownContent } from '@/shared/ui'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
 import { useT } from '@/shared/i18n/useT'
@@ -22,12 +22,13 @@ export function AnnouncementModal({
   locale = 'ru',
 }: AnnouncementModalProps) {
   const t = useT()
+  const queryClient = useQueryClient()
   
-  // Используем useQuery для реактивного получения данных из кэша
-  const { data: announcements } = useQuery<HackathonAnnouncement[]>({
-    queryKey: ['hackathon', 'announcements', hackathonId],
-    enabled: false,
-  })
+  const announcements = queryClient.getQueryData<HackathonAnnouncement[]>([
+    'hackathon',
+    'announcements',
+    hackathonId,
+  ])
 
   if (!open || !announcementId) return null
 

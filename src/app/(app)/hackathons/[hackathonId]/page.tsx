@@ -1,5 +1,6 @@
-import { getHackathon } from '@/entities/hackathon/api/getHackathon'
+import { getHackathonServer } from '@/entities/hackathon/api/getHackathon.server'
 import { HackathonDetail } from '@/features/hackathon-detail/ui/HackathonDetail'
+import { ApiError } from '@/shared/api/errors'
 
 export default async function HackathonMainPage({
   params,
@@ -10,13 +11,16 @@ export default async function HackathonMainPage({
 
   let initialData
   try {
-    initialData = await getHackathon(hackathonId, {
+    initialData = await getHackathonServer(hackathonId, {
       includeDescription: true,
       includeLinks: true,
       includeLimits: true,
     })
   } catch (error) {
-    console.error('Failed to fetch hackathon:', error)
+    if (error instanceof ApiError && error.data.status === 401) {
+    } else {
+      console.error('Failed to fetch hackathon:', error)
+    }
   }
 
   return <HackathonDetail hackathonId={hackathonId} initialData={initialData} />

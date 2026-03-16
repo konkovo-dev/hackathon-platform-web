@@ -1,30 +1,13 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
+import type { operations, components } from '@/shared/api/platform.schema'
 
-export type User = {
-  userId: string
-  firstName?: string
-  lastName?: string
-  email?: string
-  avatarUrl?: string
-}
+export type User = components['schemas']['v1User']
 
-export type ListUsersRequest = {
-  query?: {
-    q?: string
-    page?: {
-      pageSize?: number
-      pageToken?: string
-    }
-  }
-}
+export type ListUsersRequest =
+  operations['UsersService_ListUsers']['requestBody']['content']['application/json']
 
-export type ListUsersResponse = {
-  users: User[]
-  page?: {
-    hasMore: boolean
-    nextPageToken: string
-  }
-}
+export type ListUsersResponse =
+  operations['UsersService_ListUsers']['responses']['200']['content']['application/json']
 
 export async function listUsers(request: ListUsersRequest = {}): Promise<ListUsersResponse> {
   return platformFetchJson<ListUsersResponse>('/v1/users/list', {

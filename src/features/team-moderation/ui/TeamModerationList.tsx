@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Section, ListItem, SelectList, Chip, ChipList } from '@/shared/ui'
+import { Section, SelectList, Chip, ChipList } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
-import { useParticipationsQuery } from '../model/hooks'
+import { useParticipationsQuery, useParticipationUsersQuery } from '../model/hooks'
+import { UserListItem } from '@/entities/user'
 import type { ParticipationStatus } from '@/entities/hackathon/api/listParticipations'
 
 export interface TeamModerationListProps {
@@ -27,6 +28,16 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
   )
 
   const participations = useMemo(() => data?.participants || [], [data?.participants])
+  const userIds = useMemo(
+    () => participations.map(p => p.userId).filter((id): id is string => id != null),
+    [participations]
+  )
+  const { data: usersData } = useParticipationUsersQuery(userIds)
+
+  const usersMap = useMemo(() => {
+    if (!usersData?.users) return new Map()
+    return new Map(usersData.users.map(u => [u.userId, u]))
+  }, [usersData])
 
   const toggleStatus = (status: ParticipationStatus) => {
     setSelectedStatuses(prev =>
@@ -84,9 +95,10 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
         ) : participations.length > 0 ? (
           <SelectList>
             {participations.map(participation => (
-              <ListItem
+              <UserListItem
                 key={participation.userId ?? 'unknown'}
-                text={participation.userId ?? t('common.fallback.unknown_user')}
+                userId={participation.userId}
+                user={usersMap.get(participation.userId ?? '')}
                 caption={`${getStatusLabel(participation.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED')}${participation.teamId ? ` • Team: ${participation.teamId}` : ''}`}
                 variant="bordered"
               />

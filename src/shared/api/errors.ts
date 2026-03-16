@@ -6,6 +6,7 @@ export interface ApiErrorData {
   code?: string
   fieldErrors?: Record<string, string[]>
   status?: number
+  url?: string
 }
 
 /**

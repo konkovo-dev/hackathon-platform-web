@@ -14,6 +14,7 @@ export const routes = {
     edit: (id: string) => `/hackathons/${id}/edit`,
   },
   profile: '/profile',
+  user: (id: string) => `/users/${id}`,
   teams: '/my-teams',
   invitations: '/invitations',
 } as const
