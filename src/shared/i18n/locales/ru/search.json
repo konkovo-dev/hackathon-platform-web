@@ -1,0 +1,22 @@
+{
+  "title": "поиск",
+  "placeholder": "поиск хакатонов или участников...",
+  "tabs": {
+    "hackathons": "хакатоны",
+    "users": "участники"
+  },
+  "states": {
+    "empty_query": "введите поисковый запрос",
+    "min_chars": "минимум 2 символа",
+    "loading": "поиск...",
+    "no_results": "ничего не найдено",
+    "error": "произошла ошибка"
+  },
+  "hackathon_status": {
+    "draft": "черновик",
+    "upcoming": "скоро",
+    "registration": "регистрация",
+    "running": "идет",
+    "finished": "завершен"
+  }
+}

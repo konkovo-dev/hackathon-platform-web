@@ -14,6 +14,7 @@ const loaders = {
     sidebar: () => import('./locales/ru/sidebar.json'),
     settings: () => import('./locales/ru/settings.json'),
     dashboard: () => import('./locales/ru/dashboard.json'),
+    search: () => import('./locales/ru/search.json'),
   },
   en: {
     common: () => import('./locales/en/common.json'),
@@ -26,6 +27,7 @@ const loaders = {
     sidebar: () => import('./locales/en/sidebar.json'),
     settings: () => import('./locales/en/settings.json'),
     dashboard: () => import('./locales/en/dashboard.json'),
+    search: () => import('./locales/en/search.json'),
   },
 } satisfies Record<Locale, Record<Namespace, () => Promise<{ default: MessagesTree }>>>
 

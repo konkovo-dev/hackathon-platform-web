@@ -15,15 +15,17 @@ import type { I18nKey } from '@/shared/i18n/generated'
 import { useSessionQueryWithInitial } from '@/features/auth/model/hooks'
 import type { components as AuthBffComponents } from '@/shared/api/authBff.schema'
 import { useActiveInvitationsCount } from '@/features/invitations-management'
+import { SearchModal } from '@/features/global-search'
 import { SidebarSettings } from './SidebarSettings'
 import { useDebugFlag } from './useDebugFlag'
 
 type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
-  key: 'home' | 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system'
-  href: string
+  key: 'home' | 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system' | 'search'
+  href?: string
   iconSrc: string
+  onClick?: () => void
 }
 
 const ICONS = {
@@ -36,6 +38,7 @@ const ICONS = {
   designSystem: '/icons/icon-code/icon-code-md.svg',
   sidebar: '/icons/icon-sidebar/icon-sidebar-md.svg',
   arrowRight: '/icons/icon-arrow/icon-arrow-right-md.svg',
+  search: '/icons/icon-search/icon-search-md.svg',
 } as const
 
 const LABEL_KEY: Record<SidebarItem['key'], I18nKey> = {
@@ -46,12 +49,14 @@ const LABEL_KEY: Record<SidebarItem['key'], I18nKey> = {
   profile: 'sidebar.items.profile',
   auth: 'sidebar.items.auth',
   design_system: 'sidebar.items.design_system',
+  search: 'sidebar.items.search',
 }
 
 export function Sidebar({ initialSession }: { initialSession?: SessionResponse }) {
   const t = useT()
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const { debug, setDebug } = useDebugFlag({ cookieName: 'hp_debug' })
   const sessionQuery = useSessionQueryWithInitial(initialSession)
   const isAuthed = sessionQuery.data?.active === true
@@ -61,6 +66,9 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
     const groups: SidebarItem[][] = []
 
     if (isAuthed) {
+      groups.push([
+        { key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) },
+      ])
       groups.push([
         { key: 'home', href: routes.home, iconSrc: ICONS.home },
         { key: 'profile', href: routes.profile, iconSrc: ICONS.profile },
@@ -135,9 +143,10 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
                 href={item.href}
                 iconSrc={item.iconSrc}
                 title={t(LABEL_KEY[item.key])}
-                active={isActive(item.href)}
+                active={item.href ? isActive(item.href) : false}
                 collapsed={collapsed}
                 badge={item.key === 'invitations' ? invitationsCount : undefined}
+                onClick={item.onClick}
               />
             ))}
             {groupIndex < menuGroups.length - 1 && <Divider className="my-m2" />}
@@ -168,6 +177,8 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
       {/* <div className="mt-auto p-m8">
         {!collapsed && <div className="text-text-tertiary typography-caption-xs">{t('sidebar.footer')}</div>}
       </div> */}
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} isAuthed={isAuthed} />
     </aside>
   )
 }
