@@ -11,7 +11,7 @@ import { mapAuthGatewayErrorToBff } from '../_lib/errorMap'
 type TokenPairResponse = AuthGatewayComponents['schemas']['TokenPairResponse']
 
 export async function POST() {
-  const refreshToken = getRefreshTokenFromCookies()
+  const refreshToken = await getRefreshTokenFromCookies()
   if (!refreshToken) {
     return NextResponse.json(
       { message: 'No refresh token', code: 'AUTH_REQUIRED' },
@@ -24,12 +24,12 @@ export async function POST() {
   })
   if (!result.ok) {
     if (result.response.status === 401 || result.response.status === 403) {
-      clearAuthCookies()
+      await clearAuthCookies()
     }
     const json = await result.response.json().catch(() => ({}))
     return NextResponse.json(mapAuthGatewayErrorToBff(json), { status: result.response.status })
   }
 
-  setAuthCookies(result.data)
+  await setAuthCookies(result.data)
   return NextResponse.json({ ok: true })
 }

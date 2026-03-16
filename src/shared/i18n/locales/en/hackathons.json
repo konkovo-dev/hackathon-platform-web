@@ -20,6 +20,9 @@
     "register": "register",
     "no_description": "no description",
     "announcements_coming_soon": "announcements will be added later",
+    "errors": {
+      "access_denied": "you don't have access to this hackathon"
+    },
     "info": {
       "title": "general information",
       "dates": "dates",
@@ -163,6 +166,7 @@
       "empty": "no team members yet",
       "searchUser": "search user",
       "searchPlaceholder": "enter name or email",
+      "noUsersFound": "no users found",
       "selectRole": "select role",
       "message": "message (optional)",
       "messagePlaceholder": "add a message to the invitation",

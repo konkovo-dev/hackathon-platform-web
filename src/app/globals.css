@@ -523,6 +523,11 @@
   * {
     @apply border-border-default;
   }
+  
+  html, body {
+    @apply h-full overflow-hidden;
+  }
+  
   body {
     @apply bg-bg-default text-text-primary;
     font-family: var(--font-ibm-plex-sans), sans-serif;

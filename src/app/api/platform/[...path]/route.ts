@@ -66,7 +66,7 @@ async function proxyOnce(
 }
 
 async function tryRefreshTokens(): Promise<{ ok: true; accessToken?: string } | { ok: false }> {
-  const refreshToken = getRefreshTokenFromCookies()
+  const refreshToken = await getRefreshTokenFromCookies()
   if (!refreshToken) return { ok: false }
 
   const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/refresh', {
@@ -74,12 +74,12 @@ async function tryRefreshTokens(): Promise<{ ok: true; accessToken?: string } | 
   })
   if (!result.ok) {
     if (result.response.status === 401 || result.response.status === 403) {
-      clearAuthCookies()
+      await clearAuthCookies()
     }
     return { ok: false }
   }
 
-  setAuthCookies(result.data)
+  await setAuthCookies(result.data)
   return { ok: true, accessToken: result.data.accessToken }
 }
 
@@ -94,7 +94,7 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
 
   let res: Response
   try {
-    const accessToken = getAccessTokenFromCookies()
+    const accessToken = await getAccessTokenFromCookies()
     res = await proxyOnce(req, upstream, accessToken, body)
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Upstream fetch failed'
@@ -115,7 +115,7 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
         res = await proxyOnce(
           req,
           upstream,
-          refreshed.accessToken ?? getAccessTokenFromCookies(),
+          refreshed.accessToken ?? await getAccessTokenFromCookies(),
           body
         )
       } catch (e) {

@@ -14,6 +14,7 @@ import { useT } from '@/shared/i18n/useT'
 import type { I18nKey } from '@/shared/i18n/generated'
 import { useSessionQueryWithInitial } from '@/features/auth/model/hooks'
 import type { components as AuthBffComponents } from '@/shared/api/authBff.schema'
+import { useActiveInvitationsCount } from '@/features/invitations-management'
 import { SidebarSettings } from './SidebarSettings'
 import { useDebugFlag } from './useDebugFlag'
 
@@ -54,6 +55,7 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
   const { debug, setDebug } = useDebugFlag({ cookieName: 'hp_debug' })
   const sessionQuery = useSessionQueryWithInitial(initialSession)
   const isAuthed = sessionQuery.data?.active === true
+  const { count: invitationsCount } = useActiveInvitationsCount()
 
   const menuGroups = useMemo(() => {
     const groups: SidebarItem[][] = []
@@ -120,7 +122,7 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
 
       <nav
         className={cn(
-          'flex flex-col items-center',
+          'flex-1 flex flex-col items-center overflow-y-auto',
           'transition-[padding] duration-200 ease-in-out motion-reduce:transition-none',
           'px-m4 gap-m2'
         )}
@@ -135,6 +137,7 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
                 title={t(LABEL_KEY[item.key])}
                 active={isActive(item.href)}
                 collapsed={collapsed}
+                badge={item.key === 'invitations' ? invitationsCount : undefined}
               />
             ))}
             {groupIndex < menuGroups.length - 1 && <Divider className="my-m2" />}

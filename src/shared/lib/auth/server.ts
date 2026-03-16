@@ -24,8 +24,8 @@ function toMaxAgeSeconds(expiresAtIso?: string): number | undefined {
   return diff
 }
 
-export function setAuthCookies(tokens: TokenPair) {
-  const store = cookies()
+export async function setAuthCookies(tokens: TokenPair) {
+  const store = await cookies()
 
   store.set(AUTH_COOKIE_ACCESS, tokens.accessToken, {
     httpOnly: true,
@@ -44,8 +44,8 @@ export function setAuthCookies(tokens: TokenPair) {
   })
 }
 
-export function clearAuthCookies() {
-  const store = cookies()
+export async function clearAuthCookies() {
+  const store = await cookies()
 
   store.set(AUTH_COOKIE_ACCESS, '', {
     httpOnly: true,
@@ -63,10 +63,10 @@ export function clearAuthCookies() {
   })
 }
 
-export function getAccessTokenFromCookies(): string | undefined {
-  return cookies().get(AUTH_COOKIE_ACCESS)?.value
+export async function getAccessTokenFromCookies(): Promise<string | undefined> {
+  return (await cookies()).get(AUTH_COOKIE_ACCESS)?.value
 }
 
-export function getRefreshTokenFromCookies(): string | undefined {
-  return cookies().get(AUTH_COOKIE_REFRESH)?.value
+export async function getRefreshTokenFromCookies(): Promise<string | undefined> {
+  return (await cookies()).get(AUTH_COOKIE_REFRESH)?.value
 }

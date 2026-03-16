@@ -7,35 +7,15 @@ function joinPath(base: string, path: string) {
   return `${baseTrimmed}${pathTrimmed}`
 }
 
-async function getServerOrigin(): Promise<string> {
-  const { headers } = await import('next/headers')
-  const h = await headers()
-
-  const proto = h.get('x-forwarded-proto') || 'http'
-  const host = h.get('x-forwarded-host') || h.get('host') || 'localhost:3000'
-  return `${proto}://${host}`
-}
-
-async function getServerCookieHeader(): Promise<string | undefined> {
-  const { headers } = await import('next/headers')
-  const h = await headers()
-  const cookie = h.get('cookie') || undefined
-  return cookie
-}
-
+/**
+ * Client-side API client - использует BFF для запросов
+ */
 export async function platformFetchJson<TResponse>(
   path: string,
   init?: Omit<RequestInit, 'headers'> & { headers?: HeadersInit }
 ): Promise<TResponse> {
   const urlPath = joinPath(env.apiBaseUrl, path)
-  const isServer = typeof window === 'undefined'
-  const url =
-    isServer && urlPath.startsWith('/')
-      ? new URL(urlPath, await getServerOrigin()).toString()
-      : urlPath
-
-  const cookieHeader = isServer ? await getServerCookieHeader() : undefined
-
+  
   const fetchOptions: RequestInit = {
     ...init,
     headers: {
@@ -43,22 +23,14 @@ export async function platformFetchJson<TResponse>(
       ...(init?.headers || {}),
     },
     cache: 'no-store',
+    credentials: 'same-origin',
   }
 
-  // На клиенте используем credentials для автоматической отправки cookies
-  if (!isServer) {
-    fetchOptions.credentials = 'same-origin'
-  }
-  
-  // На сервере явно передаем cookie header
-  if (isServer && cookieHeader) {
-    (fetchOptions.headers as Record<string, string>).cookie = cookieHeader
-  }
-
-  const res = await fetch(url, fetchOptions)
+  const res = await fetch(urlPath, fetchOptions)
 
   if (!res.ok) {
     const err = await parseApiErrorResponse(res.clone())
+    err.url = urlPath
     throw new ApiError(err)
   }
 

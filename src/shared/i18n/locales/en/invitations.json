@@ -1,4 +1,30 @@
 {
-  "title": "Invitations",
-  "empty": "Team invitations will be here"
+  "title": "invitations",
+  "tabs": {
+    "staff": "staff",
+    "team": "teams"
+  },
+  "empty": {
+    "staff": "no active staff invitations",
+    "team": "no active team invitations"
+  },
+  "staff": {
+    "invitedBy": "invited by",
+    "role": "role",
+    "on": "on"
+  },
+  "team": {
+    "invitedBy": "invited by",
+    "team": "team",
+    "teamRole": "team member",
+    "on": "on"
+  },
+  "loading": "loading invitations...",
+  "accept": "accept",
+  "reject": "decline",
+  "messageModal": {
+    "title": "invitation",
+    "message": "message",
+    "viewProfile": "view profile"
+  }
 }

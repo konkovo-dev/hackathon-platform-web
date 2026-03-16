@@ -8,6 +8,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   variant?: InputVariant
   error?: boolean
   type?: InputHTMLAttributes<HTMLInputElement>['type']
+  onClear?: () => void
 }
 
 const getVariantStyles = (variant: InputVariant, error: boolean) => {
@@ -42,14 +43,21 @@ const getVariantStyles = (variant: InputVariant, error: boolean) => {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = 'text', error = false, disabled, placeholder, ...props }, ref) => {
+  ({ className, variant = 'text', error = false, disabled, placeholder, value, onClear, onChange, ...props }, ref) => {
     const variantStyles = getVariantStyles(variant, error)
     const isSearch = variant === 'search'
+    const hasValue = Boolean(value && String(value).length > 0)
 
     const processedPlaceholder =
       !isSearch && typeof placeholder === 'string' && placeholder.length > 0
         ? `# ${placeholder}`
         : placeholder
+
+    const handleClear = () => {
+      if (onClear) {
+        onClear()
+      }
+    }
 
     return (
       <div
@@ -68,6 +76,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           type={props.type || 'text'}
           disabled={disabled}
           placeholder={processedPlaceholder}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
           className={cn(
             'w-full bg-transparent border-0 outline-none',
             'typography-caption-sm-regular',
@@ -77,7 +89,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'disabled:cursor-not-allowed'
           )}
           {...props}
+          value={value}
+          onChange={onChange}
         />
+
+        {isSearch && hasValue && onClear && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="flex-shrink-0 w-m8 h-m8 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
+            aria-label="Clear search"
+          >
+            <Icon src="/icons/icon-cross/icon-cross-sm.svg" size="sm" color="secondary" />
+          </button>
+        )}
       </div>
     )
   }
