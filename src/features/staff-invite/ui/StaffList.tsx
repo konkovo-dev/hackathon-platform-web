@@ -60,15 +60,19 @@ export function StaffList({ hackathonId }: StaffListProps) {
           <p className="typography-body-sm text-text-secondary">{t('hackathons.list.loading')}</p>
         ) : staff.length > 0 ? (
           <SelectList>
-            {staff.map(member => (
-              <UserListItem
-                key={member.userId}
-                userId={member.userId}
-                user={usersMap.get(member.userId ?? '')}
-                caption={(member.roles ?? []).map(getRoleLabel).join(', ')}
-                variant="bordered"
-              />
-            ))}
+            {staff.map(member => {
+              const roleLabel = (member.roles ?? []).map(getRoleLabel).join(', ')
+              return (
+                <UserListItem
+                  key={member.userId}
+                  userId={member.userId}
+                  user={usersMap.get(member.userId ?? '')}
+                  badge={roleLabel}
+                  variant="bordered"
+                  showNavigationIcon
+                />
+              )
+            })}
           </SelectList>
         ) : (
           <p className="typography-body-sm text-text-secondary">

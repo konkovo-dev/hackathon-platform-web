@@ -17,6 +17,12 @@ export type MeProfile = {
   visibility: Visibility
 }
 
+export type PublicProfile = {
+  user?: MeUser
+  skills: Skill[]
+  contacts: ContactItem[]
+}
+
 export function getSkillName(skill: Skill): string {
   return skill.custom?.name ?? skill.catalog?.name ?? ''
 }
