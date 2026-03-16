@@ -65,10 +65,11 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
   const menuGroups = useMemo(() => {
     const groups: SidebarItem[][] = []
 
+    groups.push([
+      { key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) },
+    ])
+
     if (isAuthed) {
-      groups.push([
-        { key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) },
-      ])
       groups.push([
         { key: 'home', href: routes.home, iconSrc: ICONS.home },
         { key: 'profile', href: routes.profile, iconSrc: ICONS.profile },
