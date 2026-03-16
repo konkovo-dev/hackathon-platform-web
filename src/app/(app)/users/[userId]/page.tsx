@@ -1,18 +1,29 @@
+import { redirect } from 'next/navigation'
 import { getServerI18n } from '@/shared/i18n/server'
+import { getServerSession } from '@/entities/auth/model/server'
+import { getUserById } from '@/entities/user/api/getUserById'
+import { PublicProfileClient } from '@/features/public-profile/ui/PublicProfileClient'
 import { PageContainer } from '@/shared/ui'
+import { routes } from '@/shared/config/routes'
 
 export default async function UserProfilePage({ params }: { params: { userId: string } }) {
-  const { t } = await getServerI18n(['common'])
+  const { t } = await getServerI18n(['public_profile'])
+  const session = await getServerSession()
+
+  if (session.active && session.userId === params.userId) {
+    redirect(routes.profile)
+  }
+
+  let initialData
+  try {
+    initialData = await getUserById(params.userId)
+  } catch {
+    // Client will retry on mount
+  }
 
   return (
     <PageContainer>
-      <h1 className="mb-6 text-3xl font-bold">{t('common.fallback.user_profile')}</h1>
-      <div className="text-text-secondary">
-        <p className="typography-body-md-regular">
-          {t('common.fallback.unknown')}: {params.userId}
-        </p>
-        <p className="mt-4 typography-body-md-regular">{t('common.fallback.coming_soon')}</p>
-      </div>
+      <PublicProfileClient userId={params.userId} initialData={initialData} />
     </PageContainer>
   )
 }

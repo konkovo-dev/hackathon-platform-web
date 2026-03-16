@@ -12,6 +12,7 @@ export const NAMESPACES = [
   'home',
   'hackathons',
   'profile',
+  'public_profile',
   'invitations',
   'teams',
   'sidebar',
