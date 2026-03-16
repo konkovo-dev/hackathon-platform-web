@@ -1,0 +1,22 @@
+{
+  "title": "search",
+  "placeholder": "search hackathons or users...",
+  "tabs": {
+    "hackathons": "hackathons",
+    "users": "users"
+  },
+  "states": {
+    "empty_query": "enter a search query",
+    "min_chars": "minimum 2 characters",
+    "loading": "searching...",
+    "no_results": "nothing found",
+    "error": "an error occurred"
+  },
+  "hackathon_status": {
+    "draft": "draft",
+    "upcoming": "upcoming",
+    "registration": "registration",
+    "running": "active",
+    "finished": "finished"
+  }
+}

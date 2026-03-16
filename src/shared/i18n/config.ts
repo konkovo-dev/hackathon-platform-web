@@ -17,5 +17,6 @@ export const NAMESPACES = [
   'sidebar',
   'settings',
   'dashboard',
+  'search',
 ] as const
 export type Namespace = (typeof NAMESPACES)[number]
