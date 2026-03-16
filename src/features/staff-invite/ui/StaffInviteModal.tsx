@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { Modal, Input, SelectList, ListItem, Button, Section, MarkdownEditor } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useUsersSearchQuery, useCreateStaffInvitationMutation } from '../model/hooks'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
+import { ApiError } from '@/shared/api/errors'
 
 export interface StaffInviteModalProps {
   open: boolean
@@ -24,16 +25,48 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [selectedRole, setSelectedRole] = useState<HackathonRole>('HX_ROLE_ORGANIZER')
   const [message, setMessage] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   const { data: usersData, isLoading: isSearching } = useUsersSearchQuery(searchQuery)
   const createInvitationMutation = useCreateStaffInvitationMutation(hackathonId)
 
   const users = usersData?.users || []
+  
+  const getErrorMessage = (error: unknown): string => {
+    if (error instanceof ApiError) {
+      const message = error.data.message.toLowerCase()
+      
+      if (message.includes('user not found') || error.data.status === 404) {
+        return t('hackathons.management.staff.errors.user_not_found')
+      }
+      if (message.includes('already a staff member')) {
+        return t('hackathons.management.staff.errors.already_staff')
+      }
+      if (message.includes('pending invitation already exists')) {
+        return t('hackathons.management.staff.errors.pending_invitation')
+      }
+      if (message.includes('cannot invite yourself')) {
+        return t('hackathons.management.staff.errors.cannot_invite_self')
+      }
+      if (message.includes('invalid role')) {
+        return t('hackathons.management.staff.errors.invalid_role')
+      }
+      if (error.data.status === 401) {
+        return t('hackathons.management.staff.errors.unauthorized')
+      }
+      if (error.data.status === 403) {
+        return t('hackathons.management.staff.errors.forbidden')
+      }
+    }
+    
+    return t('hackathons.management.staff.errors.invite_failed')
+  }
 
   const handleInvite = async () => {
     if (!selectedUserId) return
 
     try {
+      setError(null)
       await createInvitationMutation.mutateAsync({
         targetUserId: selectedUserId,
         requestedRole: selectedRole,
@@ -43,10 +76,20 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
       setSearchQuery('')
       setSelectedUserId(null)
       setMessage('')
-    } catch (error) {
-      // Error is already logged in the mutation
+      setError(null)
+    } catch (err) {
+      console.error('Failed to create staff invitation:', err)
+      setError(getErrorMessage(err))
     }
   }
+  
+  const handleClose = () => {
+    onClose()
+    setError(null)
+  }
+
+  const alertRole = 'alert' as const
+  const ariaLivePolite = 'polite' as const
 
   const getRoleLabel = (role: HackathonRole) => {
     switch (role) {
@@ -62,7 +105,7 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={t('hackathons.management.staff.invite')} size="lg">
+    <Modal open={open} onClose={handleClose} title={t('hackathons.management.staff.invite')} size="lg">
       <div className="flex flex-col gap-m6">
         <Section title={t('hackathons.management.staff.searchUser')} variant="outlined">
           <Input
@@ -145,11 +188,21 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
           />
         </Section>
 
+        {error && (
+          <div
+            className="rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error"
+            role={alertRole}
+            aria-live={ariaLivePolite}
+          >
+            <p className="typography-body-sm-regular text-state-error">{error}</p>
+          </div>
+        )}
+
         <div className="flex gap-m4 justify-end">
           <Button
             variant="secondary"
             size="md"
-            onClick={onClose}
+            onClick={handleClose}
             disabled={createInvitationMutation.isPending}
           >
             {t('hackathons.create.actions.cancel')}
