@@ -1,11 +1,9 @@
 'use client'
 
-import { Modal, MarkdownContent, Icon, Section } from '@/shared/ui'
+import { Modal, MarkdownContent, Section } from '@/shared/ui'
 import { UserListItem } from '@/entities/user'
-import { HackathonCompactCard } from '@/entities/hackathon'
+import { HackathonListItem } from '@/entities/hackathon'
 import { useT } from '@/shared/i18n/useT'
-import { useRouter } from 'next/navigation'
-import { routes } from '@/shared/config/routes'
 import type { User } from '@/entities/user/api/listUsers'
 import type { Hackathon } from '@/entities/hackathon'
 import { useQuery } from '@tanstack/react-query'
@@ -32,7 +30,6 @@ export function InvitationMessageModal({
   hackathonId,
 }: InvitationMessageModalProps) {
   const t = useT()
-  const router = useRouter()
 
   const { data: hackathonData } = useQuery({
     queryKey: ['hackathon', hackathonId],
@@ -46,12 +43,6 @@ export function InvitationMessageModal({
     enabled: !!hackathonId,
   })
 
-  const handleGoToProfile = () => {
-    if (createdByUserId) {
-      router.push(routes.user(createdByUserId))
-    }
-  }
-
   return (
     <Modal open={open} onClose={onClose} title={title || t('invitations.messageModal.title')} size="md">
       <div className="flex flex-col gap-m8">
@@ -61,15 +52,12 @@ export function InvitationMessageModal({
               userId={createdByUserId}
               user={createdByUser}
               variant="bordered"
-              onClick={handleGoToProfile}
-              rightContent={
-                <Icon src="/icons/icon-arrow/icon-arrow-right-md.svg" size="md" color="secondary" />
-              }
+              showNavigationIcon={true}
             />
           )}
 
           {hackathonId && (
-            <HackathonCompactCard
+            <HackathonListItem
               hackathon={hackathonData as any}
               hackathonId={hackathonId}
               variant="bordered"
