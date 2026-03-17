@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Section, SelectList, Chip, ChipList } from '@/shared/ui'
+import { Section, SelectList, Chip, ChipList, Button, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useParticipationsQuery, useParticipationUsersQuery } from '../model/hooks'
 import { UserListItem } from '@/entities/user'
@@ -74,10 +74,6 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
     <Section title={t('hackathons.management.teams.title')}>
       <div className="flex flex-col gap-m6">
         <div className="flex flex-col gap-m4">
-          <p className="typography-body-sm text-text-secondary">
-            {t('hackathons.management.teams.total')}: {stats.total}
-          </p>
-
           <ChipList>
             {STATUS_OPTIONS.map(status => (
               <Chip
@@ -101,6 +97,7 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
                 user={usersMap.get(participation.userId ?? '')}
                 caption={`${getStatusLabel(participation.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED')}${participation.teamId ? ` • Team: ${participation.teamId}` : ''}`}
                 variant="bordered"
+                showNavigationIcon={true}
               />
             ))}
           </SelectList>

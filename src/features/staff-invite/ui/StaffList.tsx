@@ -1,12 +1,12 @@
 'use client'
 
-import { Section, SelectList, Button, Icon } from '@/shared/ui'
+import { Section, SelectList, Button, Icon, Modal } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
-import { useStaffListQuery, useStaffUsersQuery } from '../model/hooks'
+import { useStaffListQuery, useStaffUsersQuery, useRemoveStaffRoleMutation } from '../model/hooks'
 import { useState, useMemo } from 'react'
 import { StaffInviteModal } from './StaffInviteModal'
 import { UserListItem } from '@/entities/user'
-import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
+import type { HackathonRole, HackathonStaffMember } from '@/entities/hackathon/api/listHackathonStaff'
 
 export interface StaffListProps {
   hackathonId: string
@@ -15,6 +15,7 @@ export interface StaffListProps {
 export function StaffList({ hackathonId }: StaffListProps) {
   const t = useT()
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
+  const [memberToExclude, setMemberToExclude] = useState<HackathonStaffMember | null>(null)
   const { data, isLoading } = useStaffListQuery(hackathonId)
 
   const staff = useMemo(() => data?.staff || [], [data?.staff])
@@ -41,6 +42,33 @@ export function StaffList({ hackathonId }: StaffListProps) {
     }
   }
 
+  const removeRoleMutation = useRemoveStaffRoleMutation(hackathonId)
+
+  const handleOpenExcludeConfirm = (member: HackathonStaffMember) => {
+    const rolesToRemove = (member.roles ?? []).filter(
+      (r): r is HackathonRole => r != null && r !== 'HACKATHON_ROLE_UNSPECIFIED'
+    )
+    if (rolesToRemove.length > 0) setMemberToExclude(member)
+  }
+
+  const handleConfirmExclude = async () => {
+    if (!memberToExclude) return
+    const rolesToRemove = (memberToExclude.roles ?? []).filter(
+      (r): r is HackathonRole => r != null && r !== 'HACKATHON_ROLE_UNSPECIFIED'
+    )
+    try {
+      for (const role of rolesToRemove) {
+        await removeRoleMutation.mutateAsync({
+          userId: memberToExclude.userId ?? '',
+          role,
+        })
+      }
+      setMemberToExclude(null)
+    } catch {
+      // Error already logged in mutation
+    }
+  }
+
   return (
     <>
       <Section
@@ -62,14 +90,37 @@ export function StaffList({ hackathonId }: StaffListProps) {
           <SelectList>
             {staff.map(member => {
               const roleLabel = (member.roles ?? []).map(getRoleLabel).join(', ')
+              const rolesToRemove = (member.roles ?? []).filter(
+                (r): r is HackathonRole => r != null && r !== 'HACKATHON_ROLE_UNSPECIFIED'
+              )
               return (
                 <UserListItem
                   key={member.userId}
                   userId={member.userId}
                   user={usersMap.get(member.userId ?? '')}
-                  badge={roleLabel}
+                  caption={roleLabel}
                   variant="bordered"
                   showNavigationIcon
+                  rightActionOnHover={
+                    rolesToRemove.length > 0 ? (
+                      <Button
+                        variant="icon-secondary"
+                        size="xs"
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleOpenExcludeConfirm(member)
+                        }}
+                        aria-label={t('hackathons.management.staff.exclude')}
+                        disabled={removeRoleMutation.isPending}
+                      >
+                        <Icon
+                          src="/icons/icon-cross/icon-cross-sm.svg"
+                          size="sm"
+                          color="secondary"
+                        />
+                      </Button>
+                    ) : undefined
+                  }
                 />
               )
             })}
@@ -86,6 +137,38 @@ export function StaffList({ hackathonId }: StaffListProps) {
         onClose={() => setIsInviteModalOpen(false)}
         hackathonId={hackathonId}
       />
+
+      <Modal
+        open={!!memberToExclude}
+        onClose={() => setMemberToExclude(null)}
+        title={t('hackathons.management.staff.exclude')}
+      >
+        <div className="flex flex-col gap-m6">
+          <p className="typography-body-md text-text-primary">
+            {t('hackathons.management.staff.exclude_confirm')}
+          </p>
+          <div className="flex gap-m4 justify-end">
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => setMemberToExclude(null)}
+              disabled={removeRoleMutation.isPending}
+            >
+              {t('hackathons.create.actions.cancel')}
+            </Button>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={handleConfirmExclude}
+              disabled={removeRoleMutation.isPending}
+            >
+              {removeRoleMutation.isPending
+                ? t('hackathons.list.loading')
+                : t('hackathons.management.staff.exclude')}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }

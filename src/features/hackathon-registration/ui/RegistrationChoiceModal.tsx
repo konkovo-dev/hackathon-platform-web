@@ -24,7 +24,7 @@ import { useRegisterForHackathonMutation } from '../model/hooks'
 import { useCreateTeamMutation } from '@/features/team-create/model/hooks'
 import { listTeamRoles } from '@/entities/team'
 import { ApiError } from '@/shared/api/errors'
-import { getRegistrationErrorI18nKey } from '@/shared/lib/api/registrationErrorKey'
+import { getHackathonRegistrationErrorI18nKey } from '@/shared/lib/api/hackathonRegistrationErrorKey'
 
 export type RegistrationTabId = 'individual' | 'createTeam' | 'findTeam'
 
@@ -101,7 +101,7 @@ export function RegistrationChoiceModal({
       onClose()
     } catch (e) {
       if (e instanceof ApiError) {
-        setError(t(getRegistrationErrorI18nKey(e.data)))
+        setError(t(getHackathonRegistrationErrorI18nKey(e.data)))
       } else {
         setError(t('hackathons.detail.errors.register_failed'))
       }
@@ -127,7 +127,7 @@ export function RegistrationChoiceModal({
       onClose()
     } catch (e) {
       if (e instanceof ApiError) {
-        setError(t(getRegistrationErrorI18nKey(e.data)))
+        setError(t(getHackathonRegistrationErrorI18nKey(e.data)))
       } else {
         setError(t('hackathons.detail.errors.register_failed'))
       }
@@ -141,7 +141,7 @@ export function RegistrationChoiceModal({
       await registerMutation.mutateAsync({ desiredStatus: 'PART_LOOKING_FOR_TEAM' })
     } catch (err) {
       if (err instanceof ApiError) {
-        setCreateError(t(getRegistrationErrorI18nKey(err.data)))
+        setCreateError(t(getHackathonRegistrationErrorI18nKey(err.data)))
       } else {
         setCreateError(t('hackathons.detail.errors.register_failed'))
       }
