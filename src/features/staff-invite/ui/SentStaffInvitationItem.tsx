@@ -1,11 +1,12 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { ListItem, Button, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 import { useQuery } from '@tanstack/react-query'
 import type { StaffInvitation, HackathonRole } from '@/entities/invitation'
+import { InvitationMessageModal } from '@/features/invitations-management/ui/InvitationMessageModal'
 
 export interface SentStaffInvitationItemProps {
   invitation: StaffInvitation
@@ -34,6 +35,7 @@ export function SentStaffInvitationItem({
   isCancelling,
 }: SentStaffInvitationItemProps) {
   const t = useT()
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const userIds = useMemo(
     () => [invitation.targetUserId].filter((id): id is string => id != null),
     [invitation.targetUserId]
@@ -58,26 +60,43 @@ export function SentStaffInvitationItem({
       t('common.fallback.unknown')
     : t('common.fallback.unknown')
   const roleLabel = getRoleLabel(invitation.requestedRole, t)
+  const isDeclined = invitation.status === 'STAFF_INVITATION_DECLINED'
 
   return (
-    <ListItem
-      variant="bordered"
-      text={title}
-      subtitle={roleLabel}
-      rightContent={
-        <Button
-          variant="icon-secondary"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation()
-            onCancel()
-          }}
-          disabled={isCancelling}
-          aria-label={t('invitations.cancel')}
-        >
-          <Icon src="/icons/icon-cross/icon-cross-sm.svg" size="sm" color="secondary" />
-        </Button>
-      }
-    />
+    <>
+      <ListItem
+        variant="bordered"
+        danger={isDeclined}
+        text={title}
+        subtitle={roleLabel}
+        onClick={() => setIsModalOpen(true)}
+        rightContent={
+          !isDeclined ? (
+            <Button
+              variant="icon-secondary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                onCancel()
+              }}
+              disabled={isCancelling}
+              aria-label={t('invitations.cancel')}
+            >
+              <Icon src="/icons/icon-cross/icon-cross-sm.svg" size="sm" color="secondary" />
+            </Button>
+          ) : undefined
+        }
+      />
+      <InvitationMessageModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={invitation.message ?? ''}
+        title={t('invitations.messageModal.title')}
+        createdByUserId={invitation.targetUserId}
+        createdByUser={targetUser}
+        hackathonId={invitation.hackathonId}
+        showHackathon={false}
+      />
+    </>
   )
 }

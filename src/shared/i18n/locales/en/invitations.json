@@ -27,6 +27,7 @@
   "messageModal": {
     "title": "invitation",
     "message": "message",
+    "noMessage": "no message",
     "viewProfile": "view profile"
   }
 }

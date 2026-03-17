@@ -49,11 +49,14 @@ export function useUsersSearchQuery(searchQuery: string) {
   })
 }
 
-export function useHackathonStaffInvitationsQuery(hackathonId: string | null | undefined) {
+export function useHackathonStaffInvitationsQuery(
+  hackathonId: string | null | undefined,
+  enabled = true
+) {
   return useQuery({
     queryKey: ['hackathon-staff-invitations', hackathonId],
     queryFn: () => listHackathonStaffInvitations(hackathonId!),
-    enabled: !!hackathonId,
+    enabled: !!hackathonId && enabled,
   })
 }
 

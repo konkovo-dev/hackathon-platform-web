@@ -27,6 +27,7 @@
   "messageModal": {
     "title": "приглашение",
     "message": "сообщение",
+    "noMessage": "без сообщения",
     "viewProfile": "посмотреть профиль"
   }
 }

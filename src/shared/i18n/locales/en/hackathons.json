@@ -195,6 +195,7 @@
     "staff": {
       "title": "organizer team",
       "sentInvitations": "sent invitations",
+      "declinedInvitations": "declined invitations",
       "invite": "invite",
       "exclude": "remove from staff",
       "exclude_confirm": "remove this person from the organizer team?",

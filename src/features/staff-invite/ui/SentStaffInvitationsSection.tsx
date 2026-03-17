@@ -16,17 +16,16 @@ export function SentStaffInvitationsSection({ hackathonId }: SentStaffInvitation
   const { data, isLoading } = useHackathonStaffInvitationsQuery(hackathonId)
   const cancelMutation = useCancelStaffInvitationMutation(hackathonId)
 
-  const pendingInvitations =
-    data?.invitations?.filter(inv => inv.status === PENDING_STATUS) ?? []
+  const pending = data?.invitations?.filter(inv => inv.status === PENDING_STATUS) ?? []
 
-  if (isLoading || pendingInvitations.length === 0) {
+  if (isLoading || pending.length === 0) {
     return null
   }
 
   return (
     <Section title={t('hackathons.management.staff.sentInvitations')}>
       <SelectList>
-        {pendingInvitations.map(invitation => (
+        {pending.map(invitation => (
           <SentStaffInvitationItem
             key={invitation.invitationId}
             invitation={invitation}

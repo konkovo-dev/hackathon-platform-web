@@ -92,7 +92,7 @@ export function StaffInvitationItem({
             ? `${t('invitations.staff.invitedBy')} ${createdByUser.firstName} ${createdByUser.lastName}`
             : undefined
         }
-        onClick={invitation.message ? () => setIsMessageModalOpen(true) : undefined}
+        onClick={() => setIsMessageModalOpen(true)}
         rightContent={
           <div className="flex gap-m4 items-center">
             <Button
@@ -123,17 +123,15 @@ export function StaffInvitationItem({
         }
       />
 
-      {invitation.message && (
-        <InvitationMessageModal
-          open={isMessageModalOpen}
-          onClose={() => setIsMessageModalOpen(false)}
-          message={invitation.message}
-          title={t('invitations.messageModal.title')}
-          createdByUserId={invitation.createdByUserId}
-          createdByUser={createdByUser}
-          hackathonId={invitation.hackathonId}
-        />
-      )}
+      <InvitationMessageModal
+        open={isMessageModalOpen}
+        onClose={() => setIsMessageModalOpen(false)}
+        message={invitation.message ?? ''}
+        title={t('invitations.messageModal.title')}
+        createdByUserId={invitation.createdByUserId}
+        createdByUser={createdByUser}
+        hackathonId={invitation.hackathonId}
+      />
     </>
   )
 }

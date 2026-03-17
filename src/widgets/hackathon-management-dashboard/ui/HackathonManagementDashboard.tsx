@@ -12,6 +12,7 @@ import { HackathonValidationChecklist } from '@/features/hackathon-validation/ui
 import { EditTaskModal } from '@/features/hackathon-task-edit/ui/EditTaskModal'
 import { StaffList } from '@/features/staff-invite/ui/StaffList'
 import { SentStaffInvitationsSection } from '@/features/staff-invite/ui/SentStaffInvitationsSection'
+import { DeclinedInvitationsModal } from '@/features/staff-invite/ui/DeclinedInvitationsModal'
 import { useHackathonStaffInvitationsQuery } from '@/features/staff-invite/model/hooks'
 import { TeamModerationList } from '@/features/team-moderation/ui/TeamModerationList'
 import { AnnouncementFormModal } from '@/features/announcement-create/ui/AnnouncementFormModal'
@@ -121,6 +122,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
   const locale = 'ru'
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [isDeclinedInvitationsModalOpen, setIsDeclinedInvitationsModalOpen] = useState(false)
   const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null)
   const [editingAnnouncement, setEditingAnnouncement] = useState<HackathonAnnouncement | null>(
     null
@@ -147,10 +149,16 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
   )
 
   const { data: staffInvitationsData } = useHackathonStaffInvitationsQuery(hackathon.hackathonId)
-  const hasSentStaffInvitations =
-    (staffInvitationsData?.invitations?.filter(
+  const pendingCount =
+    staffInvitationsData?.invitations?.filter(
       inv => inv.status === 'STAFF_INVITATION_PENDING'
-    ).length ?? 0) > 0
+    ).length ?? 0
+  const declinedCount =
+    staffInvitationsData?.invitations?.filter(
+      inv => inv.status === 'STAFF_INVITATION_DECLINED'
+    ).length ?? 0
+  const hasSentStaffInvitations = pendingCount > 0
+  const hasDeclinedInvitations = declinedCount > 0
 
   return (
     <div className="flex flex-col gap-m8">
@@ -163,7 +171,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
         {/* Действия */}
         <Section title={t('hackathons.management.actions.title')}>
           <div className="flex flex-col gap-m6">
-            <div className="flex items-center gap-m4">
+            <div className="flex flex-wrap items-center gap-m4">
               <Button
                 variant="secondary-action"
                 text={t('hackathons.edit.actions.edit_info')}
@@ -174,6 +182,13 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
                 text={t('hackathons.task.edit.title')}
                 onClick={() => setIsTaskModalOpen(true)}
               />
+              {hasDeclinedInvitations && hackathon.hackathonId && (
+                <Button
+                  variant="secondary"
+                  text={`${t('hackathons.management.staff.declinedInvitations')} (${declinedCount})`}
+                  onClick={() => setIsDeclinedInvitationsModalOpen(true)}
+                />
+              )}
             </div>
           </div>
         </Section>
@@ -201,6 +216,14 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
         </div>
       ) : (
         <StaffList hackathonId={hackathon.hackathonId ?? ''} />
+      )}
+
+      {hackathon.hackathonId && (
+        <DeclinedInvitationsModal
+          open={isDeclinedInvitationsModalOpen}
+          onClose={() => setIsDeclinedInvitationsModalOpen(false)}
+          hackathonId={hackathon.hackathonId}
+        />
       )}
 
       {/* Объявления */}

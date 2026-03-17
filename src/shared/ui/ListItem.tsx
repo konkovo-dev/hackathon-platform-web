@@ -8,6 +8,7 @@ export interface ListItemProps {
   caption?: string
   selectable?: boolean
   selected?: boolean
+  danger?: boolean
   onClick?: () => void
   rightContent?: ReactNode
   leftContent?: ReactNode
@@ -21,6 +22,7 @@ export function ListItem({
   caption,
   selectable = false,
   selected = false,
+  danger = false,
   onClick,
   rightContent,
   leftContent,
@@ -41,15 +43,31 @@ export function ListItem({
         'flex items-center justify-between gap-m8',
         isBordered && [
           'border rounded-[var(--spacing-m2)] px-m4 py-m4',
-          'border-border-default',
           'transition-colors',
-          isClickable && 'cursor-pointer hover:border-border-strong',
+          danger
+            ? [
+                'border-state-error',
+                isClickable && 'cursor-pointer hover:bg-state-error/5 hover:border-state-error',
+              ]
+            : [
+                'border-border-default',
+                isClickable && 'cursor-pointer hover:border-border-strong',
+              ],
         ],
         isSection && [
           'rounded-[var(--spacing-m4)] px-m6 py-m4',
-          'bg-bg-elevated',
           'transition-all duration-300 ease-out',
-          isClickable && 'cursor-pointer hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
+          danger
+            ? [
+                'border border-state-error bg-state-error/5',
+                isClickable &&
+                  'cursor-pointer hover:bg-state-error/10 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
+              ]
+            : [
+                'bg-bg-elevated',
+                isClickable &&
+                  'cursor-pointer hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
+              ],
         ],
         !isBordered && !isSection && [
           'border-b border-border-default py-m6',
@@ -66,7 +84,7 @@ export function ListItem({
           {text}
         </div>
         {hasSubtitle && (
-          <div className="typography-body-sm-regular text-text-secondary mt-m1">
+          <div className="typography-body-sm-regular text-text-secondary mt-m1 truncate">
             {subtitle}
           </div>
         )}
