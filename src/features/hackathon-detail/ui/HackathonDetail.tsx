@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Breadcrumb, Tabs, type Tab, Button } from '@/shared/ui'
+import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
+import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
+import { MyTeamTabContent } from './MyTeamTabContent'
 import { AnnouncementsList } from './AnnouncementsList'
 import { HackathonManagementDashboard } from '@/widgets/hackathon-management-dashboard/ui/HackathonManagementDashboard'
 
@@ -16,7 +18,7 @@ export interface HackathonDetailProps {
   initialData?: Hackathon
 }
 
-type HackathonTab = 'description' | 'announcements' | 'management'
+type HackathonTab = 'description' | 'myTeam' | 'announcements' | 'management'
 
 export function HackathonDetail({ hackathonId, initialData }: HackathonDetailProps) {
   const t = useT()
@@ -32,6 +34,12 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
     hackathonId
   })
   const canManage = canManageDecision.allowed
+
+  const { decision: canCreateTeamDecision } = useCan('Team.Create', { hackathonId })
+  const canCreateTeam = canCreateTeamDecision.allowed
+
+  const ctxQuery = useHackathonContextQuery(activeTab === 'myTeam' ? hackathonId : null)
+  const myTeamId = ctxQuery.data?.particip?.kind === 'TEAM' ? ctxQuery.data?.particip?.team_id ?? null : null
   
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)
@@ -39,6 +47,7 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const tabs: Tab<HackathonTab>[] = useMemo(() => {
     const baseTabs: Tab<HackathonTab>[] = [
       { id: 'description', label: t('hackathons.detail.tabs.description') },
+      { id: 'myTeam', label: t('hackathons.detail.tabs.myTeam') },
     ]
     
     if (canSeeAnnouncements) {
@@ -108,8 +117,16 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
       >
         {activeTab === 'description' && (
           <div className="flex flex-col gap-m16">
-            <HackathonDetailInfo hackathon={hackathon} />
+            <HackathonDetailInfo hackathonId={hackathonId} hackathon={hackathon} />
           </div>
+        )}
+        {activeTab === 'myTeam' && (
+          <MyTeamTabContent
+            hackathonId={hackathonId}
+            myTeamId={myTeamId}
+            ctxLoading={ctxQuery.isLoading}
+            canCreateTeam={canCreateTeam}
+          />
         )}
         {activeTab === 'announcements' && canSeeAnnouncements && (
           <>

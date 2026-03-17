@@ -1,13 +1,24 @@
 'use client'
 
-import { Chip, Icon, IconText, InfoRow, Section, Timeline, MarkdownContent, type TimelineStage } from '@/shared/ui'
+import { useState } from 'react'
+import { Chip, Icon, IconText, InfoRow, Section, Timeline, MarkdownContent, Button, type TimelineStage } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { getStageProgress, getStageLabel } from '@/entities/hackathon/model/utils'
-import { formatDateRange, formatLocation } from '@/shared/lib/formatDate'
+import {
+  formatDateRangeWithTime,
+  formatDateTime,
+  formatLocation,
+} from '@/shared/lib/formatDate'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import type { Hackathon } from '@/entities/hackathon/model/types'
+import { useSessionQuery } from '@/features/auth/model/hooks'
+// для тестирования: контекст хакатона (participations/me, staff) пока отдаёт 403 — не используем для показа кнопки
+// import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
+import { RegistrationChoiceModal } from '@/features/hackathon-registration'
+import { useRegisterForHackathonMutation } from '@/features/hackathon-registration/model/hooks'
 
 export interface HackathonDetailInfoProps {
+  hackathonId: string
   hackathon: Hackathon
 }
 
@@ -82,8 +93,30 @@ function buildTimelineStages(
   })
 }
 
-export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
+export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailInfoProps) {
   const t = useT()
+  const [registrationChoiceOpen, setRegistrationChoiceOpen] = useState(false)
+
+  const sessionQuery = useSessionQuery()
+  const registerMutation = useRegisterForHackathonMutation(hackathonId)
+
+  const isAuthed = sessionQuery.data?.active === true
+  // для тестирования: показываем кнопку при авторизации; пока сессия грузится — тоже показываем (после загрузки скроется, если не залогинен)
+  const showRegisterButton = isAuthed || sessionQuery.isLoading
+
+  const allowIndividual = hackathon.registrationPolicy?.allowIndividual ?? true
+  const allowTeam = hackathon.registrationPolicy?.allowTeam ?? true
+  const onlyIndividual = allowIndividual && !allowTeam
+  const onlyOneOption = onlyIndividual
+
+  const handleRegisterClick = () => {
+    if (onlyOneOption) {
+      registerMutation.mutateAsync({ desiredStatus: 'PART_INDIVIDUAL' }).catch(e => console.error('Register failed:', e))
+      return
+    }
+    setRegistrationChoiceOpen(true)
+  }
+
   const location = formatLocation(hackathon.location)
   const timelineStages = buildTimelineStages(hackathon.stage, hackathon.dates, t)
 
@@ -145,8 +178,28 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
               text={formatLabel}
             />
           )}
+
+          {showRegisterButton && (
+            <div className="pt-m4">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={handleRegisterClick}
+                disabled={registerMutation.isPending}
+              >
+                {registerMutation.isPending ? t('teams.list.loading') : t('hackathons.detail.register')}
+              </Button>
+            </div>
+          )}
         </div>
       </Section>
+
+      <RegistrationChoiceModal
+        open={registrationChoiceOpen}
+        onClose={() => setRegistrationChoiceOpen(false)}
+        hackathon={hackathon}
+        hackathonId={hackathonId}
+      />
 
       <div className="flex gap-m8">
         {/* Даты */}
@@ -156,7 +209,7 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
               {hackathon.dates?.registrationOpensAt && hackathon.dates?.registrationClosesAt && (
                 <InfoRow
                   label={t('hackathons.stage.registration')}
-                  value={formatDateRange(
+                  value={formatDateRangeWithTime(
                     hackathon.dates.registrationOpensAt,
                     hackathon.dates.registrationClosesAt
                   )}
@@ -165,13 +218,13 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
               {hackathon.dates?.startsAt && hackathon.dates?.endsAt && (
                 <InfoRow
                   label={t('hackathons.stage.running')}
-                  value={formatDateRange(hackathon.dates.startsAt, hackathon.dates.endsAt)}
+                  value={formatDateRangeWithTime(hackathon.dates.startsAt, hackathon.dates.endsAt)}
                 />
               )}
               {hackathon.dates?.submissionsOpensAt && hackathon.dates?.submissionsClosesAt && (
                 <InfoRow
                   label={t('hackathons.detail.info.submission')}
-                  value={formatDateRange(
+                  value={formatDateRangeWithTime(
                     hackathon.dates.submissionsOpensAt,
                     hackathon.dates.submissionsClosesAt
                   )}
@@ -180,11 +233,7 @@ export function HackathonDetailInfo({ hackathon }: HackathonDetailInfoProps) {
               {hackathon.dates?.judgingEndsAt && (
                 <InfoRow
                   label={t('hackathons.stage.judging')}
-                  value={new Date(hackathon.dates.judgingEndsAt).toLocaleDateString('ru', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
+                  value={formatDateTime(hackathon.dates.judgingEndsAt)}
                 />
               )}
             </div>

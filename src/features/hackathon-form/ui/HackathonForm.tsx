@@ -11,6 +11,7 @@ import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import { ApiError } from '@/shared/api/errors'
 import { localizeValidationError } from '@/shared/lib/validation/localizeValidationError'
+import { isoToDatetimeLocal } from '@/shared/lib/formatDate'
 import { useCreateHackathonMutation } from '@/features/hackathon-create/model/hooks'
 import { useUpdateHackathonMutation } from '@/features/hackathon-edit/model/hooks'
 import { validateHackathonForm, type FieldErrors } from '@/features/hackathon-create/model/validation'
@@ -28,11 +29,6 @@ interface HackathonFormProps {
   mode: 'create' | 'edit'
   hackathonId?: string
   initialData?: Hackathon
-}
-
-function isoToDatetimeLocal(iso?: string): string {
-  if (!iso) return ''
-  return new Date(iso).toISOString().slice(0, 16)
 }
 
 export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormProps) {
