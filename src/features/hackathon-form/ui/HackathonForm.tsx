@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { Section } from '@/shared/ui/Section'
 import { PageContainer } from '@/shared/ui/PageContainer'
 import { Button } from '@/shared/ui/Button'
@@ -12,7 +13,10 @@ import { routes } from '@/shared/config/routes'
 import { ApiError } from '@/shared/api/errors'
 import { localizeValidationError } from '@/shared/lib/validation/localizeValidationError'
 import { isoToDatetimeLocal } from '@/shared/lib/formatDate'
-import { useCreateHackathonMutation } from '@/features/hackathon-create/model/hooks'
+import {
+  prefetchHackathonPageData,
+  useCreateHackathonMutation,
+} from '@/features/hackathon-create/model/hooks'
 import { useUpdateHackathonMutation } from '@/features/hackathon-edit/model/hooks'
 import { validateHackathonForm, type FieldErrors } from '@/features/hackathon-create/model/validation'
 import { BasicInfoSection } from '@/features/hackathon-create/ui/BasicInfoSection'
@@ -34,6 +38,7 @@ interface HackathonFormProps {
 export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormProps) {
   const t = useT()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const createMutation = useCreateHackathonMutation()
   const updateMutation = useUpdateHackathonMutation()
 
@@ -203,6 +208,7 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         }
       } else {
         if (response.hackathonId) {
+          await prefetchHackathonPageData(queryClient, response.hackathonId)
           router.push(routes.hackathons.detail(response.hackathonId))
           return
         }

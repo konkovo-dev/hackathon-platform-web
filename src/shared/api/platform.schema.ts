@@ -115,7 +115,7 @@ export interface paths {
         put?: never;
         /**
          * Create a hackathon
-         * @description Creates a new hackathon in DRAFT state. The caller becomes the OWNER. If `validationErrors` is non-empty the hackathon was still created but contains invalid data — fix the fields before publishing.
+         * @description Creates a new hackathon in DRAFT state. The caller becomes the OWNER.
          */
         post: operations["HackathonService_CreateHackathon"];
         delete?: never;
@@ -158,7 +158,7 @@ export interface paths {
         get: operations["HackathonService_GetHackathon"];
         /**
          * Update a hackathon
-         * @description Updates hackathon fields. If `validationErrors` is non-empty the update was rejected — fix the listed fields and retry.
+         * @description Updates hackathon fields.
          */
         put: operations["HackathonService_UpdateHackathon"];
         post?: never;
@@ -316,6 +316,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/hackathons/{hackathonId}/judging/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get judging permissions
+         * @description Returns what judging-related actions the authenticated user can perform on this hackathon (view evaluations, assign judges, submit verdict).
+         */
+        get: operations["JudgingService_GetJudgingPermissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/hackathons/{hackathonId}/matchmaking/candidates": {
         parameters: {
             query?: never;
@@ -460,6 +480,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/hackathons/{hackathonId}/participations/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get participation permissions
+         * @description Returns what participation-related actions the authenticated user can perform on this hackathon (register, unregister, switch mode, invite staff, list participants).
+         */
+        get: operations["ParticipationService_GetParticipationPermissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/hackathons/{hackathonId}/participations/register": {
         parameters: {
             query?: never;
@@ -492,6 +532,26 @@ export interface paths {
          * @description Returns another user's participation record. Requires the caller to be staff or themselves a registered participant of the hackathon.
          */
         get: operations["ParticipationService_GetUserParticipation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/hackathons/{hackathonId}/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get hackathon permissions
+         * @description Returns what actions the authenticated user can perform on this hackathon (manage, publish, announcements, task, result).
+         */
+        get: operations["HackathonService_GetHackathonPermissions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -534,7 +594,7 @@ export interface paths {
         get: operations["HackathonService_GetHackathonResult"];
         /**
          * Update result draft
-         * @description Saves a draft of the result announcement. Does NOT publish it. If `validationErrors` is non-empty the update was rejected.
+         * @description Saves a draft of the result announcement. Does NOT publish it.
          */
         put: operations["HackathonService_UpdateHackathonResultDraft"];
         post?: never;
@@ -591,7 +651,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * List staff invitations for a hackathon
+         * @description Returns all staff invitations sent for this hackathon. Requires OWNER or MANAGER role.
+         */
+        get: operations["StaffService_ListHackathonStaffInvitations"];
         put?: never;
         /**
          * Invite a user to staff
@@ -1062,7 +1126,7 @@ export interface paths {
         get: operations["HackathonService_GetHackathonTask"];
         /**
          * Update hackathon task
-         * @description Replaces the task description. Requires OWNER or MANAGER role. If `validationErrors` is non-empty the update was rejected.
+         * @description Replaces the task description. Requires OWNER or MANAGER role.
          */
         put: operations["HackathonService_UpdateHackathonTask"];
         post?: never;
@@ -1106,6 +1170,26 @@ export interface paths {
          * @description Returns a paginated list of teams for the hackathon. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
          */
         post: operations["TeamService_ListTeams"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/hackathons/{hackathonId}/teams/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get team permissions
+         * @description Returns what team-related actions the authenticated user can perform on this hackathon (create team, manage own team).
+         */
+        get: operations["TeamService_GetTeamPermissions"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1498,6 +1582,46 @@ export interface paths {
          */
         put: operations["MeService_UpdateMe"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/me/avatar/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Complete avatar upload
+         * @description Marks the avatar upload as completed and updates the user's avatar_url after successful upload to S3.
+         */
+        post: operations["MeService_CompleteAvatarUpload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/me/avatar/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create avatar upload
+         * @description Initiates an avatar upload and returns a pre-signed PUT URL. Validates file type (images only) and size limits.
+         */
+        post: operations["MeService_CreateAvatarUpload"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2050,6 +2174,13 @@ export interface components {
             ticketId?: string;
         };
         v1CloseTicketResponse: Record<string, never>;
+        v1CompleteAvatarUploadRequest: {
+            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
+            uploadId?: string;
+        };
+        v1CompleteAvatarUploadResponse: {
+            avatarUrl?: string;
+        };
         v1CompleteSubmissionUploadResponse: {
             file?: components["schemas"]["v1SubmissionFile"];
         };
@@ -2063,6 +2194,20 @@ export interface components {
         };
         v1ConvertToTeamParticipationResponse: {
             participation?: components["schemas"]["v1HackathonParticipation"];
+        };
+        v1CreateAvatarUploadRequest: {
+            contentType?: string;
+            filename?: string;
+            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
+            /** Format: int64 */
+            sizeBytes?: string;
+        };
+        v1CreateAvatarUploadResponse: {
+            /** Format: date-time */
+            expiresAt?: string;
+            uploadId?: string;
+            /** Pre-signed PUT URL */
+            uploadUrl?: string;
         };
         v1CreateHackathonAnnouncementResponse: {
             announcementId?: string;
@@ -2080,7 +2225,6 @@ export interface components {
         };
         v1CreateHackathonResponse: {
             hackathonId?: string;
-            validationErrors?: components["schemas"]["v1ValidationError"][];
         };
         v1CreateJoinRequestResponse: {
             requestId?: string;
@@ -2181,6 +2325,9 @@ export interface components {
             roles?: components["schemas"]["v1HackathonRole"][];
             userId?: string;
         };
+        v1GetHackathonPermissionsResponse: {
+            permissions?: components["schemas"]["v1HackathonPermissions"];
+        };
         v1GetHackathonResponse: {
             hackathon?: components["schemas"]["v1Hackathon"];
         };
@@ -2189,6 +2336,9 @@ export interface components {
         };
         v1GetHackathonTaskResponse: {
             task?: string;
+        };
+        v1GetJudgingPermissionsResponse: {
+            permissions?: components["schemas"]["v1JudgingPermissions"];
         };
         v1GetLeaderboardResponse: {
             entries?: components["schemas"]["v1LeaderboardEntry"][];
@@ -2221,6 +2371,9 @@ export interface components {
         v1GetMyParticipationResponse: {
             participation?: components["schemas"]["v1HackathonParticipation"];
         };
+        v1GetParticipationPermissionsResponse: {
+            permissions?: components["schemas"]["v1ParticipationPermissions"];
+        };
         v1GetRealtimeTokenResponse: {
             /** Format: int64 */
             expiresAt?: string;
@@ -2237,6 +2390,9 @@ export interface components {
         };
         v1GetSubmissionResponse: {
             submission?: components["schemas"]["v1Submission"];
+        };
+        v1GetTeamPermissionsResponse: {
+            permissions?: components["schemas"]["v1TeamPermissions"];
         };
         v1GetTeamResponse: {
             team?: components["schemas"]["v1TeamWithVacancies"];
@@ -2335,6 +2491,18 @@ export interface components {
             updatedAt?: string;
             userId?: string;
         };
+        v1HackathonPermissions: {
+            createAnnouncement?: boolean;
+            manageHackathon?: boolean;
+            publishHackathon?: boolean;
+            publishResult?: boolean;
+            readDraft?: boolean;
+            readResultDraft?: boolean;
+            readTask?: boolean;
+            updateResultDraft?: boolean;
+            viewAnnouncements?: boolean;
+            viewResultPublic?: boolean;
+        };
         v1HackathonRegistrationPolicy: {
             allowIndividual?: boolean;
             allowTeam?: boolean;
@@ -2386,6 +2554,13 @@ export interface components {
             /** @description Always set by policy. */
             vacancyId?: string;
         };
+        v1JudgingPermissions: {
+            assignJudging?: boolean;
+            submitVerdict?: boolean;
+            viewLeaderboard?: boolean;
+            viewMyJudgingAssignments?: boolean;
+            viewSubmissionEvaluations?: boolean;
+        };
         v1KickTeamMemberResponse: Record<string, never>;
         /** LeaderboardEntry represents a submission's position in the leaderboard */
         v1LeaderboardEntry: {
@@ -2417,6 +2592,10 @@ export interface components {
         v1ListHackathonParticipantsResponse: {
             page?: components["schemas"]["v1PageResponse"];
             participants?: components["schemas"]["v1HackathonParticipation"][];
+        };
+        v1ListHackathonStaffInvitationsResponse: {
+            invitations?: components["schemas"]["v1StaffInvitation"][];
+            page?: components["schemas"]["v1PageResponse"];
         };
         v1ListHackathonStaffResponse: {
             page?: components["schemas"]["v1PageResponse"];
@@ -2542,6 +2721,14 @@ export interface components {
         v1PageResponse: {
             hasMore?: boolean;
             nextPageToken?: string;
+        };
+        v1ParticipationPermissions: {
+            inviteStaff?: boolean;
+            listParticipants?: boolean;
+            register?: boolean;
+            switchParticipationMode?: boolean;
+            unregister?: boolean;
+            updateParticipationProfile?: boolean;
         };
         v1ParticipationProfile: {
             motivationText?: string;
@@ -2757,6 +2944,16 @@ export interface components {
             /** @description Always set by policy. */
             vacancyId?: string;
         };
+        v1TeamManagementPermissions: {
+            deleteTeam?: boolean;
+            editTeam?: boolean;
+            inviteMember?: boolean;
+            kickMember?: boolean;
+            leaveTeam?: boolean;
+            manageJoinRequests?: boolean;
+            manageVacancies?: boolean;
+            transferCaptain?: boolean;
+        };
         v1TeamMember: {
             /** @description Empty if the member is not assigned to any vacancy (e.g. team creator/captain). */
             assignedVacancyId?: string;
@@ -2764,6 +2961,10 @@ export interface components {
             /** Format: date-time */
             joinedAt?: string;
             userId?: string;
+        };
+        v1TeamPermissions: {
+            canInMyTeam?: components["schemas"]["v1TeamManagementPermissions"];
+            createTeam?: boolean;
         };
         v1TeamRecommendation: {
             bestVacancyId?: string;
@@ -2810,15 +3011,9 @@ export interface components {
         v1TransferCaptainResponse: Record<string, never>;
         v1UnregisterFromHackathonResponse: Record<string, never>;
         v1UpdateHackathonAnnouncementResponse: Record<string, never>;
-        v1UpdateHackathonResponse: {
-            validationErrors?: components["schemas"]["v1ValidationError"][];
-        };
-        v1UpdateHackathonResultDraftResponse: {
-            validationErrors?: components["schemas"]["v1ValidationError"][];
-        };
-        v1UpdateHackathonTaskResponse: {
-            validationErrors?: components["schemas"]["v1ValidationError"][];
-        };
+        v1UpdateHackathonResponse: Record<string, never>;
+        v1UpdateHackathonResultDraftResponse: Record<string, never>;
+        v1UpdateHackathonTaskResponse: Record<string, never>;
         v1UpdateMeRequest: {
             avatarUrl?: string;
             firstName?: string;
@@ -3525,6 +3720,37 @@ export interface operations {
             };
         };
     };
+    JudgingService_GetJudgingPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                hackathonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetJudgingPermissionsResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
     MatchmakingService_RecommendCandidates: {
         parameters: {
             query?: {
@@ -3798,6 +4024,37 @@ export interface operations {
             };
         };
     };
+    ParticipationService_GetParticipationPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                hackathonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetParticipationPermissionsResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
     ParticipationService_RegisterForHackathon: {
         parameters: {
             query?: never;
@@ -3852,6 +4109,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["v1GetUserParticipationResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    HackathonService_GetHackathonPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                hackathonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetHackathonPermissionsResponse"];
                 };
             };
             /** @description An unexpected error response. */
@@ -4025,6 +4313,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["v1ListHackathonStaffResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    StaffService_ListHackathonStaffInvitations: {
+        parameters: {
+            query?: {
+                "query.q"?: string;
+                "query.page.pageSize"?: number;
+                "query.page.pageToken"?: string;
+                "query.limit"?: number;
+                "query.offset"?: number;
+            };
+            header?: never;
+            path: {
+                hackathonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1ListHackathonStaffInvitationsResponse"];
                 };
             };
             /** @description An unexpected error response. */
@@ -5018,6 +5343,37 @@ export interface operations {
             };
         };
     };
+    TeamService_GetTeamPermissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                hackathonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetTeamPermissionsResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
     TeamService_GetTeam: {
         parameters: {
             query?: {
@@ -5762,6 +6118,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["v1UpdateMeResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    MeService_CompleteAvatarUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1CompleteAvatarUploadRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1CompleteAvatarUploadResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    MeService_CreateAvatarUpload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1CreateAvatarUploadRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1CreateAvatarUploadResponse"];
                 };
             };
             /** @description An unexpected error response. */
