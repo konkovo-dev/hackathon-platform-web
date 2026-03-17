@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { ListItem, Button, Icon } from '@/shared/ui'
-import { UserListItem } from '@/entities/user'
 import { useT } from '@/shared/i18n/useT'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 import { useQuery } from '@tanstack/react-query'
@@ -38,7 +37,9 @@ export function StaffInvitationItem({
     queryFn: async () => {
       const response = await batchGetUsers({ userIds })
       return {
-        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null),
+        users: (response.users ?? [])
+          .map(u => u.user)
+          .filter((u): u is NonNullable<typeof u> => u != null),
       }
     },
     enabled: userIds.length > 0,

@@ -190,6 +190,7 @@
     },
     "staff": {
       "title": "organizer team",
+      "sentInvitations": "sent invitations",
       "invite": "invite",
       "exclude": "remove from staff",
       "exclude_confirm": "remove this person from the organizer team?",

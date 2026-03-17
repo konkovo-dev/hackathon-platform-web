@@ -11,6 +11,8 @@ import { routes } from '@/shared/config/routes'
 import { HackathonValidationChecklist } from '@/features/hackathon-validation/ui/HackathonValidationChecklist'
 import { EditTaskModal } from '@/features/hackathon-task-edit/ui/EditTaskModal'
 import { StaffList } from '@/features/staff-invite/ui/StaffList'
+import { SentStaffInvitationsSection } from '@/features/staff-invite/ui/SentStaffInvitationsSection'
+import { useHackathonStaffInvitationsQuery } from '@/features/staff-invite/model/hooks'
 import { TeamModerationList } from '@/features/team-moderation/ui/TeamModerationList'
 import { AnnouncementFormModal } from '@/features/announcement-create/ui/AnnouncementFormModal'
 import { AnnouncementModal } from '@/features/hackathon-detail/ui/AnnouncementModal'
@@ -144,6 +146,12 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
     !isDraft && !!hackathon.hackathonId
   )
 
+  const { data: staffInvitationsData } = useHackathonStaffInvitationsQuery(hackathon.hackathonId)
+  const hasSentStaffInvitations =
+    (staffInvitationsData?.invitations?.filter(
+      inv => inv.status === 'STAFF_INVITATION_PENDING'
+    ).length ?? 0) > 0
+
   return (
     <div className="flex flex-col gap-m8">
       {/* Готовность к публикации */}
@@ -185,8 +193,15 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
         </Section>
       </div>
 
-      {/* Staff */}
-      <StaffList hackathonId={hackathon.hackathonId ?? ''} />
+      {/* Staff и отправленные приглашения */}
+      {hasSentStaffInvitations && hackathon.hackathonId ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-m8">
+          <StaffList hackathonId={hackathon.hackathonId} />
+          <SentStaffInvitationsSection hackathonId={hackathon.hackathonId} />
+        </div>
+      ) : (
+        <StaffList hackathonId={hackathon.hackathonId ?? ''} />
+      )}
 
       {/* Объявления */}
       {shouldShowAnnouncements && (
