@@ -18,10 +18,33 @@
     "title": "Hackathon #{hackathonId}",
     "empty": "hackathon main page will be here",
     "register": "register",
+    "registrationChoice": "how do you want to participate?",
+    "registerIndividual": "participate individually",
+    "registerCreateTeam": "create team",
+    "registerFindTeam": "find a team",
+    "registrationTab": {
+      "individualDescription": "participate in the hackathon without a team",
+      "createTeamDescription": "create a team and become its captain",
+      "findTeamDescription": "register as a participant looking for a team"
+    },
+    "registrationForm": {
+      "motivationLabel": "about you",
+      "motivationPlaceholder": "tell about yourself",
+      "wishedRolesLabel": "preferred roles in a team",
+      "wishedRolesSearchPlaceholder": "search roles"
+    },
     "no_description": "no description",
     "announcements_coming_soon": "announcements will be added later",
     "errors": {
-      "access_denied": "you don't have access to this hackathon"
+      "access_denied": "you don't have access to this hackathon",
+      "register_failed": "registration failed",
+      "already_registered": "you are already registered for this hackathon",
+      "forbidden": "registration is not available for this hackathon",
+      "not_found": "hackathon not found",
+      "invalid_input": "invalid request",
+      "unauthorized": "please sign in to register",
+      "idempotency_conflict": "this registration was already completed",
+      "internal": "something went wrong"
     },
     "info": {
       "title": "general information",
@@ -41,8 +64,13 @@
     },
     "tabs": {
       "description": "description",
+      "myTeam": "my team",
       "announcements": "announcements",
       "management": "management"
+    },
+    "myTeam": {
+      "empty": "you are not in a team for this hackathon",
+      "goToTeams": "to teams list"
     }
   },
   "card": {
@@ -163,6 +191,8 @@
     "staff": {
       "title": "organizer team",
       "invite": "invite",
+      "exclude": "remove from staff",
+      "exclude_confirm": "remove this person from the organizer team?",
       "empty": "no team members yet",
       "searchUser": "search user",
       "searchPlaceholder": "enter name or email",
@@ -192,6 +222,7 @@
       "total": "total participants",
       "viewAll": "view all",
       "empty": "no participants yet",
+      "exclude_unavailable": "excluding participants is not available yet",
       "status": {
         "lookingForTeam": "looking for team",
         "single": "individual participation",

@@ -18,10 +18,33 @@
     "title": "Хакатон #{hackathonId}",
     "empty": "главная страница хакатона будет здесь",
     "register": "регистрация",
+    "registrationChoice": "как вы хотите участвовать?",
+    "registerIndividual": "участвовать индивидуально",
+    "registerCreateTeam": "создать команду",
+    "registerFindTeam": "подобрать команду",
+    "registrationTab": {
+      "individualDescription": "участвуйте в хакатоне без команды",
+      "createTeamDescription": "создайте команду и станьте её капитаном",
+      "findTeamDescription": "зарегистрируйтесь как участник в поиске команды"
+    },
+    "registrationForm": {
+      "motivationLabel": "о себе",
+      "motivationPlaceholder": "Расскажите о себе",
+      "wishedRolesLabel": "желаемые роли в команде",
+      "wishedRolesSearchPlaceholder": "поиск ролей"
+    },
     "no_description": "описание отсутствует",
     "announcements_coming_soon": "объявления будут добавлены позже",
     "errors": {
-      "access_denied": "у вас нет доступа к этому хакатону"
+      "access_denied": "у вас нет доступа к этому хакатону",
+      "register_failed": "не удалось зарегистрироваться",
+      "already_registered": "вы уже зарегистрированы на этот хакатон",
+      "forbidden": "регистрация на этот хакатон недоступна",
+      "not_found": "хакатон не найден",
+      "invalid_input": "неверные данные",
+      "unauthorized": "войдите в аккаунт, чтобы зарегистрироваться",
+      "idempotency_conflict": "эта регистрация уже была выполнена",
+      "internal": "произошла ошибка"
     },
     "info": {
       "title": "основная информация",
@@ -41,8 +64,13 @@
     },
     "tabs": {
       "description": "описание",
+      "myTeam": "моя команда",
       "announcements": "объявления",
       "management": "управление"
+    },
+    "myTeam": {
+      "empty": "вы не состоите в команде на этом хакатоне",
+      "goToTeams": "к списку команд"
     }
   },
   "card": {
@@ -163,6 +191,8 @@
     "staff": {
       "title": "команда организаторов",
       "invite": "пригласить",
+      "exclude": "исключить из команды",
+      "exclude_confirm": "исключить этого человека из команды организаторов?",
       "empty": "пока нет членов команды",
       "searchUser": "поиск пользователя",
       "searchPlaceholder": "введите имя или email",
@@ -192,6 +222,7 @@
       "total": "всего участников",
       "viewAll": "смотреть все",
       "empty": "пока нет участников",
+      "exclude_unavailable": "исключение участников пока недоступно",
       "status": {
         "lookingForTeam": "ищет команду",
         "single": "индивидуальное участие",

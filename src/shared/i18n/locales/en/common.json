@@ -1,6 +1,6 @@
 {
   "errors": {
-    "generic": "something went wrong. Please try again."
+    "generic": "something went wrong"
   },
   "actions": {
     "login": "sign in",
