@@ -1,5 +1,6 @@
 export type ReasonCode =
   | 'AUTH_REQUIRED'
+  | 'NOT_ALLOWED'
   | 'ROLE_REQUIRED'
   | 'PARTICIP_REQUIRED'
   | 'STAGE_RULE'

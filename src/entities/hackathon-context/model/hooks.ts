@@ -1,16 +1,20 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { getHackathonContext } from '../api/getHackathonContext'
+import { getMyParticipation } from '../api/getMyParticipation'
 
-const key = (hackathonId: string) => ['hackathon', 'context', hackathonId] as const
+const myParticipationKey = (hackathonId: string) =>
+  ['hackathon', 'participation', 'me', hackathonId] as const
 
-export function useHackathonContextQuery(hackathonId: string | null | undefined) {
+/**
+ * My participation (teamId, status) for binding canInMyTeam to current page. Not for access decisions.
+ */
+export function useMyParticipationQuery(hackathonId: string | null | undefined) {
   return useQuery({
-    queryKey: hackathonId ? key(hackathonId) : ['hackathon', 'context', 'none'],
+    queryKey: hackathonId ? myParticipationKey(hackathonId) : ['hackathon', 'participation', 'me', 'none'],
     queryFn: () => {
       if (!hackathonId) throw new Error('hackathonId is required')
-      return getHackathonContext(hackathonId)
+      return getMyParticipation(hackathonId)
     },
     enabled: Boolean(hackathonId),
     staleTime: 15_000,

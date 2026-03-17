@@ -12,8 +12,7 @@ import {
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useSessionQuery } from '@/features/auth/model/hooks'
-// для тестирования: контекст хакатона (participations/me, staff) пока отдаёт 403 — не используем для показа кнопки
-// import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
+import { useCan } from '@/shared/policy/useCan'
 import { RegistrationChoiceModal } from '@/features/hackathon-registration'
 import { useRegisterForHackathonMutation } from '@/features/hackathon-registration/model/hooks'
 
@@ -98,11 +97,16 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
   const [registrationChoiceOpen, setRegistrationChoiceOpen] = useState(false)
 
   const sessionQuery = useSessionQuery()
+  const { decision: registerDecision, isLoading: registerPermissionLoading } = useCan(
+    'Participation.Register',
+    { hackathonId }
+  )
   const registerMutation = useRegisterForHackathonMutation(hackathonId)
 
   const isAuthed = sessionQuery.data?.active === true
-  // для тестирования: показываем кнопку при авторизации; пока сессия грузится — тоже показываем (после загрузки скроется, если не залогинен)
-  const showRegisterButton = isAuthed || sessionQuery.isLoading
+  const canRegister = registerDecision.allowed
+  const showRegisterButton =
+    isAuthed && (canRegister || registerPermissionLoading)
 
   const allowIndividual = hackathon.registrationPolicy?.allowIndividual ?? true
   const allowTeam = hackathon.registrationPolicy?.allowTeam ?? true

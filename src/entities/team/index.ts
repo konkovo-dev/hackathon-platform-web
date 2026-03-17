@@ -62,17 +62,3 @@ export type {
   TeamInboxStatus,
   TeamWithVacancies,
 } from './model/types'
-
-export {
-  canCreateTeam,
-  canEditTeam,
-  canDeleteTeam,
-  canKickMember,
-  canLeaveTeam,
-  canTransferCaptain,
-  canManageVacancies,
-  canInviteMember,
-  canManageJoinRequests,
-  canJoinTeam,
-  canViewTeam,
-} from './policy/teamPolicy'

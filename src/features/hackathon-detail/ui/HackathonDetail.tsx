@@ -7,7 +7,7 @@ import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
-import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
+import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
 import { MyTeamTabContent } from './MyTeamTabContent'
 import { AnnouncementsList } from './AnnouncementsList'
@@ -38,8 +38,8 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const { decision: canCreateTeamDecision } = useCan('Team.Create', { hackathonId })
   const canCreateTeam = canCreateTeamDecision.allowed
 
-  const ctxQuery = useHackathonContextQuery(activeTab === 'myTeam' ? hackathonId : null)
-  const myTeamId = ctxQuery.data?.particip?.kind === 'TEAM' ? ctxQuery.data?.particip?.team_id ?? null : null
+  const myParticipationQuery = useMyParticipationQuery(activeTab === 'myTeam' ? hackathonId : null)
+  const myTeamId = myParticipationQuery.data?.teamId ?? null
   
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)
@@ -124,7 +124,7 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
           <MyTeamTabContent
             hackathonId={hackathonId}
             myTeamId={myTeamId}
-            ctxLoading={ctxQuery.isLoading}
+            ctxLoading={myParticipationQuery.isLoading}
             canCreateTeam={canCreateTeam}
           />
         )}

@@ -217,7 +217,7 @@
     },
     "/v1/hackathons": {
       "post": {
-        "description": "Creates a new hackathon in DRAFT state. The caller becomes the OWNER. If `validationErrors` is non-empty the hackathon was still created but contains invalid data — fix the fields before publishing.",
+        "description": "Creates a new hackathon in DRAFT state. The caller becomes the OWNER.",
         "operationId": "HackathonService_CreateHackathon",
         "requestBody": {
           "content": {
@@ -381,7 +381,7 @@
         ]
       },
       "put": {
-        "description": "Updates hackathon fields. If `validationErrors` is non-empty the update was rejected — fix the listed fields and retry.",
+        "description": "Updates hackathon fields.",
         "operationId": "HackathonService_UpdateHackathon",
         "parameters": [
           {
@@ -889,6 +889,48 @@
         ]
       }
     },
+    "/v1/hackathons/{hackathonId}/judging/permissions": {
+      "get": {
+        "description": "Returns what judging-related actions the authenticated user can perform on this hackathon (view evaluations, assign judges, submit verdict).",
+        "operationId": "JudgingService_GetJudgingPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetJudgingPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get judging permissions",
+        "tags": [
+          "Judging"
+        ]
+      }
+    },
     "/v1/hackathons/{hackathonId}/matchmaking/candidates": {
       "get": {
         "description": "Returns a ranked list of participants that match the team's vacancy requirements. Available during REGISTRATION stage.",
@@ -1314,6 +1356,48 @@
         ]
       }
     },
+    "/v1/hackathons/{hackathonId}/participations/permissions": {
+      "get": {
+        "description": "Returns what participation-related actions the authenticated user can perform on this hackathon (register, unregister, switch mode, invite staff, list participants).",
+        "operationId": "ParticipationService_GetParticipationPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetParticipationPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get participation permissions",
+        "tags": [
+          "Participation"
+        ]
+      }
+    },
     "/v1/hackathons/{hackathonId}/participations/register": {
       "post": {
         "description": "Registers the authenticated user for a hackathon. Depending on `desiredStatus`, the user joins as an individual (`PART_INDIVIDUAL`) or applies to join a team (`PART_LOOKING_FOR_TEAM`).",
@@ -1416,6 +1500,48 @@
         ]
       }
     },
+    "/v1/hackathons/{hackathonId}/permissions": {
+      "get": {
+        "description": "Returns what actions the authenticated user can perform on this hackathon (manage, publish, announcements, task, result).",
+        "operationId": "HackathonService_GetHackathonPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetHackathonPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get hackathon permissions",
+        "tags": [
+          "Hackathons"
+        ]
+      }
+    },
     "/v1/hackathons/{hackathonId}/publish": {
       "post": {
         "description": "Transitions the hackathon from DRAFT to PUBLISHED, making it visible to participants. The hackathon must pass validation first.",
@@ -1510,7 +1636,7 @@
         ]
       },
       "put": {
-        "description": "Saves a draft of the result announcement. Does NOT publish it. If `validationErrors` is non-empty the update was rejected.",
+        "description": "Saves a draft of the result announcement. Does NOT publish it.",
         "operationId": "HackathonService_UpdateHackathonResultDraft",
         "parameters": [
           {
@@ -1698,6 +1824,89 @@
       }
     },
     "/v1/hackathons/{hackathonId}/staff-invitations": {
+      "get": {
+        "description": "Returns all staff invitations sent for this hackathon. Requires OWNER or MANAGER role.",
+        "operationId": "StaffService_ListHackathonStaffInvitations",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.page.pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.page.pageToken",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1ListHackathonStaffInvitationsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List staff invitations for a hackathon",
+        "tags": [
+          "Staff"
+        ]
+      },
       "post": {
         "description": "Creates a staff invitation for the target user. They can accept or reject it from their invitations list. Requires OWNER or MANAGER role.",
         "operationId": "StaffService_CreateStaffInvitation",
@@ -3139,7 +3348,7 @@
         ]
       },
       "put": {
-        "description": "Replaces the task description. Requires OWNER or MANAGER role. If `validationErrors` is non-empty the update was rejected.",
+        "description": "Replaces the task description. Requires OWNER or MANAGER role.",
         "operationId": "HackathonService_UpdateHackathonTask",
         "parameters": [
           {
@@ -3288,6 +3497,48 @@
           }
         },
         "summary": "List teams",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/v1/hackathons/{hackathonId}/teams/permissions": {
+      "get": {
+        "description": "Returns what team-related actions the authenticated user can perform on this hackathon (create team, manage own team).",
+        "operationId": "TeamService_GetTeamPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetTeamPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get team permissions",
         "tags": [
           "Team"
         ]
@@ -4474,6 +4725,90 @@
           }
         },
         "summary": "Update my profile",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/v1/users/me/avatar/complete": {
+      "post": {
+        "description": "Marks the avatar upload as completed and updates the user's avatar_url after successful upload to S3.",
+        "operationId": "MeService_CompleteAvatarUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CompleteAvatarUploadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CompleteAvatarUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Complete avatar upload",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/v1/users/me/avatar/upload": {
+      "post": {
+        "description": "Initiates an avatar upload and returns a pre-signed PUT URL. Validates file type (images only) and size limits.",
+        "operationId": "MeService_CreateAvatarUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CreateAvatarUploadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CreateAvatarUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create avatar upload",
         "tags": [
           "Users"
         ]
@@ -5880,6 +6215,25 @@
       "v1CloseTicketResponse": {
         "type": "object"
       },
+      "v1CompleteAvatarUploadRequest": {
+        "properties": {
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/v1IdempotencyKey"
+          },
+          "uploadId": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1CompleteAvatarUploadResponse": {
+        "properties": {
+          "avatarUrl": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "v1CompleteSubmissionUploadResponse": {
         "properties": {
           "file": {
@@ -5911,6 +6265,40 @@
         "properties": {
           "participation": {
             "$ref": "#/components/schemas/v1HackathonParticipation"
+          }
+        },
+        "type": "object"
+      },
+      "v1CreateAvatarUploadRequest": {
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/v1IdempotencyKey"
+          },
+          "sizeBytes": {
+            "format": "int64",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1CreateAvatarUploadResponse": {
+        "properties": {
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "uploadUrl": {
+            "title": "Pre-signed PUT URL",
+            "type": "string"
           }
         },
         "type": "object"
@@ -5962,12 +6350,6 @@
         "properties": {
           "hackathonId": {
             "type": "string"
-          },
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
           }
         },
         "type": "object"
@@ -6218,6 +6600,14 @@
         },
         "type": "object"
       },
+      "v1GetHackathonPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1HackathonPermissions"
+          }
+        },
+        "type": "object"
+      },
       "v1GetHackathonResponse": {
         "properties": {
           "hackathon": {
@@ -6238,6 +6628,14 @@
         "properties": {
           "task": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1GetJudgingPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1JudgingPermissions"
           }
         },
         "type": "object"
@@ -6348,6 +6746,14 @@
         },
         "type": "object"
       },
+      "v1GetParticipationPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1ParticipationPermissions"
+          }
+        },
+        "type": "object"
+      },
       "v1GetRealtimeTokenResponse": {
         "properties": {
           "expiresAt": {
@@ -6388,6 +6794,14 @@
         "properties": {
           "submission": {
             "$ref": "#/components/schemas/v1Submission"
+          }
+        },
+        "type": "object"
+      },
+      "v1GetTeamPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1TeamPermissions"
           }
         },
         "type": "object"
@@ -6628,6 +7042,41 @@
         },
         "type": "object"
       },
+      "v1HackathonPermissions": {
+        "properties": {
+          "createAnnouncement": {
+            "type": "boolean"
+          },
+          "manageHackathon": {
+            "type": "boolean"
+          },
+          "publishHackathon": {
+            "type": "boolean"
+          },
+          "publishResult": {
+            "type": "boolean"
+          },
+          "readDraft": {
+            "type": "boolean"
+          },
+          "readResultDraft": {
+            "type": "boolean"
+          },
+          "readTask": {
+            "type": "boolean"
+          },
+          "updateResultDraft": {
+            "type": "boolean"
+          },
+          "viewAnnouncements": {
+            "type": "boolean"
+          },
+          "viewResultPublic": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1HackathonRegistrationPolicy": {
         "properties": {
           "allowIndividual": {
@@ -6757,6 +7206,26 @@
         },
         "type": "object"
       },
+      "v1JudgingPermissions": {
+        "properties": {
+          "assignJudging": {
+            "type": "boolean"
+          },
+          "submitVerdict": {
+            "type": "boolean"
+          },
+          "viewLeaderboard": {
+            "type": "boolean"
+          },
+          "viewMyJudgingAssignments": {
+            "type": "boolean"
+          },
+          "viewSubmissionEvaluations": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1KickTeamMemberResponse": {
         "type": "object"
       },
@@ -6846,6 +7315,20 @@
               "$ref": "#/components/schemas/v1HackathonParticipation"
             },
             "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "v1ListHackathonStaffInvitationsResponse": {
+        "properties": {
+          "invitations": {
+            "items": {
+              "$ref": "#/components/schemas/v1StaffInvitation"
+            },
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/v1PageResponse"
           }
         },
         "type": "object"
@@ -7217,6 +7700,29 @@
           },
           "nextPageToken": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1ParticipationPermissions": {
+        "properties": {
+          "inviteStaff": {
+            "type": "boolean"
+          },
+          "listParticipants": {
+            "type": "boolean"
+          },
+          "register": {
+            "type": "boolean"
+          },
+          "switchParticipationMode": {
+            "type": "boolean"
+          },
+          "unregister": {
+            "type": "boolean"
+          },
+          "updateParticipationProfile": {
+            "type": "boolean"
           }
         },
         "type": "object"
@@ -7777,6 +8283,35 @@
         },
         "type": "object"
       },
+      "v1TeamManagementPermissions": {
+        "properties": {
+          "deleteTeam": {
+            "type": "boolean"
+          },
+          "editTeam": {
+            "type": "boolean"
+          },
+          "inviteMember": {
+            "type": "boolean"
+          },
+          "kickMember": {
+            "type": "boolean"
+          },
+          "leaveTeam": {
+            "type": "boolean"
+          },
+          "manageJoinRequests": {
+            "type": "boolean"
+          },
+          "manageVacancies": {
+            "type": "boolean"
+          },
+          "transferCaptain": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1TeamMember": {
         "properties": {
           "assignedVacancyId": {
@@ -7792,6 +8327,17 @@
           },
           "userId": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1TeamPermissions": {
+        "properties": {
+          "canInMyTeam": {
+            "$ref": "#/components/schemas/v1TeamManagementPermissions"
+          },
+          "createTeam": {
+            "type": "boolean"
           }
         },
         "type": "object"
@@ -7919,36 +8465,12 @@
         "type": "object"
       },
       "v1UpdateHackathonResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateHackathonResultDraftResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateHackathonTaskResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateMeRequest": {
