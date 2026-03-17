@@ -8,6 +8,16 @@ export type ReasonCode =
   | 'LIMIT_RULE'
   | 'CONFLICT'
   | 'CONTEXT_REQUIRED'
+  | 'NOT_CAPTAIN'
+  | 'HAS_MEMBERS'
+  | 'CANNOT_KICK_SELF'
+  | 'CANNOT_KICK_CAPTAIN'
+  | 'NOT_MEMBER'
+  | 'CAPTAIN_CANNOT_LEAVE'
+  | 'NO_OTHER_MEMBERS'
+  | 'ALREADY_IN_TEAM'
+  | 'TEAM_NOT_JOINABLE'
+  | 'NOT_STAFF'
 
 export type Decision<R extends string = ReasonCode> =
   | { allowed: true }
