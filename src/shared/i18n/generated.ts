@@ -169,6 +169,8 @@ export const I18N_KEYS = [
   "hackathons.detail.tabs.description",
   "hackathons.detail.tabs.management",
   "hackathons.detail.tabs.myTeam",
+  "hackathons.detail.tabs.task",
+  "hackathons.detail.task.empty",
   "hackathons.detail.timeline.title",
   "hackathons.detail.title",
   "hackathons.edit.actions.cancel",

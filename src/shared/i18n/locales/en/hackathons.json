@@ -64,9 +64,13 @@
     },
     "tabs": {
       "description": "description",
+      "task": "task",
       "myTeam": "my team",
       "announcements": "announcements",
       "management": "management"
+    },
+    "task": {
+      "empty": "task has not been published yet"
     },
     "myTeam": {
       "empty": "you are not in a team for this hackathon",

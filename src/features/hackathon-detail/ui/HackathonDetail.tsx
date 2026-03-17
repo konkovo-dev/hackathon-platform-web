@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
-import { useHackathonDetailQuery, useHackathonAnnouncementsQuery } from '../model/hooks'
+import { useHackathonDetailQuery, useHackathonAnnouncementsQuery, useHackathonTaskQuery } from '../model/hooks'
 import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
 import { MyTeamTabContent } from './MyTeamTabContent'
+import { TaskTabContent } from './TaskTabContent'
 import { AnnouncementsList } from './AnnouncementsList'
 import { HackathonManagementDashboard } from '@/widgets/hackathon-management-dashboard/ui/HackathonManagementDashboard'
 
@@ -18,17 +19,20 @@ export interface HackathonDetailProps {
   initialData?: Hackathon
 }
 
-type HackathonTab = 'description' | 'myTeam' | 'announcements' | 'management'
+type HackathonTab = 'description' | 'task' | 'myTeam' | 'announcements' | 'management'
 
 export function HackathonDetail({ hackathonId, initialData }: HackathonDetailProps) {
   const t = useT()
   const [activeTab, setActiveTab] = useState<HackathonTab>('description')
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId, initialData)
   
-  const { decision: canViewAnnouncementsDecision } = useCan('Hackathon.ViewAnnouncements', { 
-    hackathonId 
+  const { decision: canViewAnnouncementsDecision } = useCan('Hackathon.ViewAnnouncements', {
+    hackathonId
   })
   const canSeeAnnouncements = canViewAnnouncementsDecision.allowed
+
+  const { decision: canReadTaskDecision } = useCan('Hackathon.ReadTask', { hackathonId })
+  const canSeeTask = canReadTaskDecision.allowed
 
   const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan('Hackathon.Manage', {
     hackathonId
@@ -38,28 +42,46 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   const { decision: canCreateTeamDecision } = useCan('Team.Create', { hackathonId })
   const canCreateTeam = canCreateTeamDecision.allowed
 
-  const myParticipationQuery = useMyParticipationQuery(activeTab === 'myTeam' ? hackathonId : null)
+  const myParticipationQuery = useMyParticipationQuery(hackathonId)
   const myTeamId = myParticipationQuery.data?.teamId ?? null
-  
+
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)
-  
+
+  const { data: task, isLoading: isLoadingTask } = useHackathonTaskQuery(
+    canSeeTask ? hackathonId : null,
+    canSeeTask
+  )
+
   const tabs: Tab<HackathonTab>[] = useMemo(() => {
     const baseTabs: Tab<HackathonTab>[] = [
       { id: 'description', label: t('hackathons.detail.tabs.description') },
-      { id: 'myTeam', label: t('hackathons.detail.tabs.myTeam') },
     ]
-    
+    if (canSeeTask) {
+      baseTabs.push({ id: 'task', label: t('hackathons.detail.tabs.task') })
+    }
+    if (myTeamId != null) {
+      baseTabs.push({ id: 'myTeam', label: t('hackathons.detail.tabs.myTeam') })
+    }
     if (canSeeAnnouncements) {
       baseTabs.push({ id: 'announcements', label: t('hackathons.detail.tabs.announcements') })
     }
-
     if (canManage) {
       baseTabs.push({ id: 'management', label: t('hackathons.detail.tabs.management') })
     }
-    
     return baseTabs
-  }, [canSeeAnnouncements, canManage, t])
+  }, [myTeamId, canSeeAnnouncements, canSeeTask, canManage, t])
+
+  const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
+  const activeTabSafe =
+    activeTab && tabIds.includes(activeTab) ? activeTab : ('description' as HackathonTab)
+  const setActiveTabSafe = (id: HackathonTab) => setActiveTab(id)
+
+  useEffect(() => {
+    if (activeTab && !tabIds.includes(activeTab)) {
+      setActiveTab('description')
+    }
+  }, [activeTab, tabIds])
 
   if (isLoading && !initialData) {
     return (
@@ -107,20 +129,27 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
     <div className="flex flex-col gap-m16">
       <Breadcrumb items={breadcrumbItems} />
 
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+      <Tabs tabs={tabs} activeTab={activeTabSafe} onChange={setActiveTabSafe} />
 
       <div
         role="tabpanel"
-        id={`tabpanel-${activeTab}`}
-        aria-labelledby={`tab-${activeTab}`}
+        id={`tabpanel-${activeTabSafe}`}
+        aria-labelledby={`tab-${activeTabSafe}`}
         className="animate-in fade-in duration-200"
       >
-        {activeTab === 'description' && (
+        {activeTabSafe === 'description' && (
           <div className="flex flex-col gap-m16">
             <HackathonDetailInfo hackathonId={hackathonId} hackathon={hackathon} />
           </div>
         )}
-        {activeTab === 'myTeam' && (
+        {activeTabSafe === 'task' && canSeeTask && (
+          <TaskTabContent
+            hackathonId={hackathonId}
+            task={task ?? undefined}
+            isLoading={isLoadingTask}
+          />
+        )}
+        {activeTabSafe === 'myTeam' && myTeamId && (
           <MyTeamTabContent
             hackathonId={hackathonId}
             myTeamId={myTeamId}
@@ -128,7 +157,7 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
             canCreateTeam={canCreateTeam}
           />
         )}
-        {activeTab === 'announcements' && canSeeAnnouncements && (
+        {activeTabSafe === 'announcements' && canSeeAnnouncements && (
           <>
             {isLoadingAnnouncements ? (
               <div className="py-m8">
@@ -141,7 +170,7 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
             )}
           </>
         )}
-        {activeTab === 'management' && canManage && (
+        {activeTabSafe === 'management' && canManage && (
           <HackathonManagementDashboard hackathon={hackathon} />
         )}
       </div>
