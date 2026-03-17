@@ -74,12 +74,15 @@ export function ListItem({
       
       {selectable ? (
         <Checkbox checked={selected} readOnly className="pointer-events-none" />
-      ) : rightContent ? (
-        rightContent
-      ) : caption ? (
-        <span className="typography-caption-sm-regular text-text-secondary whitespace-nowrap">
-          {caption}
-        </span>
+      ) : rightContent || caption ? (
+        <div className="flex items-center gap-m4 flex-shrink-0">
+          {caption && (
+            <span className="typography-caption-sm-regular text-text-secondary whitespace-nowrap">
+              {caption}
+            </span>
+          )}
+          {rightContent}
+        </div>
       ) : null}
     </div>
   )

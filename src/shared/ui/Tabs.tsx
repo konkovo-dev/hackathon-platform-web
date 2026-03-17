@@ -29,7 +29,7 @@ export function Tabs<T extends string = string>({
           id={`tab-${tab.id}`}
           onClick={() => onChange(tab.id)}
           className={cn(
-            'group typography-label-md pb-m4 px-m8 relative transition-all duration-200',
+            'group typography-label-md pb-m4 px-m8 relative transition-all duration-200 text-left',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
             'rounded-t-[var(--spacing-m2)]',
             activeTab === tab.id
