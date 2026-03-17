@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Modal, Button, MarkdownEditor } from '@/shared/ui'
+import { ErrorAlert, Modal, Button, MarkdownEditor } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { localizeValidationError } from '@/shared/lib/validation/localizeValidationError'
 import { useUpdateHackathonTaskMutation } from '../model/hooks'
@@ -50,9 +50,6 @@ export function EditTaskModal({ open, onClose, hackathonId, currentTask = '' }: 
     }
   }
 
-  const alertRole = 'alert' as const
-  const ariaLivePolite = 'polite' as const
-
   return (
     <Modal open={open} onClose={onClose} title={t('hackathons.task.edit.title')} size="lg">
       <div className="flex flex-col gap-m6">
@@ -67,15 +64,7 @@ export function EditTaskModal({ open, onClose, hackathonId, currentTask = '' }: 
           disabled={mutation.isPending}
         />
 
-        {error && (
-          <div
-            className="rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error"
-            role={alertRole}
-            aria-live={ariaLivePolite}
-          >
-            <p className="typography-body-sm-regular text-state-error">{error}</p>
-          </div>
-        )}
+        {error && <ErrorAlert message={error} />}
 
         <div className="flex gap-m4 justify-end">
           <Button

@@ -1,4 +1,7 @@
 {
+  "errors": {
+    "generic": "something went wrong. Please try again."
+  },
   "actions": {
     "login": "sign in",
     "register": "sign up"

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Modal, Input, SelectList, ListItem, Button, Section, MarkdownEditor } from '@/shared/ui'
+import { ErrorAlert, Modal, Input, SelectList, ListItem, Button, Section, MarkdownEditor } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useUsersSearchQuery, useCreateStaffInvitationMutation } from '../model/hooks'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
@@ -87,9 +87,6 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
     onClose()
     setError(null)
   }
-
-  const alertRole = 'alert' as const
-  const ariaLivePolite = 'polite' as const
 
   const getRoleLabel = (role: HackathonRole) => {
     switch (role) {
@@ -188,15 +185,7 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
           />
         </Section>
 
-        {error && (
-          <div
-            className="rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error"
-            role={alertRole}
-            aria-live={ariaLivePolite}
-          >
-            <p className="typography-body-sm-regular text-state-error">{error}</p>
-          </div>
-        )}
+        {error && <ErrorAlert message={error} />}
 
         <div className="flex gap-m4 justify-end">
           <Button
