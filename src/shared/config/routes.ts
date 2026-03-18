@@ -11,6 +11,8 @@ export const routes = {
     list: '/hackathons',
     create: '/hackathons/create',
     detail: (id: string) => `/hackathons/${id}`,
+    detailWithTab: (id: string, tab?: string) =>
+      !tab || tab === 'description' ? `/hackathons/${id}` : `/hackathons/${id}?tab=${tab}`,
     edit: (id: string) => `/hackathons/${id}/edit`,
     teams: {
       list: (hackathonId: string) => `/hackathons/${hackathonId}/teams`,

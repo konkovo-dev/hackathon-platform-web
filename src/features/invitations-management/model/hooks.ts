@@ -9,20 +9,29 @@ import {
   acceptTeamInvitation,
   rejectTeamInvitation,
 } from '@/entities/invitation'
+import { useSessionQuery } from '@/features/auth/model/hooks'
 
 export function useStaffInvitationsQuery() {
+  const sessionQuery = useSessionQuery()
+  const isAuthed = sessionQuery.data?.active === true
+
   return useQuery({
     queryKey: ['my-staff-invitations'],
     queryFn: listMyStaffInvitations,
     refetchInterval: 30000,
+    enabled: isAuthed,
   })
 }
 
 export function useTeamInvitationsQuery() {
+  const sessionQuery = useSessionQuery()
+  const isAuthed = sessionQuery.data?.active === true
+
   return useQuery({
     queryKey: ['my-team-invitations'],
     queryFn: listMyTeamInvitations,
     refetchInterval: 30000,
+    enabled: isAuthed,
   })
 }
 

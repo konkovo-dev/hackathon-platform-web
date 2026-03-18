@@ -7,6 +7,7 @@ export default async function InvitationsPage() {
 
   return (
     <PageContainer>
+      <h1 className="mb-m8 typography-heading-lg text-text-primary">{t('invitations.title')}</h1>
       <InvitationsList />
     </PageContainer>
   )

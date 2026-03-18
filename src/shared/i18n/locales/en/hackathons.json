@@ -66,6 +66,7 @@
       "description": "description",
       "task": "task",
       "myTeam": "my team",
+      "participation": "my participation",
       "announcements": "announcements",
       "management": "management"
     },
@@ -75,6 +76,15 @@
     "myTeam": {
       "empty": "you are not in a team for this hackathon",
       "goToTeams": "to teams list"
+    },
+    "participation": {
+      "empty": "you are not in a team for this hackathon",
+      "goToTeams": "to teams list",
+      "solo": "you are participating as an individual",
+      "lookingForTeam": "you are looking for a team",
+      "unregister": "cancel registration",
+      "unregisterConfirm": "are you sure you want to cancel your hackathon registration?",
+      "goToTeamsStub": "to teams list (coming soon)"
     }
   },
   "card": {

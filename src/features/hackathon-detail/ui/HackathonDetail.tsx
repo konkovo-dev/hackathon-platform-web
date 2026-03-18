@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
@@ -9,7 +10,7 @@ import { useCan } from '@/shared/policy/useCan'
 import { useHackathonDetailQuery, useHackathonAnnouncementsQuery, useHackathonTaskQuery } from '../model/hooks'
 import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
-import { MyTeamTabContent } from './MyTeamTabContent'
+import { MyParticipationTabContent } from './MyParticipationTabContent'
 import { TaskTabContent } from './TaskTabContent'
 import { AnnouncementsList } from './AnnouncementsList'
 import { HackathonManagementDashboard } from '@/widgets/hackathon-management-dashboard/ui/HackathonManagementDashboard'
@@ -17,12 +18,14 @@ import { HackathonManagementDashboard } from '@/widgets/hackathon-management-das
 export interface HackathonDetailProps {
   hackathonId: string
   initialData?: Hackathon
+  initialTab?: string
 }
 
-type HackathonTab = 'description' | 'task' | 'myTeam' | 'announcements' | 'management'
+type HackathonTab = 'description' | 'task' | 'participation' | 'announcements' | 'management'
 
-export function HackathonDetail({ hackathonId, initialData }: HackathonDetailProps) {
+export function HackathonDetail({ hackathonId, initialData, initialTab }: HackathonDetailProps) {
   const t = useT()
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<HackathonTab>('description')
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId, initialData)
   
@@ -39,11 +42,14 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
   })
   const canManage = canManageDecision.allowed
 
-  const { decision: canCreateTeamDecision } = useCan('Team.Create', { hackathonId })
-  const canCreateTeam = canCreateTeamDecision.allowed
-
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
   const myTeamId = myParticipationQuery.data?.teamId ?? null
+  const participationStatus = myParticipationQuery.data?.status ?? null
+  const isParticipant =
+    myTeamId != null ||
+    (participationStatus != null &&
+      participationStatus !== 'PART_NONE' &&
+      participationStatus !== 'PARTICIPATION_STATUS_UNSPECIFIED')
 
   const { data: announcements = [], isLoading: isLoadingAnnouncements } =
     useHackathonAnnouncementsQuery(canSeeAnnouncements ? hackathonId : null)
@@ -55,33 +61,65 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
 
   const tabs: Tab<HackathonTab>[] = useMemo(() => {
     const baseTabs: Tab<HackathonTab>[] = [
-      { id: 'description', label: t('hackathons.detail.tabs.description') },
+      {
+        id: 'description',
+        label: t('hackathons.detail.tabs.description'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'description'),
+      },
     ]
     if (canSeeTask) {
-      baseTabs.push({ id: 'task', label: t('hackathons.detail.tabs.task') })
+      baseTabs.push({
+        id: 'task',
+        label: t('hackathons.detail.tabs.task'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'task'),
+      })
     }
-    if (myTeamId != null) {
-      baseTabs.push({ id: 'myTeam', label: t('hackathons.detail.tabs.myTeam') })
+    if (isParticipant) {
+      baseTabs.push({
+        id: 'participation',
+        label: t('hackathons.detail.tabs.participation'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
+      })
     }
     if (canSeeAnnouncements) {
-      baseTabs.push({ id: 'announcements', label: t('hackathons.detail.tabs.announcements') })
+      baseTabs.push({
+        id: 'announcements',
+        label: t('hackathons.detail.tabs.announcements'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'announcements'),
+      })
     }
     if (canManage) {
-      baseTabs.push({ id: 'management', label: t('hackathons.detail.tabs.management') })
+      baseTabs.push({
+        id: 'management',
+        label: t('hackathons.detail.tabs.management'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'management'),
+      })
     }
     return baseTabs
-  }, [myTeamId, canSeeAnnouncements, canSeeTask, canManage, t])
+  }, [hackathonId, isParticipant, canSeeAnnouncements, canSeeTask, canManage, t])
 
   const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
   const activeTabSafe =
     activeTab && tabIds.includes(activeTab) ? activeTab : ('description' as HackathonTab)
-  const setActiveTabSafe = (id: HackathonTab) => setActiveTab(id)
+  const setActiveTabSafe = (id: HackathonTab) => {
+    setActiveTab(id)
+    router.replace(routes.hackathons.detailWithTab(hackathonId, id === 'description' ? undefined : id))
+  }
+
+  useEffect(() => {
+    if (initialTab == null || initialTab === '') {
+      setActiveTab('description')
+    } else if (tabIds.includes(initialTab as HackathonTab)) {
+      setActiveTab(initialTab as HackathonTab)
+    }
+  }, [initialTab, tabIds])
 
   useEffect(() => {
     if (activeTab && !tabIds.includes(activeTab)) {
       setActiveTab('description')
+      router.replace(routes.hackathons.detailWithTab(hackathonId))
     }
-  }, [activeTab, tabIds])
+  }, [activeTab, tabIds, hackathonId, router])
 
   if (isLoading && !initialData) {
     return (
@@ -149,12 +187,12 @@ export function HackathonDetail({ hackathonId, initialData }: HackathonDetailPro
             isLoading={isLoadingTask}
           />
         )}
-        {activeTabSafe === 'myTeam' && myTeamId && (
-          <MyTeamTabContent
+        {activeTabSafe === 'participation' && isParticipant && (
+          <MyParticipationTabContent
             hackathonId={hackathonId}
             myTeamId={myTeamId}
+            participationStatus={participationStatus}
             ctxLoading={myParticipationQuery.isLoading}
-            canCreateTeam={canCreateTeam}
           />
         )}
         {activeTabSafe === 'announcements' && canSeeAnnouncements && (

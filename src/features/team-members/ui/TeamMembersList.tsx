@@ -60,7 +60,7 @@ export function TeamMembersList({
 
   return (
     <>
-      <Section title={t('teams.members.title')} variant="outlined">
+      <Section title={t('teams.members.title')} variant="elevated">
         <SelectList>
           {members.map(member => {
             if (!member.userId) return null
@@ -79,7 +79,7 @@ export function TeamMembersList({
                 user={user}
                 caption={isCaptain ? t('teams.members.captain') : t('teams.members.member')}
                 variant="bordered"
-                badge={isCaptain ? t('teams.members.captain') : undefined}
+                showNavigationIcon
                 rightContent={
                   canKick ? (
                     <Button
