@@ -4,7 +4,6 @@ import { listHackathonStaffInvitations } from '@/entities/hackathon/api/listHack
 import { createStaffInvitation } from '@/entities/hackathon/api/createStaffInvitation'
 import { cancelStaffInvitation } from '@/entities/hackathon/api/cancelStaffInvitation'
 import { removeHackathonRole } from '@/entities/hackathon/api/removeHackathonRole'
-import { listUsers } from '@/entities/user/api/listUsers'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
 import { ApiError } from '@/shared/api/errors'
@@ -29,27 +28,6 @@ export function useStaffUsersQuery(userIds: string[]) {
       }
     },
     enabled: userIds.length > 0,
-  })
-}
-
-export function useUsersSearchQuery(searchQuery: string) {
-  return useQuery({
-    queryKey: ['users-search', searchQuery],
-    queryFn: async () => {
-      const response = await listUsers({
-        query: {
-          q: searchQuery,
-          page: { pageSize: 20 },
-        },
-      })
-      return {
-        users: (response.users ?? [])
-          .map(u => u.user)
-          .filter((u): u is NonNullable<typeof u> => u != null),
-        page: response.page,
-      }
-    },
-    enabled: searchQuery.length >= 2,
   })
 }
 

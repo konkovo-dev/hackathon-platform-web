@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { SelectList, Section, Button, Modal } from '@/shared/ui'
+import { SelectList, Section, Button, Modal, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { UserListItem } from '@/entities/user'
 import { useTeamMembersQuery, useTeamMemberUsersQuery, useKickMemberMutation } from '../model/hooks'
@@ -11,6 +11,8 @@ export interface TeamMembersListProps {
   teamId: string
   currentUserId: string | null | undefined
   canKickMember: boolean
+  canInviteMember?: boolean
+  onInvite?: () => void
   onTransferCaptain?: () => void
 }
 
@@ -19,6 +21,8 @@ export function TeamMembersList({
   teamId,
   currentUserId,
   canKickMember: canKickFromApi,
+  canInviteMember,
+  onInvite,
   onTransferCaptain,
 }: TeamMembersListProps) {
   const t = useT()
@@ -54,13 +58,27 @@ export function TeamMembersList({
     return <p className="typography-body-sm text-text-secondary">{t('teams.list.loading')}</p>
   }
 
-  if (members.length === 0) {
-    return <p className="typography-body-sm text-text-secondary">{t('teams.members.empty')}</p>
-  }
-
   return (
     <>
-      <Section title={t('teams.members.title')} variant="elevated">
+      <Section
+        title={t('teams.members.title')}
+        variant="elevated"
+        action={
+          canInviteMember && onInvite ? (
+            <Button
+              variant="icon-secondary"
+              size="xs"
+              onClick={onInvite}
+              aria-label={t('teams.invitations.create')}
+            >
+              <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
+            </Button>
+          ) : undefined
+        }
+      >
+        {members.length === 0 ? (
+          <p className="typography-body-sm text-text-secondary">{t('teams.members.empty')}</p>
+        ) : (
         <SelectList>
           {members.map(member => {
             if (!member.userId) return null
@@ -95,6 +113,7 @@ export function TeamMembersList({
             )
           })}
         </SelectList>
+        )}
 
         {onTransferCaptain && members.length > 1 && (
           <div className="mt-m6 flex justify-end">

@@ -10,6 +10,7 @@ import {
   useTeamMembersQuery,
   useTeamMemberUsersQuery,
   TransferCaptainModal,
+  TeamInviteModal,
 } from '@/features/team-members'
 import { VacanciesList, VacancyUpsertModal } from '@/features/team-vacancies'
 import type { Vacancy } from '@/entities/team'
@@ -30,6 +31,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   const [transferModalOpen, setTransferModalOpen] = useState(false)
   const [vacancyModalOpen, setVacancyModalOpen] = useState(false)
   const [editingVacancy, setEditingVacancy] = useState<Vacancy | null>(null)
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
 
   const isVacancyModalOpen = vacancyModalOpen || editingVacancy != null
   const closeVacancyModal = () => {
@@ -62,12 +64,14 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   })
   const { decision: transferDecision } = useCan('Team.TransferCaptain', { hackathonId, teamId })
   const { decision: kickDecision } = useCan('Team.KickMember', { hackathonId, teamId })
+  const { decision: inviteDecision } = useCan('Team.InviteMember', { hackathonId, teamId })
   const { decision: canJoinTeamDecision } = useCan('Team.CanJoinTeam', { hackathonId })
 
   const canEdit = editDecision.allowed
   const canManageVacancy = manageVacancyDecision.allowed
   const canTransfer = transferDecision.allowed
   const canKickMember = kickDecision.allowed
+  const canInviteMember = inviteDecision.allowed
 
   if (isTeamLoading) {
     return <p className="typography-body-sm text-text-secondary">{t('teams.list.loading')}</p>
@@ -133,6 +137,8 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
           teamId={teamId}
           currentUserId={currentUserId}
           canKickMember={canKickMember}
+          canInviteMember={canInviteMember}
+          onInvite={() => setInviteModalOpen(true)}
           onTransferCaptain={canTransfer ? () => setTransferModalOpen(true) : undefined}
         />
 
@@ -173,6 +179,14 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
         hackathonId={hackathonId}
         teamId={teamId}
         vacancy={editingVacancy ?? undefined}
+      />
+
+      <TeamInviteModal
+        open={inviteModalOpen}
+        onClose={() => setInviteModalOpen(false)}
+        hackathonId={hackathonId}
+        teamId={teamId}
+        vacancies={vacancies}
       />
     </div>
   )

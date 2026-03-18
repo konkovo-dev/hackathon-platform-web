@@ -134,6 +134,7 @@
     "kickFailed": "failed to kick member",
     "transferFailed": "failed to transfer captainship",
     "inviteFailed": "failed to send invitation",
+    "serverErrorTryLater": "please try again later",
     "joinFailed": "failed to send request",
     "notFound": "team not found",
     "unauthorized": "insufficient permissions",

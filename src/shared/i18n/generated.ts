@@ -451,6 +451,7 @@ export const I18N_KEYS = [
   "teams.errors.leaveFailed",
   "teams.errors.loadFailed",
   "teams.errors.notFound",
+  "teams.errors.serverErrorTryLater",
   "teams.errors.transferFailed",
   "teams.errors.unauthorized",
   "teams.errors.updateFailed",

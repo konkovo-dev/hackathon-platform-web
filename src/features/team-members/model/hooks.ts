@@ -1,7 +1,13 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { listTeamMembers, leaveTeam, kickTeamMember, transferCaptain } from '@/entities/team'
+import {
+  listTeamMembers,
+  leaveTeam,
+  kickTeamMember,
+  transferCaptain,
+  createTeamInvitation,
+} from '@/entities/team'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 
 export function useTeamMembersQuery(hackathonId: string, teamId: string) {
@@ -24,6 +30,26 @@ export function useTeamMemberUsersQuery(userIds: string[]) {
       }
     },
     enabled: userIds.length > 0,
+  })
+}
+
+export function useCreateTeamInvitationMutation(hackathonId: string, teamId: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (params: {
+      targetUserId: string
+      vacancyId?: string
+      message?: string
+    }) =>
+      createTeamInvitation(hackathonId, teamId, {
+        idempotencyKey: { key: crypto.randomUUID() },
+        ...params,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] })
+      queryClient.invalidateQueries({ queryKey: ['team-members', hackathonId, teamId] })
+    },
   })
 }
 
