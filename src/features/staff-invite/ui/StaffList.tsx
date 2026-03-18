@@ -2,6 +2,7 @@
 
 import { Section, SelectList, Button, Icon, Modal } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
+import { useSessionQuery } from '@/features/auth/model/hooks'
 import { useStaffListQuery, useStaffUsersQuery, useRemoveStaffRoleMutation } from '../model/hooks'
 import { useState, useMemo } from 'react'
 import { StaffInviteModal } from './StaffInviteModal'
@@ -14,11 +15,20 @@ export interface StaffListProps {
 
 export function StaffList({ hackathonId }: StaffListProps) {
   const t = useT()
+  const { data: sessionData } = useSessionQuery()
+  const currentUserId = sessionData?.active ? sessionData.userId : undefined
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
   const [memberToExclude, setMemberToExclude] = useState<HackathonStaffMember | null>(null)
   const { data, isLoading } = useStaffListQuery(hackathonId)
 
   const staff = useMemo(() => data?.staff || [], [data?.staff])
+  const canRemoveStaff = useMemo(
+    () =>
+      staff.some(
+        m => m.userId === currentUserId && (m.roles ?? []).includes('HX_ROLE_OWNER')
+      ),
+    [staff, currentUserId]
+  )
   const userIds = useMemo(() => staff.map(s => s.userId).filter((id): id is string => id != null), [staff])
   const { data: usersData, isLoading: isLoadingUsers } = useStaffUsersQuery(userIds)
   
@@ -102,7 +112,7 @@ export function StaffList({ hackathonId }: StaffListProps) {
                   variant="bordered"
                   showNavigationIcon
                   rightActionOnHover={
-                    rolesToRemove.length > 0 ? (
+                    canRemoveStaff && rolesToRemove.length > 0 ? (
                       <Button
                         variant="icon-secondary"
                         size="xs"
