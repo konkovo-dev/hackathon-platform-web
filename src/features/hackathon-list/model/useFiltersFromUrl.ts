@@ -1,14 +1,21 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { HackathonListFilters, HackathonFormat } from '@/entities/hackathon/model/types'
 import { getDefaultFilters } from '@/entities/hackathon/model/filterMapper'
 import { useGeolocation, findNearestCity } from '@/shared/lib/geolocation/useGeolocation'
 import { getCities } from '@/entities/location'
 
+function filtersEqual(a: HackathonListFilters, b: HackathonListFilters): boolean {
+  if (a.stage !== b.stage || a.city !== b.city || a.sortDirection !== b.sortDirection) return false
+  if (a.formats.length !== b.formats.length) return false
+  return a.formats.every((f, i) => b.formats[i] === f)
+}
+
 /**
- * Хук для синхронизации фильтров хакатонов с URL query params
+ * Хук для синхронизации фильтров хакатонов с URL query params.
+ * При смене фильтров сразу выставляет «ожидающие» фильтры, чтобы список обновился до обновления URL.
  */
 export function useFiltersFromUrl(): [
   HackathonListFilters,
@@ -17,8 +24,10 @@ export function useFiltersFromUrl(): [
   const router = useRouter()
   const searchParams = useSearchParams()
   const geolocation = useGeolocation()
+  const [pendingFilters, setPendingFilters] = useState<HackathonListFilters | null>(null)
+  const citySyncDoneRef = useRef(false)
 
-  const filters = useMemo(() => {
+  const filtersFromUrl = useMemo(() => {
     const parsed = parseFiltersFromUrl(searchParams)
 
     const hasCityInUrl = searchParams.has('city')
@@ -43,13 +52,32 @@ export function useFiltersFromUrl(): [
     return parsed
   }, [searchParams, geolocation.latitude, geolocation.longitude, geolocation.loading])
 
+  const filters = pendingFilters ?? filtersFromUrl
+
+  useEffect(() => {
+    if (!pendingFilters) return
+    if (filtersEqual(pendingFilters, filtersFromUrl)) {
+      setPendingFilters(null)
+    }
+  }, [pendingFilters, filtersFromUrl])
+
   const setFilters = useCallback(
     (newFilters: HackathonListFilters) => {
+      setPendingFilters(newFilters)
       const params = serializeFiltersToUrl(newFilters)
-      router.push(`/hackathons?${params}`, { scroll: false })
+      router.replace(`/hackathons?${params}`, { scroll: false })
     },
     [router]
   )
+
+  useEffect(() => {
+    if (pendingFilters || citySyncDoneRef.current) return
+    if (!filtersFromUrl.city || searchParams.has('city')) return
+    if (searchParams.toString().length > 0) return
+    citySyncDoneRef.current = true
+    const params = serializeFiltersToUrl(filtersFromUrl)
+    router.replace(`/hackathons?${params}`, { scroll: false })
+  }, [pendingFilters, filtersFromUrl.city, searchParams, router])
 
   return [filters, setFilters]
 }

@@ -66,10 +66,14 @@
     "description": "описание",
     "descriptionPlaceholder": "опишите требования к участнику...",
     "desiredRoles": "желаемые роли",
+    "rolesSearch": "поиск ролей",
     "desiredSkills": "желаемые навыки",
+    "skillsSearch": "поиск навыков",
     "slotsTotal": "всего мест",
     "submit": "сохранить",
-    "cancel": "отмена"
+    "cancel": "отмена",
+    "addOption": "добавить",
+    "delete": "удалить"
   },
   "invitations": {
     "title": "приглашения",

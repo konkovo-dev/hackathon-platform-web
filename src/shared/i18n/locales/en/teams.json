@@ -66,10 +66,14 @@
     "description": "description",
     "descriptionPlaceholder": "describe requirements for the member...",
     "desiredRoles": "desired roles",
+    "rolesSearch": "search roles",
     "desiredSkills": "desired skills",
+    "skillsSearch": "search skills",
     "slotsTotal": "total slots",
     "submit": "save",
-    "cancel": "cancel"
+    "cancel": "cancel",
+    "addOption": "add",
+    "delete": "delete"
   },
   "invitations": {
     "title": "invitations",

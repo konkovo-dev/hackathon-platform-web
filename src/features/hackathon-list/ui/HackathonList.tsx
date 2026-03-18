@@ -54,76 +54,68 @@ export function HackathonList({ initialData }: HackathonListProps) {
 
   const allHackathons = data?.pages.flatMap(page => page.hackathons) ?? []
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-m20">
-        <span className="typography-body-md-regular text-text-secondary">
-          {t('hackathons.list.loading')}
-        </span>
-      </div>
-    )
-  }
+  return (
+    <div className="flex flex-col gap-m8">
+      <HackathonFilters filters={filters} onFiltersChange={setFilters} />
 
-  if (error) {
-    const isAuthError = error instanceof ApiError && error.data.status === 401
-
-    return (
-      <div className="flex flex-col items-center justify-center p-m20 gap-m4">
-        <span className="typography-body-md-regular text-state-error">
-          {t('hackathons.list.error')}
-        </span>
-        {isAuthError && (
-          <span className="typography-body-sm-regular text-text-secondary">
-            {t('hackathons.list.authRequired')}
+      {isLoading && (
+        <div className="flex items-center justify-center p-m20">
+          <span className="typography-body-md-regular text-text-secondary">
+            {t('hackathons.list.loading')}
           </span>
-        )}
-      </div>
-    )
-  }
+        </div>
+      )}
 
-  if (!allHackathons.length) {
-    return (
-      <div className="flex flex-col gap-m8">
-        <HackathonFilters filters={filters} onFiltersChange={setFilters} />
+      {error && !isLoading && (
+        <div className="flex flex-col items-center justify-center p-m20 gap-m4">
+          <span className="typography-body-md-regular text-state-error">
+            {t('hackathons.list.error')}
+          </span>
+          {error instanceof ApiError && error.data.status === 401 && (
+            <span className="typography-body-sm-regular text-text-secondary">
+              {t('hackathons.list.authRequired')}
+            </span>
+          )}
+        </div>
+      )}
 
+      {!error && !isLoading && !allHackathons.length && (
         <div className="flex items-center justify-center p-m20">
           <span className="typography-body-md-regular text-text-secondary">
             {t('hackathons.list.empty')}
           </span>
         </div>
-      </div>
-    )
-  }
+      )}
 
-  return (
-    <div className="flex flex-col gap-m8">
-      <HackathonFilters filters={filters} onFiltersChange={setFilters} />
+      {!error && !isLoading && allHackathons.length > 0 && (
+        <>
+          <div className="grid grid-cols-[repeat(auto-fill,258px)] gap-m8 justify-center sm:justify-start">
+            {allHackathons.map(hackathon => (
+              <HackathonCard key={hackathon.hackathonId} hackathon={hackathon} />
+            ))}
+          </div>
 
-      <div className="grid grid-cols-[repeat(auto-fill,258px)] gap-m8 justify-center sm:justify-start">
-        {allHackathons.map(hackathon => (
-          <HackathonCard key={hackathon.hackathonId} hackathon={hackathon} />
-        ))}
-      </div>
+          <div ref={loadMoreRef} className="flex items-center justify-center p-m8">
+            {isFetchingNextPage && (
+              <span className="typography-body-sm-regular text-text-secondary">
+                {t('hackathons.list.loadingMore')}
+              </span>
+            )}
+            {!hasNextPage && allHackathons.length > 0 && (
+              <span className="typography-body-sm-regular text-text-tertiary">
+                {t('hackathons.list.allLoaded')}
+              </span>
+            )}
+          </div>
 
-      <div ref={loadMoreRef} className="flex items-center justify-center p-m8">
-        {isFetchingNextPage && (
-          <span className="typography-body-sm-regular text-text-secondary">
-            {t('hackathons.list.loadingMore')}
-          </span>
-        )}
-        {!hasNextPage && allHackathons.length > 0 && (
-          <span className="typography-body-sm-regular text-text-tertiary">
-            {t('hackathons.list.allLoaded')}
-          </span>
-        )}
-      </div>
-
-      {hasNextPage && !isFetchingNextPage && (
-        <div className="flex justify-center p-m4">
-          <Button variant="secondary" onClick={() => fetchNextPage()}>
-            {t('hackathons.list.loadMore')}
-          </Button>
-        </div>
+          {hasNextPage && !isFetchingNextPage && (
+            <div className="flex justify-center p-m4">
+              <Button variant="secondary" onClick={() => fetchNextPage()}>
+                {t('hackathons.list.loadMore')}
+              </Button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

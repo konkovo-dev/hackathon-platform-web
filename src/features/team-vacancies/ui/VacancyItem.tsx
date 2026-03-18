@@ -1,65 +1,88 @@
 'use client'
 
-import { Button } from '@/shared/ui'
+import { useState } from 'react'
+import { Button, ListItem, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import type { Vacancy } from '@/entities/team'
 
 export interface VacancyItemProps {
   vacancy: Vacancy
+  rolesById?: Map<string, string>
   onEdit?: () => void
+  onDelete?: () => void
+  canManage?: boolean
 }
 
-export function VacancyItem({ vacancy, onEdit }: VacancyItemProps) {
+export function VacancyItem({
+  vacancy,
+  rolesById,
+  onEdit,
+  onDelete,
+  canManage,
+}: VacancyItemProps) {
   const t = useT()
+  const [isHovered, setIsHovered] = useState(false)
 
   const slotsOpen = parseInt(vacancy.slotsOpen ?? '0', 10)
   const slotsTotal = parseInt(vacancy.slotsTotal ?? '0', 10)
+  const slotsCaption =
+    slotsOpen > 0
+      ? t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
+      : t('teams.vacancies.slotsFull')
 
-  return (
-    <div className="flex flex-col gap-m3 p-m5 rounded-[var(--spacing-m3)] border border-border-default bg-bg-secondary">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-m3">
-            <span className="typography-body-md-semibold text-text-primary">
-              {slotsOpen > 0
-                ? t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
-                : t('teams.vacancies.slotsFull')}
-            </span>
-          </div>
+  const positionsText =
+    vacancy.desiredRoleIds && vacancy.desiredRoleIds.length > 0
+      ? vacancy.desiredRoleIds
+          .map(id => rolesById?.get(id) ?? id)
+          .join(', ')
+      : t('common.fallback.untitled')
 
-          {vacancy.description && (
-            <p className="typography-body-sm text-text-secondary mt-m2">{vacancy.description}</p>
-          )}
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onEdit?.()
+  }
 
-          {vacancy.desiredRoleIds && vacancy.desiredRoleIds.length > 0 && (
-            <div className="mt-m3">
-              <span className="typography-body-sm text-text-tertiary">
-                {t('teams.vacancies.desiredRoles')}:{' '}
-              </span>
-              <span className="typography-body-sm text-text-secondary">
-                {vacancy.desiredRoleIds.join(', ')}
-              </span>
-            </div>
-          )}
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onDelete?.()
+  }
 
-          {vacancy.desiredSkillIds && vacancy.desiredSkillIds.length > 0 && (
-            <div className="mt-m2">
-              <span className="typography-body-sm text-text-tertiary">
-                {t('teams.vacancies.desiredSkills')}:{' '}
-              </span>
-              <span className="typography-body-sm text-text-secondary">
-                {vacancy.desiredSkillIds.join(', ')}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {onEdit && (
-          <Button variant="icon-secondary" size="xs" onClick={onEdit}>
-            {t('teams.vacancies.edit')}
+  const rightContent =
+    canManage && isHovered ? (
+      <div className="flex gap-m2" onClick={e => e.stopPropagation()}>
+        <Button
+          variant="icon-secondary"
+          size="xs"
+          onClick={handleEdit}
+          aria-label={t('teams.vacancies.edit')}
+        >
+          <Icon src="/icons/icon-edit/icon-edit-xs.svg" size="xs" color="secondary" />
+        </Button>
+        {onDelete && (
+          <Button
+            variant="icon-secondary"
+            size="xs"
+            onClick={handleDelete}
+            aria-label={t('teams.vacancies.delete')}
+          >
+            <Icon src="/icons/icon-delete/icon-delete-xs.svg" size="xs" color="secondary" />
           </Button>
         )}
       </div>
+    ) : undefined
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <ListItem
+        text={positionsText}
+        caption={slotsCaption}
+        variant="bordered"
+        onClick={onEdit}
+        rightContent={rightContent}
+      />
     </div>
   )
 }
