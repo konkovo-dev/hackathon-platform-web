@@ -40,7 +40,8 @@ export function useActiveInvitationsCount() {
   const teamQuery = useTeamInvitationsQuery()
 
   const staffPending =
-    staffQuery.data?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_PENDING').length ?? 0
+    staffQuery.data?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_PENDING').length ??
+    0
   const teamPending =
     teamQuery.data?.invitations?.filter(inv => inv.status === 'TEAM_INBOX_PENDING').length ?? 0
 

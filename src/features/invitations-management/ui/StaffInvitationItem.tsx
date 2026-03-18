@@ -98,7 +98,7 @@ export function StaffInvitationItem({
             <Button
               variant="icon-secondary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onReject()
               }}
@@ -110,7 +110,7 @@ export function StaffInvitationItem({
             <Button
               variant="icon-primary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onAccept()
               }}

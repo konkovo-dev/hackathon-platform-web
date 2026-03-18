@@ -22,7 +22,15 @@ import { useDebugFlag } from './useDebugFlag'
 type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
-  key: 'home' | 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system' | 'search'
+  key:
+    | 'home'
+    | 'hackathons'
+    | 'invitations'
+    | 'teams'
+    | 'profile'
+    | 'auth'
+    | 'design_system'
+    | 'search'
   href?: string
   iconSrc: string
   onClick?: () => void
@@ -65,9 +73,7 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
   const menuGroups = useMemo(() => {
     const groups: SidebarItem[][] = []
 
-    groups.push([
-      { key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) },
-    ])
+    groups.push([{ key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) }])
 
     if (isAuthed) {
       groups.push([

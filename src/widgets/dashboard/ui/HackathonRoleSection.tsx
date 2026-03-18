@@ -59,13 +59,9 @@ export function HackathonRoleSection({
     return (
       <Section title={title}>
         <div className="flex flex-col items-center justify-center p-m20 gap-m6 text-center">
-          <span className="typography-body-md-regular text-text-secondary">
-            {emptyMessage}
-          </span>
+          <span className="typography-body-md-regular text-text-secondary">{emptyMessage}</span>
           {emptyHint && (
-            <span className="typography-body-sm-regular text-text-tertiary">
-              {emptyHint}
-            </span>
+            <span className="typography-body-sm-regular text-text-tertiary">{emptyHint}</span>
           )}
           {emptyActionLabel && emptyActionHref && (
             <Link href={emptyActionHref}>

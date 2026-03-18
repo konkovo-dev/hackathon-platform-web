@@ -18,7 +18,7 @@ export function localizeValidationError(
   if (!error.code && !error.message) {
     return t('hackathons.validation.unknown_error')
   }
-  
+
   if (!error.code) {
     return error.message ?? t('hackathons.validation.unknown_error')
   }
@@ -26,7 +26,7 @@ export function localizeValidationError(
   // Пытаемся локализовать код ошибки
   const errorCodeKey = `hackathons.validation.errors.${error.code}`
   const localizedCode = t(errorCodeKey as any)
-  
+
   if (localizedCode === errorCodeKey) {
     return error.message ?? error.code
   }
@@ -35,12 +35,12 @@ export function localizeValidationError(
   if (error.field) {
     const fieldKey = `hackathons.validation.fields.${error.field}`
     const localizedField = t(fieldKey as any)
-    
+
     // Если поле локализовано, объединяем: "код: поле"
     if (localizedField !== fieldKey) {
       return `${localizedCode}: ${localizedField}`
     }
-    
+
     // Иначе просто код + оригинальное имя поля
     return `${localizedCode}: ${error.field}`
   }

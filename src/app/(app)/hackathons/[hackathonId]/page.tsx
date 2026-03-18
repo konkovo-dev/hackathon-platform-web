@@ -27,10 +27,6 @@ export default async function HackathonMainPage({
   }
 
   return (
-    <HackathonDetail
-      hackathonId={hackathonId}
-      initialData={initialData}
-      initialTab={tabParam}
-    />
+    <HackathonDetail hackathonId={hackathonId} initialData={initialData} initialTab={tabParam} />
   )
 }

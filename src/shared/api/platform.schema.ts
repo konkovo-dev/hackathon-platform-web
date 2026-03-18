@@ -4,6571 +4,6627 @@
  */
 
 export interface paths {
-    "/v1/auth/introspect": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Introspect an access token
-         * @description Checks whether an access token is still active and returns its claims (user ID, expiry).
-         */
-        post: operations["AuthService_IntrospectToken"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Login with email/username and password
-         * @description Authenticates the user and returns a pair of JWT tokens (access + refresh).
-         */
-        post: operations["AuthService_Login"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Logout
-         * @description Invalidates the provided refresh token so it can no longer be used.
-         */
-        post: operations["AuthService_Logout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Refresh tokens
-         * @description Exchanges a valid refresh token for a new access token and a rotated refresh token.
-         */
-        post: operations["AuthService_Refresh"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Register a new user account
-         * @description Creates a new user and returns a pair of JWT tokens (access + refresh).
-         */
-        post: operations["AuthService_Register"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a hackathon
-         * @description Creates a new hackathon in DRAFT state. The caller becomes the OWNER.
-         */
-        post: operations["HackathonService_CreateHackathon"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List hackathons
-         * @description Returns a paginated list of hackathons. Supports filtering and ordering via the `query` field.
-         */
-        post: operations["HackathonService_ListHackathons"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get hackathon by ID
-         * @description Fetches a single hackathon. Use the `include_*` flags to load optional sections (description, links, limits, task, result).
-         */
-        get: operations["HackathonService_GetHackathon"];
-        /**
-         * Update a hackathon
-         * @description Updates hackathon fields.
-         */
-        put: operations["HackathonService_UpdateHackathon"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/announcements": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List announcements
-         * @description Returns all announcements for the hackathon in reverse-chronological order.
-         */
-        get: operations["HackathonService_ListHackathonAnnouncements"];
-        put?: never;
-        /**
-         * Create announcement
-         * @description Creates a new announcement for the hackathon. Visible to all participants immediately. Requires OWNER or MANAGER role.
-         */
-        post: operations["HackathonService_CreateHackathonAnnouncement"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/announcements/{announcementId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Update announcement
-         * @description Updates the title and body of an existing announcement. Requires OWNER or MANAGER role.
-         */
-        put: operations["HackathonService_UpdateHackathonAnnouncement"];
-        post?: never;
-        /**
-         * Delete announcement
-         * @description Permanently deletes an announcement. Requires OWNER or MANAGER role.
-         */
-        delete: operations["HackathonService_DeleteHackathonAnnouncement"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/assign": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Assign submissions to judges
-         * @description Manually assigns all final submissions to judges using round-robin algorithm. Each submission gets minimum 3 judges (or all judges if fewer than 3). Idempotent - returns success if already assigned. Only organizers can call this. Available only during JUDGING stage.
-         */
-        post: operations["JudgingService_AssignSubmissionsToJudges"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/leaderboard": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get leaderboard
-         * @description Returns leaderboard with all submissions ranked by average score. Available to organizers and judges from JUDGING stage onwards. NEVER accessible to participants.
-         */
-        post: operations["JudgingService_GetLeaderboard"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/my-assignments/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get my assignments
-         * @description Returns submissions assigned to the authenticated judge. Available from JUDGING stage onwards.
-         */
-        post: operations["JudgingService_GetMyAssignments"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/my-evaluations/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get my evaluations
-         * @description Returns evaluations submitted by the authenticated judge. Available from JUDGING stage onwards.
-         */
-        post: operations["JudgingService_GetMyEvaluations"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/my-result": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get my evaluation result
-         * @description Returns evaluation result for the authenticated participant's submission. Shows average score, rank, and all judge comments. Available only after hackathon results are published.
-         */
-        get: operations["JudgingService_GetMyEvaluationResult"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/judging/permissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get judging permissions
-         * @description Returns what judging-related actions the authenticated user can perform on this hackathon (view evaluations, assign judges, submit verdict).
-         */
-        get: operations["JudgingService_GetJudgingPermissions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/matchmaking/candidates": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get candidate recommendations for team captain
-         * @description Returns a ranked list of participants that match the team's vacancy requirements. Available during REGISTRATION stage.
-         */
-        get: operations["MatchmakingService_RecommendCandidates"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/matchmaking/teams": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get team recommendations for participant
-         * @description Returns a ranked list of teams that match the participant's skills and desired roles. Available during REGISTRATION and RUNNING stages.
-         */
-        get: operations["MatchmakingService_RecommendTeams"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participants/{ownerKind}/{ownerId}/final-submission": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get final submission
-         * @description Returns the final submission for a participant or team. Owner can view their own final submission. Staff (owners, organizers, mentors, judges) can view any final submission. Available from RUNNING stage onwards.
-         */
-        get: operations["SubmissionService_GetFinalSubmission"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List hackathon participants
-         * @description Returns a paginated list of participants. Filterable by status and wished roles. Requires the caller to be staff or a registered participant.
-         */
-        post: operations["ParticipationService_ListHackathonParticipants"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get my participation
-         * @description Returns the authenticated user's participation record for the given hackathon.
-         */
-        get: operations["ParticipationService_GetMyParticipation"];
-        /**
-         * Update my participation
-         * @description Updates wished team roles and motivation text for the authenticated user's participation.
-         */
-        put: operations["ParticipationService_UpdateMyParticipation"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/me/switchMode": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Switch participation mode
-         * @description Switches the authenticated user between individual and looking-for-team participation modes.
-         */
-        post: operations["ParticipationService_SwitchParticipationMode"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/me/unregister": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Unregister from hackathon
-         * @description Withdraws the authenticated user from the hackathon. The participation record is soft-deleted.
-         */
-        post: operations["ParticipationService_UnregisterFromHackathon"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/permissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get participation permissions
-         * @description Returns what participation-related actions the authenticated user can perform on this hackathon (register, unregister, switch mode, invite staff, list participants).
-         */
-        get: operations["ParticipationService_GetParticipationPermissions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Register for a hackathon
-         * @description Registers the authenticated user for a hackathon. Depending on `desiredStatus`, the user joins as an individual (`PART_INDIVIDUAL`) or applies to join a team (`PART_LOOKING_FOR_TEAM`).
-         */
-        post: operations["ParticipationService_RegisterForHackathon"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/participations/users/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a user's participation
-         * @description Returns another user's participation record. Requires the caller to be staff or themselves a registered participant of the hackathon.
-         */
-        get: operations["ParticipationService_GetUserParticipation"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/permissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get hackathon permissions
-         * @description Returns what actions the authenticated user can perform on this hackathon (manage, publish, announcements, task, result).
-         */
-        get: operations["HackathonService_GetHackathonPermissions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/publish": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Publish a hackathon
-         * @description Transitions the hackathon from DRAFT to PUBLISHED, making it visible to participants. The hackathon must pass validation first.
-         */
-        post: operations["HackathonService_PublishHackathon"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/result": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get hackathon result
-         * @description Returns the published result announcement (Markdown). Returns empty if the result has not been published yet.
-         */
-        get: operations["HackathonService_GetHackathonResult"];
-        /**
-         * Update result draft
-         * @description Saves a draft of the result announcement. Does NOT publish it.
-         */
-        put: operations["HackathonService_UpdateHackathonResultDraft"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/result/publish": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Publish hackathon result
-         * @description Makes the result draft visible to all participants. Requires OWNER or MANAGER role.
-         */
-        post: operations["HackathonService_PublishHackathonResult"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/staff": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List hackathon staff
-         * @description Returns all staff members and their roles for the given hackathon. Requires OWNER or MANAGER role.
-         */
-        get: operations["StaffService_ListHackathonStaff"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/staff-invitations": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List staff invitations for a hackathon
-         * @description Returns all staff invitations sent for this hackathon. Requires OWNER or MANAGER role.
-         */
-        get: operations["StaffService_ListHackathonStaffInvitations"];
-        put?: never;
-        /**
-         * Invite a user to staff
-         * @description Creates a staff invitation for the target user. They can accept or reject it from their invitations list. Requires OWNER or MANAGER role.
-         */
-        post: operations["StaffService_CreateStaffInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/staff-invitations/{invitationId}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel a staff invitation
-         * @description Cancels a pending invitation so the target user can no longer accept it. Requires OWNER or MANAGER role.
-         */
-        post: operations["StaffService_CancelStaffInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/staff/removeRole": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Remove a staff member's role
-         * @description Removes a specific role from a staff member. Requires OWNER role.
-         */
-        post: operations["StaffService_RemoveHackathonRole"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/staff/selfRemoveRole": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Voluntarily give up a staff role
-         * @description Allows a staff member to relinquish one of their own roles. An OWNER cannot remove their own OWNER role if they are the sole owner.
-         */
-        post: operations["StaffService_SelfRemoveHackathonRole"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a submission
-         * @description Creates a new submission for the hackathon. Automatically marks it as final if no other final submission exists. Available only during RUNNING stage.
-         */
-        post: operations["SubmissionService_CreateSubmission"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List submissions
-         * @description Returns submissions for the hackathon. If owner_kind and owner_id are specified, returns submissions for that owner. If not specified, returns submissions for the authenticated user/team. Staff (owners, organizers, mentors, judges) can list submissions for any participant/team. Available from RUNNING stage onwards.
-         */
-        post: operations["SubmissionService_ListSubmissions"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get submission
-         * @description Returns a submission by ID. Owner can view their own submissions. Staff (owners, organizers, mentors, judges) can view any submission. Available from RUNNING stage onwards.
-         */
-        get: operations["SubmissionService_GetSubmission"];
-        /**
-         * Update submission description
-         * @description Updates the description of a submission. Only the creator can update. Available only during RUNNING stage.
-         */
-        put: operations["SubmissionService_UpdateSubmission"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Submit evaluation
-         * @description Judge submits or updates their evaluation for an assigned submission. Score must be 0-10, comment is required. Idempotent - can update evaluation multiple times. Available only during JUDGING stage.
-         */
-        post: operations["JudgingService_SubmitEvaluation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluations": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get submission evaluations
-         * @description Returns all evaluations for a specific submission. Available to organizers and judges from JUDGING stage onwards.
-         */
-        get: operations["JudgingService_GetSubmissionEvaluations"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create submission file upload
-         * @description Initiates a file upload and returns a pre-signed PUT URL. Validates file type and size limits. Available only during RUNNING stage.
-         */
-        post: operations["SubmissionFilesService_CreateSubmissionUpload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/complete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Complete submission file upload
-         * @description Marks the file upload as completed after successful upload to S3. Available only during RUNNING stage.
-         */
-        post: operations["SubmissionFilesService_CompleteSubmissionUpload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/download-url": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get submission file download URL
-         * @description Returns a pre-signed GET URL for downloading a submission file. Owner can download their own files. Staff (owners, organizers, mentors, judges) can download any submission files. Available from RUNNING stage onwards.
-         */
-        get: operations["SubmissionFilesService_GetSubmissionFileDownloadURL"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/submissions/{submissionId}/select-final": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Select final submission
-         * @description Marks a submission as final. Unmarks any previously selected final submission. Only team captain (for team submissions) or individual participant can perform this. Available only during RUNNING stage.
-         */
-        post: operations["SubmissionService_SelectFinalSubmission"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a message to support
-         * @description Participant sends a message to support. Creates a ticket if needed. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_SendMessage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/my-messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all my chat messages
-         * @description Returns all messages from all tickets (open and closed) for the authenticated participant. Available only during RUNNING stage.
-         */
-        get: operations["MentorsService_GetMyChatMessages"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/realtime-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Centrifugo connection token
-         * @description Returns a JWT token for connecting to Centrifugo WebSocket for real-time updates.
-         */
-        get: operations["MentorsService_GetRealtimeToken"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/all/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List all tickets (organizer)
-         * @description Returns all tickets in the hackathon. Requires OWNER or ORGANIZER role. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_ListAllTickets"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/assigned/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List assigned tickets (mentor)
-         * @description Returns tickets assigned to the authenticated mentor. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_ListAssignedTickets"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/assign": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Assign ticket to mentor (organizer)
-         * @description Allows an organizer to assign an unassigned ticket to a specific mentor. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_AssignTicket"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/claim": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Claim ticket (mentor)
-         * @description Allows a mentor to claim an unassigned ticket. Ticket must be OPEN and unassigned. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_ClaimTicket"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/close": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Close a ticket
-         * @description Mentor or organizer closes a ticket. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_CloseTicket"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get ticket messages
-         * @description Returns messages for a specific ticket. Only mentors and organizers can access. Participants should use GetMyChatMessages instead. Available only during RUNNING stage.
-         */
-        get: operations["MentorsService_GetTicketMessages"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/reply": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reply in a ticket (mentor)
-         * @description Mentor replies in an assigned ticket. Available only during RUNNING stage.
-         */
-        post: operations["MentorsService_ReplyInTicket"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/task": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get hackathon task
-         * @description Returns the task description (Markdown) for the hackathon. Requires the hackathon to be published or the caller to be staff.
-         */
-        get: operations["HackathonService_GetHackathonTask"];
-        /**
-         * Update hackathon task
-         * @description Replaces the task description. Requires OWNER or MANAGER role.
-         */
-        put: operations["HackathonService_UpdateHackathonTask"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a team
-         * @description Creates a team in the hackathon and makes the authenticated user its captain. Allowed only during the REGISTRATION stage when team participation is enabled by the hackathon policy.
-         */
-        post: operations["TeamService_CreateTeam"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List teams
-         * @description Returns a paginated list of teams for the hackathon. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
-         */
-        post: operations["TeamService_ListTeams"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/permissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get team permissions
-         * @description Returns what team-related actions the authenticated user can perform on this hackathon (create team, manage own team).
-         */
-        get: operations["TeamService_GetTeamPermissions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a team
-         * @description Returns a team and, optionally, its vacancies. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
-         */
-        get: operations["TeamService_GetTeam"];
-        /**
-         * Update a team
-         * @description Updates team fields (name, description, is_joinable). Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        put: operations["TeamService_UpdateTeam"];
-        post?: never;
-        /**
-         * Delete a team
-         * @description Deletes the team. Only the team captain can perform this action, and only if they are the sole member. Allowed only during the REGISTRATION stage.
-         */
-        delete: operations["TeamService_DeleteTeam"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a join request
-         * @description Requests to join a team for a specific vacancy. The authenticated user must be a registered participant. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_CreateJoinRequest"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List join requests for a team
-         * @description Returns join requests received by the team (incoming requests). Only the team captain can access this list. Available starting from the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_ListJoinRequests"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/accept": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Accept a join request
-         * @description Accepts a pending join request. The requester joins the team as a member, a vacancy slot is consumed, and competing pending invitations/requests in the same hackathon are canceled. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_AcceptJoinRequest"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reject a join request
-         * @description Rejects a pending join request. The request is marked as rejected and cannot be accepted later. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_RejectJoinRequest"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/members": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List team members
-         * @description Returns the team roster. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
-         */
-        get: operations["TeamMembersService_ListTeamMembers"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/members/leave": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Leave a team
-         * @description Removes the authenticated user from the team. Only non-captain members can leave. This action is allowed outside REGISTRATION (from REGISTRATION through FINISHED), provided team participation is enabled by the hackathon policy.
-         */
-        post: operations["TeamMembersService_LeaveTeam"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/members/{userId}/kick": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Kick a team member
-         * @description Removes a member from the team. Only the team captain can perform this action. Kicking the captain is forbidden. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamMembersService_KickTeamMember"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a team invitation
-         * @description Invites a user to join the team for a specific vacancy. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_CreateTeamInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List team invitations for a team
-         * @description Returns invitations created by the team (outgoing invitations). Only the team captain can access this list. Available starting from the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_ListTeamInvitations"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/{invitationId}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel a team invitation
-         * @description Cancels a pending team invitation so the target user can no longer accept it. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_CancelTeamInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/transferCaptain": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Transfer team captainship
-         * @description Transfers captainship to another team member. Only the current captain can perform this action. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamMembersService_TransferCaptain"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/teams/{teamId}/vacancies/upsert": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create or update a vacancy
-         * @description Creates or updates a vacancy for the team. Only the team captain can perform this action. Slots constraints and team size limits are enforced. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamMembersService_UpsertVacancy"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/hackathons/{hackathonId}/validate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Validate a hackathon
-         * @description Checks whether a hackathon is ready to be published. Returns all blocking validation errors; an empty list means it is safe to publish.
-         */
-        get: operations["HackathonService_ValidateHackathon"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/skills/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List skill catalog
-         * @description Returns a paginated list of skills from the global catalog. Use when displaying a skill picker.
-         */
-        post: operations["SkillsService_ListSkillCatalog"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/team-roles": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List team roles
-         * @description Returns all available team roles that a participant can indicate they are looking for (e.g. Frontend, Backend, Designer).
-         */
-        get: operations["ParticipationService_ListTeamRoles"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/batchGet": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Batch get users
-         * @description Fetches multiple users' public profiles in a single request. Useful for enriching participant lists.
-         */
-        post: operations["UsersService_BatchGetUsers"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List users
-         * @description Returns a paginated list of users. Supports text search and ordering via the `query` field.
-         */
-        post: operations["UsersService_ListUsers"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get my profile
-         * @description Returns the authenticated user's full profile including skills, contacts, and visibility settings.
-         */
-        get: operations["MeService_GetMe"];
-        /**
-         * Update my profile
-         * @description Updates basic profile fields (first name, last name, avatar URL, timezone) for the authenticated user.
-         */
-        put: operations["MeService_UpdateMe"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/avatar/complete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Complete avatar upload
-         * @description Marks the avatar upload as completed and updates the user's avatar_url after successful upload to S3.
-         */
-        post: operations["MeService_CompleteAvatarUpload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/avatar/upload": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create avatar upload
-         * @description Initiates an avatar upload and returns a pre-signed PUT URL. Validates file type (images only) and size limits.
-         */
-        post: operations["MeService_CreateAvatarUpload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/contacts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Replace my contacts
-         * @description Replaces the authenticated user's contact list entirely (replace-all semantics). Also updates contacts visibility.
-         */
-        put: operations["MeService_UpdateMyContacts"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/join-requests/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List my join requests
-         * @description Returns join requests created by the authenticated user.
-         */
-        post: operations["TeamInboxService_ListMyJoinRequests"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/join-requests/{requestId}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel a join request
-         * @description Cancels a pending join request. Only the requester can cancel their own request. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_CancelJoinRequest"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/skills": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Replace my skills
-         * @description Replaces the authenticated user's skill set entirely (replace-all semantics). Also updates skills visibility.
-         */
-        put: operations["MeService_UpdateMySkills"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/staff-invitations/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List my staff invitations
-         * @description Returns pending staff invitations addressed to the authenticated user.
-         */
-        post: operations["StaffService_ListMyStaffInvitations"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/staff-invitations/{invitationId}/accept": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Accept a staff invitation
-         * @description Accepts a pending invitation. The authenticated user is added to the hackathon staff with the requested role.
-         */
-        post: operations["StaffService_AcceptStaffInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/staff-invitations/{invitationId}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reject a staff invitation
-         * @description Rejects a pending invitation. The invitation is marked as rejected and cannot be accepted later.
-         */
-        post: operations["StaffService_RejectStaffInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/team-invitations/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List my team invitations
-         * @description Returns team invitations addressed to the authenticated user.
-         */
-        post: operations["TeamInboxService_ListMyTeamInvitations"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/team-invitations/{invitationId}/accept": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Accept a team invitation
-         * @description Accepts a pending team invitation. The authenticated user joins the team as a member, a vacancy slot is consumed, and competing pending invitations/requests in the same hackathon are canceled. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_AcceptTeamInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/me/team-invitations/{invitationId}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reject a team invitation
-         * @description Rejects a pending team invitation. The invitation is marked as rejected and cannot be accepted later. Allowed only during the REGISTRATION stage.
-         */
-        post: operations["TeamInboxService_RejectTeamInvitation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get user by ID
-         * @description Returns a user's public profile. Skills and contacts are included only when the respective `include_*` flag is set AND the user has not hidden them.
-         */
-        get: operations["UsersService_GetUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
+  '/v1/auth/introspect': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Introspect an access token
+     * @description Checks whether an access token is still active and returns its claims (user ID, expiry).
+     */
+    post: operations['AuthService_IntrospectToken']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/auth/login': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Login with email/username and password
+     * @description Authenticates the user and returns a pair of JWT tokens (access + refresh).
+     */
+    post: operations['AuthService_Login']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/auth/logout': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Logout
+     * @description Invalidates the provided refresh token so it can no longer be used.
+     */
+    post: operations['AuthService_Logout']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/auth/refresh': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Refresh tokens
+     * @description Exchanges a valid refresh token for a new access token and a rotated refresh token.
+     */
+    post: operations['AuthService_Refresh']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/auth/register': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Register a new user account
+     * @description Creates a new user and returns a pair of JWT tokens (access + refresh).
+     */
+    post: operations['AuthService_Register']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create a hackathon
+     * @description Creates a new hackathon in DRAFT state. The caller becomes the OWNER.
+     */
+    post: operations['HackathonService_CreateHackathon']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List hackathons
+     * @description Returns a paginated list of hackathons. Supports filtering and ordering via the `query` field.
+     */
+    post: operations['HackathonService_ListHackathons']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get hackathon by ID
+     * @description Fetches a single hackathon. Use the `include_*` flags to load optional sections (description, links, limits, task, result).
+     */
+    get: operations['HackathonService_GetHackathon']
+    /**
+     * Update a hackathon
+     * @description Updates hackathon fields.
+     */
+    put: operations['HackathonService_UpdateHackathon']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/announcements': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List announcements
+     * @description Returns all announcements for the hackathon in reverse-chronological order.
+     */
+    get: operations['HackathonService_ListHackathonAnnouncements']
+    put?: never
+    /**
+     * Create announcement
+     * @description Creates a new announcement for the hackathon. Visible to all participants immediately. Requires OWNER or MANAGER role.
+     */
+    post: operations['HackathonService_CreateHackathonAnnouncement']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/announcements/{announcementId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update announcement
+     * @description Updates the title and body of an existing announcement. Requires OWNER or MANAGER role.
+     */
+    put: operations['HackathonService_UpdateHackathonAnnouncement']
+    post?: never
+    /**
+     * Delete announcement
+     * @description Permanently deletes an announcement. Requires OWNER or MANAGER role.
+     */
+    delete: operations['HackathonService_DeleteHackathonAnnouncement']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/assign': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Assign submissions to judges
+     * @description Manually assigns all final submissions to judges using round-robin algorithm. Each submission gets minimum 3 judges (or all judges if fewer than 3). Idempotent - returns success if already assigned. Only organizers can call this. Available only during JUDGING stage.
+     */
+    post: operations['JudgingService_AssignSubmissionsToJudges']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/leaderboard': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Get leaderboard
+     * @description Returns leaderboard with all submissions ranked by average score. Available to organizers and judges from JUDGING stage onwards. NEVER accessible to participants.
+     */
+    post: operations['JudgingService_GetLeaderboard']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/my-assignments/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Get my assignments
+     * @description Returns submissions assigned to the authenticated judge. Available from JUDGING stage onwards.
+     */
+    post: operations['JudgingService_GetMyAssignments']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/my-evaluations/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Get my evaluations
+     * @description Returns evaluations submitted by the authenticated judge. Available from JUDGING stage onwards.
+     */
+    post: operations['JudgingService_GetMyEvaluations']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/my-result': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get my evaluation result
+     * @description Returns evaluation result for the authenticated participant's submission. Shows average score, rank, and all judge comments. Available only after hackathon results are published.
+     */
+    get: operations['JudgingService_GetMyEvaluationResult']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/judging/permissions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get judging permissions
+     * @description Returns what judging-related actions the authenticated user can perform on this hackathon (view evaluations, assign judges, submit verdict).
+     */
+    get: operations['JudgingService_GetJudgingPermissions']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/matchmaking/candidates': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get candidate recommendations for team captain
+     * @description Returns a ranked list of participants that match the team's vacancy requirements. Available during REGISTRATION stage.
+     */
+    get: operations['MatchmakingService_RecommendCandidates']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/matchmaking/teams': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get team recommendations for participant
+     * @description Returns a ranked list of teams that match the participant's skills and desired roles. Available during REGISTRATION and RUNNING stages.
+     */
+    get: operations['MatchmakingService_RecommendTeams']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participants/{ownerKind}/{ownerId}/final-submission': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get final submission
+     * @description Returns the final submission for a participant or team. Owner can view their own final submission. Staff (owners, organizers, mentors, judges) can view any final submission. Available from RUNNING stage onwards.
+     */
+    get: operations['SubmissionService_GetFinalSubmission']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List hackathon participants
+     * @description Returns a paginated list of participants. Filterable by status and wished roles. Requires the caller to be staff or a registered participant.
+     */
+    post: operations['ParticipationService_ListHackathonParticipants']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/me': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get my participation
+     * @description Returns the authenticated user's participation record for the given hackathon.
+     */
+    get: operations['ParticipationService_GetMyParticipation']
+    /**
+     * Update my participation
+     * @description Updates wished team roles and motivation text for the authenticated user's participation.
+     */
+    put: operations['ParticipationService_UpdateMyParticipation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/me/switchMode': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Switch participation mode
+     * @description Switches the authenticated user between individual and looking-for-team participation modes.
+     */
+    post: operations['ParticipationService_SwitchParticipationMode']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/me/unregister': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Unregister from hackathon
+     * @description Withdraws the authenticated user from the hackathon. The participation record is soft-deleted.
+     */
+    post: operations['ParticipationService_UnregisterFromHackathon']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/permissions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get participation permissions
+     * @description Returns what participation-related actions the authenticated user can perform on this hackathon (register, unregister, switch mode, invite staff, list participants).
+     */
+    get: operations['ParticipationService_GetParticipationPermissions']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/register': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Register for a hackathon
+     * @description Registers the authenticated user for a hackathon. Depending on `desiredStatus`, the user joins as an individual (`PART_INDIVIDUAL`) or applies to join a team (`PART_LOOKING_FOR_TEAM`).
+     */
+    post: operations['ParticipationService_RegisterForHackathon']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/participations/users/{userId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a user's participation
+     * @description Returns another user's participation record. Requires the caller to be staff or themselves a registered participant of the hackathon.
+     */
+    get: operations['ParticipationService_GetUserParticipation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/permissions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get hackathon permissions
+     * @description Returns what actions the authenticated user can perform on this hackathon (manage, publish, announcements, task, result).
+     */
+    get: operations['HackathonService_GetHackathonPermissions']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/publish': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Publish a hackathon
+     * @description Transitions the hackathon from DRAFT to PUBLISHED, making it visible to participants. The hackathon must pass validation first.
+     */
+    post: operations['HackathonService_PublishHackathon']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/result': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get hackathon result
+     * @description Returns the published result announcement (Markdown). Returns empty if the result has not been published yet.
+     */
+    get: operations['HackathonService_GetHackathonResult']
+    /**
+     * Update result draft
+     * @description Saves a draft of the result announcement. Does NOT publish it.
+     */
+    put: operations['HackathonService_UpdateHackathonResultDraft']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/result/publish': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Publish hackathon result
+     * @description Makes the result draft visible to all participants. Requires OWNER or MANAGER role.
+     */
+    post: operations['HackathonService_PublishHackathonResult']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/staff': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List hackathon staff
+     * @description Returns all staff members and their roles for the given hackathon. Requires OWNER or MANAGER role.
+     */
+    get: operations['StaffService_ListHackathonStaff']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/staff-invitations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List staff invitations for a hackathon
+     * @description Returns all staff invitations sent for this hackathon. Requires OWNER or MANAGER role.
+     */
+    get: operations['StaffService_ListHackathonStaffInvitations']
+    put?: never
+    /**
+     * Invite a user to staff
+     * @description Creates a staff invitation for the target user. They can accept or reject it from their invitations list. Requires OWNER or MANAGER role.
+     */
+    post: operations['StaffService_CreateStaffInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/staff-invitations/{invitationId}/cancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Cancel a staff invitation
+     * @description Cancels a pending invitation so the target user can no longer accept it. Requires OWNER or MANAGER role.
+     */
+    post: operations['StaffService_CancelStaffInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/staff/removeRole': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Remove a staff member's role
+     * @description Removes a specific role from a staff member. Requires OWNER role.
+     */
+    post: operations['StaffService_RemoveHackathonRole']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/staff/selfRemoveRole': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Voluntarily give up a staff role
+     * @description Allows a staff member to relinquish one of their own roles. An OWNER cannot remove their own OWNER role if they are the sole owner.
+     */
+    post: operations['StaffService_SelfRemoveHackathonRole']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create a submission
+     * @description Creates a new submission for the hackathon. Automatically marks it as final if no other final submission exists. Available only during RUNNING stage.
+     */
+    post: operations['SubmissionService_CreateSubmission']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List submissions
+     * @description Returns submissions for the hackathon. If owner_kind and owner_id are specified, returns submissions for that owner. If not specified, returns submissions for the authenticated user/team. Staff (owners, organizers, mentors, judges) can list submissions for any participant/team. Available from RUNNING stage onwards.
+     */
+    post: operations['SubmissionService_ListSubmissions']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get submission
+     * @description Returns a submission by ID. Owner can view their own submissions. Staff (owners, organizers, mentors, judges) can view any submission. Available from RUNNING stage onwards.
+     */
+    get: operations['SubmissionService_GetSubmission']
+    /**
+     * Update submission description
+     * @description Updates the description of a submission. Only the creator can update. Available only during RUNNING stage.
+     */
+    put: operations['SubmissionService_UpdateSubmission']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Submit evaluation
+     * @description Judge submits or updates their evaluation for an assigned submission. Score must be 0-10, comment is required. Idempotent - can update evaluation multiple times. Available only during JUDGING stage.
+     */
+    post: operations['JudgingService_SubmitEvaluation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get submission evaluations
+     * @description Returns all evaluations for a specific submission. Available to organizers and judges from JUDGING stage onwards.
+     */
+    get: operations['JudgingService_GetSubmissionEvaluations']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/files': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create submission file upload
+     * @description Initiates a file upload and returns a pre-signed PUT URL. Validates file type and size limits. Available only during RUNNING stage.
+     */
+    post: operations['SubmissionFilesService_CreateSubmissionUpload']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/complete': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Complete submission file upload
+     * @description Marks the file upload as completed after successful upload to S3. Available only during RUNNING stage.
+     */
+    post: operations['SubmissionFilesService_CompleteSubmissionUpload']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/download-url': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get submission file download URL
+     * @description Returns a pre-signed GET URL for downloading a submission file. Owner can download their own files. Staff (owners, organizers, mentors, judges) can download any submission files. Available from RUNNING stage onwards.
+     */
+    get: operations['SubmissionFilesService_GetSubmissionFileDownloadURL']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/submissions/{submissionId}/select-final': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Select final submission
+     * @description Marks a submission as final. Unmarks any previously selected final submission. Only team captain (for team submissions) or individual participant can perform this. Available only during RUNNING stage.
+     */
+    post: operations['SubmissionService_SelectFinalSubmission']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/messages': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Send a message to support
+     * @description Participant sends a message to support. Creates a ticket if needed. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_SendMessage']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/my-messages': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all my chat messages
+     * @description Returns all messages from all tickets (open and closed) for the authenticated participant. Available only during RUNNING stage.
+     */
+    get: operations['MentorsService_GetMyChatMessages']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/realtime-token': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get Centrifugo connection token
+     * @description Returns a JWT token for connecting to Centrifugo WebSocket for real-time updates.
+     */
+    get: operations['MentorsService_GetRealtimeToken']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/all/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List all tickets (organizer)
+     * @description Returns all tickets in the hackathon. Requires OWNER or ORGANIZER role. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_ListAllTickets']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/assigned/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List assigned tickets (mentor)
+     * @description Returns tickets assigned to the authenticated mentor. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_ListAssignedTickets']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/assign': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Assign ticket to mentor (organizer)
+     * @description Allows an organizer to assign an unassigned ticket to a specific mentor. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_AssignTicket']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/claim': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Claim ticket (mentor)
+     * @description Allows a mentor to claim an unassigned ticket. Ticket must be OPEN and unassigned. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_ClaimTicket']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/close': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Close a ticket
+     * @description Mentor or organizer closes a ticket. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_CloseTicket']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/messages': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get ticket messages
+     * @description Returns messages for a specific ticket. Only mentors and organizers can access. Participants should use GetMyChatMessages instead. Available only during RUNNING stage.
+     */
+    get: operations['MentorsService_GetTicketMessages']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/reply': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Reply in a ticket (mentor)
+     * @description Mentor replies in an assigned ticket. Available only during RUNNING stage.
+     */
+    post: operations['MentorsService_ReplyInTicket']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/task': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get hackathon task
+     * @description Returns the task description (Markdown) for the hackathon. Requires the hackathon to be published or the caller to be staff.
+     */
+    get: operations['HackathonService_GetHackathonTask']
+    /**
+     * Update hackathon task
+     * @description Replaces the task description. Requires OWNER or MANAGER role.
+     */
+    put: operations['HackathonService_UpdateHackathonTask']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create a team
+     * @description Creates a team in the hackathon and makes the authenticated user its captain. Allowed only during the REGISTRATION stage when team participation is enabled by the hackathon policy.
+     */
+    post: operations['TeamService_CreateTeam']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List teams
+     * @description Returns a paginated list of teams for the hackathon. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
+     */
+    post: operations['TeamService_ListTeams']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/permissions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get team permissions
+     * @description Returns what team-related actions the authenticated user can perform on this hackathon (create team, manage own team).
+     */
+    get: operations['TeamService_GetTeamPermissions']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a team
+     * @description Returns a team and, optionally, its vacancies. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
+     */
+    get: operations['TeamService_GetTeam']
+    /**
+     * Update a team
+     * @description Updates team fields (name, description, is_joinable). Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    put: operations['TeamService_UpdateTeam']
+    post?: never
+    /**
+     * Delete a team
+     * @description Deletes the team. Only the team captain can perform this action, and only if they are the sole member. Allowed only during the REGISTRATION stage.
+     */
+    delete: operations['TeamService_DeleteTeam']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create a join request
+     * @description Requests to join a team for a specific vacancy. The authenticated user must be a registered participant. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_CreateJoinRequest']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List join requests for a team
+     * @description Returns join requests received by the team (incoming requests). Only the team captain can access this list. Available starting from the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_ListJoinRequests']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/accept': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Accept a join request
+     * @description Accepts a pending join request. The requester joins the team as a member, a vacancy slot is consumed, and competing pending invitations/requests in the same hackathon are canceled. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_AcceptJoinRequest']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/reject': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Reject a join request
+     * @description Rejects a pending join request. The request is marked as rejected and cannot be accepted later. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_RejectJoinRequest']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/members': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List team members
+     * @description Returns the team roster. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.
+     */
+    get: operations['TeamMembersService_ListTeamMembers']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/members/leave': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Leave a team
+     * @description Removes the authenticated user from the team. Only non-captain members can leave. This action is allowed outside REGISTRATION (from REGISTRATION through FINISHED), provided team participation is enabled by the hackathon policy.
+     */
+    post: operations['TeamMembersService_LeaveTeam']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/members/{userId}/kick': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Kick a team member
+     * @description Removes a member from the team. Only the team captain can perform this action. Kicking the captain is forbidden. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamMembersService_KickTeamMember']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create a team invitation
+     * @description Invites a user to join the team for a specific vacancy. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_CreateTeamInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List team invitations for a team
+     * @description Returns invitations created by the team (outgoing invitations). Only the team captain can access this list. Available starting from the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_ListTeamInvitations']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/{invitationId}/cancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Cancel a team invitation
+     * @description Cancels a pending team invitation so the target user can no longer accept it. Only the team captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_CancelTeamInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/transferCaptain': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Transfer team captainship
+     * @description Transfers captainship to another team member. Only the current captain can perform this action. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamMembersService_TransferCaptain']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/teams/{teamId}/vacancies/upsert': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create or update a vacancy
+     * @description Creates or updates a vacancy for the team. Only the team captain can perform this action. Slots constraints and team size limits are enforced. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamMembersService_UpsertVacancy']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/hackathons/{hackathonId}/validate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Validate a hackathon
+     * @description Checks whether a hackathon is ready to be published. Returns all blocking validation errors; an empty list means it is safe to publish.
+     */
+    get: operations['HackathonService_ValidateHackathon']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/skills/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List skill catalog
+     * @description Returns a paginated list of skills from the global catalog. Use when displaying a skill picker.
+     */
+    post: operations['SkillsService_ListSkillCatalog']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/team-roles': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List team roles
+     * @description Returns all available team roles that a participant can indicate they are looking for (e.g. Frontend, Backend, Designer).
+     */
+    get: operations['ParticipationService_ListTeamRoles']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/batchGet': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Batch get users
+     * @description Fetches multiple users' public profiles in a single request. Useful for enriching participant lists.
+     */
+    post: operations['UsersService_BatchGetUsers']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List users
+     * @description Returns a paginated list of users. Supports text search and ordering via the `query` field.
+     */
+    post: operations['UsersService_ListUsers']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get my profile
+     * @description Returns the authenticated user's full profile including skills, contacts, and visibility settings.
+     */
+    get: operations['MeService_GetMe']
+    /**
+     * Update my profile
+     * @description Updates basic profile fields (first name, last name, avatar URL, timezone) for the authenticated user.
+     */
+    put: operations['MeService_UpdateMe']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/avatar/complete': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Complete avatar upload
+     * @description Marks the avatar upload as completed and updates the user's avatar_url after successful upload to S3.
+     */
+    post: operations['MeService_CompleteAvatarUpload']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/avatar/upload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Create avatar upload
+     * @description Initiates an avatar upload and returns a pre-signed PUT URL. Validates file type (images only) and size limits.
+     */
+    post: operations['MeService_CreateAvatarUpload']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/contacts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replace my contacts
+     * @description Replaces the authenticated user's contact list entirely (replace-all semantics). Also updates contacts visibility.
+     */
+    put: operations['MeService_UpdateMyContacts']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/join-requests/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List my join requests
+     * @description Returns join requests created by the authenticated user.
+     */
+    post: operations['TeamInboxService_ListMyJoinRequests']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/join-requests/{requestId}/cancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Cancel a join request
+     * @description Cancels a pending join request. Only the requester can cancel their own request. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_CancelJoinRequest']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/skills': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replace my skills
+     * @description Replaces the authenticated user's skill set entirely (replace-all semantics). Also updates skills visibility.
+     */
+    put: operations['MeService_UpdateMySkills']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/staff-invitations/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List my staff invitations
+     * @description Returns pending staff invitations addressed to the authenticated user.
+     */
+    post: operations['StaffService_ListMyStaffInvitations']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/staff-invitations/{invitationId}/accept': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Accept a staff invitation
+     * @description Accepts a pending invitation. The authenticated user is added to the hackathon staff with the requested role.
+     */
+    post: operations['StaffService_AcceptStaffInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/staff-invitations/{invitationId}/reject': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Reject a staff invitation
+     * @description Rejects a pending invitation. The invitation is marked as rejected and cannot be accepted later.
+     */
+    post: operations['StaffService_RejectStaffInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/team-invitations/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List my team invitations
+     * @description Returns team invitations addressed to the authenticated user.
+     */
+    post: operations['TeamInboxService_ListMyTeamInvitations']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/team-invitations/{invitationId}/accept': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Accept a team invitation
+     * @description Accepts a pending team invitation. The authenticated user joins the team as a member, a vacancy slot is consumed, and competing pending invitations/requests in the same hackathon are canceled. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_AcceptTeamInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/me/team-invitations/{invitationId}/reject': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Reject a team invitation
+     * @description Rejects a pending team invitation. The invitation is marked as rejected and cannot be accepted later. Allowed only during the REGISTRATION stage.
+     */
+    post: operations['TeamInboxService_RejectTeamInvitation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/v1/users/{userId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get user by ID
+     * @description Returns a user's public profile. Skills and contacts are included only when the respective `include_*` flag is set AND the user has not hidden them.
+     */
+    get: operations['UsersService_GetUser']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
-export type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>
 export interface components {
-    schemas: {
-        HackathonServiceCreateHackathonAnnouncementBody: {
-            body?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            title?: string;
-        };
-        HackathonServicePublishHackathonBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        HackathonServicePublishHackathonResultBody: Record<string, never>;
-        HackathonServiceUpdateHackathonAnnouncementBody: {
-            body?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            title?: string;
-        };
-        HackathonServiceUpdateHackathonBody: {
-            dates?: components["schemas"]["v1HackathonDates"];
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            limits?: components["schemas"]["v1HackathonLimits"];
-            links?: components["schemas"]["v1HackathonLink"][];
-            location?: components["schemas"]["v1HackathonLocation"];
-            name?: string;
-            registrationPolicy?: components["schemas"]["v1HackathonRegistrationPolicy"];
-            shortDescription?: string;
-        };
-        HackathonServiceUpdateHackathonResultDraftBody: {
-            result?: string;
-        };
-        HackathonServiceUpdateHackathonTaskBody: {
-            task?: string;
-        };
-        JudgingServiceAssignSubmissionsToJudgesBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        JudgingServiceGetLeaderboardBody: {
-            query?: components["schemas"]["v1Query"];
-        };
-        JudgingServiceGetMyAssignmentsBody: {
-            /** Optional filter: show only evaluated or not evaluated assignments */
-            evaluated?: boolean;
-            query?: components["schemas"]["v1Query"];
-        };
-        JudgingServiceGetMyEvaluationsBody: {
-            query?: components["schemas"]["v1Query"];
-        };
-        JudgingServiceSubmitEvaluationBody: {
-            /** required, 1-5000 characters */
-            comment?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            /**
-             * 0-10
-             * Format: int32
-             */
-            score?: number;
-        };
-        MentorsServiceAssignTicketBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            mentorUserId?: string;
-        };
-        MentorsServiceClaimTicketBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        MentorsServiceCloseTicketBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        MentorsServiceListAllTicketsBody: {
-            assignedMentorFilter?: string;
-            ownerKindFilter?: components["schemas"]["v1OwnerKind"];
-            query?: components["schemas"]["v1Query"];
-            statusFilter?: components["schemas"]["v1TicketStatusFilter"];
-        };
-        MentorsServiceListAssignedTicketsBody: {
-            query?: components["schemas"]["v1Query"];
-            statusFilter?: components["schemas"]["v1TicketStatusFilter"];
-        };
-        MentorsServiceReplyInTicketBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            text?: string;
-        };
-        MentorsServiceSendMessageBody: {
-            clientMessageId?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            text?: string;
-        };
-        ParticipationServiceListHackathonParticipantsBody: {
-            query?: components["schemas"]["v1Query"];
-            statusFilter?: components["schemas"]["v1ParticipationStatusFilter"];
-            wishedRoleIdsFilter?: string[];
-        };
-        ParticipationServiceRegisterForHackathonBody: {
-            desiredStatus?: components["schemas"]["v1ParticipationStatus"];
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            motivationText?: string;
-            wishedRoleIds?: string[];
-        };
-        ParticipationServiceSwitchParticipationModeBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            newStatus?: components["schemas"]["v1ParticipationStatus"];
-        };
-        ParticipationServiceUnregisterFromHackathonBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        ParticipationServiceUpdateMyParticipationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            motivationText?: string;
-            wishedRoleIds?: string[];
-        };
-        StaffServiceAcceptStaffInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        StaffServiceCancelStaffInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        StaffServiceCreateStaffInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            message?: string;
-            requestedRole?: components["schemas"]["v1HackathonRole"];
-            targetUserId?: string;
-        };
-        StaffServiceRejectStaffInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        StaffServiceRemoveHackathonRoleBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            role?: components["schemas"]["v1HackathonRole"];
-            userId?: string;
-        };
-        StaffServiceSelfRemoveHackathonRoleBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            role?: components["schemas"]["v1HackathonRole"];
-        };
-        SubmissionFilesServiceCompleteSubmissionUploadBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        SubmissionFilesServiceCreateSubmissionUploadBody: {
-            contentType?: string;
-            filename?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            /** Format: int64 */
-            sizeBytes?: string;
-        };
-        SubmissionServiceCreateSubmissionBody: {
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            title?: string;
-        };
-        SubmissionServiceListSubmissionsBody: {
-            ownerId?: string;
-            /**
-             * @description Optional: filter by owner. If not specified, returns submissions for the authenticated user/team.
-             *     Staff can specify any owner to view their submissions.
-             *
-             *     "user" or "team"
-             */
-            ownerKind?: string;
-            query?: components["schemas"]["v1Query"];
-        };
-        SubmissionServiceSelectFinalSubmissionBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        SubmissionServiceUpdateSubmissionBody: {
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceAcceptJoinRequestBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceAcceptTeamInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceCancelJoinRequestBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceCancelTeamInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceCreateJoinRequestBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            message?: string;
-            vacancyId?: string;
-        };
-        TeamInboxServiceCreateTeamInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            message?: string;
-            targetUserId?: string;
-            vacancyId?: string;
-        };
-        TeamInboxServiceListJoinRequestsBody: {
-            query?: components["schemas"]["v1Query"];
-        };
-        TeamInboxServiceListTeamInvitationsBody: {
-            query?: components["schemas"]["v1Query"];
-        };
-        TeamInboxServiceRejectJoinRequestBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamInboxServiceRejectTeamInvitationBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamMembersServiceKickTeamMemberBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamMembersServiceLeaveTeamBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        TeamMembersServiceTransferCaptainBody: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            targetUserId?: string;
-        };
-        TeamMembersServiceUpsertVacancyBody: {
-            description?: string;
-            desiredRoleIds?: string[];
-            desiredSkillIds?: string[];
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            /** Format: int64 */
-            slotsTotal?: string;
-            /** @description Empty => create new vacancy. Set => update existing. */
-            vacancyId?: string;
-        };
-        TeamServiceCreateTeamBody: {
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            /** @description If not provided by client, server may default to true. */
-            isJoinable?: boolean;
-            name?: string;
-        };
-        TeamServiceListTeamsBody: {
-            /** @description If false, server may omit vacancies for performance. */
-            includeVacancies?: boolean;
-            query?: components["schemas"]["v1Query"];
-        };
-        TeamServiceUpdateTeamBody: {
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            isJoinable?: boolean;
-            name?: string;
-        };
-        identityv1Contact: {
-            id?: string;
-            type?: components["schemas"]["v1ContactType"];
-            value?: string;
-        };
-        protobufAny: {
-            "@type"?: string;
-        } & {
-            [key: string]: unknown;
-        };
-        rpcStatus: {
-            /** Format: int32 */
-            code?: number;
-            details?: components["schemas"]["protobufAny"][];
-            message?: string;
-        };
-        v1AcceptJoinRequestResponse: Record<string, never>;
-        v1AcceptStaffInvitationResponse: Record<string, never>;
-        v1AcceptTeamInvitationResponse: Record<string, never>;
-        v1AssignHackathonRoleResponse: Record<string, never>;
-        v1AssignSubmissionsToJudgesResponse: {
-            /** Format: int32 */
-            assignmentsCount?: number;
-            /** Format: int32 */
-            judgesCount?: number;
-            /** Format: int32 */
-            submissionsCount?: number;
-        };
-        v1AssignTicketResponse: {
-            /** Format: date-time */
-            assignedAt?: string;
-            assignedMentorUserId?: string;
-            ticketId?: string;
-        };
-        /** Assignment represents a submission assigned to a judge for evaluation */
-        v1Assignment: {
-            /** Format: date-time */
-            assignedAt?: string;
-            assignmentId?: string;
-            hackathonId?: string;
-            isEvaluated?: boolean;
-            judgeUserId?: string;
-            submissionId?: string;
-        };
-        /** AssignmentWithSubmission includes submission details for convenience */
-        v1AssignmentWithSubmission: {
-            assignment?: components["schemas"]["v1Assignment"];
-            /** Format: date-time */
-            submissionCreatedAt?: string;
-            submissionOwnerId?: string;
-            submissionOwnerKind?: components["schemas"]["v1OwnerKind"];
-            /** Submission details */
-            submissionTitle?: string;
-        };
-        /**
-         * @default AUTHOR_ROLE_UNSPECIFIED
-         * @enum {string}
-         */
-        v1AuthorRole: "AUTHOR_ROLE_UNSPECIFIED" | "AUTHOR_ROLE_PARTICIPANT" | "AUTHOR_ROLE_MENTOR" | "AUTHOR_ROLE_ORGANIZER" | "AUTHOR_ROLE_SYSTEM";
-        v1BatchGetUsersRequest: {
-            includeContacts?: boolean;
-            includeSkills?: boolean;
-            userIds?: string[];
-        };
-        v1BatchGetUsersResponse: {
-            users?: components["schemas"]["v1GetUserResponse"][];
-        };
-        v1CancelJoinRequestResponse: Record<string, never>;
-        v1CancelStaffInvitationResponse: Record<string, never>;
-        v1CancelTeamInvitationResponse: Record<string, never>;
-        v1CandidateRecommendation: {
-            matchScore?: components["schemas"]["v1MatchScore"];
-            userId?: string;
-        };
-        v1CatalogSkill: {
-            id?: string;
-            name?: string;
-        };
-        v1ClaimTicketResponse: {
-            /** Format: date-time */
-            assignedAt?: string;
-            assignedMentorUserId?: string;
-            ticketId?: string;
-        };
-        v1CloseTicketResponse: Record<string, never>;
-        v1CompleteAvatarUploadRequest: {
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            uploadId?: string;
-        };
-        v1CompleteAvatarUploadResponse: {
-            avatarUrl?: string;
-        };
-        v1CompleteSubmissionUploadResponse: {
-            file?: components["schemas"]["v1SubmissionFile"];
-        };
-        /**
-         * @default CONTACT_TYPE_UNSPECIFIED
-         * @enum {string}
-         */
-        v1ContactType: "CONTACT_TYPE_UNSPECIFIED" | "CONTACT_TYPE_EMAIL" | "CONTACT_TYPE_TELEGRAM" | "CONTACT_TYPE_GITHUB" | "CONTACT_TYPE_LINKEDIN";
-        v1ConvertFromTeamParticipationResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1ConvertToTeamParticipationResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1CreateAvatarUploadRequest: {
-            contentType?: string;
-            filename?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            /** Format: int64 */
-            sizeBytes?: string;
-        };
-        v1CreateAvatarUploadResponse: {
-            /** Format: date-time */
-            expiresAt?: string;
-            uploadId?: string;
-            /** Pre-signed PUT URL */
-            uploadUrl?: string;
-        };
-        v1CreateHackathonAnnouncementResponse: {
-            announcementId?: string;
-        };
-        v1CreateHackathonRequest: {
-            dates?: components["schemas"]["v1HackathonDates"];
-            description?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            limits?: components["schemas"]["v1HackathonLimits"];
-            links?: components["schemas"]["v1HackathonLink"][];
-            location?: components["schemas"]["v1HackathonLocation"];
-            name?: string;
-            registrationPolicy?: components["schemas"]["v1HackathonRegistrationPolicy"];
-            shortDescription?: string;
-        };
-        v1CreateHackathonResponse: {
-            hackathonId?: string;
-        };
-        v1CreateJoinRequestResponse: {
-            requestId?: string;
-        };
-        v1CreateMeResponse: {
-            user?: components["schemas"]["v1User"];
-        };
-        v1CreateStaffInvitationResponse: {
-            invitationId?: string;
-        };
-        v1CreateSubmissionResponse: {
-            /** true if automatically marked as final */
-            isFinal?: boolean;
-            submissionId?: string;
-        };
-        v1CreateSubmissionUploadResponse: {
-            /** Format: date-time */
-            expiresAt?: string;
-            fileId?: string;
-            /** Pre-signed PUT URL */
-            uploadUrl?: string;
-        };
-        v1CreateTeamInvitationResponse: {
-            invitationId?: string;
-        };
-        v1CreateTeamResponse: {
-            teamId?: string;
-        };
-        v1CustomSkill: {
-            name?: string;
-        };
-        v1DeleteHackathonAnnouncementResponse: Record<string, never>;
-        v1DeleteTeamResponse: Record<string, never>;
-        /** Evaluation represents a judge's evaluation of a submission */
-        v1Evaluation: {
-            comment?: string;
-            /** Format: date-time */
-            evaluatedAt?: string;
-            evaluationId?: string;
-            hackathonId?: string;
-            judgeUserId?: string;
-            /**
-             * 0-10
-             * Format: int32
-             */
-            score?: number;
-            submissionId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        /** EvaluationResult represents a participant's evaluation result */
-        v1EvaluationResult: {
-            /** Format: double */
-            averageScore?: number;
-            comments?: string[];
-            /** Format: int32 */
-            evaluationCount?: number;
-            /** Format: int32 */
-            rank?: number;
-            submissionId?: string;
-            title?: string;
-        };
-        /** EvaluationWithSubmission includes submission details for convenience */
-        v1EvaluationWithSubmission: {
-            evaluation?: components["schemas"]["v1Evaluation"];
-            submissionOwnerId?: string;
-            submissionOwnerKind?: components["schemas"]["v1OwnerKind"];
-            /** Submission details */
-            submissionTitle?: string;
-        };
-        /**
-         * @default FILE_UPLOAD_STATUS_UNSPECIFIED
-         * @enum {string}
-         */
-        v1FileUploadStatus: "FILE_UPLOAD_STATUS_UNSPECIFIED" | "FILE_UPLOAD_STATUS_PENDING" | "FILE_UPLOAD_STATUS_COMPLETED" | "FILE_UPLOAD_STATUS_FAILED";
-        v1Filter: {
-            boolValue?: boolean;
-            field?: string;
-            /** Format: int64 */
-            int64Value?: string;
-            operation?: components["schemas"]["v1FilterOperation"];
-            stringList?: components["schemas"]["v1StringList"];
-            stringValue?: string;
-        };
-        v1FilterGroup: {
-            filters?: components["schemas"]["v1Filter"][];
-        };
-        /**
-         * @default FILTER_OPERATION_UNSPECIFIED
-         * @enum {string}
-         */
-        v1FilterOperation: "FILTER_OPERATION_UNSPECIFIED" | "FILTER_OPERATION_EQUAL" | "FILTER_OPERATION_IN" | "FILTER_OPERATION_CONTAINS" | "FILTER_OPERATION_PREFIX";
-        v1GetFinalSubmissionResponse: {
-            submission?: components["schemas"]["v1Submission"];
-        };
-        v1GetHackathonContextResponse: {
-            participationStatus?: components["schemas"]["v1ParticipationStatus"];
-            roles?: components["schemas"]["v1HackathonRole"][];
-            userId?: string;
-        };
-        v1GetHackathonPermissionsResponse: {
-            permissions?: components["schemas"]["v1HackathonPermissions"];
-        };
-        v1GetHackathonResponse: {
-            hackathon?: components["schemas"]["v1Hackathon"];
-        };
-        v1GetHackathonResultResponse: {
-            result?: string;
-        };
-        v1GetHackathonTaskResponse: {
-            task?: string;
-        };
-        v1GetJudgingPermissionsResponse: {
-            permissions?: components["schemas"]["v1JudgingPermissions"];
-        };
-        v1GetLeaderboardResponse: {
-            entries?: components["schemas"]["v1LeaderboardEntry"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1GetMeResponse: {
-            contacts?: components["schemas"]["v1MyContact"][];
-            skills?: components["schemas"]["v1Skill"][];
-            user?: components["schemas"]["v1User"];
-            visibility?: components["schemas"]["v1VisibilitySettings"];
-        };
-        v1GetMyAssignmentsResponse: {
-            assignments?: components["schemas"]["v1AssignmentWithSubmission"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1GetMyChatMessagesResponse: {
-            hasMore?: boolean;
-            messages?: components["schemas"]["v1Message"][];
-        };
-        v1GetMyEvaluationResultResponse: {
-            result?: components["schemas"]["v1EvaluationResult"];
-        };
-        v1GetMyEvaluationsResponse: {
-            evaluations?: components["schemas"]["v1EvaluationWithSubmission"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1GetMyHackathonIDsResponse: {
-            hackathonIds?: string[];
-        };
-        v1GetMyParticipationResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1GetParticipationPermissionsResponse: {
-            permissions?: components["schemas"]["v1ParticipationPermissions"];
-        };
-        v1GetRealtimeTokenResponse: {
-            /** Format: int64 */
-            expiresAt?: string;
-            token?: string;
-        };
-        v1GetSubmissionEvaluationsResponse: {
-            evaluations?: components["schemas"]["v1Evaluation"][];
-        };
-        v1GetSubmissionFileDownloadURLResponse: {
-            /** Pre-signed GET URL */
-            downloadUrl?: string;
-            /** Format: date-time */
-            expiresAt?: string;
-        };
-        v1GetSubmissionResponse: {
-            submission?: components["schemas"]["v1Submission"];
-        };
-        v1GetTeamPermissionsResponse: {
-            permissions?: components["schemas"]["v1TeamPermissions"];
-        };
-        v1GetTeamResponse: {
-            team?: components["schemas"]["v1TeamWithVacancies"];
-        };
-        v1GetTicketMessagesResponse: {
-            hasMore?: boolean;
-            messages?: components["schemas"]["v1Message"][];
-        };
-        v1GetUserParticipationResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1GetUserResponse: {
-            /**
-             * Contacts here are PUBLIC projection only (no per-contact visibility field).
-             *     - empty if hidden or include_contacts=false
-             */
-            contacts?: components["schemas"]["identityv1Contact"][];
-            /**
-             * Visibility applied on server:
-             *     - skills empty if hidden or include_skills=false
-             */
-            skills?: components["schemas"]["v1Skill"][];
-            user?: components["schemas"]["v1User"];
-        };
-        v1Hackathon: {
-            /** Format: date-time */
-            createdAt?: string;
-            dates?: components["schemas"]["v1HackathonDates"];
-            description?: string;
-            hackathonId?: string;
-            limits?: components["schemas"]["v1HackathonLimits"];
-            links?: components["schemas"]["v1HackathonLink"][];
-            location?: components["schemas"]["v1HackathonLocation"];
-            name?: string;
-            /** Format: date-time */
-            publishedAt?: string;
-            registrationPolicy?: components["schemas"]["v1HackathonRegistrationPolicy"];
-            result?: string;
-            /** Format: date-time */
-            resultPublishedAt?: string;
-            shortDescription?: string;
-            stage?: components["schemas"]["v1HackathonStage"];
-            state?: components["schemas"]["v1HackathonState"];
-            /** Optional fields, included based on request flags */
-            task?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        v1HackathonAnnouncement: {
-            announcementId?: string;
-            body?: string;
-            /** Format: date-time */
-            createdAt?: string;
-            title?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        v1HackathonDates: {
-            /** Format: date-time */
-            endsAt?: string;
-            /** Format: date-time */
-            judgingEndsAt?: string;
-            /** Format: date-time */
-            registrationClosesAt?: string;
-            /** Format: date-time */
-            registrationOpensAt?: string;
-            /** Format: date-time */
-            startsAt?: string;
-            /** Format: date-time */
-            submissionsClosesAt?: string;
-            /** Format: date-time */
-            submissionsOpensAt?: string;
-        };
-        v1HackathonLimits: {
-            /** Format: int64 */
-            teamSizeMax?: number;
-        };
-        v1HackathonLink: {
-            title?: string;
-            url?: string;
-        };
-        v1HackathonLocation: {
-            city?: string;
-            country?: string;
-            online?: boolean;
-            venue?: string;
-        };
-        v1HackathonParticipation: {
-            hackathonId?: string;
-            profile?: components["schemas"]["v1ParticipationProfile"];
-            /** Format: date-time */
-            registeredAt?: string;
-            status?: components["schemas"]["v1ParticipationStatus"];
-            teamId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            userId?: string;
-        };
-        v1HackathonPermissions: {
-            createAnnouncement?: boolean;
-            manageHackathon?: boolean;
-            publishHackathon?: boolean;
-            publishResult?: boolean;
-            readDraft?: boolean;
-            readResultDraft?: boolean;
-            readTask?: boolean;
-            updateResultDraft?: boolean;
-            viewAnnouncements?: boolean;
-            viewResultPublic?: boolean;
-        };
-        v1HackathonRegistrationPolicy: {
-            allowIndividual?: boolean;
-            allowTeam?: boolean;
-        };
-        /**
-         * @default HACKATHON_ROLE_UNSPECIFIED
-         * @enum {string}
-         */
-        v1HackathonRole: "HACKATHON_ROLE_UNSPECIFIED" | "HX_ROLE_OWNER" | "HX_ROLE_ORGANIZER" | "HX_ROLE_MENTOR" | "HX_ROLE_JUDGE";
-        v1HackathonStaffMember: {
-            roles?: components["schemas"]["v1HackathonRole"][];
-            userId?: string;
-        };
-        /**
-         * @default HACKATHON_STAGE_UNSPECIFIED
-         * @enum {string}
-         */
-        v1HackathonStage: "HACKATHON_STAGE_UNSPECIFIED" | "HACKATHON_STAGE_DRAFT" | "HACKATHON_STAGE_UPCOMING" | "HACKATHON_STAGE_REGISTRATION" | "HACKATHON_STAGE_PRE_START" | "HACKATHON_STAGE_RUNNING" | "HACKATHON_STAGE_JUDGING" | "HACKATHON_STAGE_FINISHED";
-        /**
-         * @default HACKATHON_STATE_UNSPECIFIED
-         * @enum {string}
-         */
-        v1HackathonState: "HACKATHON_STATE_UNSPECIFIED" | "HACKATHON_STATE_DRAFT" | "HACKATHON_STATE_PUBLISHED";
-        v1IdempotencyKey: {
-            key?: string;
-        };
-        v1IntrospectTokenRequest: {
-            accessToken?: string;
-        };
-        v1IntrospectTokenResponse: {
-            active?: boolean;
-            /** Format: date-time */
-            expiresAt?: string;
-            userId?: string;
-        };
-        v1JoinRequest: {
-            /** Format: date-time */
-            createdAt?: string;
-            /** Format: date-time */
-            expiresAt?: string;
-            hackathonId?: string;
-            message?: string;
-            requestId?: string;
-            requesterUserId?: string;
-            status?: components["schemas"]["v1TeamInboxStatus"];
-            teamId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            /** @description Always set by policy. */
-            vacancyId?: string;
-        };
-        v1JudgingPermissions: {
-            assignJudging?: boolean;
-            submitVerdict?: boolean;
-            viewLeaderboard?: boolean;
-            viewMyJudgingAssignments?: boolean;
-            viewSubmissionEvaluations?: boolean;
-        };
-        v1KickTeamMemberResponse: Record<string, never>;
-        /** LeaderboardEntry represents a submission's position in the leaderboard */
-        v1LeaderboardEntry: {
-            /** Format: double */
-            averageScore?: number;
-            /** Format: date-time */
-            createdAt?: string;
-            /** Format: int32 */
-            evaluationCount?: number;
-            ownerId?: string;
-            ownerKind?: components["schemas"]["v1OwnerKind"];
-            /** Format: int32 */
-            rank?: number;
-            submissionId?: string;
-            title?: string;
-        };
-        v1LeaveTeamResponse: Record<string, never>;
-        v1ListAllTicketsResponse: {
-            hasMore?: boolean;
-            tickets?: components["schemas"]["v1Ticket"][];
-        };
-        v1ListAssignedTicketsResponse: {
-            hasMore?: boolean;
-            tickets?: components["schemas"]["v1Ticket"][];
-        };
-        v1ListHackathonAnnouncementsResponse: {
-            announcements?: components["schemas"]["v1HackathonAnnouncement"][];
-        };
-        v1ListHackathonParticipantsResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            participants?: components["schemas"]["v1HackathonParticipation"][];
-        };
-        v1ListHackathonStaffInvitationsResponse: {
-            invitations?: components["schemas"]["v1StaffInvitation"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1ListHackathonStaffResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            staff?: components["schemas"]["v1HackathonStaffMember"][];
-        };
-        v1ListHackathonsRequest: {
-            includeDescription?: boolean;
-            includeLimits?: boolean;
-            includeLinks?: boolean;
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListHackathonsResponse: {
-            hackathons?: components["schemas"]["v1Hackathon"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1ListJoinRequestsResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            requests?: components["schemas"]["v1JoinRequest"][];
-        };
-        v1ListMyJoinRequestsRequest: {
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListMyJoinRequestsResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            requests?: components["schemas"]["v1JoinRequest"][];
-        };
-        v1ListMyStaffInvitationsRequest: {
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListMyStaffInvitationsResponse: {
-            invitations?: components["schemas"]["v1StaffInvitation"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1ListMyTeamInvitationsRequest: {
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListMyTeamInvitationsResponse: {
-            invitations?: components["schemas"]["v1TeamInvitation"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1ListSkillCatalogRequest: {
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListSkillCatalogResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            skills?: components["schemas"]["v1CatalogSkill"][];
-        };
-        v1ListSubmissionsResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            submissions?: components["schemas"]["v1Submission"][];
-        };
-        v1ListTeamInvitationsResponse: {
-            invitations?: components["schemas"]["v1TeamInvitation"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1ListTeamMembersResponse: {
-            members?: components["schemas"]["v1TeamMember"][];
-        };
-        v1ListTeamRolesResponse: {
-            teamRoles?: components["schemas"]["v1TeamRole"][];
-        };
-        v1ListTeamsResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            teams?: components["schemas"]["v1TeamWithVacancies"][];
-        };
-        v1ListUsersRequest: {
-            includeContacts?: boolean;
-            includeSkills?: boolean;
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListUsersResponse: {
-            page?: components["schemas"]["v1PageResponse"];
-            users?: components["schemas"]["v1GetUserResponse"][];
-        };
-        v1LoginRequest: {
-            email?: string;
-            password?: string;
-            username?: string;
-        };
-        v1LoginResponse: {
-            /** Format: date-time */
-            accessExpiresAt?: string;
-            accessToken?: string;
-            /** Format: date-time */
-            refreshExpiresAt?: string;
-            refreshToken?: string;
-        };
-        v1LogoutRequest: {
-            refreshToken?: string;
-        };
-        v1LogoutResponse: Record<string, never>;
-        v1MatchScore: {
-            bestVacancyId?: string;
-            roles?: components["schemas"]["v1RolesBreakdown"];
-            skills?: components["schemas"]["v1SkillsBreakdown"];
-            text?: components["schemas"]["v1TextBreakdown"];
-            /** Format: double */
-            totalScore?: number;
-        };
-        v1Message: {
-            authorRole?: components["schemas"]["v1AuthorRole"];
-            authorUserId?: string;
-            /** Format: date-time */
-            createdAt?: string;
-            messageId?: string;
-            text?: string;
-            ticketId?: string;
-        };
-        v1MyContact: {
-            contact?: components["schemas"]["identityv1Contact"];
-            visibility?: components["schemas"]["v1VisibilityLevel"];
-        };
-        /**
-         * @default OWNER_KIND_UNSPECIFIED
-         * @enum {string}
-         */
-        v1OwnerKind: "OWNER_KIND_UNSPECIFIED" | "OWNER_KIND_USER" | "OWNER_KIND_TEAM";
-        v1PageRequest: {
-            /** Format: int64 */
-            pageSize?: number;
-            pageToken?: string;
-        };
-        v1PageResponse: {
-            hasMore?: boolean;
-            nextPageToken?: string;
-        };
-        v1ParticipationPermissions: {
-            inviteStaff?: boolean;
-            listParticipants?: boolean;
-            register?: boolean;
-            switchParticipationMode?: boolean;
-            unregister?: boolean;
-            updateParticipationProfile?: boolean;
-        };
-        v1ParticipationProfile: {
-            motivationText?: string;
-            wishedRoles?: components["schemas"]["v1TeamRole"][];
-        };
-        /**
-         * @default PARTICIPATION_STATUS_UNSPECIFIED
-         * @enum {string}
-         */
-        v1ParticipationStatus: "PARTICIPATION_STATUS_UNSPECIFIED" | "PART_NONE" | "PART_INDIVIDUAL" | "PART_LOOKING_FOR_TEAM" | "PART_TEAM_MEMBER" | "PART_TEAM_CAPTAIN";
-        v1ParticipationStatusFilter: {
-            statuses?: components["schemas"]["v1ParticipationStatus"][];
-        };
-        v1PublishHackathonResponse: Record<string, never>;
-        v1PublishHackathonResultResponse: Record<string, never>;
-        v1Query: {
-            /** @description OR between groups, AND inside group. */
-            filterGroups?: components["schemas"]["v1FilterGroup"][];
-            /** Format: int32 */
-            limit?: number;
-            /** Format: int32 */
-            offset?: number;
-            page?: components["schemas"]["v1PageRequest"];
-            q?: string;
-            sort?: components["schemas"]["v1Sort"][];
-        };
-        v1RecommendCandidatesResponse: {
-            recommendations?: components["schemas"]["v1CandidateRecommendation"][];
-        };
-        v1RecommendTeamsResponse: {
-            recommendations?: components["schemas"]["v1TeamRecommendation"][];
-        };
-        v1RefreshRequest: {
-            refreshToken?: string;
-        };
-        v1RefreshResponse: {
-            /** Format: date-time */
-            accessExpiresAt?: string;
-            accessToken?: string;
-            /** Format: date-time */
-            refreshExpiresAt?: string;
-            refreshToken?: string;
-        };
-        v1RegisterForHackathonResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1RegisterRequest: {
-            email?: string;
-            firstName?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            lastName?: string;
-            password?: string;
-            timezone?: string;
-            username?: string;
-        };
-        v1RegisterResponse: {
-            /** Format: date-time */
-            accessExpiresAt?: string;
-            accessToken?: string;
-            /** Format: date-time */
-            refreshExpiresAt?: string;
-            refreshToken?: string;
-        };
-        v1RejectJoinRequestResponse: Record<string, never>;
-        v1RejectStaffInvitationResponse: Record<string, never>;
-        v1RejectTeamInvitationResponse: Record<string, never>;
-        v1RemoveHackathonRoleResponse: Record<string, never>;
-        v1ReplyInTicketResponse: {
-            messageId?: string;
-        };
-        v1RolesBreakdown: {
-            /** Format: int32 */
-            matchedCount?: number;
-            matchedRoles?: string[];
-            /** Format: int32 */
-            requiredCount?: number;
-            /** Format: double */
-            score?: number;
-            /** Format: double */
-            weight?: number;
-        };
-        v1SelectFinalSubmissionResponse: {
-            /** Format: date-time */
-            selectedAt?: string;
-            submissionId?: string;
-        };
-        v1SelfRemoveHackathonRoleResponse: Record<string, never>;
-        v1SendMessageResponse: {
-            messageId?: string;
-            ticketId?: string;
-        };
-        v1Skill: {
-            catalog?: components["schemas"]["v1CatalogSkill"];
-            custom?: components["schemas"]["v1CustomSkill"];
-        };
-        v1SkillsBreakdown: {
-            /** Format: int32 */
-            matchedCount?: number;
-            matchedSkills?: string[];
-            missingSkills?: string[];
-            /** Format: int32 */
-            requiredCount?: number;
-            /** Format: double */
-            score?: number;
-            /** Format: double */
-            weight?: number;
-        };
-        v1Sort: {
-            direction?: components["schemas"]["v1SortDirection"];
-            field?: string;
-        };
-        /**
-         * @default SORT_DIRECTION_UNSPECIFIED
-         * @enum {string}
-         */
-        v1SortDirection: "SORT_DIRECTION_UNSPECIFIED" | "SORT_DIRECTION_ASC" | "SORT_DIRECTION_DESC";
-        v1StaffInvitation: {
-            /** Format: date-time */
-            createdAt?: string;
-            createdByUserId?: string;
-            /** Format: date-time */
-            expiresAt?: string;
-            hackathonId?: string;
-            invitationId?: string;
-            message?: string;
-            requestedRole?: components["schemas"]["v1HackathonRole"];
-            status?: components["schemas"]["v1StaffInvitationStatus"];
-            targetUserId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        /**
-         * @default STAFF_INVITATION_STATUS_UNSPECIFIED
-         * @enum {string}
-         */
-        v1StaffInvitationStatus: "STAFF_INVITATION_STATUS_UNSPECIFIED" | "STAFF_INVITATION_PENDING" | "STAFF_INVITATION_ACCEPTED" | "STAFF_INVITATION_DECLINED" | "STAFF_INVITATION_CANCELED" | "STAFF_INVITATION_EXPIRED";
-        v1StringList: {
-            values?: string[];
-        };
-        v1Submission: {
-            /** Format: date-time */
-            createdAt?: string;
-            /**
-             * User who actually created/uploaded this submission
-             *     (for team submissions, this is the team member who uploaded)
-             */
-            createdByUserId?: string;
-            description?: string;
-            /** Files attached to this submission */
-            files?: components["schemas"]["v1SubmissionFile"][];
-            hackathonId?: string;
-            /** Whether this is the final submission selected by the owner */
-            isFinal?: boolean;
-            ownerId?: string;
-            ownerKind?: components["schemas"]["v1OwnerKind"];
-            submissionId?: string;
-            title?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        v1SubmissionFile: {
-            /** Format: date-time */
-            completedAt?: string;
-            contentType?: string;
-            /** Format: date-time */
-            createdAt?: string;
-            fileId?: string;
-            filename?: string;
-            /** Format: int64 */
-            sizeBytes?: string;
-            submissionId?: string;
-            uploadStatus?: components["schemas"]["v1FileUploadStatus"];
-        };
-        v1SubmitEvaluationResponse: {
-            /** Format: date-time */
-            evaluatedAt?: string;
-            evaluationId?: string;
-        };
-        v1SwitchParticipationModeResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1Team: {
-            /** Format: date-time */
-            createdAt?: string;
-            description?: string;
-            hackathonId?: string;
-            /** @description When true, participants can create JoinRequests to this team. */
-            isJoinable?: boolean;
-            name?: string;
-            teamId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        /**
-         * @default TEAM_INBOX_STATUS_UNSPECIFIED
-         * @enum {string}
-         */
-        v1TeamInboxStatus: "TEAM_INBOX_STATUS_UNSPECIFIED" | "TEAM_INBOX_PENDING" | "TEAM_INBOX_ACCEPTED" | "TEAM_INBOX_DECLINED" | "TEAM_INBOX_CANCELED" | "TEAM_INBOX_EXPIRED";
-        v1TeamInvitation: {
-            /** Format: date-time */
-            createdAt?: string;
-            createdByUserId?: string;
-            /** Format: date-time */
-            expiresAt?: string;
-            hackathonId?: string;
-            invitationId?: string;
-            message?: string;
-            status?: components["schemas"]["v1TeamInboxStatus"];
-            targetUserId?: string;
-            teamId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            /** @description Always set by policy. */
-            vacancyId?: string;
-        };
-        v1TeamManagementPermissions: {
-            deleteTeam?: boolean;
-            editTeam?: boolean;
-            inviteMember?: boolean;
-            kickMember?: boolean;
-            leaveTeam?: boolean;
-            manageJoinRequests?: boolean;
-            manageVacancies?: boolean;
-            transferCaptain?: boolean;
-        };
-        v1TeamMember: {
-            /** @description Empty if the member is not assigned to any vacancy (e.g. team creator/captain). */
-            assignedVacancyId?: string;
-            isCaptain?: boolean;
-            /** Format: date-time */
-            joinedAt?: string;
-            userId?: string;
-        };
-        v1TeamPermissions: {
-            canInMyTeam?: components["schemas"]["v1TeamManagementPermissions"];
-            createTeam?: boolean;
-        };
-        v1TeamRecommendation: {
-            bestVacancyId?: string;
-            matchScore?: components["schemas"]["v1MatchScore"];
-            teamId?: string;
-        };
-        v1TeamRole: {
-            id?: string;
-            name?: string;
-        };
-        v1TeamWithVacancies: {
-            team?: components["schemas"]["v1Team"];
-            vacancies?: components["schemas"]["v1Vacancy"][];
-        };
-        v1TextBreakdown: {
-            matchedKeywords?: string[];
-            /** Format: double */
-            score?: number;
-            /** Format: double */
-            weight?: number;
-        };
-        v1Ticket: {
-            assignedMentorUserId?: string;
-            /** Format: date-time */
-            closedAt?: string;
-            /** Format: date-time */
-            createdAt?: string;
-            hackathonId?: string;
-            ownerId?: string;
-            ownerKind?: components["schemas"]["v1OwnerKind"];
-            status?: components["schemas"]["v1TicketStatus"];
-            ticketId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-        };
-        /**
-         * @default TICKET_STATUS_UNSPECIFIED
-         * @enum {string}
-         */
-        v1TicketStatus: "TICKET_STATUS_UNSPECIFIED" | "TICKET_STATUS_OPEN" | "TICKET_STATUS_CLOSED";
-        v1TicketStatusFilter: {
-            statuses?: components["schemas"]["v1TicketStatus"][];
-        };
-        v1TransferCaptainResponse: Record<string, never>;
-        v1UnregisterFromHackathonResponse: Record<string, never>;
-        v1UpdateHackathonAnnouncementResponse: Record<string, never>;
-        v1UpdateHackathonResponse: Record<string, never>;
-        v1UpdateHackathonResultDraftResponse: Record<string, never>;
-        v1UpdateHackathonTaskResponse: Record<string, never>;
-        v1UpdateMeRequest: {
-            avatarUrl?: string;
-            firstName?: string;
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            lastName?: string;
-            timezone?: string;
-        };
-        v1UpdateMeResponse: {
-            user?: components["schemas"]["v1User"];
-        };
-        v1UpdateMyContactsRequest: {
-            contacts?: components["schemas"]["v1MyContact"][];
-            contactsVisibility?: components["schemas"]["v1VisibilityLevel"];
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-        };
-        v1UpdateMyContactsResponse: {
-            contacts?: components["schemas"]["v1MyContact"][];
-            visibility?: components["schemas"]["v1VisibilitySettings"];
-        };
-        v1UpdateMyParticipationResponse: {
-            participation?: components["schemas"]["v1HackathonParticipation"];
-        };
-        v1UpdateMySkillsRequest: {
-            /** Replace-all semantics: */
-            catalogSkillIds?: string[];
-            idempotencyKey?: components["schemas"]["v1IdempotencyKey"];
-            skillsVisibility?: components["schemas"]["v1VisibilityLevel"];
-            userSkills?: string[];
-        };
-        v1UpdateMySkillsResponse: {
-            skills?: components["schemas"]["v1Skill"][];
-            visibility?: components["schemas"]["v1VisibilitySettings"];
-        };
-        v1UpdateSubmissionResponse: {
-            submission?: components["schemas"]["v1Submission"];
-        };
-        v1UpdateTeamResponse: {
-            team?: components["schemas"]["v1Team"];
-        };
-        v1UpsertVacancyResponse: {
-            vacancyId?: string;
-        };
-        v1User: {
-            avatarUrl?: string;
-            firstName?: string;
-            lastName?: string;
-            timezone?: string;
-            userId?: string;
-            username?: string;
-        };
-        v1Vacancy: {
-            /** Format: date-time */
-            createdAt?: string;
-            description?: string;
-            /** @description Client may use a special value like "any" to represent "ANY". */
-            desiredRoleIds?: string[];
-            /** @description Client may use a special value like "any" to represent "ANY". */
-            desiredSkillIds?: string[];
-            /** Format: int64 */
-            slotsOpen?: string;
-            /** Format: int64 */
-            slotsTotal?: string;
-            teamId?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            vacancyId?: string;
-        };
-        v1ValidateHackathonResponse: {
-            validationErrors?: components["schemas"]["v1ValidationError"][];
-        };
-        v1ValidationError: {
-            code?: string;
-            field?: string;
-            message?: string;
-            meta?: {
-                [key: string]: string;
-            };
-        };
-        /**
-         * @default VISIBILITY_LEVEL_UNSPECIFIED
-         * @enum {string}
-         */
-        v1VisibilityLevel: "VISIBILITY_LEVEL_UNSPECIFIED" | "VISIBILITY_LEVEL_PRIVATE" | "VISIBILITY_LEVEL_PUBLIC";
-        v1VisibilitySettings: {
-            contacts?: components["schemas"]["v1VisibilityLevel"];
-            skills?: components["schemas"]["v1VisibilityLevel"];
-        };
-    };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+  schemas: {
+    HackathonServiceCreateHackathonAnnouncementBody: {
+      body?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      title?: string
+    }
+    HackathonServicePublishHackathonBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    HackathonServicePublishHackathonResultBody: Record<string, never>
+    HackathonServiceUpdateHackathonAnnouncementBody: {
+      body?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      title?: string
+    }
+    HackathonServiceUpdateHackathonBody: {
+      dates?: components['schemas']['v1HackathonDates']
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      limits?: components['schemas']['v1HackathonLimits']
+      links?: components['schemas']['v1HackathonLink'][]
+      location?: components['schemas']['v1HackathonLocation']
+      name?: string
+      registrationPolicy?: components['schemas']['v1HackathonRegistrationPolicy']
+      shortDescription?: string
+    }
+    HackathonServiceUpdateHackathonResultDraftBody: {
+      result?: string
+    }
+    HackathonServiceUpdateHackathonTaskBody: {
+      task?: string
+    }
+    JudgingServiceAssignSubmissionsToJudgesBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    JudgingServiceGetLeaderboardBody: {
+      query?: components['schemas']['v1Query']
+    }
+    JudgingServiceGetMyAssignmentsBody: {
+      /** Optional filter: show only evaluated or not evaluated assignments */
+      evaluated?: boolean
+      query?: components['schemas']['v1Query']
+    }
+    JudgingServiceGetMyEvaluationsBody: {
+      query?: components['schemas']['v1Query']
+    }
+    JudgingServiceSubmitEvaluationBody: {
+      /** required, 1-5000 characters */
+      comment?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      /**
+       * 0-10
+       * Format: int32
+       */
+      score?: number
+    }
+    MentorsServiceAssignTicketBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      mentorUserId?: string
+    }
+    MentorsServiceClaimTicketBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    MentorsServiceCloseTicketBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    MentorsServiceListAllTicketsBody: {
+      assignedMentorFilter?: string
+      ownerKindFilter?: components['schemas']['v1OwnerKind']
+      query?: components['schemas']['v1Query']
+      statusFilter?: components['schemas']['v1TicketStatusFilter']
+    }
+    MentorsServiceListAssignedTicketsBody: {
+      query?: components['schemas']['v1Query']
+      statusFilter?: components['schemas']['v1TicketStatusFilter']
+    }
+    MentorsServiceReplyInTicketBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      text?: string
+    }
+    MentorsServiceSendMessageBody: {
+      clientMessageId?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      text?: string
+    }
+    ParticipationServiceListHackathonParticipantsBody: {
+      query?: components['schemas']['v1Query']
+      statusFilter?: components['schemas']['v1ParticipationStatusFilter']
+      wishedRoleIdsFilter?: string[]
+    }
+    ParticipationServiceRegisterForHackathonBody: {
+      desiredStatus?: components['schemas']['v1ParticipationStatus']
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      motivationText?: string
+      wishedRoleIds?: string[]
+    }
+    ParticipationServiceSwitchParticipationModeBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      newStatus?: components['schemas']['v1ParticipationStatus']
+    }
+    ParticipationServiceUnregisterFromHackathonBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    ParticipationServiceUpdateMyParticipationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      motivationText?: string
+      wishedRoleIds?: string[]
+    }
+    StaffServiceAcceptStaffInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    StaffServiceCancelStaffInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    StaffServiceCreateStaffInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      message?: string
+      requestedRole?: components['schemas']['v1HackathonRole']
+      targetUserId?: string
+    }
+    StaffServiceRejectStaffInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    StaffServiceRemoveHackathonRoleBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      role?: components['schemas']['v1HackathonRole']
+      userId?: string
+    }
+    StaffServiceSelfRemoveHackathonRoleBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      role?: components['schemas']['v1HackathonRole']
+    }
+    SubmissionFilesServiceCompleteSubmissionUploadBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    SubmissionFilesServiceCreateSubmissionUploadBody: {
+      contentType?: string
+      filename?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      /** Format: int64 */
+      sizeBytes?: string
+    }
+    SubmissionServiceCreateSubmissionBody: {
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      title?: string
+    }
+    SubmissionServiceListSubmissionsBody: {
+      ownerId?: string
+      /**
+       * @description Optional: filter by owner. If not specified, returns submissions for the authenticated user/team.
+       *     Staff can specify any owner to view their submissions.
+       *
+       *     "user" or "team"
+       */
+      ownerKind?: string
+      query?: components['schemas']['v1Query']
+    }
+    SubmissionServiceSelectFinalSubmissionBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    SubmissionServiceUpdateSubmissionBody: {
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceAcceptJoinRequestBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceAcceptTeamInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceCancelJoinRequestBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceCancelTeamInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceCreateJoinRequestBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      message?: string
+      vacancyId?: string
+    }
+    TeamInboxServiceCreateTeamInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      message?: string
+      targetUserId?: string
+      vacancyId?: string
+    }
+    TeamInboxServiceListJoinRequestsBody: {
+      query?: components['schemas']['v1Query']
+    }
+    TeamInboxServiceListTeamInvitationsBody: {
+      query?: components['schemas']['v1Query']
+    }
+    TeamInboxServiceRejectJoinRequestBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamInboxServiceRejectTeamInvitationBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamMembersServiceKickTeamMemberBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamMembersServiceLeaveTeamBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    TeamMembersServiceTransferCaptainBody: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      targetUserId?: string
+    }
+    TeamMembersServiceUpsertVacancyBody: {
+      description?: string
+      desiredRoleIds?: string[]
+      desiredSkillIds?: string[]
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      /** Format: int64 */
+      slotsTotal?: string
+      /** @description Empty => create new vacancy. Set => update existing. */
+      vacancyId?: string
+    }
+    TeamServiceCreateTeamBody: {
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      /** @description If not provided by client, server may default to true. */
+      isJoinable?: boolean
+      name?: string
+    }
+    TeamServiceListTeamsBody: {
+      /** @description If false, server may omit vacancies for performance. */
+      includeVacancies?: boolean
+      query?: components['schemas']['v1Query']
+    }
+    TeamServiceUpdateTeamBody: {
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      isJoinable?: boolean
+      name?: string
+    }
+    identityv1Contact: {
+      id?: string
+      type?: components['schemas']['v1ContactType']
+      value?: string
+    }
+    protobufAny: {
+      '@type'?: string
+    } & {
+      [key: string]: unknown
+    }
+    rpcStatus: {
+      /** Format: int32 */
+      code?: number
+      details?: components['schemas']['protobufAny'][]
+      message?: string
+    }
+    v1AcceptJoinRequestResponse: Record<string, never>
+    v1AcceptStaffInvitationResponse: Record<string, never>
+    v1AcceptTeamInvitationResponse: Record<string, never>
+    v1AssignHackathonRoleResponse: Record<string, never>
+    v1AssignSubmissionsToJudgesResponse: {
+      /** Format: int32 */
+      assignmentsCount?: number
+      /** Format: int32 */
+      judgesCount?: number
+      /** Format: int32 */
+      submissionsCount?: number
+    }
+    v1AssignTicketResponse: {
+      /** Format: date-time */
+      assignedAt?: string
+      assignedMentorUserId?: string
+      ticketId?: string
+    }
+    /** Assignment represents a submission assigned to a judge for evaluation */
+    v1Assignment: {
+      /** Format: date-time */
+      assignedAt?: string
+      assignmentId?: string
+      hackathonId?: string
+      isEvaluated?: boolean
+      judgeUserId?: string
+      submissionId?: string
+    }
+    /** AssignmentWithSubmission includes submission details for convenience */
+    v1AssignmentWithSubmission: {
+      assignment?: components['schemas']['v1Assignment']
+      /** Format: date-time */
+      submissionCreatedAt?: string
+      submissionOwnerId?: string
+      submissionOwnerKind?: components['schemas']['v1OwnerKind']
+      /** Submission details */
+      submissionTitle?: string
+    }
+    /**
+     * @default AUTHOR_ROLE_UNSPECIFIED
+     * @enum {string}
+     */
+    v1AuthorRole:
+      | 'AUTHOR_ROLE_UNSPECIFIED'
+      | 'AUTHOR_ROLE_PARTICIPANT'
+      | 'AUTHOR_ROLE_MENTOR'
+      | 'AUTHOR_ROLE_ORGANIZER'
+      | 'AUTHOR_ROLE_SYSTEM'
+    v1BatchGetUsersRequest: {
+      includeContacts?: boolean
+      includeSkills?: boolean
+      userIds?: string[]
+    }
+    v1BatchGetUsersResponse: {
+      users?: components['schemas']['v1GetUserResponse'][]
+    }
+    v1CancelJoinRequestResponse: Record<string, never>
+    v1CancelStaffInvitationResponse: Record<string, never>
+    v1CancelTeamInvitationResponse: Record<string, never>
+    v1CandidateRecommendation: {
+      matchScore?: components['schemas']['v1MatchScore']
+      userId?: string
+    }
+    v1CatalogSkill: {
+      id?: string
+      name?: string
+    }
+    v1ClaimTicketResponse: {
+      /** Format: date-time */
+      assignedAt?: string
+      assignedMentorUserId?: string
+      ticketId?: string
+    }
+    v1CloseTicketResponse: Record<string, never>
+    v1CompleteAvatarUploadRequest: {
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      uploadId?: string
+    }
+    v1CompleteAvatarUploadResponse: {
+      avatarUrl?: string
+    }
+    v1CompleteSubmissionUploadResponse: {
+      file?: components['schemas']['v1SubmissionFile']
+    }
+    /**
+     * @default CONTACT_TYPE_UNSPECIFIED
+     * @enum {string}
+     */
+    v1ContactType:
+      | 'CONTACT_TYPE_UNSPECIFIED'
+      | 'CONTACT_TYPE_EMAIL'
+      | 'CONTACT_TYPE_TELEGRAM'
+      | 'CONTACT_TYPE_GITHUB'
+      | 'CONTACT_TYPE_LINKEDIN'
+    v1ConvertFromTeamParticipationResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1ConvertToTeamParticipationResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1CreateAvatarUploadRequest: {
+      contentType?: string
+      filename?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      /** Format: int64 */
+      sizeBytes?: string
+    }
+    v1CreateAvatarUploadResponse: {
+      /** Format: date-time */
+      expiresAt?: string
+      uploadId?: string
+      /** Pre-signed PUT URL */
+      uploadUrl?: string
+    }
+    v1CreateHackathonAnnouncementResponse: {
+      announcementId?: string
+    }
+    v1CreateHackathonRequest: {
+      dates?: components['schemas']['v1HackathonDates']
+      description?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      limits?: components['schemas']['v1HackathonLimits']
+      links?: components['schemas']['v1HackathonLink'][]
+      location?: components['schemas']['v1HackathonLocation']
+      name?: string
+      registrationPolicy?: components['schemas']['v1HackathonRegistrationPolicy']
+      shortDescription?: string
+    }
+    v1CreateHackathonResponse: {
+      hackathonId?: string
+    }
+    v1CreateJoinRequestResponse: {
+      requestId?: string
+    }
+    v1CreateMeResponse: {
+      user?: components['schemas']['v1User']
+    }
+    v1CreateStaffInvitationResponse: {
+      invitationId?: string
+    }
+    v1CreateSubmissionResponse: {
+      /** true if automatically marked as final */
+      isFinal?: boolean
+      submissionId?: string
+    }
+    v1CreateSubmissionUploadResponse: {
+      /** Format: date-time */
+      expiresAt?: string
+      fileId?: string
+      /** Pre-signed PUT URL */
+      uploadUrl?: string
+    }
+    v1CreateTeamInvitationResponse: {
+      invitationId?: string
+    }
+    v1CreateTeamResponse: {
+      teamId?: string
+    }
+    v1CustomSkill: {
+      name?: string
+    }
+    v1DeleteHackathonAnnouncementResponse: Record<string, never>
+    v1DeleteTeamResponse: Record<string, never>
+    /** Evaluation represents a judge's evaluation of a submission */
+    v1Evaluation: {
+      comment?: string
+      /** Format: date-time */
+      evaluatedAt?: string
+      evaluationId?: string
+      hackathonId?: string
+      judgeUserId?: string
+      /**
+       * 0-10
+       * Format: int32
+       */
+      score?: number
+      submissionId?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    /** EvaluationResult represents a participant's evaluation result */
+    v1EvaluationResult: {
+      /** Format: double */
+      averageScore?: number
+      comments?: string[]
+      /** Format: int32 */
+      evaluationCount?: number
+      /** Format: int32 */
+      rank?: number
+      submissionId?: string
+      title?: string
+    }
+    /** EvaluationWithSubmission includes submission details for convenience */
+    v1EvaluationWithSubmission: {
+      evaluation?: components['schemas']['v1Evaluation']
+      submissionOwnerId?: string
+      submissionOwnerKind?: components['schemas']['v1OwnerKind']
+      /** Submission details */
+      submissionTitle?: string
+    }
+    /**
+     * @default FILE_UPLOAD_STATUS_UNSPECIFIED
+     * @enum {string}
+     */
+    v1FileUploadStatus:
+      | 'FILE_UPLOAD_STATUS_UNSPECIFIED'
+      | 'FILE_UPLOAD_STATUS_PENDING'
+      | 'FILE_UPLOAD_STATUS_COMPLETED'
+      | 'FILE_UPLOAD_STATUS_FAILED'
+    v1Filter: {
+      boolValue?: boolean
+      field?: string
+      /** Format: int64 */
+      int64Value?: string
+      operation?: components['schemas']['v1FilterOperation']
+      stringList?: components['schemas']['v1StringList']
+      stringValue?: string
+    }
+    v1FilterGroup: {
+      filters?: components['schemas']['v1Filter'][]
+    }
+    /**
+     * @default FILTER_OPERATION_UNSPECIFIED
+     * @enum {string}
+     */
+    v1FilterOperation:
+      | 'FILTER_OPERATION_UNSPECIFIED'
+      | 'FILTER_OPERATION_EQUAL'
+      | 'FILTER_OPERATION_IN'
+      | 'FILTER_OPERATION_CONTAINS'
+      | 'FILTER_OPERATION_PREFIX'
+    v1GetFinalSubmissionResponse: {
+      submission?: components['schemas']['v1Submission']
+    }
+    v1GetHackathonContextResponse: {
+      participationStatus?: components['schemas']['v1ParticipationStatus']
+      roles?: components['schemas']['v1HackathonRole'][]
+      userId?: string
+    }
+    v1GetHackathonPermissionsResponse: {
+      permissions?: components['schemas']['v1HackathonPermissions']
+    }
+    v1GetHackathonResponse: {
+      hackathon?: components['schemas']['v1Hackathon']
+    }
+    v1GetHackathonResultResponse: {
+      result?: string
+    }
+    v1GetHackathonTaskResponse: {
+      task?: string
+    }
+    v1GetJudgingPermissionsResponse: {
+      permissions?: components['schemas']['v1JudgingPermissions']
+    }
+    v1GetLeaderboardResponse: {
+      entries?: components['schemas']['v1LeaderboardEntry'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1GetMeResponse: {
+      contacts?: components['schemas']['v1MyContact'][]
+      skills?: components['schemas']['v1Skill'][]
+      user?: components['schemas']['v1User']
+      visibility?: components['schemas']['v1VisibilitySettings']
+    }
+    v1GetMyAssignmentsResponse: {
+      assignments?: components['schemas']['v1AssignmentWithSubmission'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1GetMyChatMessagesResponse: {
+      hasMore?: boolean
+      messages?: components['schemas']['v1Message'][]
+    }
+    v1GetMyEvaluationResultResponse: {
+      result?: components['schemas']['v1EvaluationResult']
+    }
+    v1GetMyEvaluationsResponse: {
+      evaluations?: components['schemas']['v1EvaluationWithSubmission'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1GetMyHackathonIDsResponse: {
+      hackathonIds?: string[]
+    }
+    v1GetMyParticipationResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1GetParticipationPermissionsResponse: {
+      permissions?: components['schemas']['v1ParticipationPermissions']
+    }
+    v1GetRealtimeTokenResponse: {
+      /** Format: int64 */
+      expiresAt?: string
+      token?: string
+    }
+    v1GetSubmissionEvaluationsResponse: {
+      evaluations?: components['schemas']['v1Evaluation'][]
+    }
+    v1GetSubmissionFileDownloadURLResponse: {
+      /** Pre-signed GET URL */
+      downloadUrl?: string
+      /** Format: date-time */
+      expiresAt?: string
+    }
+    v1GetSubmissionResponse: {
+      submission?: components['schemas']['v1Submission']
+    }
+    v1GetTeamPermissionsResponse: {
+      permissions?: components['schemas']['v1TeamPermissions']
+    }
+    v1GetTeamResponse: {
+      team?: components['schemas']['v1TeamWithVacancies']
+    }
+    v1GetTicketMessagesResponse: {
+      hasMore?: boolean
+      messages?: components['schemas']['v1Message'][]
+    }
+    v1GetUserParticipationResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1GetUserResponse: {
+      /**
+       * Contacts here are PUBLIC projection only (no per-contact visibility field).
+       *     - empty if hidden or include_contacts=false
+       */
+      contacts?: components['schemas']['identityv1Contact'][]
+      /**
+       * Visibility applied on server:
+       *     - skills empty if hidden or include_skills=false
+       */
+      skills?: components['schemas']['v1Skill'][]
+      user?: components['schemas']['v1User']
+    }
+    v1Hackathon: {
+      /** Format: date-time */
+      createdAt?: string
+      dates?: components['schemas']['v1HackathonDates']
+      description?: string
+      hackathonId?: string
+      limits?: components['schemas']['v1HackathonLimits']
+      links?: components['schemas']['v1HackathonLink'][]
+      location?: components['schemas']['v1HackathonLocation']
+      name?: string
+      /** Format: date-time */
+      publishedAt?: string
+      registrationPolicy?: components['schemas']['v1HackathonRegistrationPolicy']
+      result?: string
+      /** Format: date-time */
+      resultPublishedAt?: string
+      shortDescription?: string
+      stage?: components['schemas']['v1HackathonStage']
+      state?: components['schemas']['v1HackathonState']
+      /** Optional fields, included based on request flags */
+      task?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    v1HackathonAnnouncement: {
+      announcementId?: string
+      body?: string
+      /** Format: date-time */
+      createdAt?: string
+      title?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    v1HackathonDates: {
+      /** Format: date-time */
+      endsAt?: string
+      /** Format: date-time */
+      judgingEndsAt?: string
+      /** Format: date-time */
+      registrationClosesAt?: string
+      /** Format: date-time */
+      registrationOpensAt?: string
+      /** Format: date-time */
+      startsAt?: string
+      /** Format: date-time */
+      submissionsClosesAt?: string
+      /** Format: date-time */
+      submissionsOpensAt?: string
+    }
+    v1HackathonLimits: {
+      /** Format: int64 */
+      teamSizeMax?: number
+    }
+    v1HackathonLink: {
+      title?: string
+      url?: string
+    }
+    v1HackathonLocation: {
+      city?: string
+      country?: string
+      online?: boolean
+      venue?: string
+    }
+    v1HackathonParticipation: {
+      hackathonId?: string
+      profile?: components['schemas']['v1ParticipationProfile']
+      /** Format: date-time */
+      registeredAt?: string
+      status?: components['schemas']['v1ParticipationStatus']
+      teamId?: string
+      /** Format: date-time */
+      updatedAt?: string
+      userId?: string
+    }
+    v1HackathonPermissions: {
+      createAnnouncement?: boolean
+      manageHackathon?: boolean
+      publishHackathon?: boolean
+      publishResult?: boolean
+      readDraft?: boolean
+      readResultDraft?: boolean
+      readTask?: boolean
+      updateResultDraft?: boolean
+      viewAnnouncements?: boolean
+      viewResultPublic?: boolean
+    }
+    v1HackathonRegistrationPolicy: {
+      allowIndividual?: boolean
+      allowTeam?: boolean
+    }
+    /**
+     * @default HACKATHON_ROLE_UNSPECIFIED
+     * @enum {string}
+     */
+    v1HackathonRole:
+      | 'HACKATHON_ROLE_UNSPECIFIED'
+      | 'HX_ROLE_OWNER'
+      | 'HX_ROLE_ORGANIZER'
+      | 'HX_ROLE_MENTOR'
+      | 'HX_ROLE_JUDGE'
+    v1HackathonStaffMember: {
+      roles?: components['schemas']['v1HackathonRole'][]
+      userId?: string
+    }
+    /**
+     * @default HACKATHON_STAGE_UNSPECIFIED
+     * @enum {string}
+     */
+    v1HackathonStage:
+      | 'HACKATHON_STAGE_UNSPECIFIED'
+      | 'HACKATHON_STAGE_DRAFT'
+      | 'HACKATHON_STAGE_UPCOMING'
+      | 'HACKATHON_STAGE_REGISTRATION'
+      | 'HACKATHON_STAGE_PRE_START'
+      | 'HACKATHON_STAGE_RUNNING'
+      | 'HACKATHON_STAGE_JUDGING'
+      | 'HACKATHON_STAGE_FINISHED'
+    /**
+     * @default HACKATHON_STATE_UNSPECIFIED
+     * @enum {string}
+     */
+    v1HackathonState:
+      | 'HACKATHON_STATE_UNSPECIFIED'
+      | 'HACKATHON_STATE_DRAFT'
+      | 'HACKATHON_STATE_PUBLISHED'
+    v1IdempotencyKey: {
+      key?: string
+    }
+    v1IntrospectTokenRequest: {
+      accessToken?: string
+    }
+    v1IntrospectTokenResponse: {
+      active?: boolean
+      /** Format: date-time */
+      expiresAt?: string
+      userId?: string
+    }
+    v1JoinRequest: {
+      /** Format: date-time */
+      createdAt?: string
+      /** Format: date-time */
+      expiresAt?: string
+      hackathonId?: string
+      message?: string
+      requestId?: string
+      requesterUserId?: string
+      status?: components['schemas']['v1TeamInboxStatus']
+      teamId?: string
+      /** Format: date-time */
+      updatedAt?: string
+      /** @description Always set by policy. */
+      vacancyId?: string
+    }
+    v1JudgingPermissions: {
+      assignJudging?: boolean
+      submitVerdict?: boolean
+      viewLeaderboard?: boolean
+      viewMyJudgingAssignments?: boolean
+      viewSubmissionEvaluations?: boolean
+    }
+    v1KickTeamMemberResponse: Record<string, never>
+    /** LeaderboardEntry represents a submission's position in the leaderboard */
+    v1LeaderboardEntry: {
+      /** Format: double */
+      averageScore?: number
+      /** Format: date-time */
+      createdAt?: string
+      /** Format: int32 */
+      evaluationCount?: number
+      ownerId?: string
+      ownerKind?: components['schemas']['v1OwnerKind']
+      /** Format: int32 */
+      rank?: number
+      submissionId?: string
+      title?: string
+    }
+    v1LeaveTeamResponse: Record<string, never>
+    v1ListAllTicketsResponse: {
+      hasMore?: boolean
+      tickets?: components['schemas']['v1Ticket'][]
+    }
+    v1ListAssignedTicketsResponse: {
+      hasMore?: boolean
+      tickets?: components['schemas']['v1Ticket'][]
+    }
+    v1ListHackathonAnnouncementsResponse: {
+      announcements?: components['schemas']['v1HackathonAnnouncement'][]
+    }
+    v1ListHackathonParticipantsResponse: {
+      page?: components['schemas']['v1PageResponse']
+      participants?: components['schemas']['v1HackathonParticipation'][]
+    }
+    v1ListHackathonStaffInvitationsResponse: {
+      invitations?: components['schemas']['v1StaffInvitation'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1ListHackathonStaffResponse: {
+      page?: components['schemas']['v1PageResponse']
+      staff?: components['schemas']['v1HackathonStaffMember'][]
+    }
+    v1ListHackathonsRequest: {
+      includeDescription?: boolean
+      includeLimits?: boolean
+      includeLinks?: boolean
+      query?: components['schemas']['v1Query']
+    }
+    v1ListHackathonsResponse: {
+      hackathons?: components['schemas']['v1Hackathon'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1ListJoinRequestsResponse: {
+      page?: components['schemas']['v1PageResponse']
+      requests?: components['schemas']['v1JoinRequest'][]
+    }
+    v1ListMyJoinRequestsRequest: {
+      query?: components['schemas']['v1Query']
+    }
+    v1ListMyJoinRequestsResponse: {
+      page?: components['schemas']['v1PageResponse']
+      requests?: components['schemas']['v1JoinRequest'][]
+    }
+    v1ListMyStaffInvitationsRequest: {
+      query?: components['schemas']['v1Query']
+    }
+    v1ListMyStaffInvitationsResponse: {
+      invitations?: components['schemas']['v1StaffInvitation'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1ListMyTeamInvitationsRequest: {
+      query?: components['schemas']['v1Query']
+    }
+    v1ListMyTeamInvitationsResponse: {
+      invitations?: components['schemas']['v1TeamInvitation'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1ListSkillCatalogRequest: {
+      query?: components['schemas']['v1Query']
+    }
+    v1ListSkillCatalogResponse: {
+      page?: components['schemas']['v1PageResponse']
+      skills?: components['schemas']['v1CatalogSkill'][]
+    }
+    v1ListSubmissionsResponse: {
+      page?: components['schemas']['v1PageResponse']
+      submissions?: components['schemas']['v1Submission'][]
+    }
+    v1ListTeamInvitationsResponse: {
+      invitations?: components['schemas']['v1TeamInvitation'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1ListTeamMembersResponse: {
+      members?: components['schemas']['v1TeamMember'][]
+    }
+    v1ListTeamRolesResponse: {
+      teamRoles?: components['schemas']['v1TeamRole'][]
+    }
+    v1ListTeamsResponse: {
+      page?: components['schemas']['v1PageResponse']
+      teams?: components['schemas']['v1TeamWithVacancies'][]
+    }
+    v1ListUsersRequest: {
+      includeContacts?: boolean
+      includeSkills?: boolean
+      query?: components['schemas']['v1Query']
+    }
+    v1ListUsersResponse: {
+      page?: components['schemas']['v1PageResponse']
+      users?: components['schemas']['v1GetUserResponse'][]
+    }
+    v1LoginRequest: {
+      email?: string
+      password?: string
+      username?: string
+    }
+    v1LoginResponse: {
+      /** Format: date-time */
+      accessExpiresAt?: string
+      accessToken?: string
+      /** Format: date-time */
+      refreshExpiresAt?: string
+      refreshToken?: string
+    }
+    v1LogoutRequest: {
+      refreshToken?: string
+    }
+    v1LogoutResponse: Record<string, never>
+    v1MatchScore: {
+      bestVacancyId?: string
+      roles?: components['schemas']['v1RolesBreakdown']
+      skills?: components['schemas']['v1SkillsBreakdown']
+      text?: components['schemas']['v1TextBreakdown']
+      /** Format: double */
+      totalScore?: number
+    }
+    v1Message: {
+      authorRole?: components['schemas']['v1AuthorRole']
+      authorUserId?: string
+      /** Format: date-time */
+      createdAt?: string
+      messageId?: string
+      text?: string
+      ticketId?: string
+    }
+    v1MyContact: {
+      contact?: components['schemas']['identityv1Contact']
+      visibility?: components['schemas']['v1VisibilityLevel']
+    }
+    /**
+     * @default OWNER_KIND_UNSPECIFIED
+     * @enum {string}
+     */
+    v1OwnerKind: 'OWNER_KIND_UNSPECIFIED' | 'OWNER_KIND_USER' | 'OWNER_KIND_TEAM'
+    v1PageRequest: {
+      /** Format: int64 */
+      pageSize?: number
+      pageToken?: string
+    }
+    v1PageResponse: {
+      hasMore?: boolean
+      nextPageToken?: string
+    }
+    v1ParticipationPermissions: {
+      inviteStaff?: boolean
+      listParticipants?: boolean
+      register?: boolean
+      switchParticipationMode?: boolean
+      unregister?: boolean
+      updateParticipationProfile?: boolean
+    }
+    v1ParticipationProfile: {
+      motivationText?: string
+      wishedRoles?: components['schemas']['v1TeamRole'][]
+    }
+    /**
+     * @default PARTICIPATION_STATUS_UNSPECIFIED
+     * @enum {string}
+     */
+    v1ParticipationStatus:
+      | 'PARTICIPATION_STATUS_UNSPECIFIED'
+      | 'PART_NONE'
+      | 'PART_INDIVIDUAL'
+      | 'PART_LOOKING_FOR_TEAM'
+      | 'PART_TEAM_MEMBER'
+      | 'PART_TEAM_CAPTAIN'
+    v1ParticipationStatusFilter: {
+      statuses?: components['schemas']['v1ParticipationStatus'][]
+    }
+    v1PublishHackathonResponse: Record<string, never>
+    v1PublishHackathonResultResponse: Record<string, never>
+    v1Query: {
+      /** @description OR between groups, AND inside group. */
+      filterGroups?: components['schemas']['v1FilterGroup'][]
+      /** Format: int32 */
+      limit?: number
+      /** Format: int32 */
+      offset?: number
+      page?: components['schemas']['v1PageRequest']
+      q?: string
+      sort?: components['schemas']['v1Sort'][]
+    }
+    v1RecommendCandidatesResponse: {
+      recommendations?: components['schemas']['v1CandidateRecommendation'][]
+    }
+    v1RecommendTeamsResponse: {
+      recommendations?: components['schemas']['v1TeamRecommendation'][]
+    }
+    v1RefreshRequest: {
+      refreshToken?: string
+    }
+    v1RefreshResponse: {
+      /** Format: date-time */
+      accessExpiresAt?: string
+      accessToken?: string
+      /** Format: date-time */
+      refreshExpiresAt?: string
+      refreshToken?: string
+    }
+    v1RegisterForHackathonResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1RegisterRequest: {
+      email?: string
+      firstName?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      lastName?: string
+      password?: string
+      timezone?: string
+      username?: string
+    }
+    v1RegisterResponse: {
+      /** Format: date-time */
+      accessExpiresAt?: string
+      accessToken?: string
+      /** Format: date-time */
+      refreshExpiresAt?: string
+      refreshToken?: string
+    }
+    v1RejectJoinRequestResponse: Record<string, never>
+    v1RejectStaffInvitationResponse: Record<string, never>
+    v1RejectTeamInvitationResponse: Record<string, never>
+    v1RemoveHackathonRoleResponse: Record<string, never>
+    v1ReplyInTicketResponse: {
+      messageId?: string
+    }
+    v1RolesBreakdown: {
+      /** Format: int32 */
+      matchedCount?: number
+      matchedRoles?: string[]
+      /** Format: int32 */
+      requiredCount?: number
+      /** Format: double */
+      score?: number
+      /** Format: double */
+      weight?: number
+    }
+    v1SelectFinalSubmissionResponse: {
+      /** Format: date-time */
+      selectedAt?: string
+      submissionId?: string
+    }
+    v1SelfRemoveHackathonRoleResponse: Record<string, never>
+    v1SendMessageResponse: {
+      messageId?: string
+      ticketId?: string
+    }
+    v1Skill: {
+      catalog?: components['schemas']['v1CatalogSkill']
+      custom?: components['schemas']['v1CustomSkill']
+    }
+    v1SkillsBreakdown: {
+      /** Format: int32 */
+      matchedCount?: number
+      matchedSkills?: string[]
+      missingSkills?: string[]
+      /** Format: int32 */
+      requiredCount?: number
+      /** Format: double */
+      score?: number
+      /** Format: double */
+      weight?: number
+    }
+    v1Sort: {
+      direction?: components['schemas']['v1SortDirection']
+      field?: string
+    }
+    /**
+     * @default SORT_DIRECTION_UNSPECIFIED
+     * @enum {string}
+     */
+    v1SortDirection: 'SORT_DIRECTION_UNSPECIFIED' | 'SORT_DIRECTION_ASC' | 'SORT_DIRECTION_DESC'
+    v1StaffInvitation: {
+      /** Format: date-time */
+      createdAt?: string
+      createdByUserId?: string
+      /** Format: date-time */
+      expiresAt?: string
+      hackathonId?: string
+      invitationId?: string
+      message?: string
+      requestedRole?: components['schemas']['v1HackathonRole']
+      status?: components['schemas']['v1StaffInvitationStatus']
+      targetUserId?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    /**
+     * @default STAFF_INVITATION_STATUS_UNSPECIFIED
+     * @enum {string}
+     */
+    v1StaffInvitationStatus:
+      | 'STAFF_INVITATION_STATUS_UNSPECIFIED'
+      | 'STAFF_INVITATION_PENDING'
+      | 'STAFF_INVITATION_ACCEPTED'
+      | 'STAFF_INVITATION_DECLINED'
+      | 'STAFF_INVITATION_CANCELED'
+      | 'STAFF_INVITATION_EXPIRED'
+    v1StringList: {
+      values?: string[]
+    }
+    v1Submission: {
+      /** Format: date-time */
+      createdAt?: string
+      /**
+       * User who actually created/uploaded this submission
+       *     (for team submissions, this is the team member who uploaded)
+       */
+      createdByUserId?: string
+      description?: string
+      /** Files attached to this submission */
+      files?: components['schemas']['v1SubmissionFile'][]
+      hackathonId?: string
+      /** Whether this is the final submission selected by the owner */
+      isFinal?: boolean
+      ownerId?: string
+      ownerKind?: components['schemas']['v1OwnerKind']
+      submissionId?: string
+      title?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    v1SubmissionFile: {
+      /** Format: date-time */
+      completedAt?: string
+      contentType?: string
+      /** Format: date-time */
+      createdAt?: string
+      fileId?: string
+      filename?: string
+      /** Format: int64 */
+      sizeBytes?: string
+      submissionId?: string
+      uploadStatus?: components['schemas']['v1FileUploadStatus']
+    }
+    v1SubmitEvaluationResponse: {
+      /** Format: date-time */
+      evaluatedAt?: string
+      evaluationId?: string
+    }
+    v1SwitchParticipationModeResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1Team: {
+      /** Format: date-time */
+      createdAt?: string
+      description?: string
+      hackathonId?: string
+      /** @description When true, participants can create JoinRequests to this team. */
+      isJoinable?: boolean
+      name?: string
+      teamId?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    /**
+     * @default TEAM_INBOX_STATUS_UNSPECIFIED
+     * @enum {string}
+     */
+    v1TeamInboxStatus:
+      | 'TEAM_INBOX_STATUS_UNSPECIFIED'
+      | 'TEAM_INBOX_PENDING'
+      | 'TEAM_INBOX_ACCEPTED'
+      | 'TEAM_INBOX_DECLINED'
+      | 'TEAM_INBOX_CANCELED'
+      | 'TEAM_INBOX_EXPIRED'
+    v1TeamInvitation: {
+      /** Format: date-time */
+      createdAt?: string
+      createdByUserId?: string
+      /** Format: date-time */
+      expiresAt?: string
+      hackathonId?: string
+      invitationId?: string
+      message?: string
+      status?: components['schemas']['v1TeamInboxStatus']
+      targetUserId?: string
+      teamId?: string
+      /** Format: date-time */
+      updatedAt?: string
+      /** @description Always set by policy. */
+      vacancyId?: string
+    }
+    v1TeamManagementPermissions: {
+      deleteTeam?: boolean
+      editTeam?: boolean
+      inviteMember?: boolean
+      kickMember?: boolean
+      leaveTeam?: boolean
+      manageJoinRequests?: boolean
+      manageVacancies?: boolean
+      transferCaptain?: boolean
+    }
+    v1TeamMember: {
+      /** @description Empty if the member is not assigned to any vacancy (e.g. team creator/captain). */
+      assignedVacancyId?: string
+      isCaptain?: boolean
+      /** Format: date-time */
+      joinedAt?: string
+      userId?: string
+    }
+    v1TeamPermissions: {
+      canInMyTeam?: components['schemas']['v1TeamManagementPermissions']
+      createTeam?: boolean
+    }
+    v1TeamRecommendation: {
+      bestVacancyId?: string
+      matchScore?: components['schemas']['v1MatchScore']
+      teamId?: string
+    }
+    v1TeamRole: {
+      id?: string
+      name?: string
+    }
+    v1TeamWithVacancies: {
+      team?: components['schemas']['v1Team']
+      vacancies?: components['schemas']['v1Vacancy'][]
+    }
+    v1TextBreakdown: {
+      matchedKeywords?: string[]
+      /** Format: double */
+      score?: number
+      /** Format: double */
+      weight?: number
+    }
+    v1Ticket: {
+      assignedMentorUserId?: string
+      /** Format: date-time */
+      closedAt?: string
+      /** Format: date-time */
+      createdAt?: string
+      hackathonId?: string
+      ownerId?: string
+      ownerKind?: components['schemas']['v1OwnerKind']
+      status?: components['schemas']['v1TicketStatus']
+      ticketId?: string
+      /** Format: date-time */
+      updatedAt?: string
+    }
+    /**
+     * @default TICKET_STATUS_UNSPECIFIED
+     * @enum {string}
+     */
+    v1TicketStatus: 'TICKET_STATUS_UNSPECIFIED' | 'TICKET_STATUS_OPEN' | 'TICKET_STATUS_CLOSED'
+    v1TicketStatusFilter: {
+      statuses?: components['schemas']['v1TicketStatus'][]
+    }
+    v1TransferCaptainResponse: Record<string, never>
+    v1UnregisterFromHackathonResponse: Record<string, never>
+    v1UpdateHackathonAnnouncementResponse: Record<string, never>
+    v1UpdateHackathonResponse: Record<string, never>
+    v1UpdateHackathonResultDraftResponse: Record<string, never>
+    v1UpdateHackathonTaskResponse: Record<string, never>
+    v1UpdateMeRequest: {
+      avatarUrl?: string
+      firstName?: string
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      lastName?: string
+      timezone?: string
+    }
+    v1UpdateMeResponse: {
+      user?: components['schemas']['v1User']
+    }
+    v1UpdateMyContactsRequest: {
+      contacts?: components['schemas']['v1MyContact'][]
+      contactsVisibility?: components['schemas']['v1VisibilityLevel']
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+    }
+    v1UpdateMyContactsResponse: {
+      contacts?: components['schemas']['v1MyContact'][]
+      visibility?: components['schemas']['v1VisibilitySettings']
+    }
+    v1UpdateMyParticipationResponse: {
+      participation?: components['schemas']['v1HackathonParticipation']
+    }
+    v1UpdateMySkillsRequest: {
+      /** Replace-all semantics: */
+      catalogSkillIds?: string[]
+      idempotencyKey?: components['schemas']['v1IdempotencyKey']
+      skillsVisibility?: components['schemas']['v1VisibilityLevel']
+      userSkills?: string[]
+    }
+    v1UpdateMySkillsResponse: {
+      skills?: components['schemas']['v1Skill'][]
+      visibility?: components['schemas']['v1VisibilitySettings']
+    }
+    v1UpdateSubmissionResponse: {
+      submission?: components['schemas']['v1Submission']
+    }
+    v1UpdateTeamResponse: {
+      team?: components['schemas']['v1Team']
+    }
+    v1UpsertVacancyResponse: {
+      vacancyId?: string
+    }
+    v1User: {
+      avatarUrl?: string
+      firstName?: string
+      lastName?: string
+      timezone?: string
+      userId?: string
+      username?: string
+    }
+    v1Vacancy: {
+      /** Format: date-time */
+      createdAt?: string
+      description?: string
+      /** @description Client may use a special value like "any" to represent "ANY". */
+      desiredRoleIds?: string[]
+      /** @description Client may use a special value like "any" to represent "ANY". */
+      desiredSkillIds?: string[]
+      /** Format: int64 */
+      slotsOpen?: string
+      /** Format: int64 */
+      slotsTotal?: string
+      teamId?: string
+      /** Format: date-time */
+      updatedAt?: string
+      vacancyId?: string
+    }
+    v1ValidateHackathonResponse: {
+      validationErrors?: components['schemas']['v1ValidationError'][]
+    }
+    v1ValidationError: {
+      code?: string
+      field?: string
+      message?: string
+      meta?: {
+        [key: string]: string
+      }
+    }
+    /**
+     * @default VISIBILITY_LEVEL_UNSPECIFIED
+     * @enum {string}
+     */
+    v1VisibilityLevel:
+      | 'VISIBILITY_LEVEL_UNSPECIFIED'
+      | 'VISIBILITY_LEVEL_PRIVATE'
+      | 'VISIBILITY_LEVEL_PUBLIC'
+    v1VisibilitySettings: {
+      contacts?: components['schemas']['v1VisibilityLevel']
+      skills?: components['schemas']['v1VisibilityLevel']
+    }
+  }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
-export type $defs = Record<string, never>;
+export type $defs = Record<string, never>
 export interface operations {
-    AuthService_IntrospectToken: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1IntrospectTokenRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1IntrospectTokenResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    AuthService_Login: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1LoginRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1LoginResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    AuthService_Logout: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1LogoutRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1LogoutResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    AuthService_Refresh: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1RefreshRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RefreshResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    AuthService_Register: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1RegisterRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RegisterResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_CreateHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1CreateHackathonRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_ListHackathons: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListHackathonsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListHackathonsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_GetHackathon: {
-        parameters: {
-            query?: {
-                includeDescription?: boolean;
-                includeLinks?: boolean;
-                includeLimits?: boolean;
-                includeTask?: boolean;
-                includeResult?: boolean;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_UpdateHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServiceUpdateHackathonBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_ListHackathonAnnouncements: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListHackathonAnnouncementsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_CreateHackathonAnnouncement: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServiceCreateHackathonAnnouncementBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateHackathonAnnouncementResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_UpdateHackathonAnnouncement: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                announcementId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServiceUpdateHackathonAnnouncementBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateHackathonAnnouncementResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_DeleteHackathonAnnouncement: {
-        parameters: {
-            query?: {
-                "idempotencyKey.key"?: string;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-                announcementId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1DeleteHackathonAnnouncementResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_AssignSubmissionsToJudges: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JudgingServiceAssignSubmissionsToJudgesBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1AssignSubmissionsToJudgesResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetLeaderboard: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JudgingServiceGetLeaderboardBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetLeaderboardResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetMyAssignments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JudgingServiceGetMyAssignmentsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMyAssignmentsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetMyEvaluations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JudgingServiceGetMyEvaluationsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMyEvaluationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetMyEvaluationResult: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMyEvaluationResultResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetJudgingPermissions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetJudgingPermissionsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MatchmakingService_RecommendCandidates: {
-        parameters: {
-            query?: {
-                teamId?: string;
-                vacancyId?: string;
-                limit?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RecommendCandidatesResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MatchmakingService_RecommendTeams: {
-        parameters: {
-            query?: {
-                limit?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RecommendTeamsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_GetFinalSubmission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                /** @description "user" or "team" */
-                ownerKind: string;
-                ownerId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetFinalSubmissionResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_ListHackathonParticipants: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ParticipationServiceListHackathonParticipantsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListHackathonParticipantsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_GetMyParticipation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMyParticipationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_UpdateMyParticipation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ParticipationServiceUpdateMyParticipationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateMyParticipationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_SwitchParticipationMode: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ParticipationServiceSwitchParticipationModeBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1SwitchParticipationModeResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_UnregisterFromHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ParticipationServiceUnregisterFromHackathonBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UnregisterFromHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_GetParticipationPermissions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetParticipationPermissionsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_RegisterForHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ParticipationServiceRegisterForHackathonBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RegisterForHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_GetUserParticipation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetUserParticipationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_GetHackathonPermissions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetHackathonPermissionsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_PublishHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServicePublishHackathonBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1PublishHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_GetHackathonResult: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetHackathonResultResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_UpdateHackathonResultDraft: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServiceUpdateHackathonResultDraftBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateHackathonResultDraftResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_PublishHackathonResult: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServicePublishHackathonResultBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1PublishHackathonResultResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_ListHackathonStaff: {
-        parameters: {
-            query?: {
-                "query.q"?: string;
-                "query.page.pageSize"?: number;
-                "query.page.pageToken"?: string;
-                "query.limit"?: number;
-                "query.offset"?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListHackathonStaffResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_ListHackathonStaffInvitations: {
-        parameters: {
-            query?: {
-                "query.q"?: string;
-                "query.page.pageSize"?: number;
-                "query.page.pageToken"?: string;
-                "query.limit"?: number;
-                "query.offset"?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListHackathonStaffInvitationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_CreateStaffInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceCreateStaffInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateStaffInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_CancelStaffInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceCancelStaffInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CancelStaffInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_RemoveHackathonRole: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceRemoveHackathonRoleBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RemoveHackathonRoleResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_SelfRemoveHackathonRole: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceSelfRemoveHackathonRoleBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1SelfRemoveHackathonRoleResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_CreateSubmission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionServiceCreateSubmissionBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateSubmissionResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_ListSubmissions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionServiceListSubmissionsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListSubmissionsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_GetSubmission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetSubmissionResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_UpdateSubmission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionServiceUpdateSubmissionBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateSubmissionResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_SubmitEvaluation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JudgingServiceSubmitEvaluationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1SubmitEvaluationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    JudgingService_GetSubmissionEvaluations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetSubmissionEvaluationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionFilesService_CreateSubmissionUpload: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionFilesServiceCreateSubmissionUploadBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateSubmissionUploadResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionFilesService_CompleteSubmissionUpload: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-                fileId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionFilesServiceCompleteSubmissionUploadBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CompleteSubmissionUploadResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionFilesService_GetSubmissionFileDownloadURL: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-                fileId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetSubmissionFileDownloadURLResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SubmissionService_SelectFinalSubmission: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                submissionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubmissionServiceSelectFinalSubmissionBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1SelectFinalSubmissionResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_SendMessage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceSendMessageBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1SendMessageResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_GetMyChatMessages: {
-        parameters: {
-            query?: {
-                "query.q"?: string;
-                "query.page.pageSize"?: number;
-                "query.page.pageToken"?: string;
-                "query.limit"?: number;
-                "query.offset"?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMyChatMessagesResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_GetRealtimeToken: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetRealtimeTokenResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_ListAllTickets: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceListAllTicketsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListAllTicketsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_ListAssignedTickets: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceListAssignedTicketsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListAssignedTicketsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_AssignTicket: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                ticketId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceAssignTicketBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1AssignTicketResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_ClaimTicket: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                ticketId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceClaimTicketBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ClaimTicketResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_CloseTicket: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                ticketId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceCloseTicketBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CloseTicketResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_GetTicketMessages: {
-        parameters: {
-            query?: {
-                "query.q"?: string;
-                "query.page.pageSize"?: number;
-                "query.page.pageToken"?: string;
-                "query.limit"?: number;
-                "query.offset"?: number;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-                ticketId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetTicketMessagesResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MentorsService_ReplyInTicket: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                ticketId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MentorsServiceReplyInTicketBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ReplyInTicketResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_GetHackathonTask: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetHackathonTaskResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_UpdateHackathonTask: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["HackathonServiceUpdateHackathonTaskBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateHackathonTaskResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_CreateTeam: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamServiceCreateTeamBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateTeamResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_ListTeams: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamServiceListTeamsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListTeamsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_GetTeamPermissions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetTeamPermissionsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_GetTeam: {
-        parameters: {
-            query?: {
-                includeVacancies?: boolean;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetTeamResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_UpdateTeam: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamServiceUpdateTeamBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateTeamResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamService_DeleteTeam: {
-        parameters: {
-            query?: {
-                "idempotencyKey.key"?: string;
-            };
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1DeleteTeamResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_CreateJoinRequest: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceCreateJoinRequestBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateJoinRequestResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_ListJoinRequests: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceListJoinRequestsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListJoinRequestsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_AcceptJoinRequest: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-                requestId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceAcceptJoinRequestBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1AcceptJoinRequestResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_RejectJoinRequest: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-                requestId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceRejectJoinRequestBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RejectJoinRequestResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamMembersService_ListTeamMembers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListTeamMembersResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamMembersService_LeaveTeam: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamMembersServiceLeaveTeamBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1LeaveTeamResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamMembersService_KickTeamMember: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamMembersServiceKickTeamMemberBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1KickTeamMemberResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_CreateTeamInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceCreateTeamInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateTeamInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_ListTeamInvitations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceListTeamInvitationsBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListTeamInvitationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_CancelTeamInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceCancelTeamInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CancelTeamInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamMembersService_TransferCaptain: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamMembersServiceTransferCaptainBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1TransferCaptainResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamMembersService_UpsertVacancy: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-                teamId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamMembersServiceUpsertVacancyBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpsertVacancyResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    HackathonService_ValidateHackathon: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                hackathonId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ValidateHackathonResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    SkillsService_ListSkillCatalog: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListSkillCatalogRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListSkillCatalogResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    ParticipationService_ListTeamRoles: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListTeamRolesResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    UsersService_BatchGetUsers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1BatchGetUsersRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1BatchGetUsersResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    UsersService_ListUsers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListUsersRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListUsersResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_GetMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetMeResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_UpdateMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1UpdateMeRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateMeResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_CompleteAvatarUpload: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1CompleteAvatarUploadRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CompleteAvatarUploadResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_CreateAvatarUpload: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1CreateAvatarUploadRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CreateAvatarUploadResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_UpdateMyContacts: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1UpdateMyContactsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateMyContactsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_ListMyJoinRequests: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListMyJoinRequestsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListMyJoinRequestsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_CancelJoinRequest: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                requestId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceCancelJoinRequestBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1CancelJoinRequestResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    MeService_UpdateMySkills: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1UpdateMySkillsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1UpdateMySkillsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_ListMyStaffInvitations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListMyStaffInvitationsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListMyStaffInvitationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_AcceptStaffInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceAcceptStaffInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1AcceptStaffInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    StaffService_RejectStaffInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StaffServiceRejectStaffInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RejectStaffInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_ListMyTeamInvitations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListMyTeamInvitationsRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListMyTeamInvitationsResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_AcceptTeamInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceAcceptTeamInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1AcceptTeamInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    TeamInboxService_RejectTeamInvitation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                invitationId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TeamInboxServiceRejectTeamInvitationBody"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1RejectTeamInvitationResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
-    UsersService_GetUser: {
-        parameters: {
-            query?: {
-                includeSkills?: boolean;
-                includeContacts?: boolean;
-            };
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1GetUserResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
+  AuthService_IntrospectToken: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1IntrospectTokenRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1IntrospectTokenResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  AuthService_Login: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1LoginRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1LoginResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  AuthService_Logout: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1LogoutRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1LogoutResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  AuthService_Refresh: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1RefreshRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RefreshResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  AuthService_Register: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1RegisterRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RegisterResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_CreateHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1CreateHackathonRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_ListHackathons: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListHackathonsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListHackathonsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_GetHackathon: {
+    parameters: {
+      query?: {
+        includeDescription?: boolean
+        includeLinks?: boolean
+        includeLimits?: boolean
+        includeTask?: boolean
+        includeResult?: boolean
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_UpdateHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServiceUpdateHackathonBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_ListHackathonAnnouncements: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListHackathonAnnouncementsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_CreateHackathonAnnouncement: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServiceCreateHackathonAnnouncementBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateHackathonAnnouncementResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_UpdateHackathonAnnouncement: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        announcementId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServiceUpdateHackathonAnnouncementBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateHackathonAnnouncementResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_DeleteHackathonAnnouncement: {
+    parameters: {
+      query?: {
+        'idempotencyKey.key'?: string
+      }
+      header?: never
+      path: {
+        hackathonId: string
+        announcementId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1DeleteHackathonAnnouncementResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_AssignSubmissionsToJudges: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JudgingServiceAssignSubmissionsToJudgesBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1AssignSubmissionsToJudgesResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetLeaderboard: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JudgingServiceGetLeaderboardBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetLeaderboardResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetMyAssignments: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JudgingServiceGetMyAssignmentsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMyAssignmentsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetMyEvaluations: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JudgingServiceGetMyEvaluationsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMyEvaluationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetMyEvaluationResult: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMyEvaluationResultResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetJudgingPermissions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetJudgingPermissionsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MatchmakingService_RecommendCandidates: {
+    parameters: {
+      query?: {
+        teamId?: string
+        vacancyId?: string
+        limit?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RecommendCandidatesResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MatchmakingService_RecommendTeams: {
+    parameters: {
+      query?: {
+        limit?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RecommendTeamsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_GetFinalSubmission: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        /** @description "user" or "team" */
+        ownerKind: string
+        ownerId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetFinalSubmissionResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_ListHackathonParticipants: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ParticipationServiceListHackathonParticipantsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListHackathonParticipantsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_GetMyParticipation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMyParticipationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_UpdateMyParticipation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ParticipationServiceUpdateMyParticipationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateMyParticipationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_SwitchParticipationMode: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ParticipationServiceSwitchParticipationModeBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1SwitchParticipationModeResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_UnregisterFromHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ParticipationServiceUnregisterFromHackathonBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UnregisterFromHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_GetParticipationPermissions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetParticipationPermissionsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_RegisterForHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ParticipationServiceRegisterForHackathonBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RegisterForHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_GetUserParticipation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetUserParticipationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_GetHackathonPermissions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetHackathonPermissionsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_PublishHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServicePublishHackathonBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1PublishHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_GetHackathonResult: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetHackathonResultResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_UpdateHackathonResultDraft: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServiceUpdateHackathonResultDraftBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateHackathonResultDraftResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_PublishHackathonResult: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServicePublishHackathonResultBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1PublishHackathonResultResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_ListHackathonStaff: {
+    parameters: {
+      query?: {
+        'query.q'?: string
+        'query.page.pageSize'?: number
+        'query.page.pageToken'?: string
+        'query.limit'?: number
+        'query.offset'?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListHackathonStaffResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_ListHackathonStaffInvitations: {
+    parameters: {
+      query?: {
+        'query.q'?: string
+        'query.page.pageSize'?: number
+        'query.page.pageToken'?: string
+        'query.limit'?: number
+        'query.offset'?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListHackathonStaffInvitationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_CreateStaffInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceCreateStaffInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateStaffInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_CancelStaffInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceCancelStaffInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CancelStaffInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_RemoveHackathonRole: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceRemoveHackathonRoleBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RemoveHackathonRoleResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_SelfRemoveHackathonRole: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceSelfRemoveHackathonRoleBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1SelfRemoveHackathonRoleResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_CreateSubmission: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionServiceCreateSubmissionBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateSubmissionResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_ListSubmissions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionServiceListSubmissionsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListSubmissionsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_GetSubmission: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetSubmissionResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_UpdateSubmission: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionServiceUpdateSubmissionBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateSubmissionResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_SubmitEvaluation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JudgingServiceSubmitEvaluationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1SubmitEvaluationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  JudgingService_GetSubmissionEvaluations: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetSubmissionEvaluationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionFilesService_CreateSubmissionUpload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionFilesServiceCreateSubmissionUploadBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateSubmissionUploadResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionFilesService_CompleteSubmissionUpload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+        fileId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionFilesServiceCompleteSubmissionUploadBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CompleteSubmissionUploadResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionFilesService_GetSubmissionFileDownloadURL: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+        fileId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetSubmissionFileDownloadURLResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SubmissionService_SelectFinalSubmission: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        submissionId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmissionServiceSelectFinalSubmissionBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1SelectFinalSubmissionResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_SendMessage: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceSendMessageBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1SendMessageResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_GetMyChatMessages: {
+    parameters: {
+      query?: {
+        'query.q'?: string
+        'query.page.pageSize'?: number
+        'query.page.pageToken'?: string
+        'query.limit'?: number
+        'query.offset'?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMyChatMessagesResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_GetRealtimeToken: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetRealtimeTokenResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_ListAllTickets: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceListAllTicketsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListAllTicketsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_ListAssignedTickets: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceListAssignedTicketsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListAssignedTicketsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_AssignTicket: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        ticketId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceAssignTicketBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1AssignTicketResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_ClaimTicket: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        ticketId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceClaimTicketBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ClaimTicketResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_CloseTicket: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        ticketId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceCloseTicketBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CloseTicketResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_GetTicketMessages: {
+    parameters: {
+      query?: {
+        'query.q'?: string
+        'query.page.pageSize'?: number
+        'query.page.pageToken'?: string
+        'query.limit'?: number
+        'query.offset'?: number
+      }
+      header?: never
+      path: {
+        hackathonId: string
+        ticketId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetTicketMessagesResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MentorsService_ReplyInTicket: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        ticketId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MentorsServiceReplyInTicketBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ReplyInTicketResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_GetHackathonTask: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetHackathonTaskResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_UpdateHackathonTask: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HackathonServiceUpdateHackathonTaskBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateHackathonTaskResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_CreateTeam: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamServiceCreateTeamBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateTeamResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_ListTeams: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamServiceListTeamsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListTeamsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_GetTeamPermissions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetTeamPermissionsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_GetTeam: {
+    parameters: {
+      query?: {
+        includeVacancies?: boolean
+      }
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetTeamResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_UpdateTeam: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamServiceUpdateTeamBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateTeamResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamService_DeleteTeam: {
+    parameters: {
+      query?: {
+        'idempotencyKey.key'?: string
+      }
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1DeleteTeamResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_CreateJoinRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceCreateJoinRequestBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateJoinRequestResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_ListJoinRequests: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceListJoinRequestsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListJoinRequestsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_AcceptJoinRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+        requestId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceAcceptJoinRequestBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1AcceptJoinRequestResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_RejectJoinRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+        requestId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceRejectJoinRequestBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RejectJoinRequestResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamMembersService_ListTeamMembers: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListTeamMembersResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamMembersService_LeaveTeam: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamMembersServiceLeaveTeamBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1LeaveTeamResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamMembersService_KickTeamMember: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamMembersServiceKickTeamMemberBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1KickTeamMemberResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_CreateTeamInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceCreateTeamInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateTeamInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_ListTeamInvitations: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceListTeamInvitationsBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListTeamInvitationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_CancelTeamInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceCancelTeamInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CancelTeamInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamMembersService_TransferCaptain: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamMembersServiceTransferCaptainBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1TransferCaptainResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamMembersService_UpsertVacancy: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+        teamId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamMembersServiceUpsertVacancyBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpsertVacancyResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  HackathonService_ValidateHackathon: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        hackathonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ValidateHackathonResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  SkillsService_ListSkillCatalog: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListSkillCatalogRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListSkillCatalogResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  ParticipationService_ListTeamRoles: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListTeamRolesResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  UsersService_BatchGetUsers: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1BatchGetUsersRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1BatchGetUsersResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  UsersService_ListUsers: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListUsersRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListUsersResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_GetMe: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetMeResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_UpdateMe: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1UpdateMeRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateMeResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_CompleteAvatarUpload: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1CompleteAvatarUploadRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CompleteAvatarUploadResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_CreateAvatarUpload: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1CreateAvatarUploadRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CreateAvatarUploadResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_UpdateMyContacts: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1UpdateMyContactsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateMyContactsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_ListMyJoinRequests: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListMyJoinRequestsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListMyJoinRequestsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_CancelJoinRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        requestId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceCancelJoinRequestBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1CancelJoinRequestResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  MeService_UpdateMySkills: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1UpdateMySkillsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1UpdateMySkillsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_ListMyStaffInvitations: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListMyStaffInvitationsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListMyStaffInvitationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_AcceptStaffInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceAcceptStaffInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1AcceptStaffInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  StaffService_RejectStaffInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffServiceRejectStaffInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RejectStaffInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_ListMyTeamInvitations: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListMyTeamInvitationsRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListMyTeamInvitationsResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_AcceptTeamInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceAcceptTeamInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1AcceptTeamInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  TeamInboxService_RejectTeamInvitation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        invitationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TeamInboxServiceRejectTeamInvitationBody']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1RejectTeamInvitationResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
+  UsersService_GetUser: {
+    parameters: {
+      query?: {
+        includeSkills?: boolean
+        includeContacts?: boolean
+      }
+      header?: never
+      path: {
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1GetUserResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
 }

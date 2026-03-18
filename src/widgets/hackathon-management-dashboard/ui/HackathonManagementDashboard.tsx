@@ -124,14 +124,12 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [isDeclinedInvitationsModalOpen, setIsDeclinedInvitationsModalOpen] = useState(false)
   const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null)
-  const [editingAnnouncement, setEditingAnnouncement] = useState<HackathonAnnouncement | null>(
-    null
-  )
+  const [editingAnnouncement, setEditingAnnouncement] = useState<HackathonAnnouncement | null>(null)
 
   const { decision: canPublish } = useCan('Hackathon.Publish', {
     hackathonId: hackathon.hackathonId,
   })
-  
+
   const { decision: canCreateAnnouncementDecision } = useCan('Hackathon.CreateAnnouncement', {
     hackathonId: hackathon.hackathonId,
   })
@@ -150,13 +148,11 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
 
   const { data: staffInvitationsData } = useHackathonStaffInvitationsQuery(hackathon.hackathonId)
   const pendingCount =
-    staffInvitationsData?.invitations?.filter(
-      inv => inv.status === 'STAFF_INVITATION_PENDING'
-    ).length ?? 0
+    staffInvitationsData?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_PENDING')
+      .length ?? 0
   const declinedCount =
-    staffInvitationsData?.invitations?.filter(
-      inv => inv.status === 'STAFF_INVITATION_DECLINED'
-    ).length ?? 0
+    staffInvitationsData?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_DECLINED')
+      .length ?? 0
   const hasSentStaffInvitations = pendingCount > 0
   const hasDeclinedInvitations = declinedCount > 0
 
@@ -175,7 +171,10 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
               <Button
                 variant="secondary-action"
                 text={t('hackathons.edit.actions.edit_info')}
-                onClick={() => hackathon.hackathonId && router.push(routes.hackathons.edit(hackathon.hackathonId))}
+                onClick={() =>
+                  hackathon.hackathonId &&
+                  router.push(routes.hackathons.edit(hackathon.hackathonId))
+                }
               />
               <Button
                 variant="secondary-action"
@@ -248,8 +247,13 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
                   key={announcement.announcementId ?? 'unknown'}
                   announcement={announcement}
                   hackathonId={hackathon.hackathonId ?? ''}
-                  caption={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : ''}
-                  onClick={() => announcement.announcementId && setSelectedAnnouncementId(announcement.announcementId)}
+                  caption={
+                    announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : ''
+                  }
+                  onClick={() =>
+                    announcement.announcementId &&
+                    setSelectedAnnouncementId(announcement.announcementId)
+                  }
                   onEdit={() => setEditingAnnouncement(announcement)}
                 />
               ))}

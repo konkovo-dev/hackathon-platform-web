@@ -50,9 +50,7 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
           'hover:scale-[1.02] hover:-translate-y-1',
           'hover:shadow-[0_8px_24px_-4px_var(--color-shadow-color)]',
         ],
-        isBordered && [
-          'border border-border-default hover:border-border-strong',
-        ],
+        isBordered && ['border border-border-default hover:border-border-strong'],
         className
       )}
       onClick={handleNavigate}
@@ -93,7 +91,7 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
         variant="action"
         size="lg"
         className="w-full mt-m8"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation()
           handleNavigate()
         }}

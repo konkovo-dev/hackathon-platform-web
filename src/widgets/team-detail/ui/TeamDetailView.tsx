@@ -83,7 +83,10 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   const breadcrumbItems = [
     { label: t('hackathons.breadcrumb.hackathons'), href: routes.hackathons.list },
     { label: hackathonName, href: routes.hackathons.detail(hackathonId) },
-    { label: t('hackathons.detail.tabs.participation'), href: routes.hackathons.detailWithTab(hackathonId, 'participation') },
+    {
+      label: t('hackathons.detail.tabs.participation'),
+      href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
+    },
     { label: teamName },
   ]
 

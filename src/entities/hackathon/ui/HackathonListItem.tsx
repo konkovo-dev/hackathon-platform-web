@@ -15,9 +15,12 @@ export interface HackathonListItemProps {
   showStatus?: boolean
 }
 
-function getStageLabel(stage: HackathonStage | undefined, t: ReturnType<typeof useT>): string | undefined {
+function getStageLabel(
+  stage: HackathonStage | undefined,
+  t: ReturnType<typeof useT>
+): string | undefined {
   if (!stage) return undefined
-  
+
   switch (stage) {
     case 'DRAFT':
       return t('search.hackathon_status.draft')

@@ -14,9 +14,7 @@ export interface ErrorAlertProps {
 export function ErrorAlert({ message, className }: ErrorAlertProps) {
   return (
     <div
-      className={
-        `rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error ${className ?? ''}`.trim()
-      }
+      className={`rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error ${className ?? ''}`.trim()}
       role="alert"
       aria-live="polite"
     >

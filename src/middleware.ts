@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
 
   if (isProtectedRoute(pathname)) {
     const accessToken = request.cookies.get('hp_access_token')
-    
+
     if (!accessToken) {
       // Редирект на логин с сохранением текущего пути
       const loginUrl = new URL(getLoginUrl(pathname), request.url)

@@ -20,11 +20,7 @@ export function isoToDatetimeLocal(iso?: string): string {
 
 const currentYear = () => new Date().getFullYear()
 
-function formatDateTimePart(
-  date: Date,
-  locale: string,
-  options: { withYear: boolean }
-): string {
+function formatDateTimePart(date: Date, locale: string, options: { withYear: boolean }): string {
   const opts: Intl.DateTimeFormatOptions = {
     day: 'numeric',
     month: 'long',
@@ -116,13 +112,11 @@ export function formatDateRangeWithTime(
   }
 }
 
-export function formatLocation(
-  location?: {
-    online?: boolean
-    city?: string
-    country?: string
-  }
-): string {
+export function formatLocation(location?: {
+  online?: boolean
+  city?: string
+  country?: string
+}): string {
   if (!location) {
     return ''
   }

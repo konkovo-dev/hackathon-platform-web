@@ -34,9 +34,7 @@ export function DeclinedInvitationsModal({
       {isLoading ? (
         <p className="typography-body-sm text-text-secondary">{t('hackathons.list.loading')}</p>
       ) : declined.length === 0 ? (
-        <p className="typography-body-sm text-text-secondary">
-          {t('invitations.empty.staff')}
-        </p>
+        <p className="typography-body-sm text-text-secondary">{t('invitations.empty.staff')}</p>
       ) : (
         <SelectList>
           {declined.map(invitation => (

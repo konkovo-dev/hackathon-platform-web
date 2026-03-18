@@ -37,7 +37,9 @@ export function TeamInvitationItem({
     queryFn: async () => {
       const response = await batchGetUsers({ userIds })
       return {
-        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null),
+        users: (response.users ?? [])
+          .map(u => u.user)
+          .filter((u): u is NonNullable<typeof u> => u != null),
       }
     },
     enabled: userIds.length > 0,
@@ -80,7 +82,7 @@ export function TeamInvitationItem({
             <Button
               variant="icon-secondary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onReject()
               }}
@@ -92,7 +94,7 @@ export function TeamInvitationItem({
             <Button
               variant="icon-primary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onAccept()
               }}

@@ -5,8 +5,7 @@ import { normalizeHackathonStage } from '@/entities/hackathon-context/model/type
 import type { operations } from '@/shared/api/platform.schema'
 import type { Hackathon } from '../model/types'
 
-export type GetHackathonOptions =
-  operations['HackathonService_GetHackathon']['parameters']['query']
+export type GetHackathonOptions = operations['HackathonService_GetHackathon']['parameters']['query']
 
 type GetHackathonResponse =
   operations['HackathonService_GetHackathon']['responses']['200']['content']['application/json']

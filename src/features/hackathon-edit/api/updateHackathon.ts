@@ -35,7 +35,7 @@ export async function updateHackathon(
   request: UpdateHackathonRequest
 ): Promise<UpdateHackathonResponse> {
   const { hackathonId, ...body } = request
-  
+
   return platformFetchJson<UpdateHackathonResponse>(`/v1/hackathons/${hackathonId}`, {
     method: 'PUT',
     headers: {

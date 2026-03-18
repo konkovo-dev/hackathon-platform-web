@@ -66,7 +66,7 @@ export function useCreateHackathonMutation() {
 
   return useMutation({
     mutationFn: (input: CreateHackathonRequest) => createHackathon(input),
-    onSuccess: (data) => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['hackathons'] })
       if (data.hackathonId) {
         queryClient.invalidateQueries({ queryKey: ['hackathon', 'permissions', data.hackathonId] })

@@ -1,14 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import { Chip, Icon, IconText, InfoRow, Section, Timeline, MarkdownContent, Button, type TimelineStage } from '@/shared/ui'
+import {
+  Chip,
+  Icon,
+  IconText,
+  InfoRow,
+  Section,
+  Timeline,
+  MarkdownContent,
+  Button,
+  type TimelineStage,
+} from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { getStageProgress, getStageLabel } from '@/entities/hackathon/model/utils'
-import {
-  formatDateRangeWithTime,
-  formatDateTime,
-  formatLocation,
-} from '@/shared/lib/formatDate'
+import { formatDateRangeWithTime, formatDateTime, formatLocation } from '@/shared/lib/formatDate'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useSessionQuery } from '@/features/auth/model/hooks'
@@ -47,10 +53,7 @@ function buildTimelineStages(
     }
   }
 
-  const stageDateMap: Record<
-    HackathonStage,
-    { startDate?: string; endDate?: string }
-  > = {
+  const stageDateMap: Record<HackathonStage, { startDate?: string; endDate?: string }> = {
     DRAFT: {},
     UPCOMING: {},
     REGISTRATION: {
@@ -105,8 +108,7 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
 
   const isAuthed = sessionQuery.data?.active === true
   const canRegister = registerDecision.allowed
-  const showRegisterButton =
-    isAuthed && (canRegister || registerPermissionLoading)
+  const showRegisterButton = isAuthed && (canRegister || registerPermissionLoading)
 
   const allowIndividual = hackathon.registrationPolicy?.allowIndividual ?? true
   const allowTeam = hackathon.registrationPolicy?.allowTeam ?? true
@@ -115,7 +117,9 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
 
   const handleRegisterClick = () => {
     if (onlyOneOption) {
-      registerMutation.mutateAsync({ desiredStatus: 'PART_INDIVIDUAL' }).catch(e => console.error('Register failed:', e))
+      registerMutation
+        .mutateAsync({ desiredStatus: 'PART_INDIVIDUAL' })
+        .catch(e => console.error('Register failed:', e))
       return
     }
     setRegistrationChoiceOpen(true)
@@ -150,7 +154,8 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
     hackathon.dates?.submissionsOpensAt ||
     hackathon.dates?.judgingEndsAt
 
-  const hasLimits = (hackathon.limits?.teamSizeMax && hackathon.limits.teamSizeMax > 0) || formatLabel
+  const hasLimits =
+    (hackathon.limits?.teamSizeMax && hackathon.limits.teamSizeMax > 0) || formatLabel
 
   return (
     <div className="flex flex-col gap-m8">
@@ -163,13 +168,13 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
       <Section title={t('hackathons.detail.info.title')}>
         <div className="flex flex-col gap-m6">
           <h2 className="typography-body-lg-medium text-text-primary">{hackathon.name}</h2>
-          
+
           {hackathon.shortDescription && (
             <p className="typography-body-md-regular text-text-secondary">
               {hackathon.shortDescription}
             </p>
           )}
-          
+
           {location && (
             <IconText
               icon={<Icon src="/icons/icon-location/icon-location-md.svg" size="md" />}
@@ -191,7 +196,9 @@ export function HackathonDetailInfo({ hackathonId, hackathon }: HackathonDetailI
                 onClick={handleRegisterClick}
                 disabled={registerMutation.isPending}
               >
-                {registerMutation.isPending ? t('teams.list.loading') : t('hackathons.detail.register')}
+                {registerMutation.isPending
+                  ? t('teams.list.loading')
+                  : t('hackathons.detail.register')}
               </Button>
             </div>
           )}

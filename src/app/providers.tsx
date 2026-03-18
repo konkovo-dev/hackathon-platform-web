@@ -67,7 +67,7 @@ function handleGlobalError(error: unknown) {
     const code = error.data?.code
     const status = error.data?.status
     const url = error.data?.url
-    
+
     // 401 Unauthorized или gRPC Unauthenticated (16)
     if (status === 401 || code === '16' || code === 'UNAUTHENTICATED') {
       if (isNavigatingAfterAuth) {
@@ -77,9 +77,9 @@ function handleGlobalError(error: unknown) {
       if (url && isResourceAccessDenied(url)) {
         return
       }
-      
+
       const currentPath = window.location.pathname
-      
+
       if (!isPublicRoute(currentPath)) {
         window.location.href = getLoginUrl(currentPath)
       }
@@ -95,14 +95,14 @@ function isResourceAccessDenied(url: string): boolean {
   if (url.includes('/v1/hackathons/') && url.match(/\/v1\/hackathons\/[a-f0-9-]+/)) {
     return true
   }
-  
+
   if (url.includes('/participations/')) {
     return true
   }
-  
+
   if (url.includes('/v1/teams/')) {
     return true
   }
-  
+
   return false
 }

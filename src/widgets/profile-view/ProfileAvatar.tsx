@@ -9,7 +9,12 @@ interface ProfileAvatarProps {
   placeholder?: ReactNode
 }
 
-export function ProfileAvatar({ avatarUrl, firstName, size = 'xl', placeholder }: ProfileAvatarProps) {
+export function ProfileAvatar({
+  avatarUrl,
+  firstName,
+  size = 'xl',
+  placeholder,
+}: ProfileAvatarProps) {
   if (avatarUrl) {
     return <Avatar src={avatarUrl} name={firstName} size={size} />
   }

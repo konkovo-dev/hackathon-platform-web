@@ -20,10 +20,13 @@ export default function EditPage({ params }: EditPageProps) {
   const { hackathonId } = params
 
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId)
-  
-  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan('Hackathon.Manage', {
-    hackathonId
-  })
+
+  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan(
+    'Hackathon.Manage',
+    {
+      hackathonId,
+    }
+  )
   const canManage = canManageDecision.allowed
 
   useEffect(() => {

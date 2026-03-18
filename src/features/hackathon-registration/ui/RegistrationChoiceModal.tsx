@@ -66,12 +66,11 @@ export function RegistrationChoiceModal({
     queryFn: listTeamRoles,
     enabled: open && allowTeam,
   })
-  const teamRoles = useMemo(
-    () => teamRolesData?.teamRoles ?? [],
-    [teamRolesData?.teamRoles]
-  )
+  const teamRoles = useMemo(() => teamRolesData?.teamRoles ?? [], [teamRolesData?.teamRoles])
   const filteredTeamRoles = useMemo(() => {
-    const roles = teamRoles.filter((r): r is { id: string; name: string } => Boolean(r.id && r.name))
+    const roles = teamRoles.filter((r): r is { id: string; name: string } =>
+      Boolean(r.id && r.name)
+    )
     const q = wishedRolesSearch.toLowerCase().trim()
     if (!q) return roles
     return roles.filter(r => r.name.toLowerCase().includes(q))
@@ -80,9 +79,15 @@ export function RegistrationChoiceModal({
   if (!allowIndividual && !allowTeam) return null
 
   const tabs = [
-    ...(allowIndividual ? [{ id: 'individual' as const, label: t('hackathons.detail.registerIndividual') }] : []),
-    ...(allowTeam ? [{ id: 'createTeam' as const, label: t('hackathons.detail.registerCreateTeam') }] : []),
-    ...(allowTeam ? [{ id: 'findTeam' as const, label: t('hackathons.detail.registerFindTeam') }] : []),
+    ...(allowIndividual
+      ? [{ id: 'individual' as const, label: t('hackathons.detail.registerIndividual') }]
+      : []),
+    ...(allowTeam
+      ? [{ id: 'createTeam' as const, label: t('hackathons.detail.registerCreateTeam') }]
+      : []),
+    ...(allowTeam
+      ? [{ id: 'findTeam' as const, label: t('hackathons.detail.registerFindTeam') }]
+      : []),
   ]
 
   const defaultTab = tabs[0]?.id ?? 'individual'
@@ -208,13 +213,10 @@ export function RegistrationChoiceModal({
               />
               {error && <ErrorAlert message={error} className="shrink-0" />}
               <div className="flex justify-end shrink-0">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={handleIndividual}
-                  disabled={isPending}
-                >
-                  {registerMutation.isPending ? t('teams.list.loading') : t('hackathons.detail.registerIndividual')}
+                <Button variant="primary" size="md" onClick={handleIndividual} disabled={isPending}>
+                  {registerMutation.isPending
+                    ? t('teams.list.loading')
+                    : t('hackathons.detail.registerIndividual')}
                 </Button>
               </div>
             </div>
@@ -284,7 +286,9 @@ export function RegistrationChoiceModal({
                     variant="search"
                     value={wishedRolesSearch}
                     onChange={e => setWishedRolesSearch(e.target.value)}
-                    placeholder={t('hackathons.detail.registrationForm.wishedRolesSearchPlaceholder')}
+                    placeholder={t(
+                      'hackathons.detail.registrationForm.wishedRolesSearchPlaceholder'
+                    )}
                   />
                   <div className="flex-1 overflow-y-auto min-h-0 -mx-m8 px-m8">
                     {filteredTeamRoles.length > 0 ? (
@@ -311,13 +315,10 @@ export function RegistrationChoiceModal({
               )}
               {error && <ErrorAlert message={error} className="shrink-0" />}
               <div className="flex justify-end shrink-0">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={handleFindTeam}
-                  disabled={isPending}
-                >
-                  {registerMutation.isPending ? t('teams.list.loading') : t('hackathons.detail.registerFindTeam')}
+                <Button variant="primary" size="md" onClick={handleFindTeam} disabled={isPending}>
+                  {registerMutation.isPending
+                    ? t('teams.list.loading')
+                    : t('hackathons.detail.registerFindTeam')}
                 </Button>
               </div>
             </div>

@@ -45,29 +45,27 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      
+
       // 5 активных стадий, каждая с двумя фильтрами (state + stage)
       expect(query.query?.filterGroups).toHaveLength(5)
-      
+
       // Проверяем каждую группу
       query.query?.filterGroups?.forEach((group, index) => {
         expect(group.filters).toHaveLength(2)
-        
+
         // Первый фильтр должен быть state=PUBLISHED
         expect(group.filters?.[0]?.field).toBe('state')
         expect(group.filters?.[0]?.operation).toBe('FILTER_OPERATION_EQUAL')
         expect(group.filters?.[0]?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
-        
+
         // Второй фильтр должен быть stage
         expect(group.filters?.[1]?.field).toBe('stage')
         expect(group.filters?.[1]?.operation).toBe('FILTER_OPERATION_EQUAL')
       })
-      
+
       // Проверяем значения стадий
-      const stageValues = query.query?.filterGroups?.map(
-        group => group.filters?.[1]?.stringValue
-      )
-      
+      const stageValues = query.query?.filterGroups?.map(group => group.filters?.[1]?.stringValue)
+
       expect(stageValues).toEqual([
         'HACKATHON_STAGE_UPCOMING',
         'HACKATHON_STAGE_REGISTRATION',
@@ -85,14 +83,14 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      
+
       expect(query.query?.filterGroups).toHaveLength(1)
       expect(query.query?.filterGroups?.[0]?.filters).toHaveLength(2)
-      
+
       const stateFilter = query.query?.filterGroups?.[0]?.filters?.[0]
       expect(stateFilter?.field).toBe('state')
       expect(stateFilter?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
-      
+
       const stageFilter = query.query?.filterGroups?.[0]?.filters?.[1]
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -107,13 +105,13 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      
+
       expect(query.query?.filterGroups).toHaveLength(1)
       expect(query.query?.filterGroups?.[0]?.filters).toHaveLength(2)
-      
+
       const stateFilter = query.query?.filterGroups?.[0]?.filters?.[0]
       expect(stateFilter?.field).toBe('state')
-      
+
       const stageFilter = query.query?.filterGroups?.[0]?.filters?.[1]
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -130,18 +128,16 @@ describe('filterMapper', () => {
       const query = buildQueryFromFilters(filters)
 
       expect(query.query?.filterGroups).toHaveLength(3)
-      
+
       // Каждая группа должна иметь 2 фильтра
       query.query?.filterGroups?.forEach(group => {
         expect(group.filters).toHaveLength(2)
         expect(group.filters?.[0]?.field).toBe('state')
         expect(group.filters?.[1]?.field).toBe('stage')
       })
-      
-      const stageValues = query.query?.filterGroups?.map(
-        group => group.filters?.[1]?.stringValue
-      )
-      
+
+      const stageValues = query.query?.filterGroups?.map(group => group.filters?.[1]?.stringValue)
+
       expect(stageValues).toEqual([
         'HACKATHON_STAGE_PRE_START',
         'HACKATHON_STAGE_RUNNING',
@@ -157,13 +153,13 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      
+
       expect(query.query?.filterGroups).toHaveLength(1)
       expect(query.query?.filterGroups?.[0]?.filters).toHaveLength(2)
-      
+
       const stateFilter = query.query?.filterGroups?.[0]?.filters?.[0]
       expect(stateFilter?.field).toBe('state')
-      
+
       const stageFilter = query.query?.filterGroups?.[0]?.filters?.[1]
       expect(stageFilter?.field).toBe('stage')
       expect(stageFilter?.operation).toBe('FILTER_OPERATION_EQUAL')

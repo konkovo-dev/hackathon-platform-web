@@ -15,9 +15,7 @@ export type MyParticipation = {
  * Used only for binding canInMyTeam to current page and for display. Not combined with permissions.
  * Returns { teamId: null, status: null } on 403/404 (not a participant).
  */
-export async function getMyParticipation(
-  hackathonId: string
-): Promise<MyParticipation> {
+export async function getMyParticipation(hackathonId: string): Promise<MyParticipation> {
   try {
     const res = await platformFetchJson<GetMyParticipationResponse>(
       `/v1/hackathons/${hackathonId}/participations/me`,

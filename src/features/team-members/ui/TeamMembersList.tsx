@@ -67,10 +67,7 @@ export function TeamMembersList({
 
             const user = usersMap.get(member.userId)
             const isCaptain = member.isCaptain
-            const canKick =
-              canKickFromApi &&
-              !isCaptain &&
-              member.userId !== currentUserId
+            const canKick = canKickFromApi && !isCaptain && member.userId !== currentUserId
 
             return (
               <UserListItem

@@ -66,7 +66,12 @@ export function EditTeamModal({ open, onClose, hackathonId, team }: EditTeamModa
 
   return (
     <>
-      <Modal open={open && !confirmDelete} onClose={onClose} title={t('teams.edit.title')} size="lg">
+      <Modal
+        open={open && !confirmDelete}
+        onClose={onClose}
+        title={t('teams.edit.title')}
+        size="lg"
+      >
         <div className="flex flex-col gap-m6">
           <TeamFormFields
             name={name}

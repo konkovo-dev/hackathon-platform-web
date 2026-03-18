@@ -27,18 +27,20 @@ export function TeamCard({
   const router = useRouter()
 
   const { team, vacancies } = teamWithVacancies
-  if (!team) return null
-
-  const teamId = team.teamId ?? ''
+  const teamId = team?.teamId ?? ''
   const { data: membersData } = useQuery({
     queryKey: ['team-members', hackathonId, teamId],
     queryFn: () => listTeamMembers(hackathonId, teamId),
-    enabled: !!hackathonId && !!teamId,
+    enabled: !!team && !!hackathonId && !!teamId,
   })
 
+  if (!team) return null
+
   const memberCount = membersData?.members?.length ?? 0
-  const openVacancies = vacancies?.reduce((sum, v) => sum + parseInt(v.slotsOpen ?? '0', 10), 0) ?? 0
-  const totalVacancies = vacancies?.reduce((sum, v) => sum + parseInt(v.slotsTotal ?? '0', 10), 0) ?? 0
+  const openVacancies =
+    vacancies?.reduce((sum, v) => sum + parseInt(v.slotsOpen ?? '0', 10), 0) ?? 0
+  const totalVacancies =
+    vacancies?.reduce((sum, v) => sum + parseInt(v.slotsTotal ?? '0', 10), 0) ?? 0
 
   const membersLabel =
     memberCount === 1
@@ -76,10 +78,10 @@ export function TeamCard({
         <h3 className="typography-title-md text-text-primary">{team.name}</h3>
         <div className="flex flex-col gap-m4">
           {hackathonName && (
-          <IconText
-            icon={<Icon src="/icons/icon-code/icon-code-md.svg" size="md" />}
-            text={hackathonName}
-          />
+            <IconText
+              icon={<Icon src="/icons/icon-code/icon-code-md.svg" size="md" />}
+              text={hackathonName}
+            />
           )}
           <IconText
             icon={<Icon src="/icons/icon-team/iton-team-md.svg" size="md" />}

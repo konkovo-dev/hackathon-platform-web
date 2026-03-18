@@ -1,7 +1,7 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { operations } from '@/shared/api/platform.schema'
 
-export type DeleteAnnouncementParams = 
+export type DeleteAnnouncementParams =
   operations['HackathonService_DeleteHackathonAnnouncement']['parameters']['query']
 
 export type DeleteAnnouncementResponse =
@@ -16,7 +16,7 @@ export async function deleteAnnouncement(
   if (params?.['idempotencyKey.key']) {
     queryParams.set('idempotencyKey.key', params['idempotencyKey.key'])
   }
-  
+
   return platformFetchJson<DeleteAnnouncementResponse>(
     `/v1/hackathons/${hackathonId}/announcements/${announcementId}?${queryParams.toString()}`,
     {

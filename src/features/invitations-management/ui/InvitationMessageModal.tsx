@@ -47,12 +47,19 @@ export function InvitationMessageModal({
   })
 
   return (
-    <Modal open={open} onClose={onClose} title={title || t('invitations.messageModal.title')} size="md">
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={title || t('invitations.messageModal.title')}
+      size="md"
+    >
       <div className="flex flex-col gap-m8">
         <div
           className={cn(
             (createdByUserId || (showHackathon && hackathonId)) &&
-              (showHackathon && hackathonId && createdByUserId ? 'grid grid-cols-2 gap-m4' : 'flex flex-col gap-m4')
+              (showHackathon && hackathonId && createdByUserId
+                ? 'grid grid-cols-2 gap-m4'
+                : 'flex flex-col gap-m4')
           )}
         >
           {createdByUserId && (

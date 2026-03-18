@@ -13,7 +13,12 @@ export interface EditTaskModalProps {
   currentTask?: string
 }
 
-export function EditTaskModal({ open, onClose, hackathonId, currentTask = '' }: EditTaskModalProps) {
+export function EditTaskModal({
+  open,
+  onClose,
+  hackathonId,
+  currentTask = '',
+}: EditTaskModalProps) {
   const t = useT()
   const [task, setTask] = useState(currentTask)
   const [error, setError] = useState<string | null>(null)
@@ -35,11 +40,7 @@ export function EditTaskModal({ open, onClose, hackathonId, currentTask = '' }: 
       })
 
       if (response.validationErrors && response.validationErrors.length > 0) {
-        setError(
-          response.validationErrors
-            .map(err => localizeValidationError(err, t))
-            .join('; ')
-        )
+        setError(response.validationErrors.map(err => localizeValidationError(err, t)).join('; '))
         return
       }
 
@@ -67,23 +68,11 @@ export function EditTaskModal({ open, onClose, hackathonId, currentTask = '' }: 
         {error && <ErrorAlert message={error} />}
 
         <div className="flex gap-m4 justify-end">
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={onClose}
-            disabled={mutation.isPending}
-          >
+          <Button variant="secondary" size="md" onClick={onClose} disabled={mutation.isPending}>
             {t('hackathons.create.actions.cancel')}
           </Button>
-          <Button
-            variant="primary"
-            size="md"
-            onClick={handleSave}
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending
-              ? t('hackathons.list.loading')
-              : t('hackathons.task.edit.save')}
+          <Button variant="primary" size="md" onClick={handleSave} disabled={mutation.isPending}>
+            {mutation.isPending ? t('hackathons.list.loading') : t('hackathons.task.edit.save')}
           </Button>
         </div>
       </div>

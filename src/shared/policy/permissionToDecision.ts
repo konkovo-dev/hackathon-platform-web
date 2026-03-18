@@ -15,7 +15,10 @@ const HACKATHON_MAP: Record<string, keyof NonNullable<HackathonPermissionsBundle
   'Hackathon.ViewResultPublic': 'viewResultPublic',
 }
 
-const PARTICIPATION_MAP: Record<string, keyof NonNullable<HackathonPermissionsBundle['participation']>> = {
+const PARTICIPATION_MAP: Record<
+  string,
+  keyof NonNullable<HackathonPermissionsBundle['participation']>
+> = {
   'Participation.Register': 'register',
   'Participation.Unregister': 'unregister',
   'Participation.SwitchParticipationMode': 'switchParticipationMode',
@@ -24,7 +27,10 @@ const PARTICIPATION_MAP: Record<string, keyof NonNullable<HackathonPermissionsBu
   'Participation.ListParticipants': 'listParticipants',
 }
 
-const TEAM_MY_TEAM_MAP: Record<string, keyof NonNullable<NonNullable<HackathonPermissionsBundle['team']>['canInMyTeam']>> = {
+const TEAM_MY_TEAM_MAP: Record<
+  string,
+  keyof NonNullable<NonNullable<HackathonPermissionsBundle['team']>['canInMyTeam']>
+> = {
   'Team.EditTeam': 'editTeam',
   'Team.DeleteTeam': 'deleteTeam',
   'Team.InviteMember': 'inviteMember',

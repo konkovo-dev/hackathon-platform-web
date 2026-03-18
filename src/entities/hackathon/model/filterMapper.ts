@@ -18,25 +18,23 @@ export function buildQueryFromFilters(
   }
 
   // Фильтр по формату (online/offline)
-  // TODO: API не поддерживает фильтрацию по формату (возвращает 500)
-  // const formatFilters = mapFormatFilter(filters.formats)
-  // if (formatFilters.length > 0) {
-  //   filterGroups.push({ filters: formatFilters })
-  // }
+  const formatFilters = mapFormatFilter(filters.formats)
+  if (formatFilters.length > 0) {
+    filterGroups.push({ filters: formatFilters })
+  }
 
   // Фильтр по городу
-  // TODO: API не поддерживает фильтрацию по городу 
-  // if (filters.city) {
-  //   filterGroups.push({
-  //     filters: [
-  //       {
-  //         field: 'location.city',
-  //         operation: 'FILTER_OPERATION_EQUAL',
-  //         stringValue: filters.city,
-  //       },
-  //     ],
-  //   })
-  // }
+  if (filters.city) {
+    filterGroups.push({
+      filters: [
+        {
+          field: 'location.city',
+          operation: 'FILTER_OPERATION_EQUAL',
+          stringValue: filters.city,
+        },
+      ],
+    })
+  }
 
   return {
     query: {
@@ -128,20 +126,18 @@ function mapStageFilter(stage: HackathonListFilters['stage']): FilterGroup[] {
   }
 
   if (stage === 'running') {
-    return [
-      'HACKATHON_STAGE_PRE_START',
-      'HACKATHON_STAGE_RUNNING',
-      'HACKATHON_STAGE_JUDGING',
-    ].map(stageValue => ({
-      filters: [
-        publishedStateFilter,
-        {
-          field: 'stage',
-          operation: 'FILTER_OPERATION_EQUAL',
-          stringValue: stageValue,
-        },
-      ],
-    }))
+    return ['HACKATHON_STAGE_PRE_START', 'HACKATHON_STAGE_RUNNING', 'HACKATHON_STAGE_JUDGING'].map(
+      stageValue => ({
+        filters: [
+          publishedStateFilter,
+          {
+            field: 'stage',
+            operation: 'FILTER_OPERATION_EQUAL',
+            stringValue: stageValue,
+          },
+        ],
+      })
+    )
   }
 
   if (stage === 'finished') {

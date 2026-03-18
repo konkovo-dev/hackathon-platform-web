@@ -7,7 +7,11 @@ import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import { useCan } from '@/shared/policy/useCan'
-import { useHackathonDetailQuery, useHackathonAnnouncementsQuery, useHackathonTaskQuery } from '../model/hooks'
+import {
+  useHackathonDetailQuery,
+  useHackathonAnnouncementsQuery,
+  useHackathonTaskQuery,
+} from '../model/hooks'
 import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { HackathonDetailInfo } from './HackathonDetailInfo'
 import { MyParticipationTabContent } from './MyParticipationTabContent'
@@ -28,18 +32,21 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<HackathonTab>('description')
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId, initialData)
-  
+
   const { decision: canViewAnnouncementsDecision } = useCan('Hackathon.ViewAnnouncements', {
-    hackathonId
+    hackathonId,
   })
   const canSeeAnnouncements = canViewAnnouncementsDecision.allowed
 
   const { decision: canReadTaskDecision } = useCan('Hackathon.ReadTask', { hackathonId })
   const canSeeTask = canReadTaskDecision.allowed
 
-  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan('Hackathon.Manage', {
-    hackathonId
-  })
+  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan(
+    'Hackathon.Manage',
+    {
+      hackathonId,
+    }
+  )
   const canManage = canManageDecision.allowed
 
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
@@ -103,7 +110,9 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
     activeTab && tabIds.includes(activeTab) ? activeTab : ('description' as HackathonTab)
   const setActiveTabSafe = (id: HackathonTab) => {
     setActiveTab(id)
-    router.replace(routes.hackathons.detailWithTab(hackathonId, id === 'description' ? undefined : id))
+    router.replace(
+      routes.hackathons.detailWithTab(hackathonId, id === 'description' ? undefined : id)
+    )
   }
 
   useEffect(() => {
@@ -132,16 +141,16 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   }
 
   if (error) {
-    const isAccessDenied = 
-      error instanceof Error && 
-      'data' in error && 
+    const isAccessDenied =
+      error instanceof Error &&
+      'data' in error &&
       typeof (error as any).data === 'object' &&
       ((error as any).data.status === 401 || (error as any).data.status === 403)
-    
+
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <span className="typography-body-md text-state-error">
-          {isAccessDenied 
+          {isAccessDenied
             ? t('hackathons.detail.errors.access_denied')
             : t('hackathons.list.error')}
         </span>

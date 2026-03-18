@@ -67,10 +67,10 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
 
   return {
     stage:
-      stage === 'all' || 
-      stage === 'upcoming' || 
-      stage === 'registration' || 
-      stage === 'running' || 
+      stage === 'all' ||
+      stage === 'upcoming' ||
+      stage === 'registration' ||
+      stage === 'running' ||
       stage === 'finished'
         ? stage
         : defaults.stage,

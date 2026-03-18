@@ -24,12 +24,8 @@ export function VacancyUpsertModal({
 }: VacancyUpsertModalProps) {
   const t = useT()
   const [description, setDescription] = useState(vacancy?.description || '')
-  const [desiredRoles, setDesiredRoles] = useState(
-    vacancy?.desiredRoleIds?.join(', ') || ''
-  )
-  const [desiredSkills, setDesiredSkills] = useState(
-    vacancy?.desiredSkillIds?.join(', ') || ''
-  )
+  const [desiredRoles, setDesiredRoles] = useState(vacancy?.desiredRoleIds?.join(', ') || '')
+  const [desiredSkills, setDesiredSkills] = useState(vacancy?.desiredSkillIds?.join(', ') || '')
   const [slotsTotal, setSlotsTotal] = useState(vacancy?.slotsTotal || '1')
   const [error, setError] = useState<string | null>(null)
 
@@ -48,10 +44,16 @@ export function VacancyUpsertModal({
         vacancyId: vacancy?.vacancyId,
         description: description.trim() || undefined,
         desiredRoleIds: desiredRoles
-          ? desiredRoles.split(',').map(r => r.trim()).filter(Boolean)
+          ? desiredRoles
+              .split(',')
+              .map(r => r.trim())
+              .filter(Boolean)
           : undefined,
         desiredSkillIds: desiredSkills
-          ? desiredSkills.split(',').map(s => s.trim()).filter(Boolean)
+          ? desiredSkills
+              .split(',')
+              .map(s => s.trim())
+              .filter(Boolean)
           : undefined,
         slotsTotal: String(slots),
       })
@@ -91,7 +93,10 @@ export function VacancyUpsertModal({
         <Section variant="outlined">
           <div className="flex flex-col gap-m4">
             <div className="flex flex-col gap-m2">
-              <label htmlFor="vacancy-description" className="typography-label-md text-text-primary">
+              <label
+                htmlFor="vacancy-description"
+                className="typography-label-md text-text-primary"
+              >
                 {t('teams.vacancies.description')}
               </label>
               <textarea

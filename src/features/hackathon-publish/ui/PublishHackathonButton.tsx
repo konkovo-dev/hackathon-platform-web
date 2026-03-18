@@ -25,13 +25,13 @@ export function PublishHackathonButton({ hackathonId, disabled }: PublishHackath
     } catch (error: unknown) {
       // Локализуем ошибку валидации
       let message = t('hackathons.management.publish.error')
-      
+
       if (error instanceof ApiError) {
         message = error.message || message
       } else if (error instanceof Error) {
         message = error.message || message
       }
-      
+
       setErrorMessage(message)
     }
   }

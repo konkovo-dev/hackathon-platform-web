@@ -6,7 +6,6 @@ export interface ValidationResult {
   message?: string
 }
 
-
 export function validateHackathonForm(data: { name: string }): ValidationResult {
   const errors: FieldErrors = {}
   let message: string | undefined

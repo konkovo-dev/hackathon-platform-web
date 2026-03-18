@@ -43,14 +43,18 @@ export function MenuItem({
         <div className="flex items-center">
           <Icon src={iconSrc} size="md" color={iconColor} />
           <span className="ml-m8 text-text-tertiary typography-label-sm-medium">/</span>
-          <span className="ml-m typography-label-md-medium text-text-primary lowercase">{title}</span>
+          <span className="ml-m typography-label-md-medium text-text-primary lowercase">
+            {title}
+          </span>
         </div>
       )}
       {badge != null && badge > 0 && (
         <span
           className={cn(
             'absolute min-w-[20px] h-[20px] px-m4 flex items-center justify-center rounded-full bg-brand-primary text-text-primary typography-caption-xs animate-in fade-in zoom-in-95 duration-150',
-            collapsed ? 'top-[calc(50%+8px)] -translate-y-1/2 right-m2' : 'top-1/2 -translate-y-1/2 right-m6'
+            collapsed
+              ? 'top-[calc(50%+8px)] -translate-y-1/2 right-m2'
+              : 'top-1/2 -translate-y-1/2 right-m6'
           )}
         >
           {badge > 99 ? '99+' : badge}

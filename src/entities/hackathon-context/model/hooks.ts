@@ -11,7 +11,9 @@ const myParticipationKey = (hackathonId: string) =>
  */
 export function useMyParticipationQuery(hackathonId: string | null | undefined) {
   return useQuery({
-    queryKey: hackathonId ? myParticipationKey(hackathonId) : ['hackathon', 'participation', 'me', 'none'],
+    queryKey: hackathonId
+      ? myParticipationKey(hackathonId)
+      : ['hackathon', 'participation', 'me', 'none'],
     queryFn: () => {
       if (!hackathonId) throw new Error('hackathonId is required')
       return getMyParticipation(hackathonId)

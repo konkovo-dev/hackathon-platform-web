@@ -15,9 +15,7 @@ export function TaskTabContent({ task, isLoading }: TaskTabContentProps) {
   if (isLoading) {
     return (
       <div className="py-m8">
-        <p className="typography-body-md text-text-secondary">
-          {t('hackathons.list.loading')}
-        </p>
+        <p className="typography-body-md text-text-secondary">{t('hackathons.list.loading')}</p>
       </div>
     )
   }

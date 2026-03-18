@@ -66,7 +66,8 @@ export function JoinRequestModal({
                   <ListItem
                     key={v.vacancyId}
                     text={
-                      v.description || t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
+                      v.description ||
+                      t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
                     }
                     subtitle={v.desiredSkillIds?.join(', ')}
                     selectable

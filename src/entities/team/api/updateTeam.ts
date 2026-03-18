@@ -12,11 +12,8 @@ export async function updateTeam(
   teamId: string,
   request: UpdateTeamRequest
 ): Promise<UpdateTeamResponse> {
-  return platformFetchJson<UpdateTeamResponse>(
-    `/v1/hackathons/${hackathonId}/teams/${teamId}`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(request),
-    }
-  )
+  return platformFetchJson<UpdateTeamResponse>(`/v1/hackathons/${hackathonId}/teams/${teamId}`, {
+    method: 'PUT',
+    body: JSON.stringify(request),
+  })
 }

@@ -1,7 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { ErrorAlert, Modal, Input, SelectList, ListItem, Button, Section, MarkdownEditor } from '@/shared/ui'
+import {
+  ErrorAlert,
+  Modal,
+  Input,
+  SelectList,
+  ListItem,
+  Button,
+  Section,
+  MarkdownEditor,
+} from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useUsersSearchQuery, useCreateStaffInvitationMutation } from '../model/hooks'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'
@@ -13,11 +22,7 @@ export interface StaffInviteModalProps {
   hackathonId: string
 }
 
-const STAFF_ROLES: HackathonRole[] = [
-  'HX_ROLE_ORGANIZER',
-  'HX_ROLE_MENTOR',
-  'HX_ROLE_JUDGE',
-]
+const STAFF_ROLES: HackathonRole[] = ['HX_ROLE_ORGANIZER', 'HX_ROLE_MENTOR', 'HX_ROLE_JUDGE']
 
 export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModalProps) {
   const t = useT()
@@ -31,11 +36,11 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
   const createInvitationMutation = useCreateStaffInvitationMutation(hackathonId)
 
   const users = usersData?.users || []
-  
+
   const getErrorMessage = (error: unknown): string => {
     if (error instanceof ApiError) {
       const message = error.data.message.toLowerCase()
-      
+
       if (message.includes('user not found') || error.data.status === 404) {
         return t('hackathons.management.staff.errors.user_not_found')
       }
@@ -58,7 +63,7 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
         return t('hackathons.management.staff.errors.forbidden')
       }
     }
-    
+
     return t('hackathons.management.staff.errors.invite_failed')
   }
 
@@ -82,7 +87,7 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
       setError(getErrorMessage(err))
     }
   }
-  
+
   const handleClose = () => {
     onClose()
     setError(null)
@@ -102,7 +107,12 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
   }
 
   return (
-    <Modal open={open} onClose={handleClose} title={t('hackathons.management.staff.invite')} size="lg">
+    <Modal
+      open={open}
+      onClose={handleClose}
+      title={t('hackathons.management.staff.invite')}
+      size="lg"
+    >
       <div className="flex flex-col gap-m6">
         <Section title={t('hackathons.management.staff.searchUser')} variant="outlined">
           <Input
@@ -132,12 +142,12 @@ export function StaffInviteModal({ open, onClose, hackathonId }: StaffInviteModa
                 <SelectList>
                   {users.map(user => {
                     if (!user.userId) return null
-                    
+
                     const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
-                    const displayText = name 
-                      ? `${name} (${user.username || user.userId})` 
-                      : (user.username || user.userId)
-                    
+                    const displayText = name
+                      ? `${name} (${user.username || user.userId})`
+                      : user.username || user.userId
+
                     return (
                       <ListItem
                         key={user.userId}

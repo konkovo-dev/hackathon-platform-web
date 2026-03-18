@@ -55,9 +55,7 @@ export function useDashboardHackathonsQuery() {
 
   const organizer = {
     ...ownerQuery,
-    data: ownerQuery.data
-      ? { ...ownerQuery.data, hackathons: organizerHackathons }
-      : undefined,
+    data: ownerQuery.data ? { ...ownerQuery.data, hackathons: organizerHackathons } : undefined,
     isLoading: ownerQuery.isLoading || organizerRoleQuery.isLoading,
     error: ownerQuery.error ?? organizerRoleQuery.error,
   }

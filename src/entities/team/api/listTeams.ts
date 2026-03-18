@@ -11,11 +11,8 @@ export async function listTeams(
   hackathonId: string,
   request: ListTeamsRequest = {}
 ): Promise<ListTeamsResponse> {
-  return platformFetchJson<ListTeamsResponse>(
-    `/v1/hackathons/${hackathonId}/teams/list`,
-    {
-      method: 'POST',
-      body: JSON.stringify(request),
-    }
-  )
+  return platformFetchJson<ListTeamsResponse>(`/v1/hackathons/${hackathonId}/teams/list`, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  })
 }

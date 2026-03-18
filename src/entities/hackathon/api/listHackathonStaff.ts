@@ -8,13 +8,8 @@ export type HackathonStaffMember = components['schemas']['v1HackathonStaffMember
 export type ListHackathonStaffResponse =
   operations['StaffService_ListHackathonStaff']['responses']['200']['content']['application/json']
 
-export async function listHackathonStaff(
-  hackathonId: string
-): Promise<ListHackathonStaffResponse> {
-  return platformFetchJson<ListHackathonStaffResponse>(
-    `/v1/hackathons/${hackathonId}/staff`,
-    {
-      method: 'GET',
-    }
-  )
+export async function listHackathonStaff(hackathonId: string): Promise<ListHackathonStaffResponse> {
+  return platformFetchJson<ListHackathonStaffResponse>(`/v1/hackathons/${hackathonId}/staff`, {
+    method: 'GET',
+  })
 }

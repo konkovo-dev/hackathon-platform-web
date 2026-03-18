@@ -23,7 +23,9 @@ export function useStaffUsersQuery(userIds: string[]) {
     queryFn: async () => {
       const response = await batchGetUsers({ userIds })
       return {
-        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null)
+        users: (response.users ?? [])
+          .map(u => u.user)
+          .filter((u): u is NonNullable<typeof u> => u != null),
       }
     },
     enabled: userIds.length > 0,
@@ -41,7 +43,9 @@ export function useUsersSearchQuery(searchQuery: string) {
         },
       })
       return {
-        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null),
+        users: (response.users ?? [])
+          .map(u => u.user)
+          .filter((u): u is NonNullable<typeof u> => u != null),
         page: response.page,
       }
     },
@@ -64,8 +68,7 @@ export function useCancelStaffInvitationMutation(hackathonId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (invitationId: string) =>
-      cancelStaffInvitation(hackathonId, invitationId),
+    mutationFn: (invitationId: string) => cancelStaffInvitation(hackathonId, invitationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hackathon-staff-invitations', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-staff', hackathonId] })
@@ -80,7 +83,11 @@ export function useCreateStaffInvitationMutation(hackathonId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (params: { targetUserId: string; requestedRole: HackathonRole; message?: string }) =>
+    mutationFn: (params: {
+      targetUserId: string
+      requestedRole: HackathonRole
+      message?: string
+    }) =>
       createStaffInvitation(hackathonId, {
         idempotencyKey: {
           key: crypto.randomUUID(),

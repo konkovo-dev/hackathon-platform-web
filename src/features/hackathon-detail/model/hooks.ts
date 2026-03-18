@@ -78,7 +78,8 @@ export function useHackathonTaskQuery(
   })
 }
 
-const participationKey = (hackathonId: string) => ['hackathon', 'participation', 'me', hackathonId] as const
+const participationKey = (hackathonId: string) =>
+  ['hackathon', 'participation', 'me', hackathonId] as const
 
 export function useUnregisterFromHackathonMutation(hackathonId: string) {
   const queryClient = useQueryClient()

@@ -39,10 +39,7 @@ export function MyParticipationTabContent({
   return (
     <div className="flex flex-col gap-m16">
       {!myTeamId ? (
-        <NoTeamContent
-          hackathonId={hackathonId}
-          participationStatus={participationStatus}
-        />
+        <NoTeamContent hackathonId={hackathonId} participationStatus={participationStatus} />
       ) : (
         <ParticipationTeamCard hackathonId={hackathonId} teamId={myTeamId} />
       )}
@@ -123,7 +120,9 @@ function NoTeamContent({
               onClick={handleUnregisterConfirm}
               disabled={unregisterMutation.isPending}
             >
-              {unregisterMutation.isPending ? t('teams.list.loading') : t('hackathons.detail.participation.unregister')}
+              {unregisterMutation.isPending
+                ? t('teams.list.loading')
+                : t('hackathons.detail.participation.unregister')}
             </Button>
           </div>
         </div>

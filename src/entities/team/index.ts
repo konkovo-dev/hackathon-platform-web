@@ -4,10 +4,7 @@ export { listTeamRoles, type ListTeamRolesResponse } from './api/listTeamRoles'
 export { getTeam, type GetTeamParams, type GetTeamResponse } from './api/getTeam'
 export { updateTeam, type UpdateTeamRequest, type UpdateTeamResponse } from './api/updateTeam'
 export { deleteTeam, type DeleteTeamResponse } from './api/deleteTeam'
-export {
-  listTeamMembers,
-  type ListTeamMembersResponse,
-} from './api/listTeamMembers'
+export { listTeamMembers, type ListTeamMembersResponse } from './api/listTeamMembers'
 export { leaveTeam, type LeaveTeamResponse } from './api/leaveTeam'
 export { kickTeamMember, type KickTeamMemberResponse } from './api/kickTeamMember'
 export {
@@ -30,10 +27,7 @@ export {
   type ListTeamInvitationsRequest,
   type ListTeamInvitationsResponse,
 } from './api/listTeamInvitations'
-export {
-  cancelTeamInvitation,
-  type CancelTeamInvitationResponse,
-} from './api/cancelTeamInvitation'
+export { cancelTeamInvitation, type CancelTeamInvitationResponse } from './api/cancelTeamInvitation'
 export {
   createJoinRequest,
   type CreateJoinRequestRequest,
@@ -44,14 +38,8 @@ export {
   type ListJoinRequestsRequest,
   type ListJoinRequestsResponse,
 } from './api/listJoinRequests'
-export {
-  acceptJoinRequest,
-  type AcceptJoinRequestResponse,
-} from './api/acceptJoinRequest'
-export {
-  rejectJoinRequest,
-  type RejectJoinRequestResponse,
-} from './api/rejectJoinRequest'
+export { acceptJoinRequest, type AcceptJoinRequestResponse } from './api/acceptJoinRequest'
+export { rejectJoinRequest, type RejectJoinRequestResponse } from './api/rejectJoinRequest'
 
 export type {
   Team,

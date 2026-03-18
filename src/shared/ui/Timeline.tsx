@@ -14,19 +14,9 @@ export interface TimelineProps {
 
 export function Timeline({ stages, className }: TimelineProps) {
   return (
-    <div
-      className={cn(
-        'flex w-full flex-nowrap items-start gap-m8',
-        className
-      )}
-      role="list"
-    >
+    <div className={cn('flex w-full flex-nowrap items-start gap-m8', className)} role="list">
       {stages.map((stage, index) => (
-        <div
-          key={`${stage.label}-${index}`}
-          className="flex-1 basis-0 min-w-0"
-          role="listitem"
-        >
+        <div key={`${stage.label}-${index}`} className="flex-1 basis-0 min-w-0" role="listitem">
           <div
             className={cn(
               'typography-body-sm whitespace-nowrap',

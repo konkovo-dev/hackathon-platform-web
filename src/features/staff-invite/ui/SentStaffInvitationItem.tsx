@@ -75,7 +75,7 @@ export function SentStaffInvitationItem({
             <Button
               variant="icon-secondary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onCancel()
               }}

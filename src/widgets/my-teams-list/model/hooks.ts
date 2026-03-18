@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getHackathonsByParticipation } from '@/entities/hackathon/api/getHackathonsByRole'
 import { getMyParticipation } from '@/entities/hackathon-context/api/getMyParticipation'
+import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import { getTeam } from '@/entities/team'
 import type { Hackathon } from '@/entities/hackathon'
 import type { TeamWithVacancies } from '@/entities/team'
@@ -32,8 +33,12 @@ export function useMyTeamsQuery() {
           const res = await getTeam(hackathonId, teamId, { includeVacancies: true })
           if (!res.team) return
 
+          const hackathonNormalized: Hackathon = {
+            ...hackathon,
+            stage: normalizeHackathonStage(hackathon.stage as string | undefined),
+          }
           myTeams.push({
-            hackathon,
+            hackathon: hackathonNormalized,
             teamWithVacancies: res.team,
           })
         })

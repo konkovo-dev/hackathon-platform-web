@@ -8,7 +8,9 @@ describe('permissionToDecision', () => {
       allowed: false,
       reason: 'NOT_ALLOWED',
     })
-    expect(permissionToDecision('Hackathon.ReadDraft', undefined, { hackathonId: 'h1' }, null)).toEqual({
+    expect(
+      permissionToDecision('Hackathon.ReadDraft', undefined, { hackathonId: 'h1' }, null)
+    ).toEqual({
       allowed: false,
       reason: 'NOT_ALLOWED',
     })
@@ -46,7 +48,9 @@ describe('permissionToDecision', () => {
       team: undefined,
       judging: undefined,
     }
-    expect(permissionToDecision('Participation.Register', perm, { hackathonId: 'h1' }, null)).toEqual({
+    expect(
+      permissionToDecision('Participation.Register', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({
       allowed: true,
     })
   })
@@ -70,7 +74,9 @@ describe('permissionToDecision', () => {
       team: undefined,
       judging: undefined,
     }
-    expect(permissionToDecision('Team.CanJoinTeam', perm, { hackathonId: 'h1' }, 'team-123')).toEqual({
+    expect(
+      permissionToDecision('Team.CanJoinTeam', perm, { hackathonId: 'h1' }, 'team-123')
+    ).toEqual({
       allowed: false,
       reason: 'ALREADY_IN_TEAM',
     })
@@ -99,7 +105,12 @@ describe('permissionToDecision', () => {
       judging: undefined,
     }
     expect(
-      permissionToDecision('Team.EditTeam', perm, { hackathonId: 'h1', teamId: 'other-team' }, 'my-team')
+      permissionToDecision(
+        'Team.EditTeam',
+        perm,
+        { hackathonId: 'h1', teamId: 'other-team' },
+        'my-team'
+      )
     ).toEqual({ allowed: false, reason: 'NOT_ALLOWED' })
   })
 
@@ -114,7 +125,12 @@ describe('permissionToDecision', () => {
       judging: undefined,
     }
     expect(
-      permissionToDecision('Team.EditTeam', perm, { hackathonId: 'h1', teamId: 'my-team' }, 'my-team')
+      permissionToDecision(
+        'Team.EditTeam',
+        perm,
+        { hackathonId: 'h1', teamId: 'my-team' },
+        'my-team'
+      )
     ).toEqual({ allowed: true })
   })
 
@@ -125,7 +141,9 @@ describe('permissionToDecision', () => {
       team: undefined,
       judging: undefined,
     }
-    expect(permissionToDecision('Judging.ViewLeaderboard', perm, { hackathonId: 'h1' }, null)).toEqual({
+    expect(
+      permissionToDecision('Judging.ViewLeaderboard', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({
       allowed: false,
       reason: 'NOT_ALLOWED',
     })
@@ -138,7 +156,9 @@ describe('permissionToDecision', () => {
       team: undefined,
       judging: { viewLeaderboard: true },
     }
-    expect(permissionToDecision('Judging.ViewLeaderboard', perm, { hackathonId: 'h1' }, null)).toEqual({
+    expect(
+      permissionToDecision('Judging.ViewLeaderboard', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({
       allowed: true,
     })
   })

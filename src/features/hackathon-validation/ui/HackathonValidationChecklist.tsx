@@ -30,9 +30,9 @@ export function HackathonValidationChecklist({ hackathonId }: HackathonValidatio
           </p>
         ) : isValid ? (
           <div className="flex items-center gap-m3">
-            <Icon 
-              src="/icons/icon-tick/icon-tick-sm.svg" 
-              size="sm" 
+            <Icon
+              src="/icons/icon-tick/icon-tick-sm.svg"
+              size="sm"
               colorClassName="bg-state-success"
             />
             <span className="typography-body-md-regular text-state-success">
@@ -43,9 +43,9 @@ export function HackathonValidationChecklist({ hackathonId }: HackathonValidatio
           <div className="flex flex-col gap-m3">
             {errors.map((error, index) => (
               <div key={index} className="flex items-start gap-m3">
-                <Icon 
-                  src="/icons/icon-cross/icon-cross-sm.svg" 
-                  size="sm" 
+                <Icon
+                  src="/icons/icon-cross/icon-cross-sm.svg"
+                  size="sm"
                   colorClassName="bg-state-error"
                   className="flex-shrink-0 mt-[2px]"
                 />
@@ -59,10 +59,7 @@ export function HackathonValidationChecklist({ hackathonId }: HackathonValidatio
 
         {/* Кнопка публикации */}
         <div>
-          <PublishHackathonButton
-            hackathonId={hackathonId}
-            disabled={!isValid || isLoading}
-          />
+          <PublishHackathonButton hackathonId={hackathonId} disabled={!isValid || isLoading} />
         </div>
       </div>
     </Section>

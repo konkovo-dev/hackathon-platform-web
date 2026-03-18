@@ -25,7 +25,7 @@ export function MarkdownEditor({
   className,
 }: MarkdownEditorProps) {
   const t = useT()
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value)
   }
@@ -49,7 +49,9 @@ export function MarkdownEditor({
 
       {/* Preview */}
       <div className="flex flex-col gap-m2">
-        <div className="typography-label-sm text-text-secondary">{t('common.markdown.preview')}</div>
+        <div className="typography-label-sm text-text-secondary">
+          {t('common.markdown.preview')}
+        </div>
         <div
           className={cn(
             'min-h-[120px] border border-solid rounded-[var(--spacing-m4)] px-m4 py-m4',

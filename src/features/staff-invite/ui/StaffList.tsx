@@ -7,7 +7,10 @@ import { useStaffListQuery, useStaffUsersQuery, useRemoveStaffRoleMutation } fro
 import { useState, useMemo } from 'react'
 import { StaffInviteModal } from './StaffInviteModal'
 import { UserListItem } from '@/entities/user'
-import type { HackathonRole, HackathonStaffMember } from '@/entities/hackathon/api/listHackathonStaff'
+import type {
+  HackathonRole,
+  HackathonStaffMember,
+} from '@/entities/hackathon/api/listHackathonStaff'
 
 export interface StaffListProps {
   hackathonId: string
@@ -23,15 +26,15 @@ export function StaffList({ hackathonId }: StaffListProps) {
 
   const staff = useMemo(() => data?.staff || [], [data?.staff])
   const canRemoveStaff = useMemo(
-    () =>
-      staff.some(
-        m => m.userId === currentUserId && (m.roles ?? []).includes('HX_ROLE_OWNER')
-      ),
+    () => staff.some(m => m.userId === currentUserId && (m.roles ?? []).includes('HX_ROLE_OWNER')),
     [staff, currentUserId]
   )
-  const userIds = useMemo(() => staff.map(s => s.userId).filter((id): id is string => id != null), [staff])
+  const userIds = useMemo(
+    () => staff.map(s => s.userId).filter((id): id is string => id != null),
+    [staff]
+  )
   const { data: usersData, isLoading: isLoadingUsers } = useStaffUsersQuery(userIds)
-  
+
   const usersMap = useMemo(() => {
     if (!usersData?.users) return new Map()
     return new Map(usersData.users.map(u => [u.userId, u]))

@@ -83,16 +83,12 @@ describe('ListItem', () => {
   })
 
   describe('rightContent', () => {
-    it('должен отображать rightContent вместо caption', () => {
+    it('должен отображать rightContent и caption вместе', () => {
       renderWithProviders(
-        <ListItem
-          text="Test item"
-          caption="caption"
-          rightContent={<span>Custom content</span>}
-        />
+        <ListItem text="Test item" caption="caption" rightContent={<span>Custom content</span>} />
       )
       expect(screen.getByText('Custom content')).toBeInTheDocument()
-      expect(screen.queryByText('caption')).not.toBeInTheDocument()
+      expect(screen.getByText('caption')).toBeInTheDocument()
     })
   })
 })

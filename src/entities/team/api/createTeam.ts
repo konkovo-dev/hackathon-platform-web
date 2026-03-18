@@ -11,11 +11,8 @@ export async function createTeam(
   hackathonId: string,
   request: CreateTeamRequest
 ): Promise<CreateTeamResponse> {
-  return platformFetchJson<CreateTeamResponse>(
-    `/v1/hackathons/${hackathonId}/teams`,
-    {
-      method: 'POST',
-      body: JSON.stringify(request),
-    }
-  )
+  return platformFetchJson<CreateTeamResponse>(`/v1/hackathons/${hackathonId}/teams`, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  })
 }

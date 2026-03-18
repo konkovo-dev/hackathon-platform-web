@@ -61,11 +61,14 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
 
   const stats = useMemo(() => {
     const total = participations.length
-    const byStatus = participations.reduce((acc, p) => {
-      const status = p.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED'
-      acc[status] = (acc[status] || 0) + 1
-      return acc
-    }, {} as Record<string, number>)
+    const byStatus = participations.reduce(
+      (acc, p) => {
+        const status = p.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED'
+        acc[status] = (acc[status] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
     return { total, byStatus }
   }, [participations])

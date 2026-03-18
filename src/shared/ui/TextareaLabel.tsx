@@ -15,7 +15,16 @@ export interface TextareaLabelProps extends HTMLAttributes<HTMLDivElement> {
 
 export const TextareaLabel = forwardRef<HTMLDivElement, TextareaLabelProps>(
   (
-    { className, label, textareaPlaceholder, textareaId, error, fillHeight = false, textareaProps, ...props },
+    {
+      className,
+      label,
+      textareaPlaceholder,
+      textareaId,
+      error,
+      fillHeight = false,
+      textareaProps,
+      ...props
+    },
     ref
   ) => {
     const id = textareaId || `textarea-${label.toLowerCase().replace(/\s+/g, '-')}`
@@ -26,7 +35,13 @@ export const TextareaLabel = forwardRef<HTMLDivElement, TextareaLabelProps>(
         className={cn('flex flex-col gap-m6', fillHeight && 'flex-1 min-h-0', className)}
         {...props}
       >
-        <Label htmlFor={id} className={cn('typography-label-md text-text-primary lowercase', fillHeight && 'shrink-0')}>
+        <Label
+          htmlFor={id}
+          className={cn(
+            'typography-label-md text-text-primary lowercase',
+            fillHeight && 'shrink-0'
+          )}
+        >
           {label}
         </Label>
         <Textarea
