@@ -190,6 +190,7 @@ export const I18N_KEYS = [
   "hackathons.edit.errors.unknown",
   "hackathons.edit.errors.update_failed",
   "hackathons.edit.title",
+  "hackathons.filters.city.any",
   "hackathons.filters.city.modalTitle",
   "hackathons.filters.city.placeholder",
   "hackathons.filters.city.search",

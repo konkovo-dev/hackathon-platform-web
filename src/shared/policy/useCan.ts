@@ -99,7 +99,10 @@ export function useCan(action: Action, params?: UseCanParams): UseCanResult {
   const teamId = params?.teamId
 
   const needsPermissions = needsHackathonPermissions(action)
-  const permissionsQuery = useHackathonPermissionsQuery(needsPermissions ? hackathonId : undefined)
+  const isAuthenticated = sessionQuery.data?.active === true
+  const permissionsQuery = useHackathonPermissionsQuery(needsPermissions ? hackathonId : undefined, {
+    enabled: isAuthenticated,
+  })
   const myParticipationQuery = useMyParticipationQuery(
     action === 'Team.CanJoinTeam' || TEAM_SCOPED_ACTIONS.includes(action) ? hackathonId : undefined
   )

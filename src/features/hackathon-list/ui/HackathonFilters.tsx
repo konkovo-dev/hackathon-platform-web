@@ -46,7 +46,7 @@ export function HackathonFilters({ filters, onFiltersChange }: HackathonFiltersP
   }
 
   const handleCitySelect = (city: string) => {
-    onFiltersChange({ ...filters, city })
+    onFiltersChange({ ...filters, city: city || undefined })
   }
 
   const handleCityClear = () => {
@@ -104,10 +104,10 @@ export function HackathonFilters({ filters, onFiltersChange }: HackathonFiltersP
 
         <Divider orientation="vertical" />
 
-        {/* Сортировка */}
+        {/* Сортировка: desc = сначала ближайшие (primary), asc = сначала поздние (secondary) */}
         <Chip
           label={t('hackathons.filters.sort.date')}
-          variant="primary"
+          variant={filters.sortDirection === 'desc' ? 'primary' : 'secondary'}
           icon={
             <Icon
               src={

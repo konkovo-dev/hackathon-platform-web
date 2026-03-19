@@ -1,39 +1,37 @@
 import type { HackathonListFilters, HackathonListQuery, Filter, FilterGroup } from './types'
 
 /**
- * Маппит UI-фильтры в API query для списка хакатонов
+ * Маппит UI-фильтры в API query для списка хакатонов.
+ * Логика: внутри одной filter group все условия объединяются через AND,
+ * между группами — через OR (используется только для стадии "all" / "running").
  */
 export function buildQueryFromFilters(
   filters: HackathonListFilters,
   pageToken?: string,
   pageSize?: number
 ): HackathonListQuery {
-  const filterGroups: FilterGroup[] = []
+  const additionalFilters = collectAdditionalFilters(filters)
 
-  // Фильтры по стадии с обязательным условием state=PUBLISHED
-  // Пропускаем для текстового поиска
+  let filterGroups: FilterGroup[] = []
+
   if (!filters.skipStageFilter) {
     const stageFilterGroups = mapStageFilter(filters.stage)
-    filterGroups.push(...stageFilterGroups)
-  }
-
-  // Фильтр по формату (online/offline)
-  const formatFilters = mapFormatFilter(filters.formats)
-  if (formatFilters.length > 0) {
-    filterGroups.push({ filters: formatFilters })
-  }
-
-  // Фильтр по городу
-  if (filters.city) {
-    filterGroups.push({
-      filters: [
-        {
-          field: 'location.city',
-          operation: 'FILTER_OPERATION_EQUAL',
-          stringValue: filters.city,
-        },
-      ],
-    })
+    filterGroups = stageFilterGroups.map(group => ({
+      filters: [...(group.filters ?? []), ...additionalFilters],
+    }))
+  } else if (additionalFilters.length > 0) {
+    filterGroups = [
+      {
+        filters: [
+          {
+            field: 'state',
+            operation: 'FILTER_OPERATION_EQUAL',
+            stringValue: 'HACKATHON_STATE_PUBLISHED',
+          },
+          ...additionalFilters,
+        ],
+      },
+    ]
   }
 
   return {
@@ -42,7 +40,7 @@ export function buildQueryFromFilters(
       q: filters.searchQuery,
       sort: [
         {
-          field: 'dates.startsAt',
+          field: 'starts_at',
           direction: filters.sortDirection === 'asc' ? 'SORT_DIRECTION_ASC' : 'SORT_DIRECTION_DESC',
         },
       ],
@@ -58,6 +56,27 @@ export function buildQueryFromFilters(
     includeLinks: false,
     includeLimits: true,
   }
+}
+
+/**
+ * Собирает фильтры формата (online/offline) и города в один массив.
+ * Эти условия добавляются в каждую группу (AND внутри группы).
+ */
+function collectAdditionalFilters(filters: HackathonListFilters): Filter[] {
+  const result: Filter[] = []
+
+  const formatFilters = mapFormatFilter(filters.formats)
+  result.push(...formatFilters)
+
+  if (filters.city) {
+    result.push({
+      field: 'location.city',
+      operation: 'FILTER_OPERATION_EQUAL',
+      stringValue: filters.city,
+    })
+  }
+
+  return result
 }
 
 /**
@@ -200,6 +219,6 @@ export function getDefaultFilters(): HackathonListFilters {
     stage: 'all',
     formats: [],
     city: undefined,
-    sortDirection: 'asc',
+    sortDirection: 'desc',
   }
 }

@@ -69,12 +69,10 @@ describe('useFiltersFromUrl - URL parsing', () => {
     expect(city).toBe('Москва')
   })
 
-  it('should parse sort parameter', () => {
-    const searchParams = new URLSearchParams('sort=desc')
-    const sort = searchParams.get('sort')
-
-    expect(sort).toBe('desc')
-    expect(sort === 'desc' ? 'desc' : 'asc').toBe('desc')
+  it('should parse sort parameter (asc in URL => asc, else => desc)', () => {
+    expect(new URLSearchParams('sort=asc').get('sort')).toBe('asc')
+    expect(new URLSearchParams('sort=desc').get('sort')).toBe('desc')
+    expect(new URLSearchParams().get('sort')).toBe(null)
   })
 
   it('should handle multiple parameters', () => {
@@ -126,12 +124,12 @@ describe('useFiltersFromUrl - URL serialization', () => {
     expect(params.toString()).toContain('city')
   })
 
-  it('should always serialize sort', () => {
-    const params = new URLSearchParams()
-    const sortDirection = 'desc'
+  it('should add sort=asc to URL only when ascending (desc is default)', () => {
+    const paramsAsc = new URLSearchParams()
+    paramsAsc.set('sort', 'asc')
+    expect(paramsAsc.get('sort')).toBe('asc')
 
-    params.set('sort', sortDirection)
-
-    expect(params.toString()).toBe('sort=desc')
+    const paramsDesc = new URLSearchParams()
+    expect(paramsDesc.has('sort')).toBe(false)
   })
 })

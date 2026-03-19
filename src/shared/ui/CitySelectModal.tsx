@@ -6,6 +6,7 @@ import { useT } from '@/shared/i18n/useT'
 import { getCities, getCityName } from '@/entities/location'
 import { useLocale } from '@/shared/i18n/useLocale'
 
+/** Пустая строка означает «любой город» (сброс фильтра). */
 export interface CitySelectModalProps {
   open: boolean
   onClose: () => void
@@ -52,6 +53,13 @@ export function CitySelectModal({ open, onClose, onSelect, currentCity }: CitySe
 
         <div className="max-h-[400px] overflow-y-auto">
           <SelectList>
+            <ListItem
+              text={t('hackathons.filters.city.any')}
+              selectable
+              selected={currentCity === undefined}
+              variant="bordered"
+              onClick={() => handleSelect('')}
+            />
             {filteredCities.map(city => {
               const cityName = getCityName(city, locale)
               const displayName = `${cityName}, ${city.country}`

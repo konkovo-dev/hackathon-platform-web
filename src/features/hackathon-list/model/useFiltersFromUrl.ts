@@ -106,7 +106,7 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
       ? (formatParam.split(',').filter(f => f === 'online' || f === 'offline') as HackathonFormat[])
       : defaults.formats,
     city: city ? city : undefined,
-    sortDirection: sort === 'desc' ? 'desc' : 'asc',
+    sortDirection: sort === 'asc' ? 'asc' : 'desc',
   }
 }
 
@@ -131,8 +131,9 @@ function serializeFiltersToUrl(filters: HackathonListFilters): string {
     params.set('city', filters.city)
   }
 
-  // Сортировка
-  params.set('sort', filters.sortDirection)
+  if (filters.sortDirection === 'asc') {
+    params.set('sort', 'asc')
+  }
 
   return params.toString()
 }

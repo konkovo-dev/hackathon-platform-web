@@ -113,7 +113,8 @@
       "offline": "offline"
     },
     "city": {
-      "placeholder": "Выберите город",
+      "any": "любой город",
+      "placeholder": "выберите город",
       "search": "поиск городов",
       "modalTitle": "город проведения"
     },

@@ -113,6 +113,7 @@
       "offline": "offline"
     },
     "city": {
+      "any": "any city",
       "placeholder": "select city",
       "search": "search cities",
       "modalTitle": "city"

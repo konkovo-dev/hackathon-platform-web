@@ -11,13 +11,13 @@ describe('filterMapper', () => {
         stage: 'all',
         formats: [],
         city: undefined,
-        sortDirection: 'asc',
+        sortDirection: 'desc',
       })
     })
   })
 
   describe('buildQueryFromFilters', () => {
-    it('should build query with all filters', () => {
+    it('should build query with all filters in one group (AND)', () => {
       const filters: HackathonListFilters = {
         stage: 'registration',
         formats: ['online'],
@@ -31,10 +31,35 @@ describe('filterMapper', () => {
       expect(query.includeLinks).toBe(false)
       expect(query.includeLimits).toBe(true)
 
-      expect(query.query?.filterGroups).toHaveLength(3)
+      expect(query.query?.filterGroups).toHaveLength(1)
+      expect(query.query?.filterGroups?.[0]?.filters).toHaveLength(4)
+      const groupFilters = query.query?.filterGroups?.[0]?.filters ?? []
+      expect(groupFilters.find(f => f.field === 'state')?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
+      expect(groupFilters.find(f => f.field === 'stage')?.stringValue).toBe('HACKATHON_STAGE_REGISTRATION')
+      expect(groupFilters.find(f => f.field === 'location.online')?.boolValue).toBe(true)
+      expect(groupFilters.find(f => f.field === 'location.city')?.stringValue).toBe('Москва')
       expect(query.query?.sort).toEqual([
-        { field: 'dates.startsAt', direction: 'SORT_DIRECTION_DESC' },
+        { field: 'starts_at', direction: 'SORT_DIRECTION_DESC' },
       ])
+    })
+
+    it('should build one filter group for offline REGISTRATION in Moscow (AND inside group)', () => {
+      const filters: HackathonListFilters = {
+        stage: 'registration',
+        formats: ['offline'],
+        city: 'Москва',
+        sortDirection: 'asc',
+      }
+
+      const query = buildQueryFromFilters(filters)
+
+      expect(query.query?.filterGroups).toHaveLength(1)
+      const filtersInGroup = query.query?.filterGroups?.[0]?.filters ?? []
+      expect(filtersInGroup).toHaveLength(4)
+      expect(filtersInGroup.find(f => f.field === 'state')?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
+      expect(filtersInGroup.find(f => f.field === 'stage')?.stringValue).toBe('HACKATHON_STAGE_REGISTRATION')
+      expect(filtersInGroup.find(f => f.field === 'location.online')?.boolValue).toBe(false)
+      expect(filtersInGroup.find(f => f.field === 'location.city')?.stringValue).toBe('Москва')
     })
 
     it('should map stage "all" to active stages excluding FINISHED', () => {
@@ -174,9 +199,9 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.find(group =>
-        group.filters?.some(f => f.field === 'location.online')
-      )?.filters?.[0]
+      const formatFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
+        f => f.field === 'location.online'
+      )
 
       expect(formatFilter?.field).toBe('location.online')
       expect(formatFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -191,9 +216,9 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.find(group =>
-        group.filters?.some(f => f.field === 'location.online')
-      )?.filters?.[0]
+      const formatFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
+        f => f.field === 'location.online'
+      )
 
       expect(formatFilter?.field).toBe('location.online')
       expect(formatFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -211,7 +236,6 @@ describe('filterMapper', () => {
       const hasFormatFilter = query.query?.filterGroups?.some(group =>
         group.filters?.some(f => f.field === 'location.online')
       )
-
       expect(hasFormatFilter).toBe(false)
     })
 
@@ -224,30 +248,16 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const cityFilter = query.query?.filterGroups?.find(group =>
-        group.filters?.some(f => f.field === 'location.city')
-      )?.filters?.[0]
+      const cityFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
+        f => f.field === 'location.city'
+      )
 
       expect(cityFilter?.field).toBe('location.city')
       expect(cityFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
       expect(cityFilter?.stringValue).toBe('Москва')
     })
 
-    it('should sort ascending by default', () => {
-      const filters: HackathonListFilters = {
-        stage: 'all',
-        formats: [],
-        sortDirection: 'asc',
-      }
-
-      const query = buildQueryFromFilters(filters)
-
-      expect(query.query?.sort).toEqual([
-        { field: 'dates.startsAt', direction: 'SORT_DIRECTION_ASC' },
-      ])
-    })
-
-    it('should sort descending when specified', () => {
+    it('should sort descending by default', () => {
       const filters: HackathonListFilters = {
         stage: 'all',
         formats: [],
@@ -257,7 +267,21 @@ describe('filterMapper', () => {
       const query = buildQueryFromFilters(filters)
 
       expect(query.query?.sort).toEqual([
-        { field: 'dates.startsAt', direction: 'SORT_DIRECTION_DESC' },
+        { field: 'starts_at', direction: 'SORT_DIRECTION_DESC' },
+      ])
+    })
+
+    it('should sort ascending when specified', () => {
+      const filters: HackathonListFilters = {
+        stage: 'all',
+        formats: [],
+        sortDirection: 'asc',
+      }
+
+      const query = buildQueryFromFilters(filters)
+
+      expect(query.query?.sort).toEqual([
+        { field: 'starts_at', direction: 'SORT_DIRECTION_ASC' },
       ])
     })
   })
