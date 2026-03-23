@@ -79,17 +79,27 @@
     },
     "participation": {
       "empty": "you are not in a team for this hackathon",
-      "goToTeams": "to teams list",
       "solo": "you are participating as an individual",
       "lookingForTeam": "you are looking for a team",
       "unregister": "cancel registration",
-      "unregisterConfirm": "are you sure you want to cancel your hackathon registration?",
-      "goToTeamsStub": "to teams list (coming soon)"
+      "unregisterConfirm": "are you sure you want to cancel your hackathon registration?"
+    },
+    "matchmaking": {
+      "title": "recommended teams",
+      "empty": "no recommendations yet",
+      "loading": "finding teams...",
+      "error": "could not load recommendations",
+      "matchScore": "match: {score}"
     }
   },
   "card": {
     "details": "details",
-    "teamSize": "up to {count} people"
+    "teamSize": "up to {count} people",
+    "participation": {
+      "individual": "solo",
+      "lookingForTeam": "looking for a team",
+      "team": "{name}"
+    }
   },
   "stage": {
     "draft": "draft",

@@ -1,12 +1,13 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Section, Button, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { listTeamRoles } from '@/entities/team'
 import type { Vacancy } from '@/entities/team'
 import { VacancyItem } from './VacancyItem'
+import { MatchmakingCandidatesModal } from './MatchmakingCandidatesModal'
 
 export interface VacanciesListProps {
   vacancies: Vacancy[]
@@ -14,6 +15,8 @@ export interface VacanciesListProps {
   onDelete?: (vacancy: Vacancy) => void
   onAdd?: () => void
   canManage?: boolean
+  hackathonId?: string
+  teamId?: string
 }
 
 export function VacanciesList({
@@ -22,8 +25,12 @@ export function VacanciesList({
   onDelete,
   onAdd,
   canManage,
+  hackathonId,
+  teamId,
 }: VacanciesListProps) {
   const t = useT()
+  const [candidatesVacancyId, setCandidatesVacancyId] = useState<string | null>(null)
+  const canMatchmaking = Boolean(canManage && hackathonId && teamId)
   const { data: rolesData } = useQuery({
     queryKey: ['team-roles'],
     queryFn: listTeamRoles,
@@ -37,6 +44,7 @@ export function VacanciesList({
   }, [rolesData])
 
   return (
+    <>
     <Section
       title={t('teams.vacancies.title')}
       variant="elevated"
@@ -64,11 +72,26 @@ export function VacanciesList({
               rolesById={rolesById}
               onEdit={canManage && onEdit ? () => onEdit(vacancy) : undefined}
               onDelete={canManage && onDelete ? () => onDelete(vacancy) : undefined}
+              onMatchmakingCandidates={
+                canMatchmaking && vacancy.vacancyId
+                  ? () => setCandidatesVacancyId(vacancy.vacancyId!)
+                  : undefined
+              }
               canManage={canManage}
             />
           ))}
         </div>
       )}
     </Section>
+    {canMatchmaking && candidatesVacancyId && hackathonId && teamId && (
+      <MatchmakingCandidatesModal
+        open
+        onClose={() => setCandidatesVacancyId(null)}
+        hackathonId={hackathonId}
+        teamId={teamId}
+        vacancyId={candidatesVacancyId}
+      />
+    )}
+    </>
   )
 }

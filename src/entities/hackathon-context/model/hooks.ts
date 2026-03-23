@@ -12,12 +12,17 @@ export function useMyParticipationQuery(hackathonId: string | null | undefined) 
     queryKey: hackathonId
       ? hackathonMyParticipationQueryKey(hackathonId)
       : ['hackathon', 'participation', 'me', 'none'],
-    queryFn: () => {
+    queryFn: async () => {
       if (!hackathonId) throw new Error('hackathonId is required')
-      return getMyParticipation(hackathonId)
+      try {
+        return await getMyParticipation(hackathonId)
+      } catch {
+        // Дублируем защиту: 403/ошибки сети не должны переводить query в error (карточки списка).
+        return { teamId: null, status: null }
+      }
     },
     enabled: Boolean(hackathonId),
     staleTime: 15_000,
-    retry: 1,
+    retry: false,
   })
 }

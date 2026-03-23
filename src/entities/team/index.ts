@@ -45,6 +45,22 @@ export {
 } from './api/listJoinRequests'
 export { acceptJoinRequest, type AcceptJoinRequestResponse } from './api/acceptJoinRequest'
 export { rejectJoinRequest, type RejectJoinRequestResponse } from './api/rejectJoinRequest'
+export {
+  getMatchmakingTeams,
+  type GetMatchmakingTeamsResponse,
+} from './api/getMatchmakingTeams'
+export {
+  getMatchmakingCandidates,
+  type GetMatchmakingCandidatesResponse,
+} from './api/getMatchmakingCandidates'
+export {
+  useTeamQuery,
+  useMatchmakingTeamsQuery,
+  useMatchmakingCandidatesQuery,
+  useJoinRequestsQuery,
+  useAcceptJoinRequestMutation,
+  useRejectJoinRequestMutation,
+} from './model/hooks'
 
 export type {
   Team,

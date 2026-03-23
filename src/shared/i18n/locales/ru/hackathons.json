@@ -79,17 +79,27 @@
     },
     "participation": {
       "empty": "вы не состоите в команде на этом хакатоне",
-      "goToTeams": "к списку команд",
       "solo": "вы участвуете один",
       "lookingForTeam": "вы в поиске команды",
       "unregister": "отменить регистрацию",
-      "unregisterConfirm": "вы уверены, что хотите отменить регистрацию на хакатон?",
-      "goToTeamsStub": "к списку команд (скоро)"
+      "unregisterConfirm": "вы уверены, что хотите отменить регистрацию на хакатон?"
+    },
+    "matchmaking": {
+      "title": "подходящие команды",
+      "empty": "пока нет рекомендаций",
+      "loading": "подбираем команды...",
+      "error": "не удалось загрузить рекомендации",
+      "matchScore": "совпадение: {score}"
     }
   },
   "card": {
     "details": "подробнее",
-    "teamSize": "до {count} человек"
+    "teamSize": "до {count} человек",
+    "participation": {
+      "individual": "индивидуально",
+      "lookingForTeam": "в поиске команды",
+      "team": "{name}"
+    }
   },
   "stage": {
     "draft": "черновик",

@@ -104,7 +104,18 @@
     "pending": "pending",
     "accepted": "accepted",
     "declined": "declined",
-    "viewMessage": "view message"
+    "viewMessage": "view message",
+    "vacancy": "vacancy",
+    "vacancyUnknown": "not specified"
+  },
+  "matchmaking": {
+    "suitableCandidates": "matching candidates",
+    "modalTitle": "candidates for vacancy",
+    "invite": "invite",
+    "invited": "invitation sent",
+    "matchScore": "match: {score}",
+    "empty": "no matching candidates yet",
+    "loadError": "could not load candidates"
   },
   "join": {
     "title": "join team",

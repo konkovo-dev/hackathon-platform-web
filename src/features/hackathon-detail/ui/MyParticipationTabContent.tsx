@@ -4,13 +4,15 @@ import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button, Modal } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
-import { useTeamQuery } from '@/widgets/team-detail/model/hooks'
+import { useTeamQuery } from '@/entities/team/model/hooks'
 import { TeamCard } from '@/features/teams-list'
 import { useLeaveTeamMutation } from '@/features/team-members'
 import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 import { useUnregisterFromHackathonMutation } from '../model/hooks'
 import { useCan } from '@/shared/policy/useCan'
 import type { components } from '@/shared/api/platform.schema'
+import { MatchmakingTeamsList } from '@/features/matchmaking-teams'
+import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 
 type ParticipationStatus = components['schemas']['v1ParticipationStatus']
 
@@ -19,6 +21,7 @@ export interface MyParticipationTabContentProps {
   myTeamId: string | null
   participationStatus: ParticipationStatus | null
   ctxLoading: boolean
+  hackathonStage: HackathonStage
 }
 
 export function MyParticipationTabContent({
@@ -26,6 +29,7 @@ export function MyParticipationTabContent({
   myTeamId,
   participationStatus,
   ctxLoading,
+  hackathonStage,
 }: MyParticipationTabContentProps) {
   const t = useT()
 
@@ -40,7 +44,11 @@ export function MyParticipationTabContent({
   return (
     <div className="flex flex-col gap-m16">
       {!myTeamId ? (
-        <NoTeamContent hackathonId={hackathonId} participationStatus={participationStatus} />
+        <NoTeamContent
+          hackathonId={hackathonId}
+          participationStatus={participationStatus}
+          hackathonStage={hackathonStage}
+        />
       ) : (
         <ParticipationTeamCard hackathonId={hackathonId} teamId={myTeamId} />
       )}
@@ -52,9 +60,11 @@ export function MyParticipationTabContent({
 function NoTeamContent({
   hackathonId,
   participationStatus,
+  hackathonStage,
 }: {
   hackathonId: string
   participationStatus: ParticipationStatus | null
+  hackathonStage: HackathonStage
 }) {
   const t = useT()
   const [unregisterConfirmOpen, setUnregisterConfirmOpen] = useState(false)
@@ -80,11 +90,11 @@ function NoTeamContent({
   }
 
   return (
-    <div className="flex flex-col gap-m8 py-m8">
+    <div className="flex flex-col gap-m8">
       <p className="typography-body-md text-text-secondary">{statusText}</p>
-      <p className="typography-body-sm text-text-tertiary">
-        {t('hackathons.detail.participation.goToTeamsStub')}
-      </p>
+      {participationStatus === 'PART_LOOKING_FOR_TEAM' && hackathonStage === 'REGISTRATION' && (
+        <MatchmakingTeamsList hackathonId={hackathonId} />
+      )}
       {canUnregister && (
         <div>
           <Button
@@ -166,7 +176,7 @@ function ParticipationTeamCard({ hackathonId, teamId }: { hackathonId: string; t
   }
 
   return (
-    <div className="flex flex-col gap-m8 py-m8">
+    <div className="flex flex-col gap-m8">
       <TeamCard
         hackathonId={hackathonId}
         teamWithVacancies={teamWithVacancies}

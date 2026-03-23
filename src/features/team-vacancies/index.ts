@@ -1,4 +1,5 @@
 export { VacanciesList } from './ui/VacanciesList'
 export { VacancyItem } from './ui/VacancyItem'
 export { VacancyUpsertModal } from './ui/VacancyUpsertModal'
+export { MatchmakingCandidatesModal } from './ui/MatchmakingCandidatesModal'
 export { useUpsertVacancyMutation } from './model/hooks'

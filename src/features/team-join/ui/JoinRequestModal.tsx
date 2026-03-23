@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ErrorAlert, Modal, SelectList, ListItem, Section, Button } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCreateJoinRequestMutation } from '../model/hooks'
@@ -13,6 +13,8 @@ export interface JoinRequestModalProps {
   hackathonId: string
   teamId: string
   vacancies: Vacancy[]
+  /** Pre-select vacancy when opening (e.g. matchmaking best vacancy). */
+  initialVacancyId?: string | null
 }
 
 export function JoinRequestModal({
@@ -21,13 +23,27 @@ export function JoinRequestModal({
   hackathonId,
   teamId,
   vacancies,
+  initialVacancyId,
 }: JoinRequestModalProps) {
   const t = useT()
   const [selectedVacancyId, setSelectedVacancyId] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [error, setError] = useState<string | null>(null)
 
+  useEffect(() => {
+    if (open && initialVacancyId) {
+      setSelectedVacancyId(initialVacancyId)
+    }
+  }, [open, initialVacancyId])
+
   const createMutation = useCreateJoinRequestMutation(hackathonId, teamId)
+
+  const handleClose = () => {
+    setSelectedVacancyId(null)
+    setMessage('')
+    setError(null)
+    onClose()
+  }
 
   const handleSubmit = async () => {
     if (!selectedVacancyId) return
@@ -38,9 +54,7 @@ export function JoinRequestModal({
         vacancyId: selectedVacancyId,
         message: message.trim() || undefined,
       })
-      onClose()
-      setSelectedVacancyId(null)
-      setMessage('')
+      handleClose()
     } catch (err) {
       console.error('Failed to create join request:', err)
       if (err instanceof ApiError) {
@@ -52,7 +66,7 @@ export function JoinRequestModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={t('teams.join.title')} size="lg">
+    <Modal open={open} onClose={handleClose} title={t('teams.join.title')} size="lg">
       <div className="flex flex-col gap-m6">
         <Section title={t('teams.join.selectVacancy')} variant="outlined">
           {vacancies.length === 0 ? (
@@ -97,7 +111,7 @@ export function JoinRequestModal({
           <Button
             variant="secondary"
             size="md"
-            onClick={onClose}
+            onClick={handleClose}
             disabled={createMutation.isPending}
           >
             {t('teams.join.cancel')}

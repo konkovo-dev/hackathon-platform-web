@@ -13,6 +13,7 @@ import {
   TeamInviteModal,
 } from '@/features/team-members'
 import { VacanciesList, VacancyUpsertModal } from '@/features/team-vacancies'
+import { JoinRequestsList } from '@/features/join-requests-management'
 import type { Vacancy } from '@/entities/team'
 import { JoinTeamButton } from '@/features/team-join'
 import { EditTeamModal } from '@/features/team-edit'
@@ -65,6 +66,10 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   const { decision: transferDecision } = useCan('Team.TransferCaptain', { hackathonId, teamId })
   const { decision: kickDecision } = useCan('Team.KickMember', { hackathonId, teamId })
   const { decision: inviteDecision } = useCan('Team.InviteMember', { hackathonId, teamId })
+  const { decision: manageJoinRequestsDecision } = useCan('Team.ManageJoinRequests', {
+    hackathonId,
+    teamId,
+  })
   const { decision: canJoinTeamDecision } = useCan('Team.CanJoinTeam', { hackathonId })
 
   const canEdit = editDecision.allowed
@@ -144,6 +149,8 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
 
         <VacanciesList
           vacancies={vacancies}
+          hackathonId={hackathonId}
+          teamId={teamId}
           canManage={canManageVacancy}
           onAdd={() => {
             setEditingVacancy(null)
@@ -153,6 +160,10 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
             setEditingVacancy(v)
           }}
         />
+
+        <AccessGate decision={manageJoinRequestsDecision}>
+          <JoinRequestsList hackathonId={hackathonId} teamId={teamId} vacancies={vacancies} />
+        </AccessGate>
       </div>
       {team && (
         <EditTeamModal

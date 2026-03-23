@@ -10,6 +10,7 @@ export interface VacancyItemProps {
   rolesById?: Map<string, string>
   onEdit?: () => void
   onDelete?: () => void
+  onMatchmakingCandidates?: () => void
   canManage?: boolean
 }
 
@@ -18,6 +19,7 @@ export function VacancyItem({
   rolesById,
   onEdit,
   onDelete,
+  onMatchmakingCandidates,
   canManage,
 }: VacancyItemProps) {
   const t = useT()
@@ -50,6 +52,18 @@ export function VacancyItem({
   const rightContent =
     canManage && isHovered ? (
       <div className="flex gap-m2" onClick={e => e.stopPropagation()}>
+        {onMatchmakingCandidates && (
+          <Button
+            variant="secondary"
+            size="xs"
+            onClick={e => {
+              e.stopPropagation()
+              onMatchmakingCandidates()
+            }}
+          >
+            {t('teams.matchmaking.suitableCandidates')}
+          </Button>
+        )}
         <Button
           variant="icon-secondary"
           size="xs"
