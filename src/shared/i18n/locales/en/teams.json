@@ -1,7 +1,23 @@
 {
   "my": {
     "title": "my teams",
-    "empty": "your teams list will be here"
+    "empty": "your teams list will be here",
+    "outgoingJoinRequests": {
+      "title": "sent requests",
+      "empty": "no sent requests",
+      "loading": "loading requests...",
+      "loadError": "could not load requests",
+      "teamUnknown": "team",
+      "sentAt": "sent {date}",
+      "status": {
+        "unspecified": "status unknown",
+        "pending": "pending",
+        "accepted": "accepted",
+        "declined": "declined",
+        "canceled": "canceled",
+        "expired": "expired"
+      }
+    }
   },
   "list": {
     "title": "teams",
@@ -106,7 +122,8 @@
     "declined": "declined",
     "viewMessage": "view message",
     "vacancy": "vacancy",
-    "vacancyUnknown": "not specified"
+    "vacancyUnknown": "not specified",
+    "roles": "roles"
   },
   "matchmaking": {
     "suitableCandidates": "matching candidates",
@@ -124,7 +141,6 @@
     "messagePlaceholder": "tell about yourself and why you want to join...",
     "submit": "send request",
     "cancel": "cancel",
-    "back": "back",
     "success": "request sent"
   },
   "card": {

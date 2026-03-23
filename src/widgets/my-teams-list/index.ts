@@ -1,2 +1,6 @@
 export { MyTeamsList } from './ui/MyTeamsList'
-export { useMyTeamsQuery } from './model/hooks'
+export {
+  useMyTeamsQuery,
+  usePendingJoinRequestsInboxCount,
+  useMyJoinRequestsQuery,
+} from './model/hooks'

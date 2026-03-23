@@ -53,7 +53,7 @@ export function InvitationMessageModal({
       title={title || t('invitations.messageModal.title')}
       size="md"
     >
-      <div className="flex flex-col gap-m8">
+      <div className="flex flex-col gap-m6">
         <div
           className={cn(
             (createdByUserId || (showHackathon && hackathonId)) &&

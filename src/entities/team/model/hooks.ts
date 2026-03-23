@@ -1,11 +1,20 @@
 'use client'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from '@tanstack/react-query'
 import { ApiError } from '@/shared/api/errors'
 import { getTeam } from '../api/getTeam'
 import { getMatchmakingTeams } from '../api/getMatchmakingTeams'
 import { getMatchmakingCandidates } from '../api/getMatchmakingCandidates'
-import { listJoinRequests, type ListJoinRequestsRequest } from '../api/listJoinRequests'
+import {
+  listJoinRequests,
+  type ListJoinRequestsRequest,
+  type ListJoinRequestsResponse,
+} from '../api/listJoinRequests'
 import { acceptJoinRequest } from '../api/acceptJoinRequest'
 import { rejectJoinRequest } from '../api/rejectJoinRequest'
 
@@ -23,6 +32,20 @@ const PENDING_JOIN_REQUESTS_QUERY: ListJoinRequestsRequest = {
       },
     ],
   },
+}
+
+export async function fetchPendingJoinRequestsOrEmpty(
+  hackathonId: string,
+  teamId: string
+): Promise<ListJoinRequestsResponse> {
+  try {
+    return await listJoinRequests(hackathonId, teamId, PENDING_JOIN_REQUESTS_QUERY)
+  } catch (e) {
+    if (e instanceof ApiError && e.data.status === 403) {
+      return { requests: [] }
+    }
+    throw e
+  }
 }
 
 export function useTeamQuery(
@@ -76,7 +99,7 @@ export function useMatchmakingCandidatesQuery(
 export function useJoinRequestsQuery(hackathonId: string, teamId: string) {
   return useQuery({
     queryKey: ['hackathon', hackathonId, 'team', teamId, 'join-requests'],
-    queryFn: () => listJoinRequests(hackathonId, teamId, PENDING_JOIN_REQUESTS_QUERY),
+    queryFn: () => fetchPendingJoinRequestsOrEmpty(hackathonId, teamId),
     refetchInterval: 30_000,
     enabled: Boolean(hackathonId && teamId),
   })
@@ -88,12 +111,35 @@ function joinRequestsInvalidatePredicate(hackathonId: string, teamId: string) {
   }
 }
 
+/** Сразу убирает заявку из кэша, чтобы список/бейджи обновились до refetch. */
+function removeJoinRequestFromCache(
+  queryClient: QueryClient,
+  hackathonId: string,
+  teamId: string,
+  requestId: string
+) {
+  queryClient.setQueryData<ListJoinRequestsResponse>(
+    ['hackathon', hackathonId, 'team', teamId, 'join-requests'],
+    old => {
+      if (!old?.requests?.length) return old
+      const next = old.requests.filter(r => r.requestId !== requestId)
+      if (next.length === old.requests.length) return old
+      return { ...old, requests: next }
+    }
+  )
+}
+
 export function useAcceptJoinRequestMutation(hackathonId: string, teamId: string) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (requestId: string) => acceptJoinRequest(hackathonId, teamId, requestId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(joinRequestsInvalidatePredicate(hackathonId, teamId))
+    onSuccess: async (_data, requestId) => {
+      removeJoinRequestFromCache(queryClient, hackathonId, teamId, requestId)
+      await Promise.all([
+        queryClient.invalidateQueries(joinRequestsInvalidatePredicate(hackathonId, teamId)),
+        queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] }),
+        queryClient.invalidateQueries({ queryKey: ['team-members', hackathonId, teamId] }),
+      ])
     },
   })
 }
@@ -102,8 +148,9 @@ export function useRejectJoinRequestMutation(hackathonId: string, teamId: string
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (requestId: string) => rejectJoinRequest(hackathonId, teamId, requestId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(joinRequestsInvalidatePredicate(hackathonId, teamId))
+    onSuccess: async (_data, requestId) => {
+      removeJoinRequestFromCache(queryClient, hackathonId, teamId, requestId)
+      await queryClient.invalidateQueries(joinRequestsInvalidatePredicate(hackathonId, teamId))
     },
   })
 }

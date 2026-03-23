@@ -39,19 +39,14 @@ export function VacancyItem({
           .join(', ')
       : t('common.fallback.untitled')
 
-  const handleEdit = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    onEdit?.()
-  }
-
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation()
     onDelete?.()
   }
 
   const rightContent =
-    canManage && isHovered ? (
-      <div className="flex gap-m2" onClick={e => e.stopPropagation()}>
+    onMatchmakingCandidates || (canManage && isHovered && onDelete) ? (
+      <div className="flex gap-m2 items-center" onClick={e => e.stopPropagation()}>
         {onMatchmakingCandidates && (
           <Button
             variant="secondary"
@@ -64,15 +59,7 @@ export function VacancyItem({
             {t('teams.matchmaking.suitableCandidates')}
           </Button>
         )}
-        <Button
-          variant="icon-secondary"
-          size="xs"
-          onClick={handleEdit}
-          aria-label={t('teams.vacancies.edit')}
-        >
-          <Icon src="/icons/icon-edit/icon-edit-xs.svg" size="xs" color="secondary" />
-        </Button>
-        {onDelete && (
+        {canManage && isHovered && onDelete && (
           <Button
             variant="icon-secondary"
             size="xs"

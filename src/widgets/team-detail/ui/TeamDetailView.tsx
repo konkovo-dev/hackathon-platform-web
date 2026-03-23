@@ -72,6 +72,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
     hackathonId,
     teamId,
   })
+  const { decision: leaveTeamDecision } = useCan('Team.LeaveTeam', { hackathonId, teamId })
   const { decision: canJoinTeamDecision } = useCan('Team.CanJoinTeam', { hackathonId })
 
   const canEdit = editDecision.allowed
@@ -152,6 +153,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
           teamId={teamId}
           currentUserId={currentUserId}
           canKickMember={canKickMember}
+          canLeaveTeam={leaveTeamDecision.allowed}
           canInviteMember={canInviteMember}
           onInvite={() => setInviteModalOpen(true)}
           onTransferCaptain={canTransfer ? () => setTransferModalOpen(true) : undefined}

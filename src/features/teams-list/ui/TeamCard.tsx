@@ -5,7 +5,12 @@ import { useQuery } from '@tanstack/react-query'
 import { Button, Icon, IconText } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
-import { listTeamMembers, type TeamWithVacancies } from '@/entities/team'
+import {
+  countPendingJoinRequests,
+  listTeamMembers,
+  useJoinRequestsQuery,
+  type TeamWithVacancies,
+} from '@/entities/team'
 import { cn } from '@/shared/lib/cn'
 
 export interface TeamCardProps {
@@ -33,6 +38,8 @@ export function TeamCard({
     queryFn: () => listTeamMembers(hackathonId, teamId),
     enabled: !!team && !!hackathonId && !!teamId,
   })
+  const { data: joinRequestsData } = useJoinRequestsQuery(hackathonId, teamId)
+  const pendingJoinRequestsCount = countPendingJoinRequests(joinRequestsData?.requests)
 
   if (!team) return null
 
@@ -59,7 +66,7 @@ export function TeamCard({
   return (
     <div
       className={cn(
-        'flex flex-col p-m8 w-[258px] h-full',
+        'relative flex flex-col p-m8 w-[258px] h-full',
         'rounded-[var(--spacing-m4)] overflow-hidden',
         'animate-in fade-in zoom-in-95 duration-150',
         'transition-all duration-200 ease-out',
@@ -74,6 +81,18 @@ export function TeamCard({
       )}
       onClick={handleNavigate}
     >
+      {pendingJoinRequestsCount > 0 && (
+        <span
+          className={cn(
+            'absolute z-10 min-w-[20px] h-[20px] px-m4 flex items-center justify-center rounded-full',
+            'bg-brand-primary text-text-primary typography-caption-xs',
+            'top-m4 right-m4'
+          )}
+          aria-hidden
+        >
+          {pendingJoinRequestsCount > 99 ? '99+' : pendingJoinRequestsCount}
+        </span>
+      )}
       <div className="flex flex-col gap-m8 flex-1">
         <h3 className="typography-title-md text-text-primary">{team.name}</h3>
         <div className="flex flex-col gap-m4">

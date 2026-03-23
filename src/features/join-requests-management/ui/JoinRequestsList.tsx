@@ -8,7 +8,7 @@ import {
   useAcceptJoinRequestMutation,
   useRejectJoinRequestMutation,
 } from '@/entities/team/model/hooks'
-import type { Vacancy } from '@/entities/team'
+import { isPendingJoinRequest, type Vacancy } from '@/entities/team'
 import { JoinRequestItem } from './JoinRequestItem'
 
 export interface JoinRequestsListProps {
@@ -25,7 +25,7 @@ export function JoinRequestsList({ hackathonId, teamId, vacancies }: JoinRequest
 
   const pending = useMemo(() => {
     const list = data?.requests ?? []
-    return list.filter(r => r.status === 'TEAM_INBOX_PENDING')
+    return list.filter(isPendingJoinRequest)
   }, [data?.requests])
 
   const count = pending.length

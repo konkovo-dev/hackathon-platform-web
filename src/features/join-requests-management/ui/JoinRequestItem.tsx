@@ -5,7 +5,7 @@ import { ListItem, Button, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useQuery } from '@tanstack/react-query'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
-import type { JoinRequest, Vacancy } from '@/entities/team'
+import { listTeamRoles, type JoinRequest, type Vacancy } from '@/entities/team'
 import { InvitationMessageModal } from '@/features/invitations-management/ui/InvitationMessageModal'
 
 export interface JoinRequestItemProps {
@@ -28,15 +28,39 @@ export function JoinRequestItem({
   const t = useT()
   const [messageOpen, setMessageOpen] = useState(false)
 
-  const vacancyText = (() => {
+  const { data: rolesData } = useQuery({
+    queryKey: ['team-roles'],
+    queryFn: listTeamRoles,
+  })
+
+  const rolesById = useMemo(
+    () =>
+      new Map(
+        (rolesData?.teamRoles ?? [])
+          .filter((r): r is { id: string; name: string } => Boolean(r?.id && r?.name))
+          .map(r => [r.id, r.name] as const)
+      ),
+    [rolesData?.teamRoles]
+  )
+
+  const subtitle = useMemo(() => {
     const vacancyId = request.vacancyId
-    if (!vacancyId) return t('teams.joinRequests.vacancyUnknown')
+    if (!vacancyId) {
+      return `${t('teams.joinRequests.roles')}: ${t('teams.joinRequests.vacancyUnknown')}`
+    }
     const v = vacancies.find(x => x.vacancyId === vacancyId)
-    if (!v) return vacancyId
+    if (!v) {
+      return `${t('teams.joinRequests.roles')}: ${vacancyId}`
+    }
     const slotsOpen = parseInt(v.slotsOpen ?? '0', 10)
     const slotsTotal = parseInt(v.slotsTotal ?? '0', 10)
-    return v.description || t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
-  })()
+    const slotsText = t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
+    const roleLabels = (v.desiredRoleIds ?? [])
+      .map(id => rolesById.get(id))
+      .filter((label): label is string => Boolean(label))
+    const display = roleLabels.length > 0 ? roleLabels.join(', ') : slotsText
+    return `${t('teams.joinRequests.roles')}: ${display}`
+  }, [request.vacancyId, vacancies, rolesById, t])
 
   const userIds = useMemo(
     () => [request.requesterUserId].filter((id): id is string => id != null),
@@ -61,14 +85,12 @@ export function JoinRequestItem({
     ? [requesterUser.firstName, requesterUser.lastName].filter(Boolean).join(' ').trim()
     : request.requesterUserId
 
-  const subtitle = `${t('teams.joinRequests.vacancy')}: ${vacancyText}`
-
   const isDisabled = isAccepting || isRejecting
 
   return (
     <>
       <ListItem
-        variant="section"
+        variant="bordered"
         text={requesterName ?? '—'}
         subtitle={subtitle}
         onClick={request.message ? () => setMessageOpen(true) : undefined}

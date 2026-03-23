@@ -158,18 +158,6 @@ export function VacancyUpsertModal({
       >
         <div className="flex flex-col gap-m6 max-h-[min(85vh,800px)] overflow-y-auto min-h-0">
         <div className="flex flex-col gap-m8">
-          <TextareaLabel
-            label={t('teams.vacancies.description')}
-            textareaPlaceholder={t('teams.vacancies.descriptionPlaceholder')}
-            textareaId="vacancy-description"
-            textareaProps={{
-              value: description,
-              onChange: e => setDescription(e.target.value),
-              rows: 3,
-              autoFocus: true,
-            }}
-          />
-
           <div className="flex flex-col gap-m6">
             <span className="typography-label-md text-text-primary">
               {t('teams.vacancies.desiredRoles')}
@@ -218,6 +206,17 @@ export function VacancyUpsertModal({
             inputProps={{
               value: slotsTotal,
               onChange: e => setSlotsTotal(e.target.value),
+            }}
+          />
+
+          <TextareaLabel
+            label={t('teams.vacancies.description')}
+            textareaPlaceholder={t('teams.vacancies.descriptionPlaceholder')}
+            textareaId="vacancy-description"
+            textareaProps={{
+              value: description,
+              onChange: e => setDescription(e.target.value),
+              rows: 3,
             }}
           />
         </div>

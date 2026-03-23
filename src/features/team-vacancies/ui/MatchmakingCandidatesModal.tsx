@@ -1,11 +1,15 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { Modal, Button, Chip, ChipList, ErrorAlert } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import { useMatchmakingCandidatesQuery } from '@/entities/team/model/hooks'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
+import { UserListItem } from '@/entities/user'
 import { useCreateTeamInvitationMutation } from '@/features/team-members/model/hooks'
 import type { components } from '@/shared/api/platform.schema'
 import { ApiError } from '@/shared/api/errors'
@@ -32,6 +36,7 @@ export function MatchmakingCandidatesModal({
   vacancyId,
 }: MatchmakingCandidatesModalProps) {
   const t = useT()
+  const router = useRouter()
   const [invitedUserIds, setInvitedUserIds] = useState<Set<string>>(() => new Set())
   const [error, setError] = useState<string | null>(null)
 
@@ -116,51 +121,60 @@ export function MatchmakingCandidatesModal({
             if (!userId) return null
             const row = usersById.get(userId)
             const u = row?.user
-            const name = u
-              ? [u.firstName, u.lastName].filter(Boolean).join(' ').trim() || u.username || userId
-              : userId
             const skills = (row?.skills ?? []).map(skillLabel).filter(Boolean)
             const score = rec.matchScore?.totalScore
             const scoreText =
               score != null ? t('teams.matchmaking.matchScore', { score: score.toFixed(1) }) : null
             const invited = invitedUserIds.has(userId)
 
+            const chipsLinkClass =
+              'block rounded-[var(--spacing-m2)] -m-m2 p-m2 transition-colors hover:bg-bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-strong'
+
             return (
-              <div
-                key={userId}
-                className="flex flex-col gap-m4 border border-border-default rounded-[var(--spacing-m2)] px-m4 py-m4"
-              >
-                <div className="flex items-start justify-between gap-m8">
-                  <div className="min-w-0 flex-1">
-                    <div className="typography-body-md-regular text-text-primary">{name}</div>
-                    {scoreText && (
-                      <div className="typography-body-sm-regular text-text-secondary mt-m1">
-                        {scoreText}
-                      </div>
-                    )}
-                  </div>
-                  {invited ? (
-                    <span className="typography-body-sm-regular text-text-tertiary flex-shrink-0">
-                      {t('teams.matchmaking.invited')}
-                    </span>
-                  ) : (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="flex-shrink-0"
-                      onClick={() => handleInvite(userId)}
-                      disabled={inviteMutation.isPending}
-                    >
-                      {t('teams.matchmaking.invite')}
-                    </Button>
-                  )}
-                </div>
+              <div key={userId} className="flex flex-col gap-m4">
+                <UserListItem
+                  userId={userId}
+                  user={u}
+                  caption={scoreText ?? undefined}
+                  variant="bordered"
+                  showNavigationIcon={false}
+                  onClick={() => {
+                    onClose()
+                    router.push(routes.user(userId))
+                  }}
+                  rightContent={
+                    invited ? (
+                      <span className="typography-body-sm-regular text-text-tertiary">
+                        {t('teams.matchmaking.invited')}
+                      </span>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        type="button"
+                        onClick={e => {
+                          e.stopPropagation()
+                          void handleInvite(userId)
+                        }}
+                        disabled={inviteMutation.isPending}
+                      >
+                        {t('teams.matchmaking.invite')}
+                      </Button>
+                    )
+                  }
+                />
                 {skills.length > 0 && (
-                  <ChipList>
-                    {skills.map(s => (
-                      <Chip key={s} label={s} variant="secondary" />
-                    ))}
-                  </ChipList>
+                  <Link
+                    href={routes.user(userId)}
+                    onClick={() => onClose()}
+                    className={chipsLinkClass}
+                  >
+                    <ChipList>
+                      {skills.map(s => (
+                        <Chip key={s} label={s} variant="secondary" />
+                      ))}
+                    </ChipList>
+                  </Link>
                 )}
               </div>
             )

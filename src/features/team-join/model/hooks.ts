@@ -16,6 +16,10 @@ export function useCreateJoinRequestMutation(hackathonId: string, teamId: string
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] })
+      queryClient.invalidateQueries({
+        queryKey: ['hackathon', hackathonId, 'team', teamId, 'join-requests'],
+      })
+      queryClient.invalidateQueries({ queryKey: ['me', 'join-requests'] })
     },
   })
 }

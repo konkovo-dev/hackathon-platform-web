@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
+import { invalidateParticipationRelatedQueries } from '@/entities/hackathon-context/model/invalidateParticipationRelatedQueries'
 import {
   listTeamMembers,
   leaveTeam,
@@ -59,10 +59,11 @@ export function useLeaveTeamMutation(hackathonId: string, teamId: string) {
 
   return useMutation({
     mutationFn: () => leaveTeam(hackathonId, teamId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['team-members', hackathonId, teamId] })
-      queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] })
-      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['team-members', hackathonId, teamId] }),
+        invalidateParticipationRelatedQueries(queryClient, hackathonId, { teamId }),
+      ])
     },
   })
 }

@@ -1,15 +1,12 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
-import { routes } from '@/shared/config/routes'
 import { ErrorAlert, Modal, SelectList, ListItem, Button, TextareaLabel } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCreateJoinRequestMutation } from '../model/hooks'
 import type { Vacancy } from '@/entities/team'
 import { listTeamRoles } from '@/entities/team'
-import { useSkillCatalogQuery } from '@/entities/skill/model/hooks'
 import { ApiError } from '@/shared/api/errors'
 
 export interface JoinRequestModalProps {
@@ -31,7 +28,6 @@ export function JoinRequestModal({
   initialVacancyId,
 }: JoinRequestModalProps) {
   const t = useT()
-  const router = useRouter()
   const [selectedVacancyId, setSelectedVacancyId] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -44,7 +40,6 @@ export function JoinRequestModal({
 
   const createMutation = useCreateJoinRequestMutation(hackathonId, teamId)
 
-  const { data: catalogData } = useSkillCatalogQuery()
   const { data: rolesData } = useQuery({
     queryKey: ['team-roles'],
     queryFn: listTeamRoles,
@@ -61,16 +56,6 @@ export function JoinRequestModal({
     [rolesData?.teamRoles]
   )
 
-  const skillsById = useMemo(
-    () =>
-      new Map(
-        (catalogData?.skills ?? [])
-          .filter((s): s is { id: string; name: string } => Boolean(s?.id && s?.name))
-          .map(s => [s.id, s.name] as const)
-      ),
-    [catalogData?.skills]
-  )
-
   const handleClose = () => {
     setSelectedVacancyId(null)
     setMessage('')
@@ -78,9 +63,14 @@ export function JoinRequestModal({
     onClose()
   }
 
-  const handleBack = () => {
-    handleClose()
-    router.push(routes.hackathons.teams.detail(hackathonId, teamId))
+  const vacancyRowTitle = (v: Vacancy) => {
+    const slotsOpen = parseInt(v.slotsOpen ?? '0', 10)
+    const slotsTotal = parseInt(v.slotsTotal ?? '0', 10)
+    const slotsText = t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
+    const roleLabels = (v.desiredRoleIds ?? [])
+      .map(id => rolesById.get(id))
+      .filter((label): label is string => Boolean(label))
+    return roleLabels.length > 0 ? roleLabels.join(', ') : slotsText
   }
 
   const handleSubmit = async () => {
@@ -110,42 +100,21 @@ export function JoinRequestModal({
           <p className="typography-body-sm text-text-secondary">{t('teams.join.noVacancies')}</p>
         ) : (
           <SelectList>
-            {vacancies.map(v => {
-              const slotsOpen = parseInt(v.slotsOpen ?? '0', 10)
-              const slotsTotal = parseInt(v.slotsTotal ?? '0', 10)
-              const slotsText = t('teams.vacancies.slots', { open: slotsOpen, total: slotsTotal })
-              const roleLabels = (v.desiredRoleIds ?? [])
-                .map(id => rolesById.get(id))
-                .filter((label): label is string => Boolean(label))
-              const skillLabels = (v.desiredSkillIds ?? [])
-                .map(id => skillsById.get(id))
-                .filter((label): label is string => Boolean(label))
-              const reqText = [...roleLabels, ...skillLabels].join(', ')
-              const desc = v.description?.trim() ?? ''
-              let text: string
-              let subtitle: string | undefined
-              if (desc) {
-                text = desc
-                subtitle = reqText || undefined
-              } else if (reqText) {
-                text = reqText
-                subtitle = slotsText
-              } else {
-                text = slotsText
-                subtitle = undefined
-              }
-              return (
-                <ListItem
-                  key={v.vacancyId}
-                  text={text}
-                  subtitle={subtitle}
-                  selectable
-                  selected={selectedVacancyId === v.vacancyId}
-                  variant="bordered"
-                  onClick={() => setSelectedVacancyId(v.vacancyId!)}
-                />
-              )
-            })}
+            {vacancies.map(v => (
+              <ListItem
+                key={v.vacancyId}
+                text={vacancyRowTitle(v)}
+                subtitle={
+                  v.description?.trim()
+                    ? v.description
+                    : t('hackathons.detail.no_description')
+                }
+                selectable
+                selected={selectedVacancyId === v.vacancyId}
+                variant="bordered"
+                onClick={() => setSelectedVacancyId(v.vacancyId!)}
+              />
+            ))}
           </SelectList>
         )}
 
@@ -162,36 +131,25 @@ export function JoinRequestModal({
 
         {error && <ErrorAlert message={error} />}
 
-        <div className="flex flex-wrap gap-m4 justify-between items-center">
+        <div className="flex flex-wrap gap-m4 justify-end">
           <Button
             variant="secondary"
             size="md"
             type="button"
-            onClick={handleBack}
+            onClick={handleClose}
             disabled={createMutation.isPending}
           >
-            {t('teams.join.back')}
+            {t('teams.join.cancel')}
           </Button>
-          <div className="flex gap-m4 justify-end ml-auto">
-            <Button
-              variant="secondary"
-              size="md"
-              type="button"
-              onClick={handleClose}
-              disabled={createMutation.isPending}
-            >
-              {t('teams.join.cancel')}
-            </Button>
-            <Button
-              variant="primary"
-              size="md"
-              type="button"
-              onClick={handleSubmit}
-              disabled={!selectedVacancyId || createMutation.isPending}
-            >
-              {createMutation.isPending ? t('teams.list.loading') : t('teams.join.submit')}
-            </Button>
-          </div>
+          <Button
+            variant="primary"
+            size="md"
+            type="button"
+            onClick={handleSubmit}
+            disabled={!selectedVacancyId || createMutation.isPending}
+          >
+            {createMutation.isPending ? t('teams.list.loading') : t('teams.join.submit')}
+          </Button>
         </div>
       </div>
     </Modal>
