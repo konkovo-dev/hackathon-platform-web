@@ -9,8 +9,17 @@ export type HackathonStage =
 
 export function normalizeHackathonStage(stage: string | undefined): HackathonStage {
   if (!stage) return 'DRAFT'
-  if (stage.startsWith('HACKATHON_STAGE_')) {
-    return stage.replace('HACKATHON_STAGE_', '') as HackathonStage
+
+  const suffix = stage.startsWith('HACKATHON_STAGE_')
+    ? stage.slice('HACKATHON_STAGE_'.length)
+    : stage
+
+  if (suffix === 'PRE_START') {
+    return 'PRESTART'
   }
-  return stage as HackathonStage
+  if (suffix === 'UNSPECIFIED') {
+    return 'DRAFT'
+  }
+
+  return suffix as HackathonStage
 }
