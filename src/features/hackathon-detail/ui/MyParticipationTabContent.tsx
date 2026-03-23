@@ -1,35 +1,36 @@
 'use client'
 
-import { useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
-import { Button, Modal } from '@/shared/ui'
+import { useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { Button, Chip, Divider, Icon, ListItem, Modal, Section } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
+import { routes } from '@/shared/config/routes'
 import { useTeamQuery } from '@/entities/team/model/hooks'
-import { TeamCard } from '@/features/teams-list'
-import { useLeaveTeamMutation } from '@/features/team-members'
-import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
+import { listTeamMembers } from '@/entities/team'
+import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
+import { useSwitchParticipationModeMutation } from '@/features/hackathon-registration/model/hooks'
+import { EditParticipationApplicationModal } from './EditParticipationApplicationModal'
 import { useUnregisterFromHackathonMutation } from '../model/hooks'
 import { useCan } from '@/shared/policy/useCan'
-import type { components } from '@/shared/api/platform.schema'
 import { MatchmakingTeamsList } from '@/features/matchmaking-teams'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
-
-type ParticipationStatus = components['schemas']['v1ParticipationStatus']
+import { listTeamRoles } from '@/entities/team'
 
 export interface MyParticipationTabContentProps {
   hackathonId: string
   myTeamId: string | null
-  participationStatus: ParticipationStatus | null
   ctxLoading: boolean
   hackathonStage: HackathonStage
+  registrationPolicy?: { allowIndividual?: boolean; allowTeam?: boolean }
 }
 
 export function MyParticipationTabContent({
   hackathonId,
   myTeamId,
-  participationStatus,
   ctxLoading,
   hackathonStage,
+  registrationPolicy,
 }: MyParticipationTabContentProps) {
   const t = useT()
 
@@ -46,8 +47,8 @@ export function MyParticipationTabContent({
       {!myTeamId ? (
         <NoTeamContent
           hackathonId={hackathonId}
-          participationStatus={participationStatus}
           hackathonStage={hackathonStage}
+          allowTeam={registrationPolicy?.allowTeam ?? true}
         />
       ) : (
         <ParticipationTeamCard hackathonId={hackathonId} teamId={myTeamId} />
@@ -59,17 +60,53 @@ export function MyParticipationTabContent({
 
 function NoTeamContent({
   hackathonId,
-  participationStatus,
   hackathonStage,
+  allowTeam,
 }: {
   hackathonId: string
-  participationStatus: ParticipationStatus | null
   hackathonStage: HackathonStage
+  allowTeam: boolean
 }) {
   const t = useT()
   const [unregisterConfirmOpen, setUnregisterConfirmOpen] = useState(false)
+  const [editApplicationOpen, setEditApplicationOpen] = useState(false)
+
+  const participationQuery = useMyParticipationQuery(hackathonId)
+  const participationStatus = participationQuery.data?.status ?? null
+  const participationData = participationQuery.data
+
   const { decision: unregisterDecision } = useCan('Participation.Unregister', { hackathonId })
+  const { decision: switchModeDecision } = useCan('Participation.SwitchParticipationMode', {
+    hackathonId,
+  })
+  const { decision: updateProfileDecision } = useCan('Participation.UpdateParticipationProfile', {
+    hackathonId,
+  })
+
+  const canEditApplication =
+    updateProfileDecision.allowed &&
+    hackathonStage === 'REGISTRATION' &&
+    (participationStatus === 'PART_INDIVIDUAL' || participationStatus === 'PART_LOOKING_FOR_TEAM')
+
+  const { data: teamRolesData } = useQuery({
+    queryKey: ['team-roles'],
+    queryFn: listTeamRoles,
+    enabled:
+      allowTeam &&
+      participationStatus === 'PART_LOOKING_FOR_TEAM' &&
+      hackathonStage === 'REGISTRATION' &&
+      canEditApplication,
+  })
+  const teamRoleOptions = useMemo(
+    () =>
+      (teamRolesData?.teamRoles ?? []).filter((r): r is { id: string; name: string } =>
+        Boolean(r.id && r.name)
+      ),
+    [teamRolesData?.teamRoles]
+  )
+
   const unregisterMutation = useUnregisterFromHackathonMutation(hackathonId)
+  const switchModeMutation = useSwitchParticipationModeMutation(hackathonId)
 
   const statusText =
     participationStatus === 'PART_INDIVIDUAL'
@@ -79,6 +116,33 @@ function NoTeamContent({
         : t('hackathons.detail.participation.empty')
 
   const canUnregister = unregisterDecision.allowed
+  const canSwitchMode = switchModeDecision.allowed
+  const hasVisibleActions =
+    (canSwitchMode && participationStatus === 'PART_INDIVIDUAL') ||
+    (canSwitchMode && participationStatus === 'PART_LOOKING_FOR_TEAM') ||
+    canUnregister
+
+  const motivationBriefRaw = participationData?.motivationText?.trim() ?? ''
+  const motivationBrief =
+    motivationBriefRaw.length > 220
+      ? `${motivationBriefRaw.slice(0, 220)}…`
+      : motivationBriefRaw
+
+  const handleSwitchToLookingForTeam = async () => {
+    try {
+      await switchModeMutation.mutateAsync({ newStatus: 'PART_LOOKING_FOR_TEAM' })
+    } catch (err) {
+      console.error('Switch participation mode failed:', err)
+    }
+  }
+
+  const handleSwitchToIndividual = async () => {
+    try {
+      await switchModeMutation.mutateAsync({ newStatus: 'PART_INDIVIDUAL' })
+    } catch (err) {
+      console.error('Switch participation mode failed:', err)
+    }
+  }
 
   const handleUnregisterConfirm = async () => {
     try {
@@ -91,22 +155,122 @@ function NoTeamContent({
 
   return (
     <div className="flex flex-col gap-m8">
-      <p className="typography-body-md text-text-secondary">{statusText}</p>
-      {participationStatus === 'PART_LOOKING_FOR_TEAM' && hackathonStage === 'REGISTRATION' && (
-        <MatchmakingTeamsList hackathonId={hackathonId} />
-      )}
-      {canUnregister && (
-        <div>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => setUnregisterConfirmOpen(true)}
-            disabled={unregisterMutation.isPending}
-          >
-            {t('hackathons.detail.participation.unregister')}
-          </Button>
-        </div>
-      )}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-m8 items-stretch">
+        <Section
+          title={t('hackathons.detail.participation.sectionParticipationInfo')}
+          variant="elevated"
+          className="min-w-0"
+          hoverAction={
+            canEditApplication ? (
+              <Button
+                variant="icon-secondary"
+                size="xs"
+                onClick={() => setEditApplicationOpen(true)}
+                aria-label={t('hackathons.detail.participation.editApplication')}
+              >
+                <Icon src="/icons/icon-edit/icon-edit-xs.svg" size="xs" color="secondary" />
+              </Button>
+            ) : undefined
+          }
+        >
+          <div className="flex flex-col gap-m8">
+            <p className="typography-body-md text-text-secondary">{statusText}</p>
+            {canEditApplication && (
+              <>
+                <Divider />
+                <div className="flex flex-col gap-m6">
+                  <div className="flex flex-col gap-m6">
+                    <span className="typography-label-md text-text-primary">
+                      {t('hackathons.detail.registrationForm.motivationLabel')}
+                    </span>
+                    <p className="typography-body-md text-text-primary whitespace-pre-wrap line-clamp-4">
+                      {motivationBrief ||
+                        t('hackathons.detail.participation.applicationMotivationEmpty')}
+                    </p>
+                  </div>
+                  {participationStatus === 'PART_LOOKING_FOR_TEAM' &&
+                    allowTeam &&
+                    (participationData?.wishedRoleIds?.length ?? 0) > 0 && (
+                      <div className="flex flex-col gap-m6">
+                        <span className="typography-label-md text-text-primary">
+                          {t('hackathons.detail.registrationForm.wishedRolesLabel')}
+                        </span>
+                        <div className="flex flex-wrap gap-m2">
+                          {(participationData?.wishedRoleIds ?? []).map(roleId => {
+                            const name = teamRoleOptions.find(r => r.id === roleId)?.name
+                            if (!name) return null
+                            return <Chip key={roleId} label={name} variant="secondary" />
+                          })}
+                        </div>
+                      </div>
+                    )}
+                </div>
+              </>
+            )}
+          </div>
+        </Section>
+
+        <Section
+          title={t('hackathons.detail.participation.sectionActions')}
+          variant="elevated"
+          className="min-w-0"
+        >
+          {hasVisibleActions ? (
+            <div className="flex flex-col gap-m4">
+              {canSwitchMode && participationStatus === 'PART_INDIVIDUAL' && (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={handleSwitchToLookingForTeam}
+                  disabled={switchModeMutation.isPending}
+                >
+                  {t('hackathons.detail.participation.switchToLookingForTeam')}
+                </Button>
+              )}
+              {canSwitchMode && participationStatus === 'PART_LOOKING_FOR_TEAM' && (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={handleSwitchToIndividual}
+                  disabled={switchModeMutation.isPending}
+                >
+                  {t('hackathons.detail.participation.switchToIndividual')}
+                </Button>
+              )}
+              {canUnregister && (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => setUnregisterConfirmOpen(true)}
+                  disabled={unregisterMutation.isPending}
+                >
+                  {t('hackathons.detail.participation.unregister')}
+                </Button>
+              )}
+            </div>
+          ) : (
+            <p className="typography-body-sm text-text-tertiary">
+              {t('hackathons.detail.participation.actionsEmpty')}
+            </p>
+          )}
+        </Section>
+      </div>
+
+      <MatchmakingTeamsList
+        hackathonId={hackathonId}
+        fetchEnabled={
+          participationStatus === 'PART_LOOKING_FOR_TEAM' && hackathonStage === 'REGISTRATION'
+        }
+      />
+
+      <EditParticipationApplicationModal
+        open={editApplicationOpen}
+        onClose={() => setEditApplicationOpen(false)}
+        hackathonId={hackathonId}
+        allowTeam={allowTeam}
+        participationStatus={participationStatus}
+      />
+
       <Modal
         open={unregisterConfirmOpen}
         onClose={() => setUnregisterConfirmOpen(false)}
@@ -144,22 +308,26 @@ function NoTeamContent({
 
 function ParticipationTeamCard({ hackathonId, teamId }: { hackathonId: string; teamId: string }) {
   const t = useT()
-  const queryClient = useQueryClient()
-  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false)
+  const router = useRouter()
   const { data, isLoading } = useTeamQuery(hackathonId, teamId)
-  const { decision: leaveDecision } = useCan('Team.LeaveTeam', { hackathonId, teamId })
-  const leaveMutation = useLeaveTeamMutation(hackathonId, teamId)
 
-  const canLeave = leaveDecision.allowed
+  const team = data?.team?.team
+  const tid = team?.teamId ?? teamId
 
-  const handleLeaveConfirm = async () => {
-    try {
-      await leaveMutation.mutateAsync()
-      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
-      setLeaveConfirmOpen(false)
-    } catch (err) {
-      console.error('Leave team failed:', err)
-    }
+  const { data: membersData } = useQuery({
+    queryKey: ['team-members', hackathonId, tid],
+    queryFn: () => listTeamMembers(hackathonId, tid),
+    enabled: Boolean(team && hackathonId && tid),
+  })
+
+  const memberCount = membersData?.members?.length ?? 0
+  const membersLabel =
+    memberCount === 1
+      ? t('teams.card.member', { count: 1 })
+      : t('teams.card.members', { count: memberCount })
+
+  const goToTeam = () => {
+    if (tid) router.push(routes.hackathons.teams.detail(hackathonId, tid))
   }
 
   if (isLoading) {
@@ -170,57 +338,23 @@ function ParticipationTeamCard({ hackathonId, teamId }: { hackathonId: string; t
     )
   }
 
-  const teamWithVacancies = data?.team
-  if (!teamWithVacancies?.team) {
+  if (!team) {
     return null
   }
 
+  const teamName = team.name?.trim() || tid || '—'
+
   return (
-    <div className="flex flex-col gap-m8">
-      <TeamCard
-        hackathonId={hackathonId}
-        teamWithVacancies={teamWithVacancies}
+    <Section title={t('hackathons.detail.tabs.myTeam')} variant="elevated" className="min-w-0">
+      <ListItem
         variant="bordered"
+        text={teamName}
+        subtitle={membersLabel}
+        onClick={goToTeam}
+        rightContent={
+          <Icon src="/icons/icon-arrow/icon-arrow-right-md.svg" size="md" color="secondary" />
+        }
       />
-      {canLeave && (
-        <div>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => setLeaveConfirmOpen(true)}
-            disabled={leaveMutation.isPending}
-          >
-            {t('teams.actions.leave')}
-          </Button>
-        </div>
-      )}
-      <Modal
-        open={leaveConfirmOpen}
-        onClose={() => setLeaveConfirmOpen(false)}
-        title={t('teams.actions.leave')}
-      >
-        <div className="flex flex-col gap-m6">
-          <p className="typography-body-md text-text-primary">{t('teams.actions.leaveConfirm')}</p>
-          <div className="flex gap-m4 justify-end">
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={() => setLeaveConfirmOpen(false)}
-              disabled={leaveMutation.isPending}
-            >
-              {t('teams.create.cancel')}
-            </Button>
-            <Button
-              variant="primary"
-              size="md"
-              onClick={handleLeaveConfirm}
-              disabled={leaveMutation.isPending}
-            >
-              {leaveMutation.isPending ? t('teams.list.loading') : t('teams.actions.leave')}
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    </div>
+    </Section>
   )
 }

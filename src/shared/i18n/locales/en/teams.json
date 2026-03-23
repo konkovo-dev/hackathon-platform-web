@@ -119,12 +119,12 @@
   },
   "join": {
     "title": "join team",
-    "selectVacancy": "select vacancy",
     "noVacancies": "no available vacancies",
     "message": "message (optional)",
     "messagePlaceholder": "tell about yourself and why you want to join...",
     "submit": "send request",
     "cancel": "cancel",
+    "back": "back",
     "success": "request sent"
   },
   "card": {

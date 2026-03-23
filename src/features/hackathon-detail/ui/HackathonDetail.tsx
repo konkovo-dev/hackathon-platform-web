@@ -200,9 +200,9 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
           <MyParticipationTabContent
             hackathonId={hackathonId}
             myTeamId={myTeamId}
-            participationStatus={participationStatus}
             ctxLoading={myParticipationQuery.isLoading}
             hackathonStage={hackathon.stage}
+            registrationPolicy={hackathon.registrationPolicy}
           />
         )}
         {activeTabSafe === 'announcements' && canSeeAnnouncements && (

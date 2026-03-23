@@ -1,2 +1,6 @@
 export { RegistrationChoiceModal } from './ui/RegistrationChoiceModal'
-export { useRegisterForHackathonMutation } from './model/hooks'
+export {
+  useRegisterForHackathonMutation,
+  useSwitchParticipationModeMutation,
+  useUpdateMyParticipationMutation,
+} from './model/hooks'

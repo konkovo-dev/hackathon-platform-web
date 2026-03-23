@@ -19,6 +19,7 @@ import { JoinTeamButton } from '@/features/team-join'
 import { EditTeamModal } from '@/features/team-edit'
 import { useCan } from '@/shared/policy/useCan'
 import { AccessGate } from '@/shared/policy/AccessGate'
+import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 
 export interface TeamDetailViewProps {
   hackathonId: string
@@ -42,6 +43,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
 
   const { data: teamData, isLoading: isTeamLoading } = useTeamQuery(hackathonId, teamId)
   const { data: hackathon } = useHackathonQuery(hackathonId)
+  const { data: myParticipation } = useMyParticipationQuery(hackathonId)
   const { data: membersData } = useTeamMembersQuery(hackathonId, teamId)
   const members = useMemo(() => membersData?.members || [], [membersData])
 
@@ -89,13 +91,21 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   const hackathonName = hackathon?.name ?? t('common.fallback.hackathon')
   const teamName = team.name ?? t('common.fallback.team')
 
+  const myTeamIdFromParticipation = myParticipation?.teamId ?? null
+  const participationStatus = myParticipation?.status ?? null
+  const isParticipant =
+    myTeamIdFromParticipation != null ||
+    (participationStatus != null &&
+      participationStatus !== 'PART_NONE' &&
+      participationStatus !== 'PARTICIPATION_STATUS_UNSPECIFIED')
+
+  const hackathonDetailHref = isParticipant
+    ? routes.hackathons.detailWithTab(hackathonId, 'participation')
+    : routes.hackathons.detail(hackathonId)
+
   const breadcrumbItems = [
     { label: t('hackathons.breadcrumb.hackathons'), href: routes.hackathons.list },
-    { label: hackathonName, href: routes.hackathons.detail(hackathonId) },
-    {
-      label: t('hackathons.detail.tabs.participation'),
-      href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
-    },
+    { label: hackathonName, href: hackathonDetailHref },
     { label: teamName },
   ]
 

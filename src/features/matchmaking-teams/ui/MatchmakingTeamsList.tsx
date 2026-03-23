@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Button, ListItem, Section } from '@/shared/ui'
+import { useRouter } from 'next/navigation'
+import { Button, Icon, ListItem, Section } from '@/shared/ui'
+import { routes } from '@/shared/config/routes'
 import { useT } from '@/shared/i18n/useT'
 import { useMatchmakingTeamsQuery, useTeamQuery } from '@/entities/team/model/hooks'
 import { JoinRequestModal } from '@/features/team-join'
@@ -11,11 +13,14 @@ type TeamRecommendation = components['schemas']['v1TeamRecommendation']
 
 export interface MatchmakingTeamsListProps {
   hackathonId: string
+  fetchEnabled?: boolean
 }
 
-export function MatchmakingTeamsList({ hackathonId }: MatchmakingTeamsListProps) {
+export function MatchmakingTeamsList({ hackathonId, fetchEnabled = true }: MatchmakingTeamsListProps) {
   const t = useT()
-  const { data, isLoading, error } = useMatchmakingTeamsQuery(hackathonId)
+  const { data, isLoading, error } = useMatchmakingTeamsQuery(hackathonId, {
+    enabled: fetchEnabled,
+  })
   const [modalTeamId, setModalTeamId] = useState<string | null>(null)
   const [bestVacancyId, setBestVacancyId] = useState<string | null>(null)
 
@@ -37,37 +42,46 @@ export function MatchmakingTeamsList({ hackathonId }: MatchmakingTeamsListProps)
     setBestVacancyId(null)
   }
 
-  if (isLoading) {
-    return (
-      <p className="typography-body-sm text-text-secondary">{t('hackathons.detail.matchmaking.loading')}</p>
-    )
+  if (!fetchEnabled) {
+    return null
   }
 
-  if (error) {
+  const body = (() => {
+    if (isLoading) {
+      return (
+        <p className="typography-body-sm text-text-secondary">
+          {t('hackathons.detail.matchmaking.loading')}
+        </p>
+      )
+    }
+    if (error) {
+      return (
+        <p className="typography-body-sm text-state-error">{t('hackathons.detail.matchmaking.error')}</p>
+      )
+    }
+    if (recommendations.length === 0) {
+      return (
+        <p className="typography-body-sm text-text-secondary">{t('hackathons.detail.matchmaking.empty')}</p>
+      )
+    }
     return (
-      <p className="typography-body-sm text-state-error">{t('hackathons.detail.matchmaking.error')}</p>
+      <div className="flex flex-col gap-m4">
+        {recommendations.map(rec => (
+          <MatchmakingTeamRow
+            key={rec.teamId ?? ''}
+            hackathonId={hackathonId}
+            recommendation={rec}
+            onRequestJoin={() => handleOpenRequest(rec)}
+          />
+        ))}
+      </div>
     )
-  }
-
-  if (recommendations.length === 0) {
-    return (
-      <p className="typography-body-sm text-text-secondary">{t('hackathons.detail.matchmaking.empty')}</p>
-    )
-  }
+  })()
 
   return (
     <>
       <Section title={t('hackathons.detail.matchmaking.title')} variant="elevated">
-        <div className="flex flex-col gap-m4">
-          {recommendations.map(rec => (
-            <MatchmakingTeamRow
-              key={rec.teamId ?? ''}
-              hackathonId={hackathonId}
-              recommendation={rec}
-              onRequestJoin={() => handleOpenRequest(rec)}
-            />
-          ))}
-        </div>
+        {body}
       </Section>
 
       {modalTeamId && (
@@ -94,6 +108,7 @@ function MatchmakingTeamRow({
   onRequestJoin: () => void
 }) {
   const t = useT()
+  const router = useRouter()
   const teamId = recommendation.teamId
   const { data, isLoading } = useTeamQuery(hackathonId, teamId, {
     enabled: Boolean(teamId),
@@ -104,15 +119,31 @@ function MatchmakingTeamRow({
   const scoreLabel =
     score != null ? t('hackathons.detail.matchmaking.matchScore', { score: score.toFixed(1) }) : null
 
+  const goToTeam = () => {
+    if (teamId) router.push(routes.hackathons.teams.detail(hackathonId, teamId))
+  }
+
   return (
     <ListItem
       variant="bordered"
       text={isLoading ? t('teams.list.loading') : teamName}
       subtitle={scoreLabel ?? undefined}
+      onClick={goToTeam}
       rightContent={
-        <Button variant="secondary" size="sm" onClick={onRequestJoin} disabled={!teamId}>
-          {t('teams.join.submit')}
-        </Button>
+        <>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={e => {
+              e.stopPropagation()
+              onRequestJoin()
+            }}
+            disabled={!teamId}
+          >
+            {t('teams.join.submit')}
+          </Button>
+          <Icon src="/icons/icon-arrow/icon-arrow-right-md.svg" size="md" color="secondary" />
+        </>
       }
     />
   )

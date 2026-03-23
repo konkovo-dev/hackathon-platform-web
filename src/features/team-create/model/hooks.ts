@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createTeam } from '@/entities/team'
-import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
+import { invalidateParticipationRelatedQueries } from '@/entities/hackathon-context/model/invalidateParticipationRelatedQueries'
 
 export function useCreateTeamMutation(hackathonId: string) {
   const queryClient = useQueryClient()
@@ -15,10 +15,10 @@ export function useCreateTeamMutation(hackathonId: string) {
         },
         ...params,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
-      queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })
-      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
+    onSuccess: async data => {
+      await invalidateParticipationRelatedQueries(queryClient, hackathonId, {
+        teamId: data.teamId,
+      })
     },
   })
 }

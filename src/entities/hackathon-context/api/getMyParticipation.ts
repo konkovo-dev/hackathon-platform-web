@@ -8,12 +8,21 @@ type ParticipationStatus = components['schemas']['v1ParticipationStatus']
 export type MyParticipation = {
   teamId: string | null
   status: ParticipationStatus | null
+  motivationText?: string
+  wishedRoleIds: string[]
+}
+
+function mapWishedRoleIdsFromProfile(
+  roles: components['schemas']['v1ParticipationProfile']['wishedRoles']
+): string[] {
+  if (!roles?.length) return []
+  return roles.map(r => r?.id).filter((id): id is string => Boolean(id))
 }
 
 /**
- * Returns the authenticated user's participation for the hackathon (teamId, status).
+ * Returns the authenticated user's participation for the hackathon (teamId, status, профиль заявки).
  * Used only for binding canInMyTeam to current page and for display. Not combined with permissions.
- * Returns { teamId: null, status: null } on 403/404 (not a participant).
+ * Returns пустое участие on 403/404 (not a participant).
  */
 export async function getMyParticipation(hackathonId: string): Promise<MyParticipation> {
   try {
@@ -22,11 +31,14 @@ export async function getMyParticipation(hackathonId: string): Promise<MyPartici
       { method: 'GET' }
     )
     const p = res.participation
+    const profile = p?.profile
     return {
       teamId: p?.teamId ?? null,
       status: p?.status ?? null,
+      motivationText: profile?.motivationText,
+      wishedRoleIds: mapWishedRoleIdsFromProfile(profile?.wishedRoles),
     }
   } catch {
-    return { teamId: null, status: null }
+    return { teamId: null, status: null, wishedRoleIds: [] }
   }
 }

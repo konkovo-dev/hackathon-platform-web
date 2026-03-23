@@ -1,6 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ApiError } from '@/shared/api/errors'
 import { getTeam } from '../api/getTeam'
 import { getMatchmakingTeams } from '../api/getMatchmakingTeams'
 import { getMatchmakingCandidates } from '../api/getMatchmakingCandidates'
@@ -36,12 +37,26 @@ export function useTeamQuery(
   })
 }
 
-export function useMatchmakingTeamsQuery(hackathonId: string | null | undefined) {
+function isMatchmakingTeamsSyncLagError(error: unknown): boolean {
+  if (!(error instanceof ApiError)) return false
+  const status = error.data.status
+  if (status !== 400 && status !== 412) return false
+  const m = error.data.message.toLowerCase()
+  return m.includes('not looking') || m.includes('looking for team')
+}
+
+export function useMatchmakingTeamsQuery(
+  hackathonId: string | null | undefined,
+  options?: { enabled?: boolean }
+) {
   return useQuery({
     queryKey: ['hackathon', hackathonId, 'matchmaking', 'teams'],
     queryFn: () => getMatchmakingTeams(hackathonId!),
-    enabled: Boolean(hackathonId),
+    enabled: (options?.enabled ?? true) && Boolean(hackathonId),
     staleTime: 15_000,
+    retry: (failureCount, error) =>
+      failureCount < 4 && isMatchmakingTeamsSyncLagError(error),
+    retryDelay: attemptIndex => Math.min(400 * 2 ** attemptIndex, 3000),
   })
 }
 

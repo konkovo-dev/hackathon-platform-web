@@ -3,19 +3,8 @@
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
-import {
-  Divider,
-  ErrorAlert,
-  Modal,
-  Button,
-  Tabs,
-  TextareaLabel,
-  Input,
-  SelectList,
-  ListItem,
-  ChipList,
-  Chip,
-} from '@/shared/ui'
+import { ErrorAlert, Modal, Button, Tabs } from '@/shared/ui'
+import { ParticipationProfileFields } from './ParticipationProfileFields'
 import { TeamFormFields } from '@/features/team-edit'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
@@ -54,7 +43,6 @@ export function RegistrationChoiceModal({
   const [individualMotivation, setIndividualMotivation] = useState('')
   const [findTeamMotivation, setFindTeamMotivation] = useState('')
   const [wishedRoleIds, setWishedRoleIds] = useState<string[]>([])
-  const [wishedRolesSearch, setWishedRolesSearch] = useState('')
 
   const allowIndividual = hackathon.registrationPolicy?.allowIndividual ?? true
   const allowTeam = hackathon.registrationPolicy?.allowTeam ?? true
@@ -67,14 +55,10 @@ export function RegistrationChoiceModal({
     enabled: open && allowTeam,
   })
   const teamRoles = useMemo(() => teamRolesData?.teamRoles ?? [], [teamRolesData?.teamRoles])
-  const filteredTeamRoles = useMemo(() => {
-    const roles = teamRoles.filter((r): r is { id: string; name: string } =>
-      Boolean(r.id && r.name)
-    )
-    const q = wishedRolesSearch.toLowerCase().trim()
-    if (!q) return roles
-    return roles.filter(r => r.name.toLowerCase().includes(q))
-  }, [teamRoles, wishedRolesSearch])
+  const teamRoleOptions = useMemo(
+    () => teamRoles.filter((r): r is { id: string; name: string } => Boolean(r.id && r.name)),
+    [teamRoles]
+  )
 
   if (!allowIndividual && !allowTeam) return null
 
@@ -95,6 +79,10 @@ export function RegistrationChoiceModal({
 
   const isPending = registerMutation.isPending || createMutation.isPending
 
+  const goToMyParticipationTab = () => {
+    router.replace(routes.hackathons.detailWithTab(hackathonId, 'participation'))
+  }
+
   const handleIndividual = async () => {
     try {
       setError(null)
@@ -104,6 +92,7 @@ export function RegistrationChoiceModal({
       })
       setIndividualMotivation('')
       onClose()
+      goToMyParticipationTab()
     } catch (e) {
       if (e instanceof ApiError) {
         setError(t(getHackathonRegistrationErrorI18nKey(e.data)))
@@ -111,12 +100,6 @@ export function RegistrationChoiceModal({
         setError(t('hackathons.detail.errors.register_failed'))
       }
     }
-  }
-
-  const toggleWishedRole = (roleId: string) => {
-    setWishedRoleIds(prev =>
-      prev.includes(roleId) ? prev.filter(id => id !== roleId) : [...prev, roleId]
-    )
   }
 
   const handleFindTeam = async () => {
@@ -130,6 +113,7 @@ export function RegistrationChoiceModal({
       setFindTeamMotivation('')
       setWishedRoleIds([])
       onClose()
+      goToMyParticipationTab()
     } catch (e) {
       if (e instanceof ApiError) {
         setError(t(getHackathonRegistrationErrorI18nKey(e.data)))
@@ -153,7 +137,7 @@ export function RegistrationChoiceModal({
       return
     }
     try {
-      const result = await createMutation.mutateAsync({
+      await createMutation.mutateAsync({
         name: teamName.trim(),
         description: teamDescription.trim() || undefined,
         isJoinable: teamIsJoinable,
@@ -162,9 +146,7 @@ export function RegistrationChoiceModal({
       setTeamDescription('')
       setTeamIsJoinable(true)
       onClose()
-      if (result?.teamId) {
-        router.push(routes.hackathons.teams.detail(hackathonId, result.teamId))
-      }
+      goToMyParticipationTab()
     } catch (err) {
       if (err instanceof ApiError) {
         setCreateError(err.data.message || t('teams.errors.createFailed'))
@@ -190,7 +172,6 @@ export function RegistrationChoiceModal({
             setActiveTab(id)
             setError(null)
             setCreateError(null)
-            setWishedRolesSearch('')
           }}
         />
 
@@ -202,14 +183,12 @@ export function RegistrationChoiceModal({
         >
           {currentTab === 'individual' && (
             <div className="flex flex-col gap-m6 flex-1 min-h-0">
-              <TextareaLabel
+              <ParticipationProfileFields
+                variant="motivationOnly"
+                motivationText={individualMotivation}
+                onMotivationChange={setIndividualMotivation}
+                teamRoles={[]}
                 fillHeight
-                label={t('hackathons.detail.registrationForm.motivationLabel')}
-                textareaPlaceholder={t('hackathons.detail.registrationForm.motivationPlaceholder')}
-                textareaProps={{
-                  value: individualMotivation,
-                  onChange: e => setIndividualMotivation(e.target.value),
-                }}
               />
               {error && <ErrorAlert message={error} className="shrink-0" />}
               <div className="flex justify-end shrink-0">
@@ -250,69 +229,15 @@ export function RegistrationChoiceModal({
 
           {currentTab === 'findTeam' && (
             <div className="flex flex-col gap-m8 flex-1 min-h-0">
-              <TextareaLabel
-                label={t('hackathons.detail.registrationForm.motivationLabel')}
-                textareaPlaceholder={t('hackathons.detail.registrationForm.motivationPlaceholder')}
-                textareaProps={{
-                  value: findTeamMotivation,
-                  onChange: e => setFindTeamMotivation(e.target.value),
-                  rows: 3,
-                }}
+              <ParticipationProfileFields
+                variant="motivationAndRoles"
+                motivationText={findTeamMotivation}
+                onMotivationChange={setFindTeamMotivation}
+                teamRoles={teamRoleOptions}
+                wishedRoleIds={wishedRoleIds}
+                onWishedRoleIdsChange={setWishedRoleIds}
+                motivationRows={3}
               />
-              {teamRoles.length > 0 && (
-                <div className="flex flex-col gap-m6 flex-1 min-h-0">
-                  <span className="typography-label-md text-text-primary shrink-0">
-                    {t('hackathons.detail.registrationForm.wishedRolesLabel')}
-                  </span>
-                  {wishedRoleIds.length > 0 && (
-                    <ChipList className="shrink-0">
-                      {wishedRoleIds.map(roleId => {
-                        const role = teamRoles.find(r => r.id === roleId)
-                        return (
-                          role?.name != null && (
-                            <Chip
-                              key={roleId}
-                              label={role.name}
-                              variant="primary"
-                              onRemove={() => toggleWishedRole(roleId)}
-                            />
-                          )
-                        )
-                      })}
-                    </ChipList>
-                  )}
-                  <Divider />
-                  <Input
-                    variant="search"
-                    value={wishedRolesSearch}
-                    onChange={e => setWishedRolesSearch(e.target.value)}
-                    placeholder={t(
-                      'hackathons.detail.registrationForm.wishedRolesSearchPlaceholder'
-                    )}
-                  />
-                  <div className="flex-1 overflow-y-auto min-h-0 -mx-m8 px-m8">
-                    {filteredTeamRoles.length > 0 ? (
-                      <SelectList>
-                        {filteredTeamRoles.map(role => {
-                          const isSelected = wishedRoleIds.includes(role.id)
-                          return (
-                            <ListItem
-                              key={role.id}
-                              text={role.name}
-                              selectable
-                              selected={isSelected}
-                              variant="bordered"
-                              onClick={() => toggleWishedRole(role.id)}
-                            />
-                          )
-                        })}
-                      </SelectList>
-                    ) : (
-                      <div className="min-h-[80px]" />
-                    )}
-                  </div>
-                </div>
-              )}
               {error && <ErrorAlert message={error} className="shrink-0" />}
               <div className="flex justify-end shrink-0">
                 <Button variant="primary" size="md" onClick={handleFindTeam} disabled={isPending}>
