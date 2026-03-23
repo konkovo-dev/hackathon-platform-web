@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { unregisterFromHackathon } from '@/entities/hackathon-context/api/unregisterFromHackathon'
+import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 import { getHackathon } from '@/entities/hackathon/api/getHackathon'
 import { getHackathonAnnouncements } from '@/entities/hackathon/api/getHackathonAnnouncements'
 import { getHackathonTask } from '@/entities/hackathon/api/getHackathonTask'
@@ -78,15 +79,12 @@ export function useHackathonTaskQuery(
   })
 }
 
-const participationKey = (hackathonId: string) =>
-  ['hackathon', 'participation', 'me', hackathonId] as const
-
 export function useUnregisterFromHackathonMutation(hackathonId: string) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => unregisterFromHackathon(hackathonId),
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: participationKey(hackathonId) })
+      await queryClient.refetchQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
     },
   })
 }

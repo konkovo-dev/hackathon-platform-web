@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTeam, deleteTeam } from '@/entities/team'
+import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 
 export function useUpdateTeamMutation(hackathonId: string, teamId: string) {
   const queryClient = useQueryClient()
@@ -30,7 +31,7 @@ export function useDeleteTeamMutation(hackathonId: string, teamId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })
-      queryClient.invalidateQueries({ queryKey: ['hackathon-context', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
     },
   })
 }

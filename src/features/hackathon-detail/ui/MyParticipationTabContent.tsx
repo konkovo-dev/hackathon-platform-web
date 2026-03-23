@@ -7,6 +7,7 @@ import { useT } from '@/shared/i18n/useT'
 import { useTeamQuery } from '@/widgets/team-detail/model/hooks'
 import { TeamCard } from '@/features/teams-list'
 import { useLeaveTeamMutation } from '@/features/team-members'
+import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 import { useUnregisterFromHackathonMutation } from '../model/hooks'
 import { useCan } from '@/shared/policy/useCan'
 import type { components } from '@/shared/api/platform.schema'
@@ -144,7 +145,7 @@ function ParticipationTeamCard({ hackathonId, teamId }: { hackathonId: string; t
   const handleLeaveConfirm = async () => {
     try {
       await leaveMutation.mutateAsync()
-      queryClient.invalidateQueries({ queryKey: ['hackathon', 'participation', 'me', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
       setLeaveConfirmOpen(false)
     } catch (err) {
       console.error('Leave team failed:', err)

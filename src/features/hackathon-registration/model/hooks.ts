@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { registerForHackathon } from '@/entities/hackathon/api/registerForHackathon'
+import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 
 export function useRegisterForHackathonMutation(hackathonId: string) {
   const queryClient = useQueryClient()
@@ -23,8 +24,8 @@ export function useRegisterForHackathonMutation(hackathonId: string) {
           : {}),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['hackathon', 'context', hackathonId] })
-      queryClient.invalidateQueries({ queryKey: ['hackathon-detail', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: ['hackathon', 'detail', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
     },
   })
 }

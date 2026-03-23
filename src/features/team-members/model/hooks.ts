@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
 import {
   listTeamMembers,
   leaveTeam,
@@ -61,7 +62,7 @@ export function useLeaveTeamMutation(hackathonId: string, teamId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team-members', hackathonId, teamId] })
       queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] })
-      queryClient.invalidateQueries({ queryKey: ['hackathon-context', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: hackathonMyParticipationQueryKey(hackathonId) })
     },
   })
 }
