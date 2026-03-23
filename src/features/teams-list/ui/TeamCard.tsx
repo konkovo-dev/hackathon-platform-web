@@ -89,7 +89,7 @@ export function TeamCard({
           />
           {totalVacancies > 0 && (
             <IconText
-              icon={<Icon src="/icons/icon-briefcase/icon-briefcase-md.svg" size="md" />}
+              icon={<Icon src="/icons/icon-search/icon-search-md.svg" size="md" />}
               text={t('teams.vacancies.slots', {
                 open: openVacancies,
                 total: totalVacancies,
