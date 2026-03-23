@@ -9,9 +9,7 @@ export type BatchGetUsersResponse =
 
 export type User = components['schemas']['v1User']
 
-export async function batchGetUsers(
-  request: BatchGetUsersRequest
-): Promise<BatchGetUsersResponse> {
+export async function batchGetUsers(request: BatchGetUsersRequest): Promise<BatchGetUsersResponse> {
   return platformFetchJson<BatchGetUsersResponse>('/v1/users/batchGet', {
     method: 'POST',
     body: JSON.stringify(request),

@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/shared/lib/cn'
 import { Modal, MarkdownContent, Section } from '@/shared/ui'
 import { UserListItem } from '@/entities/user'
 import { HackathonListItem } from '@/entities/hackathon'
@@ -18,6 +19,7 @@ export interface InvitationMessageModalProps {
   createdByUserId?: string
   createdByUser?: User
   hackathonId?: string
+  showHackathon?: boolean
 }
 
 export function InvitationMessageModal({
@@ -28,6 +30,7 @@ export function InvitationMessageModal({
   createdByUserId,
   createdByUser,
   hackathonId,
+  showHackathon = true,
 }: InvitationMessageModalProps) {
   const t = useT()
 
@@ -40,13 +43,25 @@ export function InvitationMessageModal({
       >(`/v1/hackathons/${hackathonId}`, { method: 'GET' })
       return response.hackathon
     },
-    enabled: !!hackathonId,
+    enabled: !!hackathonId && showHackathon,
   })
 
   return (
-    <Modal open={open} onClose={onClose} title={title || t('invitations.messageModal.title')} size="md">
-      <div className="flex flex-col gap-m8">
-        <div className="grid grid-cols-2 gap-m4">
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={title || t('invitations.messageModal.title')}
+      size="md"
+    >
+      <div className="flex flex-col gap-m6">
+        <div
+          className={cn(
+            (createdByUserId || (showHackathon && hackathonId)) &&
+              (showHackathon && hackathonId && createdByUserId
+                ? 'grid grid-cols-2 gap-m4'
+                : 'flex flex-col gap-m4')
+          )}
+        >
           {createdByUserId && (
             <UserListItem
               userId={createdByUserId}
@@ -56,7 +71,7 @@ export function InvitationMessageModal({
             />
           )}
 
-          {hackathonId && (
+          {showHackathon && hackathonId && (
             <HackathonListItem
               hackathon={hackathonData as any}
               hackathonId={hackathonId}
@@ -65,9 +80,15 @@ export function InvitationMessageModal({
           )}
         </div>
 
-        <Section title={t('invitations.messageModal.message')} variant="outlined">
-          <MarkdownContent>{message}</MarkdownContent>
-        </Section>
+        {message ? (
+          <Section title={t('invitations.messageModal.message')} variant="outlined">
+            <MarkdownContent>{message}</MarkdownContent>
+          </Section>
+        ) : (
+          <p className="typography-body-sm text-text-secondary">
+            {t('invitations.messageModal.noMessage')}
+          </p>
+        )}
       </div>
     </Modal>
   )

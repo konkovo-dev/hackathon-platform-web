@@ -1,6 +1,177 @@
 {
   "my": {
-    "title": "My teams",
-    "empty": "Your teams list will be here"
+    "title": "my teams",
+    "empty": "your teams list will be here",
+    "outgoingJoinRequests": {
+      "title": "sent requests",
+      "empty": "no sent requests",
+      "loading": "loading requests...",
+      "loadError": "could not load requests",
+      "teamUnknown": "team",
+      "sentAt": "sent {date}",
+      "status": {
+        "unspecified": "status unknown",
+        "pending": "pending",
+        "accepted": "accepted",
+        "declined": "declined",
+        "canceled": "canceled",
+        "expired": "expired"
+      }
+    }
+  },
+  "list": {
+    "title": "teams",
+    "empty": "no teams yet",
+    "loading": "loading teams..."
+  },
+  "create": {
+    "title": "create team",
+    "button": "create team",
+    "name": "team name",
+    "namePlaceholder": "enter team name",
+    "description": "description",
+    "descriptionPlaceholder": "tell about your team...",
+    "isJoinable": "open for join requests",
+    "isJoinableHint": "participants will be able to send join requests",
+    "submit": "create",
+    "cancel": "cancel"
+  },
+  "edit": {
+    "title": "edit team",
+    "submit": "save",
+    "delete": "delete team",
+    "deleteConfirm": "are you sure you want to delete the team? this action cannot be undone"
+  },
+  "detail": {
+    "title": "team",
+    "captain": "captain",
+    "members": "members",
+    "vacancies": "vacancies",
+    "info": "information",
+    "createdAt": "created",
+    "updatedAt": "updated"
+  },
+  "actions": {
+    "edit": "edit",
+    "delete": "delete team",
+    "leave": "leave team",
+    "join": "join team",
+    "leaveConfirm": "are you sure you want to leave the team?",
+    "deleteConfirm": "are you sure you want to delete the team?"
+  },
+  "members": {
+    "title": "team members",
+    "empty": "no members",
+    "captain": "captain",
+    "member": "member",
+    "kick": "kick",
+    "kickConfirm": "are you sure you want to kick this member from the team?",
+    "transferCaptain": "transfer captainship",
+    "transferConfirm": "transfer captainship to this member?",
+    "selectNewCaptain": "select new captain",
+    "leave": "leave team"
+  },
+  "vacancies": {
+    "title": "vacancies",
+    "empty": "no vacancies",
+    "add": "add vacancy",
+    "edit": "edit",
+    "create": "create vacancy",
+    "slots": "{open} of {total} slots",
+    "slotsFull": "no available slots",
+    "description": "description",
+    "descriptionPlaceholder": "describe requirements for the member...",
+    "desiredRoles": "desired roles",
+    "rolesSearch": "search roles",
+    "desiredSkills": "desired skills",
+    "skillsSearch": "search skills",
+    "slotsTotal": "total slots",
+    "submit": "save",
+    "cancel": "cancel",
+    "addOption": "add",
+    "delete": "delete"
+  },
+  "invitations": {
+    "title": "invitations",
+    "empty": "no invitations",
+    "create": "invite member",
+    "searchUser": "search participant",
+    "searchPlaceholder": "enter name or username",
+    "selectVacancy": "select vacancy",
+    "message": "message (optional)",
+    "messagePlaceholder": "add a message to the invitation...",
+    "submit": "send invitation",
+    "cancel": "cancel",
+    "cancelInvitation": "cancel",
+    "cancelConfirm": "cancel invitation?",
+    "pending": "pending",
+    "accepted": "accepted",
+    "declined": "declined",
+    "canceled": "canceled",
+    "expired": "expired"
+  },
+  "joinRequests": {
+    "title": "join requests",
+    "empty": "no requests",
+    "accept": "accept",
+    "reject": "reject",
+    "acceptConfirm": "accept request?",
+    "rejectConfirm": "reject request?",
+    "pending": "pending",
+    "accepted": "accepted",
+    "declined": "declined",
+    "viewMessage": "view message",
+    "vacancy": "vacancy",
+    "vacancyUnknown": "not specified",
+    "roles": "roles"
+  },
+  "matchmaking": {
+    "suitableCandidates": "matching candidates",
+    "modalTitle": "candidates for vacancy",
+    "invite": "invite",
+    "invited": "invitation sent",
+    "matchScore": "match: {score}",
+    "empty": "no matching candidates yet",
+    "loadError": "could not load candidates"
+  },
+  "join": {
+    "title": "join team",
+    "noVacancies": "no available vacancies",
+    "message": "message (optional)",
+    "messagePlaceholder": "tell about yourself and why you want to join...",
+    "submit": "send request",
+    "cancel": "cancel",
+    "success": "request sent"
+  },
+  "card": {
+    "captain": "captain",
+    "members": "{count} members",
+    "member": "{count} member",
+    "vacancies": "{count} vacancies",
+    "vacancy": "{count} vacancy",
+    "openForRequests": "open for requests",
+    "closedForRequests": "closed for requests"
+  },
+  "errors": {
+    "loadFailed": "failed to load teams",
+    "createFailed": "failed to create team",
+    "updateFailed": "failed to update team",
+    "deleteFailed": "failed to delete team",
+    "leaveFailed": "failed to leave team",
+    "kickFailed": "failed to kick member",
+    "transferFailed": "failed to transfer captainship",
+    "inviteFailed": "failed to send invitation",
+    "serverErrorTryLater": "please try again later",
+    "joinFailed": "failed to send request",
+    "notFound": "team not found",
+    "unauthorized": "insufficient permissions",
+    "forbidden": "access denied"
+  },
+  "tabs": {
+    "info": "information",
+    "members": "members",
+    "vacancies": "vacancies",
+    "invitations": "invitations",
+    "joinRequests": "requests"
   }
 }

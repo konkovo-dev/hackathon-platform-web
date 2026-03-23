@@ -21,7 +21,14 @@ describe('PageContainer', () => {
     )
 
     const wrapper = container.firstChild as HTMLElement
-    expect(wrapper).toHaveClass('container', 'mx-auto', 'max-w-[1080px]', 'py-m32', 'px-m16', 'xl:px-0')
+    expect(wrapper).toHaveClass(
+      'container',
+      'mx-auto',
+      'max-w-[1080px]',
+      'py-m32',
+      'px-m16',
+      'xl:px-0'
+    )
   })
 
   it('merges custom className with default classes', () => {
@@ -32,7 +39,15 @@ describe('PageContainer', () => {
     )
 
     const wrapper = container.firstChild as HTMLElement
-    expect(wrapper).toHaveClass('container', 'mx-auto', 'max-w-[1080px]', 'py-m32', 'px-m16', 'xl:px-0', 'custom-class')
+    expect(wrapper).toHaveClass(
+      'container',
+      'mx-auto',
+      'max-w-[1080px]',
+      'py-m32',
+      'px-m16',
+      'xl:px-0',
+      'custom-class'
+    )
   })
 
   it('allows overriding padding via className', () => {

@@ -11,7 +11,13 @@ export const routes = {
     list: '/hackathons',
     create: '/hackathons/create',
     detail: (id: string) => `/hackathons/${id}`,
+    detailWithTab: (id: string, tab?: string) =>
+      !tab || tab === 'description' ? `/hackathons/${id}` : `/hackathons/${id}?tab=${tab}`,
     edit: (id: string) => `/hackathons/${id}/edit`,
+    teams: {
+      list: (hackathonId: string) => `/hackathons/${hackathonId}/teams`,
+      detail: (hackathonId: string, teamId: string) => `/hackathons/${hackathonId}/teams/${teamId}`,
+    },
   },
   profile: '/profile',
   user: (id: string) => `/users/${id}`,
@@ -29,13 +35,13 @@ export function getLoginUrl(redirectTo?: string): string {
 
 /**
  * Проверяет, является ли путь публичным (не требует авторизации)
- * 
+ *
  * Публичные маршруты:
  * - /login - страница входа
  * - /register - страница регистрации
  * - /hackathons - список хакатонов
  * - /hackathons/:id - детальная страница хакатона
- * 
+ *
  * Защищенные маршруты (требуют авторизации):
  * - /hackathons/create - создание хакатона
  * - /hackathons/:id/edit - редактирование хакатона

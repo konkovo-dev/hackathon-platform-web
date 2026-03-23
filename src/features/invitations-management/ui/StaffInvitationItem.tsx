@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { ListItem, Button, Icon } from '@/shared/ui'
-import { UserListItem } from '@/entities/user'
 import { useT } from '@/shared/i18n/useT'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 import { useQuery } from '@tanstack/react-query'
@@ -38,7 +37,9 @@ export function StaffInvitationItem({
     queryFn: async () => {
       const response = await batchGetUsers({ userIds })
       return {
-        users: (response.users ?? []).map(u => u.user).filter((u): u is NonNullable<typeof u> => u != null),
+        users: (response.users ?? [])
+          .map(u => u.user)
+          .filter((u): u is NonNullable<typeof u> => u != null),
       }
     },
     enabled: userIds.length > 0,
@@ -91,13 +92,13 @@ export function StaffInvitationItem({
             ? `${t('invitations.staff.invitedBy')} ${createdByUser.firstName} ${createdByUser.lastName}`
             : undefined
         }
-        onClick={invitation.message ? () => setIsMessageModalOpen(true) : undefined}
+        onClick={() => setIsMessageModalOpen(true)}
         rightContent={
           <div className="flex gap-m4 items-center">
             <Button
               variant="icon-secondary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onReject()
               }}
@@ -109,7 +110,7 @@ export function StaffInvitationItem({
             <Button
               variant="icon-primary"
               size="sm"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onAccept()
               }}
@@ -122,17 +123,15 @@ export function StaffInvitationItem({
         }
       />
 
-      {invitation.message && (
-        <InvitationMessageModal
-          open={isMessageModalOpen}
-          onClose={() => setIsMessageModalOpen(false)}
-          message={invitation.message}
-          title={t('invitations.messageModal.title')}
-          createdByUserId={invitation.createdByUserId}
-          createdByUser={createdByUser}
-          hackathonId={invitation.hackathonId}
-        />
-      )}
+      <InvitationMessageModal
+        open={isMessageModalOpen}
+        onClose={() => setIsMessageModalOpen(false)}
+        message={invitation.message ?? ''}
+        title={t('invitations.messageModal.title')}
+        createdByUserId={invitation.createdByUserId}
+        createdByUser={createdByUser}
+        hackathonId={invitation.hackathonId}
+      />
     </>
   )
 }

@@ -1,49 +1,117 @@
 'use client'
 
 import { useSessionQuery } from '@/features/auth/model/hooks'
-import { useHackathonContextQuery } from '@/entities/hackathon-context/model/hooks'
-import { canCreateTeam } from '@/entities/team/policy/teamPolicy'
-import {
-  canReadDraft,
-  canManageHackathon,
-  canPublishHackathon,
-  canCreateAnnouncement,
-  canInviteStaff,
-  canViewAnnouncements,
-} from '@/entities/hackathon/policy/hackathonPolicy'
+import { useHackathonPermissionsQuery } from '@/entities/hackathon-permissions'
+import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { deny, type Decision } from './decision'
+import { permissionToDecision } from './permissionToDecision'
 
-export type Action = 
-  | 'Session.Authenticated' 
-  | 'Team.Create' 
+/** Actions map 1:1 to API permission fields. Team.MyTeam.* require hackathonId + teamId (checked against myTeamId). */
+export type Action =
+  | 'Session.Authenticated'
   | 'Hackathon.ReadDraft'
-  | 'Hackathon.ViewAnnouncements'
-  | 'Hackathon.Create'
   | 'Hackathon.Manage'
   | 'Hackathon.Publish'
   | 'Hackathon.CreateAnnouncement'
-  | 'Hackathon.InviteStaff'
+  | 'Hackathon.ViewAnnouncements'
+  | 'Hackathon.ReadTask'
+  | 'Hackathon.ReadResultDraft'
+  | 'Hackathon.UpdateResultDraft'
+  | 'Hackathon.PublishResult'
+  | 'Hackathon.ViewResultPublic'
+  | 'Participation.Register'
+  | 'Participation.Unregister'
+  | 'Participation.SwitchParticipationMode'
+  | 'Participation.UpdateParticipationProfile'
+  | 'Participation.InviteStaff'
+  | 'Participation.ListParticipants'
+  | 'Team.Create'
+  | 'Team.CanJoinTeam'
+  | 'Team.EditTeam'
+  | 'Team.DeleteTeam'
+  | 'Team.InviteMember'
+  | 'Team.KickMember'
+  | 'Team.LeaveTeam'
+  | 'Team.ManageJoinRequests'
+  | 'Team.ManageVacancies'
+  | 'Team.TransferCaptain'
+  | 'Judging.AssignJudging'
+  | 'Judging.SubmitVerdict'
+  | 'Judging.ViewLeaderboard'
+  | 'Judging.ViewMyJudgingAssignments'
+  | 'Judging.ViewSubmissionEvaluations'
+
+export type UseCanParams = {
+  hackathonId?: string | null
+  teamId?: string | null
+}
 
 export type UseCanResult = {
   decision: Decision
   isLoading: boolean
 }
 
-export function useCan(action: Action, params?: { hackathonId?: string | null }): UseCanResult {
+const HACKATHON_ACTIONS: Action[] = [
+  'Hackathon.ReadDraft',
+  'Hackathon.Manage',
+  'Hackathon.Publish',
+  'Hackathon.CreateAnnouncement',
+  'Hackathon.ViewAnnouncements',
+  'Hackathon.ReadTask',
+  'Hackathon.ReadResultDraft',
+  'Hackathon.UpdateResultDraft',
+  'Hackathon.PublishResult',
+  'Hackathon.ViewResultPublic',
+]
+const PARTICIPATION_ACTIONS: Action[] = [
+  'Participation.Register',
+  'Participation.Unregister',
+  'Participation.SwitchParticipationMode',
+  'Participation.UpdateParticipationProfile',
+  'Participation.InviteStaff',
+  'Participation.ListParticipants',
+]
+const TEAM_SCOPED_ACTIONS: Action[] = [
+  'Team.EditTeam',
+  'Team.DeleteTeam',
+  'Team.InviteMember',
+  'Team.KickMember',
+  'Team.LeaveTeam',
+  'Team.ManageJoinRequests',
+  'Team.ManageVacancies',
+  'Team.TransferCaptain',
+]
+
+function needsHackathonPermissions(action: Action): boolean {
+  return (
+    HACKATHON_ACTIONS.includes(action) ||
+    PARTICIPATION_ACTIONS.includes(action) ||
+    action === 'Team.Create' ||
+    action === 'Team.CanJoinTeam' ||
+    TEAM_SCOPED_ACTIONS.includes(action) ||
+    action.startsWith('Judging.')
+  )
+}
+
+export function useCan(action: Action, params?: UseCanParams): UseCanResult {
   const sessionQuery = useSessionQuery()
   const hackathonId = params?.hackathonId
+  const teamId = params?.teamId
 
-  const needsHackathonContext = 
-    action === 'Team.Create' || 
-    action === 'Hackathon.ReadDraft' ||
-    action === 'Hackathon.ViewAnnouncements' ||
-    action === 'Hackathon.Manage' ||
-    action === 'Hackathon.Publish' ||
-    action === 'Hackathon.CreateAnnouncement' ||
-    action === 'Hackathon.InviteStaff'
-  const ctxQuery = useHackathonContextQuery(needsHackathonContext ? hackathonId : undefined)
+  const needsPermissions = needsHackathonPermissions(action)
+  const isAuthenticated = sessionQuery.data?.active === true
+  const permissionsQuery = useHackathonPermissionsQuery(needsPermissions ? hackathonId : undefined, {
+    enabled: isAuthenticated,
+  })
+  const myParticipationQuery = useMyParticipationQuery(
+    action === 'Team.CanJoinTeam' || TEAM_SCOPED_ACTIONS.includes(action) ? hackathonId : undefined
+  )
 
-  const isLoading = sessionQuery.isLoading || (needsHackathonContext && ctxQuery.isLoading)
+  const isLoading =
+    sessionQuery.isLoading ||
+    (needsPermissions && permissionsQuery.isLoading) ||
+    ((action === 'Team.CanJoinTeam' || TEAM_SCOPED_ACTIONS.includes(action)) &&
+      myParticipationQuery.isLoading)
 
   if (action === 'Session.Authenticated') {
     if (sessionQuery.data?.active !== true) return { decision: deny('AUTH_REQUIRED'), isLoading }
@@ -52,33 +120,8 @@ export function useCan(action: Action, params?: { hackathonId?: string | null })
 
   if (sessionQuery.data?.active !== true) return { decision: deny('AUTH_REQUIRED'), isLoading }
 
-  if (action === 'Team.Create') {
-    return { decision: canCreateTeam(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.ReadDraft') {
-    return { decision: canReadDraft(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.ViewAnnouncements') {
-    return { decision: canViewAnnouncements(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.Manage') {
-    return { decision: canManageHackathon(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.Publish') {
-    return { decision: canPublishHackathon(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.CreateAnnouncement') {
-    return { decision: canCreateAnnouncement(ctxQuery.data), isLoading }
-  }
-
-  if (action === 'Hackathon.InviteStaff') {
-    return { decision: canInviteStaff(ctxQuery.data), isLoading }
-  }
-
-  return { decision: deny('POLICY_RULE'), isLoading }
+  const perm = permissionsQuery.data
+  const myTeamId = myParticipationQuery.data?.teamId ?? null
+  const decision = permissionToDecision(action, perm, params, myTeamId)
+  return { decision, isLoading }
 }

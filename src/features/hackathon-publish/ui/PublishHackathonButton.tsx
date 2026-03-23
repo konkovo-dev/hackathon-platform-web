@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button, Modal } from '@/shared/ui'
+import { Button, ErrorAlert, Modal } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { ApiError } from '@/shared/api/errors'
 import { usePublishHackathonMutation } from '../model/hooks'
@@ -25,13 +25,13 @@ export function PublishHackathonButton({ hackathonId, disabled }: PublishHackath
     } catch (error: unknown) {
       // Локализуем ошибку валидации
       let message = t('hackathons.management.publish.error')
-      
+
       if (error instanceof ApiError) {
         message = error.message || message
       } else if (error instanceof Error) {
         message = error.message || message
       }
-      
+
       setErrorMessage(message)
     }
   }
@@ -68,13 +68,7 @@ export function PublishHackathonButton({ hackathonId, disabled }: PublishHackath
             </p>
           </div>
 
-          {errorMessage && (
-            <div className="rounded-[var(--spacing-m3)] bg-state-error/10 px-m6 py-m4 border border-state-error">
-              <p className="typography-body-sm-regular text-state-error">
-                {errorMessage}
-              </p>
-            </div>
-          )}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
 
           <div className="flex gap-m4 justify-end">
             <Button

@@ -1,4 +1,7 @@
 {
+  "errors": {
+    "generic": "something went wrong"
+  },
   "actions": {
     "login": "sign in",
     "register": "sign up"
@@ -13,6 +16,7 @@
     "unknown_user": "unknown user",
     "unknown": "unknown",
     "hackathon": "hackathon",
+    "team": "team",
     "user_profile": "user profile",
     "coming_soon": "this page is under development"
   },

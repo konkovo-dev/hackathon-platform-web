@@ -41,16 +41,23 @@ describe('mapInvitationError', () => {
   describe('ApiError handling', () => {
     it('should map 404 status to user_not_found', () => {
       const error = new ApiError({ message: 'Not found', status: 404 })
-      expect(getErrorMessage(error, mockT)).toBe('hackathons.management.staff.errors.user_not_found')
+      expect(getErrorMessage(error, mockT)).toBe(
+        'hackathons.management.staff.errors.user_not_found'
+      )
     })
 
     it('should map "user not found" message to user_not_found', () => {
       const error = new ApiError({ message: 'invalid input: user not found', status: 400 })
-      expect(getErrorMessage(error, mockT)).toBe('hackathons.management.staff.errors.user_not_found')
+      expect(getErrorMessage(error, mockT)).toBe(
+        'hackathons.management.staff.errors.user_not_found'
+      )
     })
 
     it('should map "already a staff member" to already_staff', () => {
-      const error = new ApiError({ message: 'conflict: user is already a staff member', status: 409 })
+      const error = new ApiError({
+        message: 'conflict: user is already a staff member',
+        status: 409,
+      })
       expect(getErrorMessage(error, mockT)).toBe('hackathons.management.staff.errors.already_staff')
     })
 
@@ -112,7 +119,9 @@ describe('mapInvitationError', () => {
   describe('case insensitivity', () => {
     it('should match messages case-insensitively', () => {
       const error = new ApiError({ message: 'User Not Found', status: 400 })
-      expect(getErrorMessage(error, mockT)).toBe('hackathons.management.staff.errors.user_not_found')
+      expect(getErrorMessage(error, mockT)).toBe(
+        'hackathons.management.staff.errors.user_not_found'
+      )
     })
   })
 })

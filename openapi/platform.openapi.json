@@ -42,9 +42,7 @@
           }
         },
         "summary": "Introspect an access token",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/v1/auth/login": {
@@ -84,9 +82,7 @@
           }
         },
         "summary": "Login with email/username and password",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/v1/auth/logout": {
@@ -126,9 +122,7 @@
           }
         },
         "summary": "Logout",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/v1/auth/refresh": {
@@ -168,9 +162,7 @@
           }
         },
         "summary": "Refresh tokens",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/v1/auth/register": {
@@ -210,14 +202,12 @@
           }
         },
         "summary": "Register a new user account",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/v1/hackathons": {
       "post": {
-        "description": "Creates a new hackathon in DRAFT state. The caller becomes the OWNER. If `validationErrors` is non-empty the hackathon was still created but contains invalid data — fix the fields before publishing.",
+        "description": "Creates a new hackathon in DRAFT state. The caller becomes the OWNER.",
         "operationId": "HackathonService_CreateHackathon",
         "requestBody": {
           "content": {
@@ -252,9 +242,7 @@
           }
         },
         "summary": "Create a hackathon",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/list": {
@@ -294,9 +282,7 @@
           }
         },
         "summary": "List hackathons",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}": {
@@ -376,12 +362,10 @@
           }
         },
         "summary": "Get hackathon by ID",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       },
       "put": {
-        "description": "Updates hackathon fields. If `validationErrors` is non-empty the update was rejected — fix the listed fields and retry.",
+        "description": "Updates hackathon fields.",
         "operationId": "HackathonService_UpdateHackathon",
         "parameters": [
           {
@@ -426,9 +410,7 @@
           }
         },
         "summary": "Update a hackathon",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/announcements": {
@@ -468,9 +450,7 @@
           }
         },
         "summary": "List announcements",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       },
       "post": {
         "description": "Creates a new announcement for the hackathon. Visible to all participants immediately. Requires OWNER or MANAGER role.",
@@ -518,9 +498,7 @@
           }
         },
         "summary": "Create announcement",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/announcements/{announcementId}": {
@@ -576,9 +554,7 @@
           }
         },
         "summary": "Delete announcement",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       },
       "put": {
         "description": "Updates the title and body of an existing announcement. Requires OWNER or MANAGER role.",
@@ -634,9 +610,7 @@
           }
         },
         "summary": "Update announcement",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/judging/assign": {
@@ -686,9 +660,7 @@
           }
         },
         "summary": "Assign submissions to judges",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/judging/leaderboard": {
@@ -738,9 +710,7 @@
           }
         },
         "summary": "Get leaderboard",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/judging/my-assignments/list": {
@@ -790,9 +760,7 @@
           }
         },
         "summary": "Get my assignments",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/judging/my-evaluations/list": {
@@ -842,9 +810,7 @@
           }
         },
         "summary": "Get my evaluations",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/judging/my-result": {
@@ -884,9 +850,47 @@
           }
         },
         "summary": "Get my evaluation result",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
+      }
+    },
+    "/v1/hackathons/{hackathonId}/judging/permissions": {
+      "get": {
+        "description": "Returns what judging-related actions the authenticated user can perform on this hackathon (view evaluations, assign judges, submit verdict).",
+        "operationId": "JudgingService_GetJudgingPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetJudgingPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get judging permissions",
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/matchmaking/candidates": {
@@ -951,9 +955,7 @@
           }
         },
         "summary": "Get candidate recommendations for team captain",
-        "tags": [
-          "Matchmaking"
-        ]
+        "tags": ["Matchmaking"]
       }
     },
     "/v1/hackathons/{hackathonId}/matchmaking/teams": {
@@ -1002,9 +1004,7 @@
           }
         },
         "summary": "Get team recommendations for participant",
-        "tags": [
-          "Matchmaking"
-        ]
+        "tags": ["Matchmaking"]
       }
     },
     "/v1/hackathons/{hackathonId}/participants/{ownerKind}/{ownerId}/final-submission": {
@@ -1061,9 +1061,7 @@
           }
         },
         "summary": "Get final submission",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/list": {
@@ -1113,9 +1111,7 @@
           }
         },
         "summary": "List hackathon participants",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/me": {
@@ -1155,9 +1151,7 @@
           }
         },
         "summary": "Get my participation",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       },
       "put": {
         "description": "Updates wished team roles and motivation text for the authenticated user's participation.",
@@ -1205,9 +1199,7 @@
           }
         },
         "summary": "Update my participation",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/me/switchMode": {
@@ -1257,9 +1249,7 @@
           }
         },
         "summary": "Switch participation mode",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/me/unregister": {
@@ -1309,9 +1299,47 @@
           }
         },
         "summary": "Unregister from hackathon",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
+      }
+    },
+    "/v1/hackathons/{hackathonId}/participations/permissions": {
+      "get": {
+        "description": "Returns what participation-related actions the authenticated user can perform on this hackathon (register, unregister, switch mode, invite staff, list participants).",
+        "operationId": "ParticipationService_GetParticipationPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetParticipationPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get participation permissions",
+        "tags": ["Participation"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/register": {
@@ -1361,9 +1389,7 @@
           }
         },
         "summary": "Register for a hackathon",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       }
     },
     "/v1/hackathons/{hackathonId}/participations/users/{userId}": {
@@ -1411,9 +1437,47 @@
           }
         },
         "summary": "Get a user's participation",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
+      }
+    },
+    "/v1/hackathons/{hackathonId}/permissions": {
+      "get": {
+        "description": "Returns what actions the authenticated user can perform on this hackathon (manage, publish, announcements, task, result).",
+        "operationId": "HackathonService_GetHackathonPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetHackathonPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get hackathon permissions",
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/publish": {
@@ -1463,9 +1527,7 @@
           }
         },
         "summary": "Publish a hackathon",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/result": {
@@ -1505,12 +1567,10 @@
           }
         },
         "summary": "Get hackathon result",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       },
       "put": {
-        "description": "Saves a draft of the result announcement. Does NOT publish it. If `validationErrors` is non-empty the update was rejected.",
+        "description": "Saves a draft of the result announcement. Does NOT publish it.",
         "operationId": "HackathonService_UpdateHackathonResultDraft",
         "parameters": [
           {
@@ -1555,9 +1615,7 @@
           }
         },
         "summary": "Update result draft",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/result/publish": {
@@ -1607,9 +1665,7 @@
           }
         },
         "summary": "Publish hackathon result",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/staff": {
@@ -1692,12 +1748,91 @@
           }
         },
         "summary": "List hackathon staff",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/hackathons/{hackathonId}/staff-invitations": {
+      "get": {
+        "description": "Returns all staff invitations sent for this hackathon. Requires OWNER or MANAGER role.",
+        "operationId": "StaffService_ListHackathonStaffInvitations",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.page.pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.page.pageToken",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "query",
+            "name": "query.offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1ListHackathonStaffInvitationsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List staff invitations for a hackathon",
+        "tags": ["Staff"]
+      },
       "post": {
         "description": "Creates a staff invitation for the target user. They can accept or reject it from their invitations list. Requires OWNER or MANAGER role.",
         "operationId": "StaffService_CreateStaffInvitation",
@@ -1744,9 +1879,7 @@
           }
         },
         "summary": "Invite a user to staff",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/hackathons/{hackathonId}/staff-invitations/{invitationId}/cancel": {
@@ -1804,9 +1937,7 @@
           }
         },
         "summary": "Cancel a staff invitation",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/hackathons/{hackathonId}/staff/removeRole": {
@@ -1856,9 +1987,7 @@
           }
         },
         "summary": "Remove a staff member's role",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/hackathons/{hackathonId}/staff/selfRemoveRole": {
@@ -1908,9 +2037,7 @@
           }
         },
         "summary": "Voluntarily give up a staff role",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions": {
@@ -1960,9 +2087,7 @@
           }
         },
         "summary": "Create a submission",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/list": {
@@ -2012,9 +2137,7 @@
           }
         },
         "summary": "List submissions",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}": {
@@ -2062,9 +2185,7 @@
           }
         },
         "summary": "Get submission",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       },
       "put": {
         "description": "Updates the description of a submission. Only the creator can update. Available only during RUNNING stage.",
@@ -2120,9 +2241,7 @@
           }
         },
         "summary": "Update submission description",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluate": {
@@ -2180,9 +2299,7 @@
           }
         },
         "summary": "Submit evaluation",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/evaluations": {
@@ -2230,9 +2347,7 @@
           }
         },
         "summary": "Get submission evaluations",
-        "tags": [
-          "Judging"
-        ]
+        "tags": ["Judging"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files": {
@@ -2290,9 +2405,7 @@
           }
         },
         "summary": "Create submission file upload",
-        "tags": [
-          "Submission Files"
-        ]
+        "tags": ["Submission Files"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/complete": {
@@ -2358,9 +2471,7 @@
           }
         },
         "summary": "Complete submission file upload",
-        "tags": [
-          "Submission Files"
-        ]
+        "tags": ["Submission Files"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/files/{fileId}/download-url": {
@@ -2416,9 +2527,7 @@
           }
         },
         "summary": "Get submission file download URL",
-        "tags": [
-          "Submission Files"
-        ]
+        "tags": ["Submission Files"]
       }
     },
     "/v1/hackathons/{hackathonId}/submissions/{submissionId}/select-final": {
@@ -2476,9 +2585,7 @@
           }
         },
         "summary": "Select final submission",
-        "tags": [
-          "Submissions"
-        ]
+        "tags": ["Submissions"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/messages": {
@@ -2528,9 +2635,7 @@
           }
         },
         "summary": "Send a message to support",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/my-messages": {
@@ -2613,9 +2718,7 @@
           }
         },
         "summary": "Get all my chat messages",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/realtime-token": {
@@ -2655,9 +2758,7 @@
           }
         },
         "summary": "Get Centrifugo connection token",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/all/list": {
@@ -2707,9 +2808,7 @@
           }
         },
         "summary": "List all tickets (organizer)",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/assigned/list": {
@@ -2759,9 +2858,7 @@
           }
         },
         "summary": "List assigned tickets (mentor)",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/assign": {
@@ -2819,9 +2916,7 @@
           }
         },
         "summary": "Assign ticket to mentor (organizer)",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/claim": {
@@ -2879,9 +2974,7 @@
           }
         },
         "summary": "Claim ticket (mentor)",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/close": {
@@ -2939,9 +3032,7 @@
           }
         },
         "summary": "Close a ticket",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/messages": {
@@ -3032,9 +3123,7 @@
           }
         },
         "summary": "Get ticket messages",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/support/tickets/{ticketId}/reply": {
@@ -3092,9 +3181,7 @@
           }
         },
         "summary": "Reply in a ticket (mentor)",
-        "tags": [
-          "Mentors"
-        ]
+        "tags": ["Mentors"]
       }
     },
     "/v1/hackathons/{hackathonId}/task": {
@@ -3134,12 +3221,10 @@
           }
         },
         "summary": "Get hackathon task",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       },
       "put": {
-        "description": "Replaces the task description. Requires OWNER or MANAGER role. If `validationErrors` is non-empty the update was rejected.",
+        "description": "Replaces the task description. Requires OWNER or MANAGER role.",
         "operationId": "HackathonService_UpdateHackathonTask",
         "parameters": [
           {
@@ -3184,9 +3269,7 @@
           }
         },
         "summary": "Update hackathon task",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams": {
@@ -3236,9 +3319,7 @@
           }
         },
         "summary": "Create a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/list": {
@@ -3288,9 +3369,47 @@
           }
         },
         "summary": "List teams",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
+      }
+    },
+    "/v1/hackathons/{hackathonId}/teams/permissions": {
+      "get": {
+        "description": "Returns what team-related actions the authenticated user can perform on this hackathon (create team, manage own team).",
+        "operationId": "TeamService_GetTeamPermissions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hackathonId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1GetTeamPermissionsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get team permissions",
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}": {
@@ -3346,9 +3465,7 @@
           }
         },
         "summary": "Delete a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       },
       "get": {
         "description": "Returns a team and, optionally, its vacancies. Requires the caller to be staff (OWNER/ORGANIZER/MENTOR) or a registered participant. Available starting from the REGISTRATION stage.",
@@ -3402,9 +3519,7 @@
           }
         },
         "summary": "Get a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       },
       "put": {
         "description": "Updates team fields (name, description, is_joinable). Only the team captain can perform this action. Allowed only during the REGISTRATION stage.",
@@ -3460,9 +3575,7 @@
           }
         },
         "summary": "Update a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests": {
@@ -3520,9 +3633,7 @@
           }
         },
         "summary": "Create a join request",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/list": {
@@ -3580,9 +3691,7 @@
           }
         },
         "summary": "List join requests for a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/accept": {
@@ -3648,9 +3757,7 @@
           }
         },
         "summary": "Accept a join request",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/join-requests/{requestId}/reject": {
@@ -3716,9 +3823,7 @@
           }
         },
         "summary": "Reject a join request",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/members": {
@@ -3766,9 +3871,7 @@
           }
         },
         "summary": "List team members",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/members/leave": {
@@ -3826,9 +3929,7 @@
           }
         },
         "summary": "Leave a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/members/{userId}/kick": {
@@ -3894,9 +3995,7 @@
           }
         },
         "summary": "Kick a team member",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations": {
@@ -3954,9 +4053,7 @@
           }
         },
         "summary": "Create a team invitation",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/list": {
@@ -4014,9 +4111,7 @@
           }
         },
         "summary": "List team invitations for a team",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/team-invitations/{invitationId}/cancel": {
@@ -4082,9 +4177,7 @@
           }
         },
         "summary": "Cancel a team invitation",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/transferCaptain": {
@@ -4142,9 +4235,7 @@
           }
         },
         "summary": "Transfer team captainship",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/teams/{teamId}/vacancies/upsert": {
@@ -4202,9 +4293,7 @@
           }
         },
         "summary": "Create or update a vacancy",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/hackathons/{hackathonId}/validate": {
@@ -4244,9 +4333,7 @@
           }
         },
         "summary": "Validate a hackathon",
-        "tags": [
-          "Hackathons"
-        ]
+        "tags": ["Hackathons"]
       }
     },
     "/v1/skills/list": {
@@ -4286,9 +4373,7 @@
           }
         },
         "summary": "List skill catalog",
-        "tags": [
-          "Skills"
-        ]
+        "tags": ["Skills"]
       }
     },
     "/v1/team-roles": {
@@ -4318,9 +4403,7 @@
           }
         },
         "summary": "List team roles",
-        "tags": [
-          "Participation"
-        ]
+        "tags": ["Participation"]
       }
     },
     "/v1/users/batchGet": {
@@ -4360,9 +4443,7 @@
           }
         },
         "summary": "Batch get users",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/v1/users/list": {
@@ -4402,9 +4483,7 @@
           }
         },
         "summary": "List users",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/v1/users/me": {
@@ -4434,9 +4513,7 @@
           }
         },
         "summary": "Get my profile",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       },
       "put": {
         "description": "Updates basic profile fields (first name, last name, avatar URL, timezone) for the authenticated user.",
@@ -4474,9 +4551,87 @@
           }
         },
         "summary": "Update my profile",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
+      }
+    },
+    "/v1/users/me/avatar/complete": {
+      "post": {
+        "description": "Marks the avatar upload as completed and updates the user's avatar_url after successful upload to S3.",
+        "operationId": "MeService_CompleteAvatarUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CompleteAvatarUploadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CompleteAvatarUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Complete avatar upload",
+        "tags": ["Users"]
+      }
+    },
+    "/v1/users/me/avatar/upload": {
+      "post": {
+        "description": "Initiates an avatar upload and returns a pre-signed PUT URL. Validates file type (images only) and size limits.",
+        "operationId": "MeService_CreateAvatarUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/v1CreateAvatarUploadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/v1CreateAvatarUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rpcStatus"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create avatar upload",
+        "tags": ["Users"]
       }
     },
     "/v1/users/me/contacts": {
@@ -4516,9 +4671,7 @@
           }
         },
         "summary": "Replace my contacts",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/v1/users/me/join-requests/list": {
@@ -4558,9 +4711,7 @@
           }
         },
         "summary": "List my join requests",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/users/me/join-requests/{requestId}/cancel": {
@@ -4610,9 +4761,7 @@
           }
         },
         "summary": "Cancel a join request",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/users/me/skills": {
@@ -4652,9 +4801,7 @@
           }
         },
         "summary": "Replace my skills",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     },
     "/v1/users/me/staff-invitations/list": {
@@ -4694,9 +4841,7 @@
           }
         },
         "summary": "List my staff invitations",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/users/me/staff-invitations/{invitationId}/accept": {
@@ -4746,9 +4891,7 @@
           }
         },
         "summary": "Accept a staff invitation",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/users/me/staff-invitations/{invitationId}/reject": {
@@ -4798,9 +4941,7 @@
           }
         },
         "summary": "Reject a staff invitation",
-        "tags": [
-          "Staff"
-        ]
+        "tags": ["Staff"]
       }
     },
     "/v1/users/me/team-invitations/list": {
@@ -4840,9 +4981,7 @@
           }
         },
         "summary": "List my team invitations",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/users/me/team-invitations/{invitationId}/accept": {
@@ -4892,9 +5031,7 @@
           }
         },
         "summary": "Accept a team invitation",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/users/me/team-invitations/{invitationId}/reject": {
@@ -4944,9 +5081,7 @@
           }
         },
         "summary": "Reject a team invitation",
-        "tags": [
-          "Team"
-        ]
+        "tags": ["Team"]
       }
     },
     "/v1/users/{userId}": {
@@ -5002,9 +5137,7 @@
           }
         },
         "summary": "Get user by ID",
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Users"]
       }
     }
   },
@@ -5880,6 +6013,25 @@
       "v1CloseTicketResponse": {
         "type": "object"
       },
+      "v1CompleteAvatarUploadRequest": {
+        "properties": {
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/v1IdempotencyKey"
+          },
+          "uploadId": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1CompleteAvatarUploadResponse": {
+        "properties": {
+          "avatarUrl": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "v1CompleteSubmissionUploadResponse": {
         "properties": {
           "file": {
@@ -5911,6 +6063,40 @@
         "properties": {
           "participation": {
             "$ref": "#/components/schemas/v1HackathonParticipation"
+          }
+        },
+        "type": "object"
+      },
+      "v1CreateAvatarUploadRequest": {
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "$ref": "#/components/schemas/v1IdempotencyKey"
+          },
+          "sizeBytes": {
+            "format": "int64",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1CreateAvatarUploadResponse": {
+        "properties": {
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "uploadUrl": {
+            "title": "Pre-signed PUT URL",
+            "type": "string"
           }
         },
         "type": "object"
@@ -5962,12 +6148,6 @@
         "properties": {
           "hackathonId": {
             "type": "string"
-          },
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
           }
         },
         "type": "object"
@@ -6218,6 +6398,14 @@
         },
         "type": "object"
       },
+      "v1GetHackathonPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1HackathonPermissions"
+          }
+        },
+        "type": "object"
+      },
       "v1GetHackathonResponse": {
         "properties": {
           "hackathon": {
@@ -6238,6 +6426,14 @@
         "properties": {
           "task": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1GetJudgingPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1JudgingPermissions"
           }
         },
         "type": "object"
@@ -6348,6 +6544,14 @@
         },
         "type": "object"
       },
+      "v1GetParticipationPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1ParticipationPermissions"
+          }
+        },
+        "type": "object"
+      },
       "v1GetRealtimeTokenResponse": {
         "properties": {
           "expiresAt": {
@@ -6388,6 +6592,14 @@
         "properties": {
           "submission": {
             "$ref": "#/components/schemas/v1Submission"
+          }
+        },
+        "type": "object"
+      },
+      "v1GetTeamPermissionsResponse": {
+        "properties": {
+          "permissions": {
+            "$ref": "#/components/schemas/v1TeamPermissions"
           }
         },
         "type": "object"
@@ -6628,6 +6840,41 @@
         },
         "type": "object"
       },
+      "v1HackathonPermissions": {
+        "properties": {
+          "createAnnouncement": {
+            "type": "boolean"
+          },
+          "manageHackathon": {
+            "type": "boolean"
+          },
+          "publishHackathon": {
+            "type": "boolean"
+          },
+          "publishResult": {
+            "type": "boolean"
+          },
+          "readDraft": {
+            "type": "boolean"
+          },
+          "readResultDraft": {
+            "type": "boolean"
+          },
+          "readTask": {
+            "type": "boolean"
+          },
+          "updateResultDraft": {
+            "type": "boolean"
+          },
+          "viewAnnouncements": {
+            "type": "boolean"
+          },
+          "viewResultPublic": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1HackathonRegistrationPolicy": {
         "properties": {
           "allowIndividual": {
@@ -6757,6 +7004,26 @@
         },
         "type": "object"
       },
+      "v1JudgingPermissions": {
+        "properties": {
+          "assignJudging": {
+            "type": "boolean"
+          },
+          "submitVerdict": {
+            "type": "boolean"
+          },
+          "viewLeaderboard": {
+            "type": "boolean"
+          },
+          "viewMyJudgingAssignments": {
+            "type": "boolean"
+          },
+          "viewSubmissionEvaluations": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1KickTeamMemberResponse": {
         "type": "object"
       },
@@ -6846,6 +7113,20 @@
               "$ref": "#/components/schemas/v1HackathonParticipation"
             },
             "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "v1ListHackathonStaffInvitationsResponse": {
+        "properties": {
+          "invitations": {
+            "items": {
+              "$ref": "#/components/schemas/v1StaffInvitation"
+            },
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/v1PageResponse"
           }
         },
         "type": "object"
@@ -7191,11 +7472,7 @@
       },
       "v1OwnerKind": {
         "default": "OWNER_KIND_UNSPECIFIED",
-        "enum": [
-          "OWNER_KIND_UNSPECIFIED",
-          "OWNER_KIND_USER",
-          "OWNER_KIND_TEAM"
-        ],
+        "enum": ["OWNER_KIND_UNSPECIFIED", "OWNER_KIND_USER", "OWNER_KIND_TEAM"],
         "type": "string"
       },
       "v1PageRequest": {
@@ -7217,6 +7494,29 @@
           },
           "nextPageToken": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1ParticipationPermissions": {
+        "properties": {
+          "inviteStaff": {
+            "type": "boolean"
+          },
+          "listParticipants": {
+            "type": "boolean"
+          },
+          "register": {
+            "type": "boolean"
+          },
+          "switchParticipationMode": {
+            "type": "boolean"
+          },
+          "unregister": {
+            "type": "boolean"
+          },
+          "updateParticipationProfile": {
+            "type": "boolean"
           }
         },
         "type": "object"
@@ -7528,11 +7828,7 @@
       },
       "v1SortDirection": {
         "default": "SORT_DIRECTION_UNSPECIFIED",
-        "enum": [
-          "SORT_DIRECTION_UNSPECIFIED",
-          "SORT_DIRECTION_ASC",
-          "SORT_DIRECTION_DESC"
-        ],
+        "enum": ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"],
         "type": "string"
       },
       "v1StaffInvitation": {
@@ -7777,6 +8073,35 @@
         },
         "type": "object"
       },
+      "v1TeamManagementPermissions": {
+        "properties": {
+          "deleteTeam": {
+            "type": "boolean"
+          },
+          "editTeam": {
+            "type": "boolean"
+          },
+          "inviteMember": {
+            "type": "boolean"
+          },
+          "kickMember": {
+            "type": "boolean"
+          },
+          "leaveTeam": {
+            "type": "boolean"
+          },
+          "manageJoinRequests": {
+            "type": "boolean"
+          },
+          "manageVacancies": {
+            "type": "boolean"
+          },
+          "transferCaptain": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "v1TeamMember": {
         "properties": {
           "assignedVacancyId": {
@@ -7792,6 +8117,17 @@
           },
           "userId": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1TeamPermissions": {
+        "properties": {
+          "canInMyTeam": {
+            "$ref": "#/components/schemas/v1TeamManagementPermissions"
+          },
+          "createTeam": {
+            "type": "boolean"
           }
         },
         "type": "object"
@@ -7891,11 +8227,7 @@
       },
       "v1TicketStatus": {
         "default": "TICKET_STATUS_UNSPECIFIED",
-        "enum": [
-          "TICKET_STATUS_UNSPECIFIED",
-          "TICKET_STATUS_OPEN",
-          "TICKET_STATUS_CLOSED"
-        ],
+        "enum": ["TICKET_STATUS_UNSPECIFIED", "TICKET_STATUS_OPEN", "TICKET_STATUS_CLOSED"],
         "type": "string"
       },
       "v1TicketStatusFilter": {
@@ -7919,36 +8251,12 @@
         "type": "object"
       },
       "v1UpdateHackathonResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateHackathonResultDraftResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateHackathonTaskResponse": {
-        "properties": {
-          "validationErrors": {
-            "items": {
-              "$ref": "#/components/schemas/v1ValidationError"
-            },
-            "type": "array"
-          }
-        },
         "type": "object"
       },
       "v1UpdateMeRequest": {

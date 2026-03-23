@@ -4,10 +4,13 @@ import { ApiError } from '@/shared/api/errors'
 
 export default async function HackathonMainPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ hackathonId: string }>
+  searchParams: Promise<{ tab?: string }>
 }) {
   const { hackathonId } = await params
+  const { tab: tabParam } = await searchParams
 
   let initialData
   try {
@@ -23,5 +26,7 @@ export default async function HackathonMainPage({
     }
   }
 
-  return <HackathonDetail hackathonId={hackathonId} initialData={initialData} />
+  return (
+    <HackathonDetail hackathonId={hackathonId} initialData={initialData} initialTab={tabParam} />
+  )
 }

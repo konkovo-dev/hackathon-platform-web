@@ -8,14 +8,40 @@ import type { Hackathon } from '@/entities/hackathon/model/types'
 import { getStageProgress, getStageLabel } from '@/entities/hackathon/model/utils'
 import { formatDateRange, formatLocation } from '@/shared/lib/formatDate'
 import { cn } from '@/shared/lib/cn'
+import { ParticipationBadge } from './ParticipationBadge'
+import type { components } from '@/shared/api/platform.schema'
+
+type ParticipationStatus = components['schemas']['v1ParticipationStatus']
+export type HackathonCardMetricsVariant = 'catalog' | 'participant'
+
+export const HACKATHON_CARD_METRICS_VARIANT = {
+  catalog: 'catalog',
+  participant: 'participant',
+} as const satisfies Record<HackathonCardMetricsVariant, HackathonCardMetricsVariant>
+
+export const HACKATHON_DETAIL_TAB_PARTICIPATION = 'participation' as const
 
 export interface HackathonCardProps {
   hackathon: Hackathon
   className?: string
   variant?: 'elevated' | 'bordered'
+  metricsVariant?: HackathonCardMetricsVariant
+  participationStatus?: ParticipationStatus | null
+  teamName?: string | null
+  teamNameLoading?: boolean
+  detailTabId?: typeof HACKATHON_DETAIL_TAB_PARTICIPATION | null
 }
 
-export function HackathonCard({ hackathon, className, variant = 'elevated' }: HackathonCardProps) {
+export function HackathonCard({
+  hackathon,
+  className,
+  variant = 'elevated',
+  metricsVariant = 'catalog',
+  participationStatus,
+  teamName,
+  teamNameLoading,
+  detailTabId,
+}: HackathonCardProps) {
   const t = useT()
   const router = useRouter()
 
@@ -29,13 +55,24 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
   const stageLabel = getStageLabel(hackathon.stage)
 
   const handleNavigate = () => {
-    if (hackathon.hackathonId) {
-      router.push(routes.hackathons.detail(hackathon.hackathonId))
-    }
+    if (!hackathon.hackathonId) return
+    router.push(
+      detailTabId
+        ? routes.hackathons.detailWithTab(hackathon.hackathonId, detailTabId)
+        : routes.hackathons.detail(hackathon.hackathonId)
+    )
   }
 
   const isElevated = variant === 'elevated'
   const isBordered = variant === 'bordered'
+
+  const showParticipation =
+    metricsVariant === 'participant' &&
+    participationStatus &&
+    participationStatus !== 'PART_NONE' &&
+    participationStatus !== 'PARTICIPATION_STATUS_UNSPECIFIED'
+
+  const showTeamSizeRow = metricsVariant === 'catalog' && teamSize
 
   return (
     <div
@@ -50,9 +87,7 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
           'hover:scale-[1.02] hover:-translate-y-1',
           'hover:shadow-[0_8px_24px_-4px_var(--color-shadow-color)]',
         ],
-        isBordered && [
-          'border border-border-default hover:border-border-strong',
-        ],
+        isBordered && ['border border-border-default hover:border-border-strong'],
         className
       )}
       onClick={handleNavigate}
@@ -75,7 +110,15 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
             />
           )}
 
-          {teamSize && (
+          {showParticipation && (
+            <ParticipationBadge
+              status={participationStatus}
+              teamName={teamName}
+              teamNameLoading={teamNameLoading}
+            />
+          )}
+
+          {showTeamSizeRow && (
             <IconText
               icon={<Icon src="/icons/icon-team/iton-team-md.svg" size="md" />}
               text={teamSize}
@@ -93,7 +136,7 @@ export function HackathonCard({ hackathon, className, variant = 'elevated' }: Ha
         variant="action"
         size="lg"
         className="w-full mt-m8"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation()
           handleNavigate()
         }}

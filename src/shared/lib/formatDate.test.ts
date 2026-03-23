@@ -1,5 +1,24 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { formatRelativeTime } from './formatDate'
+import { formatRelativeTime, isoToDatetimeLocal } from './formatDate'
+
+describe('isoToDatetimeLocal', () => {
+  it('возвращает пустую строку для undefined и пустой строки', () => {
+    expect(isoToDatetimeLocal(undefined)).toBe('')
+    expect(isoToDatetimeLocal('')).toBe('')
+  })
+
+  it('возвращает пустую строку для невалидной ISO-строки', () => {
+    expect(isoToDatetimeLocal('invalid')).toBe('')
+  })
+
+  it('конвертирует UTC в локальное время (формат YYYY-MM-DDTHH:mm)', () => {
+    const iso = '2025-03-18T18:00:00.000Z'
+    const result = isoToDatetimeLocal(iso)
+    expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
+    // Круговая проверка: локальное значение при парсинге даёт тот же момент
+    expect(new Date(result).getTime()).toBe(new Date(iso).getTime())
+  })
+})
 
 describe('formatRelativeTime', () => {
   const mockNow = new Date('2026-03-15T12:00:00Z')

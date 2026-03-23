@@ -31,7 +31,9 @@ export function DateRangeField({
 }: DateRangeFieldProps) {
   return (
     <div className="flex items-center gap-m4">
-      <span className="typography-label-sm text-text-secondary whitespace-nowrap">{startLabel}</span>
+      <span className="typography-label-sm text-text-secondary whitespace-nowrap">
+        {startLabel}
+      </span>
       <Input
         id={startId}
         type="datetime-local"

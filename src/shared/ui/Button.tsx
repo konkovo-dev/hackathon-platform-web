@@ -1,7 +1,14 @@
 import { cn } from '@/shared/lib/cn'
 import { cloneElement, forwardRef, isValidElement, type ButtonHTMLAttributes } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'action' | 'secondary-action' | 'icon' | 'icon-secondary' | 'icon-primary'
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'action'
+  | 'secondary-action'
+  | 'icon'
+  | 'icon-secondary'
+  | 'icon-primary'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
@@ -156,7 +163,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isActionType = variant === 'action' || variant === 'secondary-action'
-    const isIcon = isIconProp ?? (variant === 'icon' || variant === 'icon-secondary' || variant === 'icon-primary')
+    const isIcon =
+      isIconProp ??
+      (variant === 'icon' || variant === 'icon-secondary' || variant === 'icon-primary')
     const variantStyles = getVariantStyles(variant, disabled)
     const sizeStyles = getSizeStyles(size, isActionType, isIcon)
     const actionIcon = getActionIcon(variant)

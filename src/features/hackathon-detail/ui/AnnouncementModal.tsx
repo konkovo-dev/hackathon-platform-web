@@ -23,7 +23,7 @@ export function AnnouncementModal({
 }: AnnouncementModalProps) {
   const t = useT()
   const queryClient = useQueryClient()
-  
+
   const announcements = queryClient.getQueryData<HackathonAnnouncement[]>([
     'hackathon',
     'announcements',
@@ -41,7 +41,9 @@ export function AnnouncementModal({
       open={open}
       onClose={onClose}
       title={announcement.title ?? t('common.fallback.untitled')}
-      subtitle={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : undefined}
+      subtitle={
+        announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : undefined
+      }
       size="lg"
     >
       <MarkdownContent>{announcement.body ?? ''}</MarkdownContent>

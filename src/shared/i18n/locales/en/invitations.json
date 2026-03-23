@@ -10,9 +10,11 @@
   },
   "staff": {
     "invitedBy": "invited by",
+    "invited": "invited",
     "role": "role",
     "on": "on"
   },
+  "cancel": "cancel",
   "team": {
     "invitedBy": "invited by",
     "team": "team",
@@ -25,6 +27,7 @@
   "messageModal": {
     "title": "invitation",
     "message": "message",
+    "noMessage": "no message",
     "viewProfile": "view profile"
   }
 }

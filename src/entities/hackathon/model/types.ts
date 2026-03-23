@@ -17,7 +17,7 @@ export type Hackathon = Omit<HackathonFromAPI, 'stage'> & {
 }
 
 // Типы для списка хакатонов
-export type HackathonListResponse = 
+export type HackathonListResponse =
   operations['HackathonService_ListHackathons']['responses']['200']['content']['application/json'] & {
     hackathons: Hackathon[]
   }
@@ -36,7 +36,7 @@ export type HackathonListFilters = {
 }
 
 // Типы для Query (из OpenAPI)
-export type HackathonListQuery = 
+export type HackathonListQuery =
   operations['HackathonService_ListHackathons']['requestBody']['content']['application/json']
 
 export type FilterGroup = components['schemas']['v1FilterGroup']

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { Section } from '@/shared/ui/Section'
 import { PageContainer } from '@/shared/ui/PageContainer'
 import { Button } from '@/shared/ui/Button'
@@ -11,9 +12,16 @@ import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import { ApiError } from '@/shared/api/errors'
 import { localizeValidationError } from '@/shared/lib/validation/localizeValidationError'
-import { useCreateHackathonMutation } from '@/features/hackathon-create/model/hooks'
+import { isoToDatetimeLocal } from '@/shared/lib/formatDate'
+import {
+  prefetchHackathonPageData,
+  useCreateHackathonMutation,
+} from '@/features/hackathon-create/model/hooks'
 import { useUpdateHackathonMutation } from '@/features/hackathon-edit/model/hooks'
-import { validateHackathonForm, type FieldErrors } from '@/features/hackathon-create/model/validation'
+import {
+  validateHackathonForm,
+  type FieldErrors,
+} from '@/features/hackathon-create/model/validation'
 import { BasicInfoSection } from '@/features/hackathon-create/ui/BasicInfoSection'
 import { LocationSection } from '@/features/hackathon-create/ui/LocationSection'
 import { DatesSection } from '@/features/hackathon-create/ui/DatesSection'
@@ -30,14 +38,10 @@ interface HackathonFormProps {
   initialData?: Hackathon
 }
 
-function isoToDatetimeLocal(iso?: string): string {
-  if (!iso) return ''
-  return new Date(iso).toISOString().slice(0, 16)
-}
-
 export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormProps) {
   const t = useT()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const createMutation = useCreateHackathonMutation()
   const updateMutation = useUpdateHackathonMutation()
 
@@ -81,10 +85,12 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
 
   const [links, setLinks] = useState<LinkItem[]>(
     initialData?.links && initialData.links.length > 0
-      ? initialData.links.map(link => ({ 
-          title: link.title ?? '', 
-          url: link.url ?? '' 
-        })).filter(link => link.title && link.url)
+      ? initialData.links
+          .map(link => ({
+            title: link.title ?? '',
+            url: link.url ?? '',
+          }))
+          .filter(link => link.title && link.url)
       : [{ title: '', url: '' }]
   )
 
@@ -102,7 +108,8 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
     if (!validation.isValid) {
       setFieldErrors(validation.errors)
       setFormError(
-        validation.message || t(isEditMode ? 'hackathons.edit.errors.unknown' : 'hackathons.create.errors.required')
+        validation.message ||
+          t(isEditMode ? 'hackathons.edit.errors.unknown' : 'hackathons.create.errors.required')
       )
       return
     }
@@ -207,6 +214,7 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         }
       } else {
         if (response.hackathonId) {
+          await prefetchHackathonPageData(queryClient, response.hackathonId)
           router.push(routes.hackathons.detail(response.hackathonId))
           return
         }
@@ -221,9 +229,7 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         })
         setFieldErrors(errors)
         setFormError(
-          response.validationErrors
-            .map((err: any) => localizeValidationError(err, t))
-            .join('; ') ||
+          response.validationErrors.map((err: any) => localizeValidationError(err, t)).join('; ') ||
             t(isEditMode ? 'hackathons.edit.errors.unknown' : 'hackathons.create.errors.unknown')
         )
         return
@@ -275,7 +281,7 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
     <PageContainer>
       <form onSubmit={handleSubmit} className="flex flex-col gap-m8">
         <Breadcrumb items={breadcrumbItems} />
-        
+
         <h1 className="typography-heading-lg text-text-primary">
           {t(isEditMode ? 'hackathons.edit.title' : 'hackathons.create.title')}
         </h1>
@@ -338,7 +344,7 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         </div>
 
         <div className="grid grid-cols-2 gap-m8">
-          <Section 
+          <Section
             title={t('hackathons.create.sections.registration_policy')}
             className={!allowTeam ? 'col-span-2' : undefined}
           >
@@ -364,7 +370,12 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         </div>
 
         <Section title={t('hackathons.create.sections.links')}>
-          <LinksSection links={links} setLinks={setLinks} errors={fieldErrors} disabled={isPending} />
+          <LinksSection
+            links={links}
+            setLinks={setLinks}
+            errors={fieldErrors}
+            disabled={isPending}
+          />
         </Section>
 
         {formError && (
@@ -380,14 +391,18 @@ export function HackathonForm({ mode, hackathonId, initialData }: HackathonFormP
         <div className="flex items-center gap-m4">
           <Button
             variant="secondary-action"
-            text={t(isEditMode ? 'hackathons.edit.actions.cancel' : 'hackathons.create.actions.cancel')}
+            text={t(
+              isEditMode ? 'hackathons.edit.actions.cancel' : 'hackathons.create.actions.cancel'
+            )}
             onClick={handleCancel}
             disabled={isPending}
             type="button"
           />
           <Button
             variant="action"
-            text={t(isEditMode ? 'hackathons.edit.actions.save' : 'hackathons.create.actions.submit')}
+            text={t(
+              isEditMode ? 'hackathons.edit.actions.save' : 'hackathons.create.actions.submit'
+            )}
             type="submit"
             disabled={isPending}
           />

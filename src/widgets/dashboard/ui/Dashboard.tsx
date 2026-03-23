@@ -40,6 +40,7 @@ export function Dashboard() {
             emptyMessage={t('dashboard.empty.participant')}
             emptyActionLabel={t('dashboard.empty.participant_action')}
             emptyActionHref={routes.hackathons.list}
+            participationMode
           />
 
           <HackathonRoleSection

@@ -1,13 +1,17 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { unregisterFromHackathon } from '@/entities/hackathon-context/api/unregisterFromHackathon'
+import { invalidateParticipationRelatedQueries } from '@/entities/hackathon-context/model/invalidateParticipationRelatedQueries'
 import { getHackathon } from '@/entities/hackathon/api/getHackathon'
 import { getHackathonAnnouncements } from '@/entities/hackathon/api/getHackathonAnnouncements'
+import { getHackathonTask } from '@/entities/hackathon/api/getHackathonTask'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 
 const detailKey = (hackathonId: string) => ['hackathon', 'detail', hackathonId] as const
 const announcementsKey = (hackathonId: string) =>
   ['hackathon', 'announcements', hackathonId] as const
+const taskKey = (hackathonId: string) => ['hackathon', 'task', hackathonId] as const
 
 export function useHackathonDetailQuery(
   hackathonId: string | null | undefined,
@@ -51,6 +55,36 @@ export function useHackathonAnnouncementsQuery(
     retry: (failureCount, error: any) => {
       if (error?.status === 403) return false
       return failureCount < 3
+    },
+  })
+}
+
+export function useHackathonTaskQuery(
+  hackathonId: string | null | undefined,
+  enabled: boolean = true
+) {
+  return useQuery({
+    queryKey: hackathonId ? taskKey(hackathonId) : ['hackathon', 'task', 'none'],
+    queryFn: async () => {
+      if (!hackathonId) throw new Error('hackathonId is required')
+      const task = await getHackathonTask(hackathonId)
+      return task ?? ''
+    },
+    enabled: Boolean(hackathonId) && enabled,
+    staleTime: 60_000,
+    retry: (failureCount, error: any) => {
+      if (error?.status === 403 || error?.status === 404) return false
+      return failureCount < 3
+    },
+  })
+}
+
+export function useUnregisterFromHackathonMutation(hackathonId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => unregisterFromHackathon(hackathonId),
+    onSuccess: async () => {
+      await invalidateParticipationRelatedQueries(queryClient, hackathonId)
     },
   })
 }

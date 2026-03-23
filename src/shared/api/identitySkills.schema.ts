@@ -4,136 +4,141 @@
  */
 
 export interface paths {
-    "/v1/skills/list": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * List skill catalog
-         * @description Returns a paginated list of skills from the global catalog. Use when displaying a skill picker.
-         */
-        post: operations["SkillsService_ListSkillCatalog"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
+  '/v1/skills/list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * List skill catalog
+     * @description Returns a paginated list of skills from the global catalog. Use when displaying a skill picker.
+     */
+    post: operations['SkillsService_ListSkillCatalog']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
-export type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>
 export interface components {
-    schemas: {
-        protobufAny: {
-            "@type"?: string;
-        } & {
-            [key: string]: unknown;
-        };
-        rpcStatus: {
-            /** Format: int32 */
-            code?: number;
-            message?: string;
-            details?: components["schemas"]["protobufAny"][];
-        };
-        v1CatalogSkill: {
-            id?: string;
-            name?: string;
-        };
-        v1Filter: {
-            field?: string;
-            operation?: components["schemas"]["v1FilterOperation"];
-            stringValue?: string;
-            /** Format: int64 */
-            int64Value?: string;
-            boolValue?: boolean;
-            stringList?: components["schemas"]["v1StringList"];
-        };
-        v1FilterGroup: {
-            filters?: components["schemas"]["v1Filter"][];
-        };
-        /**
-         * @default FILTER_OPERATION_UNSPECIFIED
-         * @enum {string}
-         */
-        v1FilterOperation: "FILTER_OPERATION_UNSPECIFIED" | "FILTER_OPERATION_EQUAL" | "FILTER_OPERATION_IN" | "FILTER_OPERATION_CONTAINS" | "FILTER_OPERATION_PREFIX";
-        v1ListSkillCatalogRequest: {
-            query?: components["schemas"]["v1Query"];
-        };
-        v1ListSkillCatalogResponse: {
-            skills?: components["schemas"]["v1CatalogSkill"][];
-            page?: components["schemas"]["v1PageResponse"];
-        };
-        v1PageRequest: {
-            /** Format: int64 */
-            pageSize?: number;
-            pageToken?: string;
-        };
-        v1PageResponse: {
-            nextPageToken?: string;
-        };
-        v1Query: {
-            q?: string;
-            /** @description OR between groups, AND inside group. */
-            filterGroups?: components["schemas"]["v1FilterGroup"][];
-            sort?: components["schemas"]["v1Sort"][];
-            page?: components["schemas"]["v1PageRequest"];
-        };
-        v1Sort: {
-            field?: string;
-            direction?: components["schemas"]["v1SortDirection"];
-        };
-        /**
-         * @default SORT_DIRECTION_UNSPECIFIED
-         * @enum {string}
-         */
-        v1SortDirection: "SORT_DIRECTION_UNSPECIFIED" | "SORT_DIRECTION_ASC" | "SORT_DIRECTION_DESC";
-        v1StringList: {
-            values?: string[];
-        };
-    };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+  schemas: {
+    protobufAny: {
+      '@type'?: string
+    } & {
+      [key: string]: unknown
+    }
+    rpcStatus: {
+      /** Format: int32 */
+      code?: number
+      message?: string
+      details?: components['schemas']['protobufAny'][]
+    }
+    v1CatalogSkill: {
+      id?: string
+      name?: string
+    }
+    v1Filter: {
+      field?: string
+      operation?: components['schemas']['v1FilterOperation']
+      stringValue?: string
+      /** Format: int64 */
+      int64Value?: string
+      boolValue?: boolean
+      stringList?: components['schemas']['v1StringList']
+    }
+    v1FilterGroup: {
+      filters?: components['schemas']['v1Filter'][]
+    }
+    /**
+     * @default FILTER_OPERATION_UNSPECIFIED
+     * @enum {string}
+     */
+    v1FilterOperation:
+      | 'FILTER_OPERATION_UNSPECIFIED'
+      | 'FILTER_OPERATION_EQUAL'
+      | 'FILTER_OPERATION_IN'
+      | 'FILTER_OPERATION_CONTAINS'
+      | 'FILTER_OPERATION_PREFIX'
+    v1ListSkillCatalogRequest: {
+      query?: components['schemas']['v1Query']
+    }
+    v1ListSkillCatalogResponse: {
+      skills?: components['schemas']['v1CatalogSkill'][]
+      page?: components['schemas']['v1PageResponse']
+    }
+    v1PageRequest: {
+      /** Format: int64 */
+      pageSize?: number
+      pageToken?: string
+    }
+    v1PageResponse: {
+      nextPageToken?: string
+    }
+    v1Query: {
+      q?: string
+      /** @description OR between groups, AND inside group. */
+      filterGroups?: components['schemas']['v1FilterGroup'][]
+      sort?: components['schemas']['v1Sort'][]
+      page?: components['schemas']['v1PageRequest']
+    }
+    v1Sort: {
+      field?: string
+      direction?: components['schemas']['v1SortDirection']
+    }
+    /**
+     * @default SORT_DIRECTION_UNSPECIFIED
+     * @enum {string}
+     */
+    v1SortDirection: 'SORT_DIRECTION_UNSPECIFIED' | 'SORT_DIRECTION_ASC' | 'SORT_DIRECTION_DESC'
+    v1StringList: {
+      values?: string[]
+    }
+  }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
-export type $defs = Record<string, never>;
+export type $defs = Record<string, never>
 export interface operations {
-    SkillsService_ListSkillCatalog: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["v1ListSkillCatalogRequest"];
-            };
-        };
-        responses: {
-            /** @description A successful response. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v1ListSkillCatalogResponse"];
-                };
-            };
-            /** @description An unexpected error response. */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["rpcStatus"];
-                };
-            };
-        };
-    };
+  SkillsService_ListSkillCatalog: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['v1ListSkillCatalogRequest']
+      }
+    }
+    responses: {
+      /** @description A successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['v1ListSkillCatalogResponse']
+        }
+      }
+      /** @description An unexpected error response. */
+      default: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['rpcStatus']
+        }
+      }
+    }
+  }
 }

@@ -13,7 +13,11 @@ export interface AnnouncementsListProps {
   locale?: string
 }
 
-export function AnnouncementsList({ announcements, hackathonId, locale = 'ru' }: AnnouncementsListProps) {
+export function AnnouncementsList({
+  announcements,
+  hackathonId,
+  locale = 'ru',
+}: AnnouncementsListProps) {
   const t = useT()
   const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null)
 
@@ -34,9 +38,15 @@ export function AnnouncementsList({ announcements, hackathonId, locale = 'ru' }:
           <ListItem
             key={announcement.announcementId ?? 'unknown'}
             text={announcement.title ?? t('common.fallback.untitled')}
-            caption={announcement.createdAt ? formatRelativeTime(announcement.createdAt, locale) : undefined}
+            caption={
+              announcement.createdAt
+                ? formatRelativeTime(announcement.createdAt, locale)
+                : undefined
+            }
             variant="section"
-            onClick={() => announcement.announcementId && setSelectedAnnouncementId(announcement.announcementId)}
+            onClick={() =>
+              announcement.announcementId && setSelectedAnnouncementId(announcement.announcementId)
+            }
           />
         ))}
       </div>

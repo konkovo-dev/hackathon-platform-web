@@ -9,20 +9,29 @@ import {
   acceptTeamInvitation,
   rejectTeamInvitation,
 } from '@/entities/invitation'
+import { useSessionQuery } from '@/features/auth/model/hooks'
 
 export function useStaffInvitationsQuery() {
+  const sessionQuery = useSessionQuery()
+  const isAuthed = sessionQuery.data?.active === true
+
   return useQuery({
     queryKey: ['my-staff-invitations'],
     queryFn: listMyStaffInvitations,
     refetchInterval: 30000,
+    enabled: isAuthed,
   })
 }
 
 export function useTeamInvitationsQuery() {
+  const sessionQuery = useSessionQuery()
+  const isAuthed = sessionQuery.data?.active === true
+
   return useQuery({
     queryKey: ['my-team-invitations'],
     queryFn: listMyTeamInvitations,
     refetchInterval: 30000,
+    enabled: isAuthed,
   })
 }
 
@@ -31,7 +40,8 @@ export function useActiveInvitationsCount() {
   const teamQuery = useTeamInvitationsQuery()
 
   const staffPending =
-    staffQuery.data?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_PENDING').length ?? 0
+    staffQuery.data?.invitations?.filter(inv => inv.status === 'STAFF_INVITATION_PENDING').length ??
+    0
   const teamPending =
     teamQuery.data?.invitations?.filter(inv => inv.status === 'TEAM_INBOX_PENDING').length ?? 0
 

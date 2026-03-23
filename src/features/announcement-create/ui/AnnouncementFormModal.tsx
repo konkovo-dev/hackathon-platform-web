@@ -31,7 +31,7 @@ export function AnnouncementFormModal({
   const t = useT()
   const queryClient = useQueryClient()
   const isEditMode = !!announcement
-  
+
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
 
@@ -110,12 +110,7 @@ export function AnnouncementFormModal({
         />
 
         <div className="flex gap-m4 justify-end">
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={handleClose}
-            disabled={mutation.isPending}
-          >
+          <Button variant="secondary" size="md" onClick={handleClose} disabled={mutation.isPending}>
             {t('hackathons.create.actions.cancel')}
           </Button>
           <Button

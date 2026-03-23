@@ -18,11 +18,7 @@ import { EditSkillsModal } from './EditSkillsModal'
 import { EditContactsModal } from './EditContactsModal'
 import type { MeProfile, VisibilityLevel, ContactItem } from '@/entities/user/model/types'
 import type { components } from '@/shared/api/identityMe.schema'
-import {
-  ProfileAvatar,
-  ProfileContactsSection,
-  ProfileSkillsSection,
-} from '@/widgets/profile-view'
+import { ProfileAvatar, ProfileContactsSection, ProfileSkillsSection } from '@/widgets/profile-view'
 
 type ContactInput = components['schemas']['v1MyContact']
 
@@ -142,7 +138,9 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
   const hasSkills = skills.length > 0
 
   // Преобразуем ContactWithVisibility в ContactItem для использования в ProfileContactsSection
-  const contactItems: ContactItem[] = contacts.map(c => c.contact).filter((c): c is ContactItem => c != null)
+  const contactItems: ContactItem[] = contacts
+    .map(c => c.contact)
+    .filter((c): c is ContactItem => c != null)
 
   // --- Имя ---
   const handleNameEdit = () => {

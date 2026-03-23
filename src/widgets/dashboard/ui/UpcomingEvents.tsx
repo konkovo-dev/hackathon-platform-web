@@ -94,7 +94,7 @@ function getUpcomingEvents(hackathons: Hackathon[]): Event[] {
 function formatDaysUntil(days: number, t: ReturnType<typeof useT>): string {
   if (days === 0) return t('dashboard.upcoming.today')
   if (days === 1) return t('dashboard.upcoming.tomorrow')
-  
+
   return t('dashboard.upcoming.in_days', { count: days })
 }
 
@@ -106,10 +106,7 @@ export function UpcomingEvents({ hackathons, className }: UpcomingEventsProps) {
     <Section
       title={t('dashboard.upcoming.title')}
       variant="elevated"
-      className={cn(
-        'animate-in fade-in slide-in-from-bottom-2 duration-300 delay-200',
-        className
-      )}
+      className={cn('animate-in fade-in slide-in-from-bottom-2 duration-300 delay-200', className)}
     >
       {events.length === 0 ? (
         <div className="flex items-center justify-center p-m20">
@@ -119,7 +116,7 @@ export function UpcomingEvents({ hackathons, className }: UpcomingEventsProps) {
         </div>
       ) : (
         <div className="flex flex-col gap-m4">
-          {events.map((event) => (
+          {events.map(event => (
             <Link
               key={`${event.hackathonId}-${event.type}`}
               href={routes.hackathons.detail(event.hackathonId)}

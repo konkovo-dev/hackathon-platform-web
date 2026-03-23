@@ -43,7 +43,20 @@ const getVariantStyles = (variant: InputVariant, error: boolean) => {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = 'text', error = false, disabled, placeholder, value, onClear, onChange, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = 'text',
+      error = false,
+      disabled,
+      placeholder,
+      value,
+      onClear,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
     const variantStyles = getVariantStyles(variant, error)
     const isSearch = variant === 'search'
     const hasValue = Boolean(value && String(value).length > 0)

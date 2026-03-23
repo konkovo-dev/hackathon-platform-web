@@ -12,9 +12,7 @@ export default async function HackathonsPage() {
   return (
     <PageContainer>
       <div className="flex items-center justify-between mb-m12">
-        <h1 className="typography-heading-lg text-text-primary">
-          {t('hackathons.list.title')}
-        </h1>
+        <h1 className="typography-heading-lg text-text-primary">{t('hackathons.list.title')}</h1>
         {session.active ? (
           <Button variant="primary" text={t('hackathons.create.title')} asChild>
             <Link href={routes.hackathons.create} />

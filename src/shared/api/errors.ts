@@ -41,7 +41,12 @@ export async function parseApiErrorResponse(res: Response): Promise<ApiErrorData
   const messageFromJson = typeof json?.message === 'string' ? json.message : undefined
   const message = (messageFromJson && messageFromJson.trim()) || res.statusText || 'Request failed'
 
-  const code = typeof json?.code === 'string' ? json.code : undefined
+  const code =
+    typeof json?.code === 'string'
+      ? json.code
+      : typeof json?.code === 'number'
+        ? String(json.code)
+        : undefined
   const fieldErrors =
     json && typeof json.fieldErrors === 'object' && json.fieldErrors !== null
       ? (json.fieldErrors as Record<string, string[]>)

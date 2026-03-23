@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ListItem, Icon, Chip } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useRouter } from 'next/navigation'
@@ -11,6 +12,7 @@ export interface UserListItemProps {
   user: User | undefined
   caption?: string
   rightContent?: ReactNode
+  rightActionOnHover?: ReactNode
   onClick?: () => void
   selectable?: boolean
   selected?: boolean
@@ -24,6 +26,7 @@ export function UserListItem({
   user,
   caption,
   rightContent,
+  rightActionOnHover,
   onClick,
   selectable,
   selected,
@@ -33,6 +36,7 @@ export function UserListItem({
 }: UserListItemProps) {
   const t = useT()
   const router = useRouter()
+  const [isHovered, setIsHovered] = useState(false)
   const { data: session } = useSessionQuery()
 
   const isCurrentUser = session?.active && session.userId === userId
@@ -83,16 +87,22 @@ export function UserListItem({
     <Chip label={badge} variant="primary" />
   ) : undefined
 
+  const baseRightContent = rightContent ?? defaultRightContent
+  const effectiveRightContent =
+    rightActionOnHover && isHovered ? rightActionOnHover : baseRightContent
+
   return (
-    <ListItem
-      text={title}
-      subtitle={subtitle}
-      caption={caption}
-      rightContent={rightContent ?? defaultRightContent}
-      onClick={handleClick}
-      selectable={selectable}
-      selected={selected}
-      variant={variant}
-    />
+    <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <ListItem
+        text={title}
+        subtitle={subtitle}
+        caption={caption}
+        rightContent={effectiveRightContent}
+        onClick={handleClick}
+        selectable={selectable}
+        selected={selected}
+        variant={variant}
+      />
+    </div>
   )
 }

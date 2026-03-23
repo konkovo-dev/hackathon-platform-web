@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Section, Button } from '@/shared/ui'
 import { HackathonCard } from '@/features/hackathon-list/ui/HackathonCard'
+import { HackathonCardWithParticipation } from '@/features/hackathon-list/ui/HackathonCardWithParticipation'
 import { HorizontalScrollList } from './HorizontalScrollList'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
@@ -17,6 +18,7 @@ export interface HackathonRoleSectionProps {
   emptyHint?: string
   emptyActionLabel?: string
   emptyActionHref?: string
+  participationMode?: boolean
 }
 
 export function HackathonRoleSection({
@@ -28,6 +30,7 @@ export function HackathonRoleSection({
   emptyHint,
   emptyActionLabel,
   emptyActionHref,
+  participationMode = false,
 }: HackathonRoleSectionProps) {
   const t = useT()
 
@@ -59,13 +62,9 @@ export function HackathonRoleSection({
     return (
       <Section title={title}>
         <div className="flex flex-col items-center justify-center p-m20 gap-m6 text-center">
-          <span className="typography-body-md-regular text-text-secondary">
-            {emptyMessage}
-          </span>
+          <span className="typography-body-md-regular text-text-secondary">{emptyMessage}</span>
           {emptyHint && (
-            <span className="typography-body-sm-regular text-text-tertiary">
-              {emptyHint}
-            </span>
+            <span className="typography-body-sm-regular text-text-tertiary">{emptyHint}</span>
           )}
           {emptyActionLabel && emptyActionHref && (
             <Link href={emptyActionHref}>
@@ -84,7 +83,11 @@ export function HackathonRoleSection({
       <HorizontalScrollList>
         {hackathons.map(hackathon => (
           <div key={hackathon.hackathonId} className="flex-shrink-0 snap-start">
-            <HackathonCard hackathon={hackathon} variant="bordered" />
+            {participationMode ? (
+              <HackathonCardWithParticipation hackathon={hackathon} variant="bordered" />
+            ) : (
+              <HackathonCard hackathon={hackathon} variant="bordered" />
+            )}
           </div>
         ))}
       </HorizontalScrollList>

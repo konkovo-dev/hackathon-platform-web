@@ -115,7 +115,7 @@ async function handle(req: Request, { params }: { params: { path: string[] } }) 
         res = await proxyOnce(
           req,
           upstream,
-          refreshed.accessToken ?? await getAccessTokenFromCookies(),
+          refreshed.accessToken ?? (await getAccessTokenFromCookies()),
           body
         )
       } catch (e) {

@@ -15,6 +15,7 @@ import type { I18nKey } from '@/shared/i18n/generated'
 import { useSessionQueryWithInitial } from '@/features/auth/model/hooks'
 import type { components as AuthBffComponents } from '@/shared/api/authBff.schema'
 import { useActiveInvitationsCount } from '@/features/invitations-management'
+import { usePendingJoinRequestsInboxCount } from '@/widgets/my-teams-list'
 import { SearchModal } from '@/features/global-search'
 import { SidebarSettings } from './SidebarSettings'
 import { useDebugFlag } from './useDebugFlag'
@@ -22,7 +23,15 @@ import { useDebugFlag } from './useDebugFlag'
 type SessionResponse = AuthBffComponents['schemas']['BffSessionResponse']
 
 type SidebarItem = {
-  key: 'home' | 'hackathons' | 'invitations' | 'teams' | 'profile' | 'auth' | 'design_system' | 'search'
+  key:
+    | 'home'
+    | 'hackathons'
+    | 'invitations'
+    | 'teams'
+    | 'profile'
+    | 'auth'
+    | 'design_system'
+    | 'search'
   href?: string
   iconSrc: string
   onClick?: () => void
@@ -61,13 +70,12 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
   const sessionQuery = useSessionQueryWithInitial(initialSession)
   const isAuthed = sessionQuery.data?.active === true
   const { count: invitationsCount } = useActiveInvitationsCount()
+  const { count: joinRequestsInboxCount } = usePendingJoinRequestsInboxCount()
 
   const menuGroups = useMemo(() => {
     const groups: SidebarItem[][] = []
 
-    groups.push([
-      { key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) },
-    ])
+    groups.push([{ key: 'search', iconSrc: ICONS.search, onClick: () => setSearchOpen(true) }])
 
     if (isAuthed) {
       groups.push([
@@ -146,7 +154,13 @@ export function Sidebar({ initialSession }: { initialSession?: SessionResponse }
                 title={t(LABEL_KEY[item.key])}
                 active={item.href ? isActive(item.href) : false}
                 collapsed={collapsed}
-                badge={item.key === 'invitations' ? invitationsCount : undefined}
+                badge={
+                  item.key === 'invitations'
+                    ? invitationsCount
+                    : item.key === 'teams'
+                      ? joinRequestsInboxCount
+                      : undefined
+                }
                 onClick={item.onClick}
               />
             ))}

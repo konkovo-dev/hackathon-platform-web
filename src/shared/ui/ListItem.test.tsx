@@ -53,9 +53,9 @@ describe('ListItem', () => {
 
   describe('варианты оформления', () => {
     it('должен применять стили default варианта по умолчанию', () => {
-      renderWithProviders(<ListItem text="Test item" />)
-      const item = screen.getByText('Test item').parentElement
-      expect(item).toHaveClass('border-b')
+      const { container } = renderWithProviders(<ListItem text="Test item" />)
+      const root = container.firstElementChild
+      expect(root).toHaveClass('border-b')
     })
 
     it('должен применять стили bordered варианта', () => {
@@ -71,19 +71,24 @@ describe('ListItem', () => {
       expect(item).toHaveClass('bg-bg-elevated')
       expect(item).toHaveClass('rounded-[var(--spacing-m4)]')
     })
+
+    it('должен применять стили danger для bordered варианта', () => {
+      renderWithProviders(
+        <ListItem text="Test item" variant="bordered" danger onClick={() => {}} />
+      )
+      const item = screen.getByRole('button')
+      expect(item).toHaveClass('border-state-error')
+      expect(item).toHaveClass('hover:bg-state-error/5')
+    })
   })
 
   describe('rightContent', () => {
-    it('должен отображать rightContent вместо caption', () => {
+    it('должен отображать rightContent и caption вместе', () => {
       renderWithProviders(
-        <ListItem
-          text="Test item"
-          caption="caption"
-          rightContent={<span>Custom content</span>}
-        />
+        <ListItem text="Test item" caption="caption" rightContent={<span>Custom content</span>} />
       )
       expect(screen.getByText('Custom content')).toBeInTheDocument()
-      expect(screen.queryByText('caption')).not.toBeInTheDocument()
+      expect(screen.getByText('caption')).toBeInTheDocument()
     })
   })
 })

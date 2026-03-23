@@ -40,7 +40,11 @@ export function InvitationsList() {
 
   return (
     <div className="flex flex-col gap-m8">
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={id => setActiveTab(id as 'staff' | 'team')} />
+      <Tabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onChange={id => setActiveTab(id as 'staff' | 'team')}
+      />
 
       {isLoading ? (
         <p className="typography-body-sm text-text-secondary">{t('invitations.loading')}</p>

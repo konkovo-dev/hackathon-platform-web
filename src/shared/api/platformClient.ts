@@ -8,29 +8,55 @@ function joinPath(base: string, path: string) {
 }
 
 /**
- * Client-side API client - использует BFF для запросов
+ * На сервере строит абсолютный URL и пробрасывает cookie для BFF.
+ */
+async function getFetchUrlAndHeaders(
+  path: string,
+  init?: Omit<RequestInit, 'headers'> & { headers?: HeadersInit }
+): Promise<{ url: string; headers: HeadersInit }> {
+  const urlPath = joinPath(env.apiBaseUrl, path)
+  const baseHeaders: HeadersInit = {
+    accept: 'application/json',
+    ...(init?.headers || {}),
+  }
+
+  if (typeof window === 'undefined') {
+    const { headers } = await import('next/headers')
+    const h = await headers()
+    const host = h.get('host') || 'localhost:3000'
+    const proto = h.get('x-forwarded-proto') || 'http'
+    const url = `${proto}://${host}${urlPath}`
+    const cookie = h.get('cookie')
+    return {
+      url,
+      headers: cookie ? { ...baseHeaders, cookie } : baseHeaders,
+    }
+  }
+
+  return { url: urlPath, headers: baseHeaders }
+}
+
+/**
+ * API client — использует BFF для запросов. Работает и в браузере, и в Server Components
  */
 export async function platformFetchJson<TResponse>(
   path: string,
   init?: Omit<RequestInit, 'headers'> & { headers?: HeadersInit }
 ): Promise<TResponse> {
-  const urlPath = joinPath(env.apiBaseUrl, path)
-  
+  const { url, headers } = await getFetchUrlAndHeaders(path, init)
+
   const fetchOptions: RequestInit = {
     ...init,
-    headers: {
-      accept: 'application/json',
-      ...(init?.headers || {}),
-    },
+    headers,
     cache: 'no-store',
     credentials: 'same-origin',
   }
 
-  const res = await fetch(urlPath, fetchOptions)
+  const res = await fetch(url, fetchOptions)
 
   if (!res.ok) {
     const err = await parseApiErrorResponse(res.clone())
-    err.url = urlPath
+    err.url = url
     throw new ApiError(err)
   }
 
