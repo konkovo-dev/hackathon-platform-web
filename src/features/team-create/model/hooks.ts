@@ -16,6 +16,7 @@ export function useCreateTeamMutation(hackathonId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-context', hackathonId] })
     },
   })

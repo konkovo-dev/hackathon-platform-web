@@ -240,6 +240,14 @@
       "viewAll": "смотреть все",
       "empty": "пока нет участников",
       "exclude_unavailable": "исключение участников пока недоступно",
+      "tabs": {
+        "participants": "участники",
+        "teams": "команды"
+      },
+      "searchParticipants": "поиск по имени, нику или команде",
+      "searchTeams": "поиск команд",
+      "searchEmpty": "ничего не найдено",
+      "teamCaption": "команда: {name}",
       "status": {
         "lookingForTeam": "ищет команду",
         "single": "индивидуальное участие",

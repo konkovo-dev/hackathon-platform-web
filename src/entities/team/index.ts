@@ -1,5 +1,10 @@
 export { createTeam, type CreateTeamRequest, type CreateTeamResponse } from './api/createTeam'
-export { listTeams, type ListTeamsRequest, type ListTeamsResponse } from './api/listTeams'
+export {
+  listTeams,
+  listAllTeams,
+  type ListTeamsRequest,
+  type ListTeamsResponse,
+} from './api/listTeams'
 export { listTeamRoles, type ListTeamRolesResponse } from './api/listTeamRoles'
 export { getTeam, type GetTeamParams, type GetTeamResponse } from './api/getTeam'
 export { updateTeam, type UpdateTeamRequest, type UpdateTeamResponse } from './api/updateTeam'

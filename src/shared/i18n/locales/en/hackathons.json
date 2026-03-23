@@ -240,6 +240,14 @@
       "viewAll": "view all",
       "empty": "no participants yet",
       "exclude_unavailable": "excluding participants is not available yet",
+      "tabs": {
+        "participants": "participants",
+        "teams": "teams"
+      },
+      "searchParticipants": "search by name, username, or team",
+      "searchTeams": "search teams",
+      "searchEmpty": "no matches",
+      "teamCaption": "team: {name}",
       "status": {
         "lookingForTeam": "looking for team",
         "single": "individual participation",

@@ -17,6 +17,7 @@ export function useUpdateTeamMutation(hackathonId: string, teamId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team', hackathonId, teamId] })
       queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })
     },
   })
 }
@@ -28,6 +29,7 @@ export function useDeleteTeamMutation(hackathonId: string, teamId: string) {
     mutationFn: () => deleteTeam(hackathonId, teamId, crypto.randomUUID()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
+      queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-context', hackathonId] })
     },
   })
