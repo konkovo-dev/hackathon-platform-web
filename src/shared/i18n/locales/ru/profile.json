@@ -12,7 +12,14 @@
     "cancel": "Отмена",
     "add_contacts": "добавить контакты",
     "add_skills": "добавить навыки",
-    "choose_avatar": "выбрать"
+    "upload_avatar": "загрузить фото",
+    "delete_avatar": "удалить фото"
+  },
+  "avatar": {
+    "invalid_type": "допустимы только изображения JPEG, PNG, WebP или GIF",
+    "too_large": "размер файла не должен превышать 5 МБ",
+    "upload_failed": "не удалось загрузить фото",
+    "delete_failed": "не удалось удалить фото"
   },
   "sections": {
     "info": "основная информация",

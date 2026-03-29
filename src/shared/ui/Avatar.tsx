@@ -1,12 +1,20 @@
+'use client'
+
+import { useState } from 'react'
+import { toAvatarImgSrc } from '@/shared/lib/avatarUrl'
 import { cn } from '@/shared/lib/cn'
 
 export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
+
+export const AVATAR_PLACEHOLDER_ELEVATED = 'elevated' as const
+export const AVATAR_PLACEHOLDER_TRANSPARENT = 'transparent' as const
 
 export interface AvatarProps {
   src?: string | null
   name?: string | null
   size?: AvatarSize
   className?: string
+  placeholderTone?: 'default' | 'elevated' | 'transparent'
 }
 
 const sizeClasses: Record<AvatarSize, string> = {
@@ -16,18 +24,41 @@ const sizeClasses: Record<AvatarSize, string> = {
   xl: 'relative aspect-[3/4] self-stretch typography-body-lg-medium',
 }
 
-function getInitials(name?: string | null): string {
-  return name?.trim()[0]?.toUpperCase() ?? '?'
+function firstLetterUpper(segment: string): string {
+  const s = segment.trim()
+  if (!s) return ''
+  return s[0]!.toLocaleUpperCase()
 }
 
-export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
+function getInitials(name?: string | null): string {
+  const trimmed = name?.trim()
+  if (!trimmed) return '?'
+  const parts = trimmed.split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) {
+    const one = firstLetterUpper(parts[0]!)
+    return one || '?'
+  }
+  const first = firstLetterUpper(parts[0]!)
+  const last = firstLetterUpper(parts[parts.length - 1]!)
+  const pair = `${first}${last}`.trim()
+  return pair || '?'
+}
+
+export function Avatar({ src, name, size = 'md', className, placeholderTone = 'default' }: AvatarProps) {
   const sizeClass = sizeClasses[size]
   const isXl = size === 'xl'
+  const resolvedSrc =
+    typeof src === 'string' && src.trim() !== '' ? toAvatarImgSrc(src.trim()) : undefined
+  const [imgLoaded, setImgLoaded] = useState(false)
+  const [imgFailed, setImgFailed] = useState(false)
+
+  const showImage = resolvedSrc && !imgFailed
 
   return (
     <div
       className={cn(
-        'border border-border-default rounded-m2 overflow-hidden shrink-0',
+        'relative border border-border-default rounded-[var(--spacing-m2)] overflow-hidden shrink-0',
         'animate-in fade-in zoom-in-95 duration-200',
         !isXl && 'flex items-center justify-center',
         sizeClass,
@@ -35,25 +66,34 @@ export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
       )}
       style={isXl ? { minHeight: 0, minWidth: 0 } : undefined}
     >
-      {src ? (
+      {/* Placeholder — всегда в DOM, перекрывается картинкой после загрузки */}
+      <div
+        className={cn(
+          'flex items-center justify-center',
+          placeholderTone === 'elevated'
+            ? 'bg-bg-elevated'
+            : placeholderTone === 'transparent'
+              ? 'bg-transparent'
+              : 'bg-bg-default',
+          'absolute inset-0'
+        )}
+      >
+        <span className="text-text-tertiary">{getInitials(name)}</span>
+      </div>
+
+      {/* Картинка поверх placeholder — видна только после успешной загрузки */}
+      {showImage && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
+          src={resolvedSrc}
           alt={name ?? 'avatar'}
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgFailed(true)}
           className={cn(
-            isXl ? 'absolute inset-0 w-full h-full object-cover' : 'w-full h-full object-cover',
-            'transition-opacity duration-300'
+            'absolute inset-0 w-full h-full object-cover transition-opacity duration-300',
+            imgLoaded ? 'opacity-100' : 'opacity-0'
           )}
         />
-      ) : (
-        <div
-          className={cn(
-            'bg-bg-default flex items-center justify-center',
-            isXl ? 'absolute inset-0' : 'w-full h-full'
-          )}
-        >
-          <span className="text-text-tertiary">{getInitials(name)}</span>
-        </div>
       )}
     </div>
   )

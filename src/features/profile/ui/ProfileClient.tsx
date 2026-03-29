@@ -12,13 +12,22 @@ import {
   useUpdateProfileMutation,
   useUpdateSkillsMutation,
   useUpdateContactsMutation,
+  useUploadAvatarMutation,
+  useDeleteAvatarMutation,
 } from '../model/hooks'
+import { validateImageFile, MAX_AVATAR_SIZE_BYTES } from '@/shared/lib/file'
 import { EditNameSection } from './EditNameSection'
 import { EditSkillsModal } from './EditSkillsModal'
 import { EditContactsModal } from './EditContactsModal'
 import type { MeProfile, VisibilityLevel, ContactItem } from '@/entities/user/model/types'
 import type { components } from '@/shared/api/identityMe.schema'
-import { ProfileAvatar, ProfileContactsSection, ProfileSkillsSection } from '@/widgets/profile-view'
+import {
+  ProfileAvatar,
+  ProfileContactsSection,
+  ProfileMainGrid,
+  ProfileSkillsSection,
+} from '@/widgets/profile-view'
+import { ErrorAlert } from '@/shared/ui/ErrorAlert'
 
 type ContactInput = components['schemas']['v1MyContact']
 
@@ -108,6 +117,8 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
   const updateProfile = useUpdateProfileMutation()
   const updateSkills = useUpdateSkillsMutation()
   const updateContacts = useUpdateContactsMutation()
+  const uploadAvatar = useUploadAvatarMutation()
+  const deleteAvatar = useDeleteAvatarMutation()
 
   const [nameEditing, setNameEditing] = useState(false)
   const [editFirstName, setEditFirstName] = useState('')
@@ -115,6 +126,7 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
 
   const [contactsModalOpen, setContactsModalOpen] = useState(false)
   const [skillsModalOpen, setSkillsModalOpen] = useState(false)
+  const [avatarError, setAvatarError] = useState<string | null>(null)
 
   if (isLoading && !initialData) {
     return (
@@ -209,24 +221,57 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
     />
   )
 
+  const handleAvatarUpload = (file: File) => {
+    setAvatarError(null)
+    const validationError = validateImageFile(file, { maxBytes: MAX_AVATAR_SIZE_BYTES })
+    if (validationError === 'invalid_type') {
+      setAvatarError(t('profile.avatar.invalid_type'))
+      return
+    }
+    if (validationError === 'too_large') {
+      setAvatarError(t('profile.avatar.too_large'))
+      return
+    }
+    uploadAvatar.mutate(file, {
+      onError: () => setAvatarError(t('profile.avatar.upload_failed')),
+    })
+  }
+
+  const handleAvatarDelete = () => {
+    if (!user) return
+    setAvatarError(null)
+    deleteAvatar.mutate(
+      {
+        firstName: user.firstName ?? '',
+        lastName: user.lastName ?? '',
+        timezone: user.timezone?.trim() ? user.timezone : 'UTC',
+      },
+      { onError: () => setAvatarError(t('profile.avatar.delete_failed')) }
+    )
+  }
+
   return (
     <div className="flex flex-col gap-m8 items-end w-full max-w-[1080px]">
       <div className="w-full">
         <ProfileCompletion hasAvatar={hasAvatar} hasContacts={hasContacts} hasSkills={hasSkills} />
       </div>
 
-      <div className="grid gap-m8 w-full items-center" style={{ gridTemplateColumns: 'auto 1fr' }}>
-        <ProfileAvatar
-          avatarUrl={user?.avatarUrl}
-          firstName={user?.firstName}
-          placeholder={
-            <Button variant="action" size="sm">
-              {t('profile.actions.choose_avatar')}
-            </Button>
-          }
-        />
-
-        <div className="flex flex-col gap-m8 min-w-0 justify-center">
+      <ProfileMainGrid
+        sidebar={
+          <>
+            <ProfileAvatar
+              avatarUrl={user?.avatarUrl}
+              firstName={user?.firstName}
+              lastName={user?.lastName}
+              onUpload={handleAvatarUpload}
+              onDelete={handleAvatarDelete}
+              isUploading={uploadAvatar.isPending || deleteAvatar.isPending}
+            />
+            {avatarError ? <ErrorAlert message={avatarError} /> : null}
+          </>
+        }
+        main={
+          <>
           {/* Информация */}
           <Section
             title={t('profile.sections.info')}
@@ -291,8 +336,9 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
               }
             />
           </Section>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <LogoutButton />
 

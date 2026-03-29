@@ -9,9 +9,14 @@ describe('Avatar', () => {
     expect(img).toHaveAttribute('src', '/avatar.jpg')
   })
 
-  it('should render fallback initials from name', () => {
+  it('should render fallback initials from first and last name', () => {
     renderWithProviders(<Avatar name="Alex Brown" />)
-    expect(document.body.textContent).toContain('A')
+    expect(document.body.textContent).toContain('AB')
+  })
+
+  it('should render single initial when only one name part', () => {
+    renderWithProviders(<Avatar name="Madonna" />)
+    expect(document.body.textContent).toContain('M')
   })
 
   it('should render question mark when no name or src', () => {

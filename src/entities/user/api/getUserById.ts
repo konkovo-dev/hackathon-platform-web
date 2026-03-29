@@ -1,6 +1,7 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { components } from '@/shared/api/platform.schema'
 import type { PublicProfile, Skill, ContactItem } from '../model/types'
+import { normalizeUserAvatarFields } from './normalizeUserAvatar'
 
 type GetUserResponse = components['schemas']['v1GetUserResponse']
 
@@ -21,7 +22,7 @@ export async function getUserById(userId: string): Promise<PublicProfile> {
   )
 
   return {
-    user: json.user,
+    user: normalizeUserAvatarFields(json.user),
     skills: normalizeSkills(json.skills),
     contacts: normalizeContacts(json.contacts),
   }

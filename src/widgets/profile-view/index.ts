@@ -1,4 +1,5 @@
 export { ProfileAvatar } from './ProfileAvatar'
+export { ProfileMainGrid } from './ProfileMainGrid'
 export { ProfileInfoSection } from './ProfileInfoSection'
 export { ProfileContactsSection } from './ProfileContactsSection'
 export { ProfileSkillsSection } from './ProfileSkillsSection'

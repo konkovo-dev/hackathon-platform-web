@@ -40,9 +40,9 @@ export function ListItem({
       aria-selected={selectable && selected ? true : undefined}
       onClick={onClick}
       className={cn(
-        'flex items-center justify-between gap-m8',
+        'flex items-center justify-between gap-m8 rounded-[var(--spacing-m4)] px-m6 py-m6',
         isBordered && [
-          'border rounded-[var(--spacing-m2)] px-m4 py-m4',
+          'border',
           'transition-colors',
           danger
             ? [
@@ -52,7 +52,6 @@ export function ListItem({
             : ['border-border-default', isClickable && 'cursor-pointer hover:border-border-strong'],
         ],
         isSection && [
-          'rounded-[var(--spacing-m4)] px-m6 py-m4',
           'transition-all duration-300 ease-out',
           danger
             ? [
@@ -68,7 +67,7 @@ export function ListItem({
         ],
         !isBordered &&
           !isSection && [
-            'border-b border-border-default py-m6',
+            'border-b border-border-default',
             'transition-colors',
             isClickable && 'cursor-pointer hover:bg-surface-secondary',
           ],

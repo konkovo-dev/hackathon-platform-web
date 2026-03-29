@@ -1,6 +1,7 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { components } from '@/shared/api/identityMe.schema'
 import type { MeProfile, Skill, ContactWithVisibility, Visibility } from '../model/types'
+import { normalizeUserAvatarFields } from './normalizeUserAvatar'
 
 type GetMeResponse = components['schemas']['v1GetMeResponse']
 
@@ -25,7 +26,7 @@ export async function getMe(): Promise<MeProfile> {
   const json = await platformFetchJson<GetMeResponse>('/v1/users/me', { method: 'GET' })
 
   return {
-    user: json.user,
+    user: normalizeUserAvatarFields(json.user),
     skills: normalizeSkills(json.skills),
     contacts: normalizeContacts(json.contacts),
     visibility: normalizeVisibility(json.visibility),

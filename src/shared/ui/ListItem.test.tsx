@@ -62,7 +62,7 @@ describe('ListItem', () => {
       renderWithProviders(<ListItem text="Test item" variant="bordered" onClick={() => {}} />)
       const item = screen.getByRole('button')
       expect(item).toHaveClass('border')
-      expect(item).toHaveClass('rounded-[var(--spacing-m2)]')
+      expect(item).toHaveClass('rounded-[var(--spacing-m4)]')
     })
 
     it('должен применять стили section варианта', () => {

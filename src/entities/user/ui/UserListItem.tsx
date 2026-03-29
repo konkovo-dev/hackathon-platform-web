@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ListItem, Icon, Chip } from '@/shared/ui'
+import { ListItem, Icon, Chip, Avatar, AVATAR_PLACEHOLDER_TRANSPARENT } from '@/shared/ui'
+import { cn } from '@/shared/lib/cn'
 import { useT } from '@/shared/i18n/useT'
 import { useRouter } from 'next/navigation'
 import { routes } from '@/shared/config/routes'
@@ -78,6 +79,10 @@ export function UserListItem({
 
   const { title, subtitle } = getUserDisplayData()
 
+  const avatarName = user
+    ? [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username
+    : undefined
+
   const defaultRightContent = showNavigationIcon ? (
     <div className="flex items-center gap-m4">
       {badge && <Chip label={badge} variant="primary" />}
@@ -91,12 +96,32 @@ export function UserListItem({
   const effectiveRightContent =
     rightActionOnHover && isHovered ? rightActionOnHover : baseRightContent
 
+  const isCardVariant = variant === 'bordered' || variant === 'section'
+
   return (
     <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <ListItem
         text={title}
         subtitle={subtitle}
         caption={caption}
+        className={cn(
+          '!gap-m4',
+          isCardVariant && '!p-m3',
+          variant === 'section' &&
+            '!bg-transparent border border-border-default !shadow-none hover:!shadow-none hover:!translate-y-0 hover:!bg-surface-secondary'
+        )}
+        leftContent={
+          <Avatar
+            src={user?.avatarUrl}
+            name={avatarName}
+            size="md"
+            placeholderTone={AVATAR_PLACEHOLDER_TRANSPARENT}
+            className={cn(
+              'aspect-square shrink-0',
+              isCardVariant && '!rounded-[var(--spacing-m2)]'
+            )}
+          />
+        }
         rightContent={effectiveRightContent}
         onClick={handleClick}
         selectable={selectable}
