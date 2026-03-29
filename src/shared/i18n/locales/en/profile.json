@@ -12,7 +12,14 @@
     "cancel": "Cancel",
     "add_contacts": "add contacts",
     "add_skills": "add skills",
-    "choose_avatar": "choose"
+    "upload_avatar": "upload photo",
+    "delete_avatar": "delete photo"
+  },
+  "avatar": {
+    "invalid_type": "only JPEG, PNG, WebP, or GIF images are allowed",
+    "too_large": "file size must not exceed 5 MB",
+    "upload_failed": "could not upload photo",
+    "delete_failed": "could not delete photo"
   },
   "sections": {
     "info": "basic information",

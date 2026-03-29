@@ -1,4 +1,10 @@
-export { Avatar, type AvatarProps, type AvatarSize } from './Avatar'
+export {
+  Avatar,
+  AVATAR_PLACEHOLDER_ELEVATED,
+  AVATAR_PLACEHOLDER_TRANSPARENT,
+  type AvatarProps,
+  type AvatarSize,
+} from './Avatar'
 export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItem } from './Breadcrumb'
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './Button'
 export {

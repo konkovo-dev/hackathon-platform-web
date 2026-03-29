@@ -2,6 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMe } from '@/entities/user/api/getMe'
+import { pickAvatarUrlFromPayload } from '@/entities/user/api/normalizeUserAvatar'
+import { createAvatarUpload, completeAvatarUpload } from '@/entities/user/api/avatarUpload'
 import { updateMe } from '@/entities/user/api/updateMe'
 import { updateMySkills } from '@/entities/user/api/updateMySkills'
 import { updateMyContacts } from '@/entities/user/api/updateMyContacts'
@@ -44,6 +46,63 @@ export function useUpdateContactsMutation() {
 
   return useMutation({
     mutationFn: (input: UpdateMyContactsInput) => updateMyContacts(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: profileQueryKey }),
+  })
+}
+
+export function useUploadAvatarMutation() {
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const created = await createAvatarUpload({
+        filename: file.name,
+        contentType: file.type,
+        sizeBytes: String(file.size),
+      })
+      const uploadUrl = created.uploadUrl
+      const uploadId = created.uploadId
+      if (!uploadUrl || !uploadId) {
+        throw new Error('Avatar upload: missing uploadUrl or uploadId')
+      }
+
+      const putRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      })
+      if (!putRes.ok) {
+        throw new Error(`Avatar upload to storage failed: ${putRes.status}`)
+      }
+
+      return completeAvatarUpload({ uploadId })
+    },
+    onSuccess: data => {
+      const url = pickAvatarUrlFromPayload(data)
+      if (url) {
+        qc.setQueryData(profileQueryKey, (old: MeProfile | undefined) => {
+          if (!old?.user) return old
+          return { ...old, user: { ...old.user, avatarUrl: url } }
+        })
+      }
+      void qc.invalidateQueries({ queryKey: profileQueryKey })
+    },
+  })
+}
+
+export type DeleteAvatarVariables = Pick<UpdateMeInput, 'firstName' | 'lastName' | 'timezone'>
+
+export function useDeleteAvatarMutation() {
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: (vars: DeleteAvatarVariables) =>
+      updateMe({
+        firstName: vars.firstName,
+        lastName: vars.lastName,
+        timezone: vars.timezone,
+        avatarUrl: '',
+      }),
     onSuccess: () => qc.invalidateQueries({ queryKey: profileQueryKey }),
   })
 }

@@ -1,14 +1,14 @@
 'use client'
 
 import { useT } from '@/shared/i18n/useT'
-import { Button } from '@/shared/ui/Button'
 import { Section } from '@/shared/ui/Section'
 import { usePublicProfileQuery } from '../model/hooks'
 import type { PublicProfile } from '@/entities/user/model/types'
 import {
   ProfileAvatar,
-  ProfileInfoSection,
   ProfileContactsSection,
+  ProfileInfoSection,
+  ProfileMainGrid,
   ProfileSkillsSection,
 } from '@/widgets/profile-view'
 
@@ -35,10 +35,16 @@ export function PublicProfileClient({ userId, initialData }: PublicProfileClient
 
   return (
     <div className="flex flex-col gap-m8 items-end w-full max-w-[1080px]">
-      <div className="grid gap-m8 w-full items-center" style={{ gridTemplateColumns: 'auto 1fr' }}>
-        <ProfileAvatar avatarUrl={user?.avatarUrl} firstName={user?.firstName} />
-
-        <div className="flex flex-col gap-m8 min-w-0 justify-center">
+      <ProfileMainGrid
+        sidebar={
+          <ProfileAvatar
+            avatarUrl={user?.avatarUrl}
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+          />
+        }
+        main={
+          <>
           {/* Информация */}
           <Section title={t('public_profile.sections.info')}>
             {user ? (
@@ -71,8 +77,9 @@ export function PublicProfileClient({ userId, initialData }: PublicProfileClient
               }
             />
           </Section>
-        </div>
-      </div>
+          </>
+        }
+      />
     </div>
   )
 }

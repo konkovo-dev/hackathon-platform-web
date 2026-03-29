@@ -92,6 +92,24 @@ describe('getMe', () => {
       contacts: 'VISIBILITY_LEVEL_PUBLIC',
     })
   })
+
+  it('should map avatar_url from API to avatarUrl on user', async () => {
+    vi.mocked(platformFetchJson).mockResolvedValue({
+      user: {
+        userId: '1',
+        username: 'u',
+        firstName: 'A',
+        lastName: 'B',
+        avatar_url: 'https://cdn.example.com/a.jpg',
+      },
+      skills: [],
+      contacts: [],
+      visibility: {},
+    })
+
+    const result = await getMe()
+    expect(result.user?.avatarUrl).toBe('https://cdn.example.com/a.jpg')
+  })
 })
 
 describe('getUserDisplayName', () => {
