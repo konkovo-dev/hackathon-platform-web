@@ -18,6 +18,10 @@ import { MyParticipationTabContent } from './MyParticipationTabContent'
 import { TaskTabContent } from './TaskTabContent'
 import { AnnouncementsList } from './AnnouncementsList'
 import { HackathonManagementDashboard } from '@/widgets/hackathon-management-dashboard/ui/HackathonManagementDashboard'
+import { useSessionQuery } from '@/features/auth/model/hooks'
+import { useSupportMentorAccessQuery } from '@/features/mentor-support/model/hooks'
+import { SupportTabContent } from '@/features/mentor-support/ui/SupportTabContent'
+import { cn } from '@/shared/lib/cn'
 
 export interface HackathonDetailProps {
   hackathonId: string
@@ -25,7 +29,13 @@ export interface HackathonDetailProps {
   initialTab?: string
 }
 
-type HackathonTab = 'description' | 'task' | 'participation' | 'announcements' | 'management'
+type HackathonTab =
+  | 'description'
+  | 'task'
+  | 'participation'
+  | 'announcements'
+  | 'management'
+  | 'support'
 
 export function HackathonDetail({ hackathonId, initialData, initialTab }: HackathonDetailProps) {
   const t = useT()
@@ -41,12 +51,9 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   const { decision: canReadTaskDecision } = useCan('Hackathon.ReadTask', { hackathonId })
   const canSeeTask = canReadTaskDecision.allowed
 
-  const { decision: canManageDecision, isLoading: isLoadingCanManage } = useCan(
-    'Hackathon.Manage',
-    {
-      hackathonId,
-    }
-  )
+  const { decision: canManageDecision } = useCan('Hackathon.Manage', {
+    hackathonId,
+  })
   const canManage = canManageDecision.allowed
 
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
@@ -65,6 +72,16 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
     canSeeTask ? hackathonId : null,
     canSeeTask
   )
+
+  const { data: session } = useSessionQuery()
+  const sessionActive = Boolean(session && session.active)
+  const isRunning = hackathon?.stage === 'RUNNING'
+  const mentorProbeEnabled = Boolean(hackathonId) && isRunning && !canManage && sessionActive
+  const { data: hasMentorAccess } = useSupportMentorAccessQuery(hackathonId, {
+    enabled: mentorProbeEnabled,
+  })
+  const showSupportTab =
+    Boolean(hackathon) && isRunning && (isParticipant || canManage || hasMentorAccess === true)
 
   const tabs: Tab<HackathonTab>[] = useMemo(() => {
     const baseTabs: Tab<HackathonTab>[] = [
@@ -102,8 +119,23 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         href: routes.hackathons.detailWithTab(hackathonId, 'management'),
       })
     }
+    if (showSupportTab) {
+      baseTabs.push({
+        id: 'support',
+        label: t('hackathons.detail.tabs.support'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'support'),
+      })
+    }
     return baseTabs
-  }, [hackathonId, isParticipant, canSeeAnnouncements, canSeeTask, canManage, t])
+  }, [
+    hackathonId,
+    isParticipant,
+    canSeeAnnouncements,
+    canSeeTask,
+    canManage,
+    showSupportTab,
+    t,
+  ])
 
   const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
   const activeTabSafe =
@@ -182,7 +214,10 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         role="tabpanel"
         id={`tabpanel-${activeTabSafe}`}
         aria-labelledby={`tab-${activeTabSafe}`}
-        className="animate-in fade-in duration-200"
+        className={cn(
+          'animate-in fade-in duration-200',
+          activeTabSafe === 'support' && 'flex min-h-[calc(100dvh-20rem)] flex-col'
+        )}
       >
         {activeTabSafe === 'description' && (
           <div className="flex flex-col gap-m16">
@@ -220,6 +255,13 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         )}
         {activeTabSafe === 'management' && canManage && (
           <HackathonManagementDashboard hackathon={hackathon} />
+        )}
+        {activeTabSafe === 'support' && showSupportTab && (
+          <SupportTabContent
+            hackathonId={hackathonId}
+            showStaffDashboard={canManage || hasMentorAccess === true}
+            canManage={canManage}
+          />
         )}
       </div>
     </div>

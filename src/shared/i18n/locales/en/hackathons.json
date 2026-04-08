@@ -68,7 +68,8 @@
       "myTeam": "my team",
       "participation": "my participation",
       "announcements": "announcements",
-      "management": "management"
+      "management": "management",
+      "support": "support"
     },
     "task": {
       "empty": "task has not been published yet"
@@ -99,6 +100,49 @@
       "loading": "finding teams...",
       "error": "could not load recommendations",
       "matchScore": "match: {score}"
+    }
+  },
+  "support": {
+    "loading": "loading…",
+    "error": "something went wrong",
+    "participant": {
+      "empty": "no messages yet. write to the mentor.",
+      "input_placeholder": "type a message…",
+      "send": "send",
+      "ticket_closed": "ticket closed",
+      "footer_hint": "if the mentor closed the ticket, your next message will start a new one."
+    },
+    "date": {
+      "today": "today",
+      "yesterday": "yesterday"
+    },
+    "message_from": {
+      "mentor": "mentor",
+      "organizer": "organizer",
+      "participant": "participant"
+    },
+    "system": {
+      "mentor_joined": "mentor joined the chat",
+      "ticket_closed": "ticket closed"
+    },
+    "mentor": {
+      "queue_title": "unassigned queue",
+      "queue_empty": "no unassigned tickets",
+      "claim": "claim",
+      "close_ticket": "close",
+      "reply_placeholder": "reply…",
+      "reply": "reply",
+      "reply_hint_claim": "claim the ticket from the list to reply in this chat.",
+      "reply_hint_other_mentor": "this ticket is assigned to another mentor — you cannot reply here.",
+      "assigned_title": "my tickets",
+      "assigned_empty": "no assigned tickets",
+      "others_title": "assigned to others",
+      "mobile_list": "queue",
+      "mobile_chat": "chat",
+      "status_open": "open",
+      "status_closed": "closed",
+      "owner_user": "participant",
+      "owner_team": "team"
     }
   },
   "card": {

@@ -68,7 +68,8 @@
       "myTeam": "моя команда",
       "participation": "моё участие",
       "announcements": "объявления",
-      "management": "управление"
+      "management": "управление",
+      "support": "поддержка"
     },
     "task": {
       "empty": "задание пока не опубликовано"
@@ -99,6 +100,49 @@
       "loading": "подбираем команды...",
       "error": "не удалось загрузить рекомендации",
       "matchScore": "совпадение: {score}"
+    }
+  },
+  "support": {
+    "loading": "загрузка…",
+    "error": "произошла ошибка",
+    "participant": {
+      "empty": "нет сообщений. напишите первое обращение к ментору.",
+      "input_placeholder": "введите сообщение…",
+      "send": "отправить",
+      "ticket_closed": "тикет закрыт",
+      "footer_hint": "если обращение закрыто ментором, следующее сообщение откроет новый тикет."
+    },
+    "date": {
+      "today": "сегодня",
+      "yesterday": "вчера"
+    },
+    "message_from": {
+      "mentor": "ментор",
+      "organizer": "организатор",
+      "participant": "участник"
+    },
+    "system": {
+      "mentor_joined": "ментор подключился к чату",
+      "ticket_closed": "обращение закрыто"
+    },
+    "mentor": {
+      "queue_title": "очередь обращений",
+      "queue_empty": "новых обращений нет",
+      "claim": "взять в работу",
+      "close_ticket": "закрыть",
+      "reply_placeholder": "ответ…",
+      "reply": "ответить",
+      "reply_hint_claim": "чтобы отвечать в этом чате, нажмите «взять в работу» в списке тикетов.",
+      "reply_hint_other_mentor": "этот тикет назначен другому ментору — ответ здесь недоступен.",
+      "assigned_title": "мои тикеты",
+      "assigned_empty": "нет назначенных тикетов",
+      "others_title": "назначены другим",
+      "mobile_list": "очередь",
+      "mobile_chat": "чат",
+      "status_open": "открыт",
+      "status_closed": "закрыт",
+      "owner_user": "участник",
+      "owner_team": "команда"
     }
   },
   "card": {

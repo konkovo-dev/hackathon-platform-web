@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { formatRelativeTime, isoToDatetimeLocal } from './formatDate'
+import { formatRelativeTime, formatTimeShort, isoToDatetimeLocal } from './formatDate'
 
 describe('isoToDatetimeLocal', () => {
   it('возвращает пустую строку для undefined и пустой строки', () => {
@@ -17,6 +17,19 @@ describe('isoToDatetimeLocal', () => {
     expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
     // Круговая проверка: локальное значение при парсинге даёт тот же момент
     expect(new Date(result).getTime()).toBe(new Date(iso).getTime())
+  })
+})
+
+describe('formatTimeShort', () => {
+  it('возвращает пустую строку для пустого ввода и невалидной даты', () => {
+    expect(formatTimeShort(undefined)).toBe('')
+    expect(formatTimeShort('')).toBe('')
+    expect(formatTimeShort('invalid')).toBe('')
+  })
+
+  it('возвращает строку с часами и минутами для валидной ISO', () => {
+    const s = formatTimeShort('2026-03-15T14:05:00.000Z', 'en-US')
+    expect(s).toMatch(/\d{1,2}:\d{2}/)
   })
 })
 

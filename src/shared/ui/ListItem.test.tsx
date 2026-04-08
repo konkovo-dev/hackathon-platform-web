@@ -90,5 +90,30 @@ describe('ListItem', () => {
       expect(screen.getByText('Custom content')).toBeInTheDocument()
       expect(screen.getByText('caption')).toBeInTheDocument()
     })
+
+    it('должен показывать rightContent без selectable (чекбокс не перекрывает слот)', () => {
+      renderWithProviders(
+        <ListItem
+          text="Row"
+          variant="bordered"
+          onClick={() => {}}
+          rightContent={<span data-testid="slot">action</span>}
+        />
+      )
+      expect(screen.getByTestId('slot')).toBeInTheDocument()
+      expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('active', () => {
+    it('должен выставлять aria-current и подсветку для bordered', () => {
+      renderWithProviders(
+        <ListItem text="Current" variant="bordered" active onClick={() => {}} />
+      )
+      const item = screen.getByRole('button')
+      expect(item).toHaveAttribute('aria-current', 'true')
+      expect(item).toHaveClass('border-border-focus')
+      expect(item).not.toHaveClass('bg-bg-selected')
+    })
   })
 })

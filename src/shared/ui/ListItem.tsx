@@ -8,6 +8,7 @@ export interface ListItemProps {
   caption?: string
   selectable?: boolean
   selected?: boolean
+  active?: boolean
   danger?: boolean
   onClick?: () => void
   rightContent?: ReactNode
@@ -22,6 +23,7 @@ export function ListItem({
   caption,
   selectable = false,
   selected = false,
+  active = false,
   danger = false,
   onClick,
   rightContent,
@@ -38,6 +40,7 @@ export function ListItem({
     <div
       role={selectable ? 'option' : isClickable ? 'button' : undefined}
       aria-selected={selectable && selected ? true : undefined}
+      aria-current={active ? true : undefined}
       onClick={onClick}
       className={cn(
         'flex items-center justify-between gap-m8 rounded-[var(--spacing-m4)] px-m6 py-m6',
@@ -49,7 +52,13 @@ export function ListItem({
                 'border-state-error',
                 isClickable && 'cursor-pointer hover:bg-state-error/5 hover:border-state-error',
               ]
-            : ['border-border-default', isClickable && 'cursor-pointer hover:border-border-strong'],
+            : [
+                active ? 'border-border-focus' : 'border-border-default',
+                isClickable &&
+                  (active
+                    ? 'cursor-pointer hover:border-border-focus'
+                    : 'cursor-pointer hover:border-border-strong'),
+              ],
         ],
         isSection && [
           'transition-all duration-300 ease-out',
@@ -60,15 +69,17 @@ export function ListItem({
                   'cursor-pointer hover:bg-state-error/10 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
               ]
             : [
-                'bg-bg-elevated',
+                active
+                  ? 'ring-2 ring-border-focus ring-inset bg-bg-elevated'
+                  : 'bg-bg-elevated',
                 isClickable &&
                   'cursor-pointer hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
               ],
         ],
         !isBordered &&
           !isSection && [
-            'border-b border-border-default',
-            'transition-colors',
+            'border-b transition-colors',
+            active ? 'border-b-border-focus' : 'border-b-border-default',
             isClickable && 'cursor-pointer hover:bg-surface-secondary',
           ],
         className
@@ -87,7 +98,8 @@ export function ListItem({
 
       {selectable ? (
         <Checkbox checked={selected} readOnly className="pointer-events-none" />
-      ) : rightContent || caption ? (
+      ) : null}
+      {!selectable && (rightContent || caption) ? (
         <div className="flex items-center gap-m4 flex-shrink-0">
           {caption && (
             <span className="typography-caption-sm-regular text-text-secondary whitespace-nowrap">

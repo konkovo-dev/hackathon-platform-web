@@ -47,6 +47,17 @@ export function formatDateTime(iso?: string, locale: string = 'ru'): string {
   }
 }
 
+export function formatTimeShort(iso?: string, locale: string = 'ru'): string {
+  if (!iso) return ''
+  try {
+    const date = new Date(iso)
+    if (isNaN(date.getTime())) return ''
+    return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
+  } catch {
+    return ''
+  }
+}
+
 export function formatDateRange(
   startDate?: string,
   endDate?: string,
