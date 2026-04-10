@@ -23,12 +23,7 @@ export function normalizeAvatarImageSrc(raw: string): string {
       })
       .join('/')
 
-    const useHttps =
-      typeof window !== 'undefined' && window.location.protocol === 'https:' && u.protocol === 'http:'
-
-    const protocol = useHttps ? 'https:' : u.protocol
-
-    return `${protocol}//${u.host}${encodedPath}${u.search}${u.hash}`
+    return `${u.protocol}//${u.host}${encodedPath}${u.search}${u.hash}`
   } catch {
     return t
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { toAvatarImgSrc } from '@/shared/lib/avatarUrl'
 import { cn } from '@/shared/lib/cn'
 
@@ -52,8 +52,22 @@ export function Avatar({ src, name, size = 'md', className, placeholderTone = 'd
     typeof src === 'string' && src.trim() !== '' ? toAvatarImgSrc(src.trim()) : undefined
   const [imgLoaded, setImgLoaded] = useState(false)
   const [imgFailed, setImgFailed] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   const showImage = resolvedSrc && !imgFailed
+
+  useLayoutEffect(() => {
+    setImgLoaded(false)
+    setImgFailed(false)
+  }, [resolvedSrc])
+
+  useLayoutEffect(() => {
+    const el = imgRef.current
+    if (!el || !showImage) return
+    if (el.complete && el.naturalWidth > 0) {
+      setImgLoaded(true)
+    }
+  }, [resolvedSrc, showImage])
 
   return (
     <div
@@ -85,6 +99,7 @@ export function Avatar({ src, name, size = 'md', className, placeholderTone = 'd
       {showImage && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          ref={imgRef}
           src={resolvedSrc}
           alt={name ?? 'avatar'}
           onLoad={() => setImgLoaded(true)}

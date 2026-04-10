@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { normalizeAvatarImageSrc, toAvatarImgSrc } from './avatarUrl'
 
 describe('normalizeAvatarImageSrc', () => {
@@ -32,8 +32,22 @@ describe('normalizeAvatarImageSrc', () => {
 })
 
 describe('toAvatarImgSrc', () => {
-  it('wraps default MinIO host with avatar-proxy', () => {
-    const u = 'https://api.hackplatform.ru:9000/avatars/bucket/u/%D0%A1.png'
+  beforeEach(() => {
+    vi.stubEnv('NEXT_PUBLIC_AVATAR_STORAGE_ORIGIN', 'http://api.hackplatform.ru:9000')
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('wraps configured storage origin with avatar-proxy', () => {
+    const u = 'http://api.hackplatform.ru:9000/avatars/bucket/u/%D0%A1.png'
+    expect(toAvatarImgSrc(u)).toMatch(/^\/api\/avatar-proxy\?url=/)
+  })
+
+  it('wraps when env origin has no explicit port (e.g. reverse proxy on :80)', () => {
+    vi.stubEnv('NEXT_PUBLIC_AVATAR_STORAGE_ORIGIN', 'http://api.hackplatform.ru')
+    const u = 'http://api.hackplatform.ru/avatars/uuid/a.png'
     expect(toAvatarImgSrc(u)).toMatch(/^\/api\/avatar-proxy\?url=/)
   })
 

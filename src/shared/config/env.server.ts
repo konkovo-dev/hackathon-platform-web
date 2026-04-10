@@ -8,8 +8,7 @@ import 'server-only'
  *
  * REMOTE_API_BASE_URL — задеплоенный стенд, используется по умолчанию в dev если не выбран local.
  *
- * AVATAR_PROXY_FETCH_BASE_URL (опционально) — откуда Next тянет файлы в /api/avatar-proxy;
- * по умолчанию используется тот же origin, что и PLATFORM_API_BASE_URL / REMOTE_API_BASE_URL.
+ * NEXT_PUBLIC_AVATAR_STORAGE_ORIGIN — публичный origin хранилища аватаров (прокси /api/avatar-proxy).
  */
 export const envServer = {
   authGatewayBaseUrl: process.env.AUTH_GATEWAY_BASE_URL || 'http://localhost:8080',

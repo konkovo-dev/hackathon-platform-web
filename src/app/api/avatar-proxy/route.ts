@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isAvatarProxyAllowedUrl } from '@/shared/lib/avatarProxyAllowlist'
-import { resolveAvatarUpstreamFetchUrl } from '@/shared/lib/avatarProxyUpstream.server'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,11 +28,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: 'scheme not allowed' }, { status: 403 })
   }
 
-  const fetchUrl = resolveAvatarUpstreamFetchUrl(target)
-
   let upstream: Response
   try {
-    upstream = await fetch(fetchUrl, {
+    upstream = await fetch(target.href, {
       method: 'GET',
       cache: 'no-store',
       redirect: 'follow',

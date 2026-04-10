@@ -1,18 +1,15 @@
-const DEFAULT_AVATAR_PROXY_ORIGINS = [
-  'https://api.hackplatform.ru:9000',
-  'http://api.hackplatform.ru:9000',
-  'http://127.0.0.1:9000',
-  'http://localhost:9000',
-]
+/**
+ * Публичный origin хранилища аватаров (как отдаёт API в avatarUrl).
+ */
+const DEFAULT_AVATAR_STORAGE_ORIGIN = 'http://localhost:9000'
 
-export function getAvatarProxyAllowedOriginStrings(): string[] {
-  const raw =
-    process.env.NEXT_PUBLIC_AVATAR_PROXY_ALLOWED_ORIGINS?.trim() ||
-    process.env.AVATAR_PROXY_ALLOWED_ORIGINS?.trim()
-  if (raw) {
-    return raw.split(',').map(s => s.trim()).filter(Boolean)
-  }
-  return DEFAULT_AVATAR_PROXY_ORIGINS
+function parseOrigin(raw: string): URL {
+  return new URL(raw.includes('://') ? raw : `http://${raw}`)
+}
+
+/** Сырое значение из env (для тестов и диагностики). */
+export function getAvatarStoragePublicOriginRaw(): string {
+  return process.env.NEXT_PUBLIC_AVATAR_STORAGE_ORIGIN?.trim() || DEFAULT_AVATAR_STORAGE_ORIGIN
 }
 
 function originKey(u: URL): string {
@@ -21,13 +18,10 @@ function originKey(u: URL): string {
 }
 
 export function isAvatarProxyAllowedUrl(target: URL): boolean {
-  const tKey = originKey(target)
-  return getAvatarProxyAllowedOriginStrings().some(allowed => {
-    try {
-      const a = new URL(allowed.includes('://') ? allowed : `https://${allowed}`)
-      return originKey(a) === tKey
-    } catch {
-      return false
-    }
-  })
+  try {
+    const configured = parseOrigin(getAvatarStoragePublicOriginRaw())
+    return originKey(target) === originKey(configured)
+  } catch {
+    return false
+  }
 }
