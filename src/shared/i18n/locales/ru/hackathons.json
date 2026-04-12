@@ -92,7 +92,49 @@
       "switchToIndividual": "участвовать индивидуально",
       "switchToLookingForTeam": "искать команду",
       "unregister": "отменить регистрацию",
-      "unregisterConfirm": "вы уверены, что хотите отменить регистрацию на хакатон?"
+      "unregisterConfirm": "вы уверены, что хотите отменить регистрацию на хакатон?",
+      "submission": {
+        "sectionTitle": "посылки",
+        "noSubmissions": "вы ещё не отправили работу",
+        "createButton": "отправить работу",
+        "newVersionButton": "новая версия",
+        "finalBadge": "финальная",
+        "makeFinalButton": "сделать финальной",
+        "editButton": "редактировать",
+        "readonlyTitle": "отправленная работа",
+        "createModal": {
+          "title": "отправить работу",
+          "titleLabel": "название проекта",
+          "titlePlaceholder": "мой проект",
+          "titleRequired": "укажите название",
+          "descriptionLabel": "описание",
+          "filesLabel": "файлы",
+          "continue": "далее",
+          "done": "готово",
+          "cancel": "отмена"
+        },
+        "editModal": {
+          "title": "редактировать работу",
+          "descriptionLabel": "описание",
+          "filesLabel": "файлы",
+          "addFiles": "добавить файлы",
+          "save": "сохранить",
+          "cancel": "отмена"
+        },
+        "fileUpload": {
+          "downloadFileAriaLabel": "скачать файл",
+          "uploading": "загружается...",
+          "uploaded": "загружен",
+          "error": "ошибка загрузки",
+          "invalidFileType": "допустимы только файлы PDF, ZIP, PNG, JPEG, TXT, Markdown или CSV",
+          "fileTooLarge": "размер файла не должен превышать 50 МБ"
+        },
+        "staff": {
+          "sectionTitle": "сабмишены",
+          "noSubmission": "не отправлено",
+          "noSubmissions": "сабмишенов ещё нет"
+        }
+      }
     },
     "matchmaking": {
       "title": "подходящие команды",

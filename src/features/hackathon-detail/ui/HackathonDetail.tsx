@@ -98,18 +98,18 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         href: routes.hackathons.detailWithTab(hackathonId, 'task'),
       })
     }
-    if (isParticipant) {
-      baseTabs.push({
-        id: 'participation',
-        label: t('hackathons.detail.tabs.participation'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
-      })
-    }
     if (canSeeAnnouncements) {
       baseTabs.push({
         id: 'announcements',
         label: t('hackathons.detail.tabs.announcements'),
         href: routes.hackathons.detailWithTab(hackathonId, 'announcements'),
+      })
+    }
+    if (isParticipant) {
+      baseTabs.push({
+        id: 'participation',
+        label: t('hackathons.detail.tabs.participation'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
       })
     }
     if (canManage) {
@@ -231,15 +231,6 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
             isLoading={isLoadingTask}
           />
         )}
-        {activeTabSafe === 'participation' && isParticipant && (
-          <MyParticipationTabContent
-            hackathonId={hackathonId}
-            myTeamId={myTeamId}
-            ctxLoading={myParticipationQuery.isLoading}
-            hackathonStage={hackathon.stage}
-            registrationPolicy={hackathon.registrationPolicy}
-          />
-        )}
         {activeTabSafe === 'announcements' && canSeeAnnouncements && (
           <>
             {isLoadingAnnouncements ? (
@@ -252,6 +243,15 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
               <AnnouncementsList announcements={announcements} hackathonId={hackathonId} />
             )}
           </>
+        )}
+        {activeTabSafe === 'participation' && isParticipant && (
+          <MyParticipationTabContent
+            hackathonId={hackathonId}
+            myTeamId={myTeamId}
+            ctxLoading={myParticipationQuery.isLoading}
+            hackathonStage={hackathon.stage}
+            registrationPolicy={hackathon.registrationPolicy}
+          />
         )}
         {activeTabSafe === 'management' && canManage && (
           <HackathonManagementDashboard hackathon={hackathon} />

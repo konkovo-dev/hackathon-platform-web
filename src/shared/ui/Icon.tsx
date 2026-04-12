@@ -33,7 +33,7 @@ export function Icon({
         WebkitMaskImage: `url(${src})`,
       }}
       className={cn(
-        'flex-shrink-0',
+        'inline-block flex-shrink-0',
         sizeClass[size],
         resolvedColorClassName,
         '[mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]',

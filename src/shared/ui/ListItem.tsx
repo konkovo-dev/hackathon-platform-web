@@ -43,7 +43,7 @@ export function ListItem({
       aria-current={active ? true : undefined}
       onClick={onClick}
       className={cn(
-        'flex items-center justify-between gap-m8 rounded-[var(--spacing-m4)] px-m6 py-m6',
+        'flex items-center justify-between gap-m4 rounded-[var(--spacing-m4)] px-m6 py-m6',
         isBordered && [
           'border',
           'transition-colors',
@@ -85,7 +85,9 @@ export function ListItem({
         className
       )}
     >
-      {leftContent && <div className="flex-shrink-0">{leftContent}</div>}
+      {leftContent && (
+        <div className="flex flex-shrink-0 items-center justify-center">{leftContent}</div>
+      )}
 
       <div className="flex-1 min-w-0">
         <div className="typography-body-md-regular text-text-primary">{text}</div>

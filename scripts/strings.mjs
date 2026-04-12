@@ -44,6 +44,9 @@ const IGNORE_ATTRS = new Set([
   'aria-controls',
   'aria-current',
   'aria-hidden',
+  'listVariant',
+  'fileContext',
+  'uploadDedupeServerFiles',
 ])
 
 const hasLettersOrDigits = (s) => /[\p{L}\p{N}]/u.test(s)

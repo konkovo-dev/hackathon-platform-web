@@ -14,6 +14,7 @@ import { EditParticipationApplicationModal } from './EditParticipationApplicatio
 import { useUnregisterFromHackathonMutation } from '../model/hooks'
 import { useCan } from '@/shared/policy/useCan'
 import { MatchmakingTeamsList } from '@/features/matchmaking-teams'
+import { SubmissionBlock } from '@/features/submission'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { listTeamRoles } from '@/entities/team'
 
@@ -43,7 +44,7 @@ export function MyParticipationTabContent({
   }
 
   return (
-    <div className="flex flex-col gap-m16">
+    <div className="flex flex-col gap-m8">
       {!myTeamId ? (
         <NoTeamContent
           hackathonId={hackathonId}
@@ -53,7 +54,15 @@ export function MyParticipationTabContent({
       ) : (
         <ParticipationTeamCard hackathonId={hackathonId} teamId={myTeamId} />
       )}
-      {/* Placeholder: submission block (send / view submission) will be added here later */}
+      {(hackathonStage === 'RUNNING' ||
+        hackathonStage === 'JUDGING' ||
+        hackathonStage === 'FINISHED') && (
+        <SubmissionBlock
+          hackathonId={hackathonId}
+          hackathonStage={hackathonStage}
+          myTeamId={myTeamId}
+        />
+      )}
     </div>
   )
 }

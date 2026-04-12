@@ -92,7 +92,49 @@
       "switchToIndividual": "participate individually",
       "switchToLookingForTeam": "look for a team",
       "unregister": "cancel registration",
-      "unregisterConfirm": "are you sure you want to cancel your hackathon registration?"
+      "unregisterConfirm": "are you sure you want to cancel your hackathon registration?",
+      "submission": {
+        "sectionTitle": "submissions",
+        "noSubmissions": "you haven't submitted anything yet",
+        "createButton": "submit work",
+        "newVersionButton": "new version",
+        "finalBadge": "final",
+        "makeFinalButton": "mark as final",
+        "editButton": "edit",
+        "readonlyTitle": "submitted work",
+        "createModal": {
+          "title": "submit work",
+          "titleLabel": "project title",
+          "titlePlaceholder": "my project",
+          "titleRequired": "title is required",
+          "descriptionLabel": "description",
+          "filesLabel": "files",
+          "continue": "continue",
+          "done": "done",
+          "cancel": "cancel"
+        },
+        "editModal": {
+          "title": "edit submission",
+          "descriptionLabel": "description",
+          "filesLabel": "files",
+          "addFiles": "add files",
+          "save": "save",
+          "cancel": "cancel"
+        },
+        "fileUpload": {
+          "downloadFileAriaLabel": "download file",
+          "uploading": "uploading...",
+          "uploaded": "uploaded",
+          "error": "upload error",
+          "invalidFileType": "only PDF, ZIP, PNG, JPEG, TXT, Markdown, or CSV files are allowed",
+          "fileTooLarge": "file must not exceed 50 MB"
+        },
+        "staff": {
+          "sectionTitle": "submissions",
+          "noSubmission": "not submitted",
+          "noSubmissions": "no submissions yet"
+        }
+      }
     },
     "matchmaking": {
       "title": "recommended teams",
