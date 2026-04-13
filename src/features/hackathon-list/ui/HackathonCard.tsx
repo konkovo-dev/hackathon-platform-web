@@ -20,6 +20,15 @@ export const HACKATHON_CARD_METRICS_VARIANT = {
 } as const satisfies Record<HackathonCardMetricsVariant, HackathonCardMetricsVariant>
 
 export const HACKATHON_DETAIL_TAB_PARTICIPATION = 'participation' as const
+export const HACKATHON_DETAIL_TAB_JUDGING = 'judging' as const
+export const HACKATHON_DETAIL_TAB_MANAGEMENT = 'management' as const
+export const HACKATHON_DETAIL_TAB_SUPPORT = 'support' as const
+
+export type HackathonDetailTabId =
+  | typeof HACKATHON_DETAIL_TAB_PARTICIPATION
+  | typeof HACKATHON_DETAIL_TAB_JUDGING
+  | typeof HACKATHON_DETAIL_TAB_MANAGEMENT
+  | typeof HACKATHON_DETAIL_TAB_SUPPORT
 
 export interface HackathonCardProps {
   hackathon: Hackathon
@@ -29,7 +38,7 @@ export interface HackathonCardProps {
   participationStatus?: ParticipationStatus | null
   teamName?: string | null
   teamNameLoading?: boolean
-  detailTabId?: typeof HACKATHON_DETAIL_TAB_PARTICIPATION | null
+  detailTabId?: HackathonDetailTabId | null
 }
 
 export function HackathonCard({

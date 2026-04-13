@@ -1,19 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import {
-  getHackathonsByRole,
-  getHackathonsByParticipation,
-  type RoleFilter,
-} from '@/entities/hackathon/api/getHackathonsByRole'
+import { getHackathonsByParticipation } from '@/entities/hackathon/api/getHackathonsByRole'
+import { useHackathonsByRoleQuery } from '@/entities/hackathon/model/useHackathonsByRoleQuery'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 
-export function useHackathonsByRoleQuery(role: RoleFilter) {
-  return useQuery({
-    queryKey: ['hackathons', 'dashboard', 'role', role],
-    queryFn: () => getHackathonsByRole(role, 20),
-    staleTime: 60_000,
-  })
-}
+export { useHackathonsByRoleQuery }
 
 export function useHackathonsByParticipationQuery() {
   return useQuery({

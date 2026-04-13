@@ -69,7 +69,8 @@
       "participation": "my participation",
       "announcements": "announcements",
       "management": "management",
-      "support": "support"
+      "support": "support",
+      "judging": "judging"
     },
     "task": {
       "empty": "task has not been published yet"
@@ -142,6 +143,47 @@
       "loading": "finding teams...",
       "error": "could not load recommendations",
       "matchScore": "match: {score}"
+    }
+  },
+  "judging": {
+    "not_started_with_date": "judging will begin after submissions close: {datetime}",
+    "not_started_no_date": "judging will become available in the judging stage once organizers open it.",
+    "filter": {
+      "all": "all",
+      "pending": "pending",
+      "done": "evaluated"
+    },
+    "badge": {
+      "evaluated": "evaluated",
+      "pending": "pending"
+    },
+    "list": {
+      "empty": "no assigned submissions",
+      "evaluate": "evaluate",
+      "edit_score": "edit score"
+    },
+    "owner": {
+      "team": "team",
+      "individual": "participant"
+    },
+    "modal": {
+      "title": "evaluate submission",
+      "work_section_title_individual": "participant's work",
+      "work_section_title_team": "team's work",
+      "unknown_submission": "untitled submission",
+      "last_edited": "last edited:",
+      "score_label": "score (0–10)",
+      "score_placeholder": "0–10",
+      "comment_label": "comment",
+      "comment_placeholder": "your comment on this submission",
+      "cancel": "cancel",
+      "submit": "submit evaluation",
+      "submitting": "submitting..."
+    },
+    "errors": {
+      "score_invalid": "enter an integer between 0 and 10",
+      "comment_required": "comment is required (1–5000 characters)",
+      "submit_failed": "failed to submit evaluation"
     }
   },
   "support": {
@@ -289,7 +331,24 @@
   "management": {
     "title": "management dashboard",
     "actions": {
-      "title": "actions"
+      "title": "actions",
+      "assign_judging": "assign submissions to judges",
+      "assign_judging_pending": "assigning…",
+      "assign_judging_status_title": "submission assignment to judges",
+      "assign_judging_status_hint": "use the button above. re-running is safe and refreshes assignments.",
+      "assign_judging_result_subtitle": "{submissions} submissions · {judges} judges · {assignments} assignments",
+      "assign_judging_error": "could not assign submissions to judges"
+    },
+    "judging_progress": {
+      "title": "submission scoring status",
+      "title_with_counts": "submission scoring status: {submissions}/{evaluations}",
+      "refresh": "refresh summary",
+      "error": "could not load scoring summary",
+      "empty": "no scored submissions yet. entries will appear once judges submit evaluations.",
+      "row_subtitle": "{owner} · {evaluations} evaluation(s), average score {average}",
+      "row_unknown_title": "untitled",
+      "badge_complete": "enough reviews",
+      "badge_partial": "needs more reviews"
     },
     "info": {
       "title": "information",

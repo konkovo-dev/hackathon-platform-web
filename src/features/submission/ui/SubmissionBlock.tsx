@@ -9,6 +9,7 @@ import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { SubmissionList } from './SubmissionList'
 import { CreateSubmissionModal } from './CreateSubmissionModal'
 import { MarkdownContent } from '@/shared/ui'
+import { SubmissionFileListItems } from './SubmissionFileListItems'
 
 export interface SubmissionBlockProps {
   hackathonId: string
@@ -50,6 +51,9 @@ export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlock
 
   // Read-only view for post-running stages
   if (isPostRun) {
+    const postRunCompletedFiles =
+      finalSubmission?.files.filter(f => f.uploadStatus === 'completed') ?? []
+
     return (
       <Section
         title={t('hackathons.detail.participation.submission.readonlyTitle')}
@@ -69,18 +73,15 @@ export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlock
                 <MarkdownContent>{finalSubmission.description}</MarkdownContent>
               </>
             )}
-            {finalSubmission.files.filter(f => f.uploadStatus === 'completed').length > 0 && (
+            {postRunCompletedFiles.length > 0 && finalSubmission.submissionId && (
               <>
                 <Divider />
-                <div className="flex flex-col gap-m2">
-                  {finalSubmission.files
-                    .filter(f => f.uploadStatus === 'completed')
-                    .map(f => (
-                      <span key={f.fileId} className="typography-body-sm text-text-primary">
-                        {f.filename}
-                      </span>
-                    ))}
-                </div>
+                <SubmissionFileListItems
+                  hackathonId={hackathonId}
+                  submissionId={finalSubmission.submissionId}
+                  files={postRunCompletedFiles}
+                  sectionLabel={t('hackathons.detail.participation.submission.createModal.filesLabel')}
+                />
               </>
             )}
           </div>

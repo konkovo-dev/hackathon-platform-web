@@ -69,7 +69,8 @@
       "participation": "моё участие",
       "announcements": "объявления",
       "management": "управление",
-      "support": "поддержка"
+      "support": "поддержка",
+      "judging": "оценивание"
     },
     "task": {
       "empty": "задание пока не опубликовано"
@@ -142,6 +143,47 @@
       "loading": "подбираем команды...",
       "error": "не удалось загрузить рекомендации",
       "matchScore": "совпадение: {score}"
+    }
+  },
+  "judging": {
+    "not_started_with_date": "оценивание начнётся после закрытия приёма решений: {datetime}",
+    "not_started_no_date": "оценивание станет доступно на этапе «оценка работ», когда его откроют организаторы.",
+    "filter": {
+      "all": "все",
+      "pending": "не оценено",
+      "done": "оценено"
+    },
+    "badge": {
+      "evaluated": "оценено",
+      "pending": "не оценено"
+    },
+    "list": {
+      "empty": "нет назначенных работ",
+      "evaluate": "оценить",
+      "edit_score": "изменить оценку"
+    },
+    "owner": {
+      "team": "команда",
+      "individual": "участник"
+    },
+    "modal": {
+      "title": "оценка работы",
+      "work_section_title_individual": "работа участника",
+      "work_section_title_team": "работа команды",
+      "unknown_submission": "работа без названия",
+      "last_edited": "последнее изменение:",
+      "score_label": "оценка (0–10)",
+      "score_placeholder": "0–10",
+      "comment_label": "комментарий",
+      "comment_placeholder": "ваш комментарий к работе",
+      "cancel": "отмена",
+      "submit": "отправить оценку",
+      "submitting": "отправка..."
+    },
+    "errors": {
+      "score_invalid": "укажите целое число от 0 до 10",
+      "comment_required": "комментарий обязателен (1–5000 символов)",
+      "submit_failed": "не удалось отправить оценку"
     }
   },
   "support": {
@@ -289,7 +331,24 @@
   "management": {
     "title": "панель управления",
     "actions": {
-      "title": "действия"
+      "title": "действия",
+      "assign_judging": "распределить работы между жюри",
+      "assign_judging_pending": "распределение…",
+      "assign_judging_status_title": "распределение работ между жюри",
+      "assign_judging_status_hint": "нажмите кнопку выше. повторный запуск безопасен и обновит назначения.",
+      "assign_judging_result_subtitle": "работ: {submissions}, жюри: {judges}, назначений: {assignments}",
+      "assign_judging_error": "не удалось распределить работы между жюри"
+    },
+    "judging_progress": {
+      "title": "статус оценивания работ",
+      "title_with_counts": "статус оценивания работ: {submissions}/{evaluations}",
+      "refresh": "обновить сводку",
+      "error": "не удалось загрузить сводку по оценкам",
+      "empty": "пока нет работ с выставленными оценками. после того как жюри начнёт оценивать, данные появятся здесь.",
+      "row_subtitle": "{owner} · {evaluations} оценок, средний балл: {average}",
+      "row_unknown_title": "без названия",
+      "badge_complete": "достаточно оценок",
+      "badge_partial": "нужны ещё оценки"
     },
     "info": {
       "title": "информация",

@@ -4,6 +4,11 @@ import { PageContainer } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import { useDashboardHackathonsQuery } from '../model/hooks'
+import {
+  HACKATHON_DETAIL_TAB_JUDGING,
+  HACKATHON_DETAIL_TAB_MANAGEMENT,
+  HACKATHON_DETAIL_TAB_SUPPORT,
+} from '@/features/hackathon-list/ui/HackathonCard'
 import { HackathonRoleSection } from './HackathonRoleSection'
 import { QuickActions } from './QuickActions'
 import { UpcomingEvents } from './UpcomingEvents'
@@ -50,6 +55,7 @@ export function Dashboard() {
             error={mentor.error}
             emptyMessage={t('dashboard.empty.mentor')}
             emptyHint={t('dashboard.empty.mentor_hint')}
+            detailTabId={HACKATHON_DETAIL_TAB_SUPPORT}
           />
 
           <HackathonRoleSection
@@ -59,6 +65,7 @@ export function Dashboard() {
             error={jury.error}
             emptyMessage={t('dashboard.empty.jury')}
             emptyHint={t('dashboard.empty.jury_hint')}
+            detailTabId={HACKATHON_DETAIL_TAB_JUDGING}
           />
 
           <HackathonRoleSection
@@ -69,6 +76,7 @@ export function Dashboard() {
             emptyMessage={t('dashboard.empty.organizer')}
             emptyActionLabel={t('dashboard.empty.organizer_action')}
             emptyActionHref={routes.hackathons.create}
+            detailTabId={HACKATHON_DETAIL_TAB_MANAGEMENT}
           />
         </div>
       </div>

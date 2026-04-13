@@ -33,6 +33,7 @@ const IGNORE_ATTRS = new Set([
   'size',
   'color',
   'colorClassName',
+  'textClassName',
   'inputType',
   'inputId',
   'textareaId',

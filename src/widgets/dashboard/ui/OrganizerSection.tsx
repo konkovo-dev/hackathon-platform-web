@@ -2,7 +2,10 @@
 
 import Link from 'next/link'
 import { Section, Button } from '@/shared/ui'
-import { HackathonCard } from '@/features/hackathon-list/ui/HackathonCard'
+import {
+  HackathonCard,
+  HACKATHON_DETAIL_TAB_MANAGEMENT,
+} from '@/features/hackathon-list/ui/HackathonCard'
 import { HorizontalScrollList } from './HorizontalScrollList'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
@@ -76,7 +79,11 @@ export function OrganizerSection({
             <HorizontalScrollList>
               {activeHackathons.map(hackathon => (
                 <div key={hackathon.hackathonId} className="flex-shrink-0 snap-start">
-                  <HackathonCard hackathon={hackathon} variant="bordered" />
+                  <HackathonCard
+                    hackathon={hackathon}
+                    variant="bordered"
+                    detailTabId={HACKATHON_DETAIL_TAB_MANAGEMENT}
+                  />
                 </div>
               ))}
             </HorizontalScrollList>
@@ -92,7 +99,11 @@ export function OrganizerSection({
             <HorizontalScrollList>
               {draftHackathons.map(hackathon => (
                 <div key={hackathon.hackathonId} className="flex-shrink-0 snap-start">
-                  <HackathonCard hackathon={hackathon} variant="bordered" />
+                  <HackathonCard
+                    hackathon={hackathon}
+                    variant="bordered"
+                    detailTabId={HACKATHON_DETAIL_TAB_MANAGEMENT}
+                  />
                 </div>
               ))}
             </HorizontalScrollList>

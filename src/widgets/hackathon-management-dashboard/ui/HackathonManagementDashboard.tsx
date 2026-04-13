@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Section, Button, Icon, InfoRow, ListItem } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
@@ -20,6 +20,8 @@ import { AnnouncementFormModal } from '@/features/announcement-create/ui/Announc
 import { AnnouncementModal } from '@/features/hackathon-detail/ui/AnnouncementModal'
 import { useHackathonAnnouncementsQuery } from '@/features/hackathon-detail/model/hooks'
 import { deleteAnnouncement } from '@/entities/hackathon/api/deleteAnnouncement'
+import { assignSubmissionsToJudges } from '@/entities/judging'
+import type { operations } from '@/shared/api/platform.schema'
 import type { Hackathon } from '@/entities/hackathon/model/types'
 import type { HackathonAnnouncement } from '@/entities/hackathon/api/getHackathonAnnouncements'
 import { getStageLabel } from '@/entities/hackathon/model/utils'
@@ -28,6 +30,11 @@ import { ApiError } from '@/shared/api/errors'
 export interface HackathonManagementDashboardProps {
   hackathon: Hackathon
 }
+
+type AssignJudgingPhase = 'ready' | 'running' | 'success' | 'error'
+
+type AssignJudgingResult =
+  operations['JudgingService_AssignSubmissionsToJudges']['responses']['200']['content']['application/json']
 
 interface ManageableAnnouncementItemProps {
   announcement: HackathonAnnouncement
@@ -120,6 +127,7 @@ function ManageableAnnouncementItem({
 export function HackathonManagementDashboard({ hackathon }: HackathonManagementDashboardProps) {
   const t = useT()
   const router = useRouter()
+  const queryClient = useQueryClient()
   const locale = 'ru'
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
@@ -134,6 +142,11 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
   const { decision: canCreateAnnouncementDecision } = useCan('Hackathon.CreateAnnouncement', {
     hackathonId: hackathon.hackathonId,
   })
+
+  const { decision: canAssignJudgingDecision } = useCan('Judging.AssignJudging', {
+    hackathonId: hackathon.hackathonId,
+  })
+  const canAssignJudging = true // canAssignJudgingDecision.allowed
 
   const stageLabel = getStageLabel(hackathon.stage)
 
@@ -156,6 +169,44 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
       .length ?? 0
   const hasSentStaffInvitations = pendingCount > 0
   const hasDeclinedInvitations = declinedCount > 0
+
+  const showAssignJudgingAction =
+    Boolean(hackathon.hackathonId) && canAssignJudging && hackathon.stage === 'JUDGING'
+
+  const [assignJudgingPhase, setAssignJudgingPhase] = useState<AssignJudgingPhase>('ready')
+  const [assignJudgingResult, setAssignJudgingResult] = useState<AssignJudgingResult | null>(null)
+
+  const showAssignJudgingButton =
+    showAssignJudgingAction && assignJudgingPhase !== 'success'
+
+  useEffect(() => {
+    setAssignJudgingPhase('ready')
+    setAssignJudgingResult(null)
+  }, [hackathon.hackathonId])
+
+  const assignJudgingMutation = useMutation({
+    mutationFn: () => {
+      const id = hackathon.hackathonId
+      if (!id) throw new Error('hackathonId is required')
+      return assignSubmissionsToJudges(id)
+    },
+    onMutate: () => {
+      setAssignJudgingPhase('running')
+    },
+    onSuccess: async data => {
+      setAssignJudgingResult(data)
+      setAssignJudgingPhase('success')
+      const id = hackathon.hackathonId
+      if (!id) return
+      await queryClient.invalidateQueries({ queryKey: ['judging-assignments', id] })
+      await queryClient.invalidateQueries({ queryKey: ['judging-evaluations', id] })
+      await queryClient.invalidateQueries({ queryKey: ['judging-leaderboard', id] })
+    },
+    onError: (error: unknown) => {
+      setAssignJudgingPhase('error')
+      console.error('Failed to assign submissions to judges:', error)
+    },
+  })
 
   return (
     <div className="flex flex-col gap-m8">
@@ -189,7 +240,44 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
                   onClick={() => setIsDeclinedInvitationsModalOpen(true)}
                 />
               )}
+              {showAssignJudgingButton && (
+                <Button
+                  variant="secondary-action"
+                  text={
+                    assignJudgingMutation.isPending
+                      ? t('hackathons.management.actions.assign_judging_pending')
+                      : t('hackathons.management.actions.assign_judging')
+                  }
+                  disabled={assignJudgingMutation.isPending}
+                  onClick={() => assignJudgingMutation.mutate()}
+                />
+              )}
             </div>
+            {showAssignJudgingAction && (
+              <ListItem
+                variant="bordered"
+                danger={assignJudgingPhase === 'error'}
+                active={assignJudgingPhase === 'running'}
+                text={
+                  assignJudgingPhase === 'error'
+                    ? t('hackathons.management.actions.assign_judging_error')
+                    : t('hackathons.management.actions.assign_judging_status_title')
+                }
+                subtitle={
+                  assignJudgingPhase === 'ready'
+                    ? t('hackathons.management.actions.assign_judging_status_hint')
+                    : assignJudgingPhase === 'running'
+                      ? t('hackathons.management.actions.assign_judging_pending')
+                      : assignJudgingPhase === 'success' && assignJudgingResult != null
+                        ? t('hackathons.management.actions.assign_judging_result_subtitle', {
+                            assignments: assignJudgingResult.assignmentsCount ?? 0,
+                            submissions: assignJudgingResult.submissionsCount ?? 0,
+                            judges: assignJudgingResult.judgesCount ?? 0,
+                          })
+                        : undefined
+                }
+              />
+            )}
           </div>
         </Section>
 

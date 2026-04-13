@@ -8,6 +8,7 @@ import { HorizontalScrollList } from './HorizontalScrollList'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import type { Hackathon } from '@/entities/hackathon/model/types'
+import type { HackathonDetailTabId } from '@/features/hackathon-list/ui/HackathonCard'
 
 export interface HackathonRoleSectionProps {
   title: string
@@ -19,6 +20,7 @@ export interface HackathonRoleSectionProps {
   emptyActionLabel?: string
   emptyActionHref?: string
   participationMode?: boolean
+  detailTabId?: HackathonDetailTabId | null
 }
 
 export function HackathonRoleSection({
@@ -31,6 +33,7 @@ export function HackathonRoleSection({
   emptyActionLabel,
   emptyActionHref,
   participationMode = false,
+  detailTabId,
 }: HackathonRoleSectionProps) {
   const t = useT()
 
@@ -86,7 +89,11 @@ export function HackathonRoleSection({
             {participationMode ? (
               <HackathonCardWithParticipation hackathon={hackathon} variant="bordered" />
             ) : (
-              <HackathonCard hackathon={hackathon} variant="bordered" />
+              <HackathonCard
+                hackathon={hackathon}
+                variant="bordered"
+                detailTabId={detailTabId ?? null}
+              />
             )}
           </div>
         ))}

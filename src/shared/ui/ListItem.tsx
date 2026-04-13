@@ -4,6 +4,7 @@ import { Checkbox } from './Checkbox'
 
 export interface ListItemProps {
   text: string
+  textClassName?: string
   subtitle?: string
   caption?: string
   selectable?: boolean
@@ -19,6 +20,7 @@ export interface ListItemProps {
 
 export function ListItem({
   text,
+  textClassName,
   subtitle,
   caption,
   selectable = false,
@@ -88,7 +90,9 @@ export function ListItem({
       )}
 
       <div className="flex-1 min-w-0">
-        <div className="typography-body-md-regular text-text-primary">{text}</div>
+        <div className={cn('typography-body-md-regular text-text-primary', textClassName)}>
+          {text}
+        </div>
         {hasSubtitle && (
           <div className="typography-body-sm-regular text-text-secondary mt-m1 truncate">
             {subtitle}

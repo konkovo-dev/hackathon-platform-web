@@ -21,6 +21,8 @@ import { HackathonManagementDashboard } from '@/widgets/hackathon-management-das
 import { useSessionQuery } from '@/features/auth/model/hooks'
 import { useSupportMentorAccessQuery } from '@/features/mentor-support/model/hooks'
 import { SupportTabContent } from '@/features/mentor-support/ui/SupportTabContent'
+import { JudgingTabContent } from '@/features/judging/ui/JudgingTabContent'
+import { useHackathonsByRoleQuery } from '@/entities/hackathon/model/useHackathonsByRoleQuery'
 import { cn } from '@/shared/lib/cn'
 
 export interface HackathonDetailProps {
@@ -36,6 +38,7 @@ type HackathonTab =
   | 'announcements'
   | 'management'
   | 'support'
+  | 'judging'
 
 export function HackathonDetail({ hackathonId, initialData, initialTab }: HackathonDetailProps) {
   const t = useT()
@@ -56,6 +59,32 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   })
   const canManage = canManageDecision.allowed
 
+  const { decision: canJudgeDecision } = useCan('Judging.ViewMyJudgingAssignments', {
+    hackathonId,
+  })
+  const canJudge = canJudgeDecision.allowed
+
+  const { decision: canViewLeaderboardDecision, isLoading: canViewLeaderboardLoading } = useCan(
+    'Judging.ViewLeaderboard',
+    { hackathonId }
+  )
+
+  const { data: session } = useSessionQuery()
+  const sessionActive = Boolean(session && session.active)
+  const judgeRoleQuery = useHackathonsByRoleQuery('judge', {
+    enabled: sessionActive && Boolean(hackathonId),
+  })
+  const isJudgeByRoleList = useMemo(
+    () => judgeRoleQuery.data?.hackathons.some(h => h.hackathonId === hackathonId) ?? false,
+    [hackathonId, judgeRoleQuery.data?.hackathons]
+  )
+  const showOrganizerJudgingTab =
+    canManage &&
+    !canViewLeaderboardLoading &&
+    true // canViewLeaderboardDecision.allowed
+
+  const showJudgingTab = canJudge || isJudgeByRoleList || showOrganizerJudgingTab
+
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
   const myTeamId = myParticipationQuery.data?.teamId ?? null
   const participationStatus = myParticipationQuery.data?.status ?? null
@@ -73,8 +102,6 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
     canSeeTask
   )
 
-  const { data: session } = useSessionQuery()
-  const sessionActive = Boolean(session && session.active)
   const isRunning = hackathon?.stage === 'RUNNING'
   const mentorProbeEnabled = Boolean(hackathonId) && isRunning && !canManage && sessionActive
   const { data: hasMentorAccess } = useSupportMentorAccessQuery(hackathonId, {
@@ -126,8 +153,24 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         href: routes.hackathons.detailWithTab(hackathonId, 'support'),
       })
     }
+    if (showJudgingTab) {
+      baseTabs.push({
+        id: 'judging',
+        label: t('hackathons.detail.tabs.judging'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'judging'),
+      })
+    }
     return baseTabs
-  }, [hackathonId, isParticipant, canSeeAnnouncements, canSeeTask, canManage, showSupportTab, t])
+  }, [
+    hackathonId,
+    isParticipant,
+    canSeeAnnouncements,
+    canSeeTask,
+    canManage,
+    showSupportTab,
+    showJudgingTab,
+    t,
+  ])
 
   const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
   const activeTabSafe =
@@ -253,6 +296,15 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
             hackathonId={hackathonId}
             showStaffDashboard={canManage || hasMentorAccess === true}
             canManage={canManage}
+          />
+        )}
+        {activeTabSafe === 'judging' && showJudgingTab && (
+          <JudgingTabContent
+            hackathonId={hackathonId}
+            stage={hackathon.stage}
+            submissionsClosesAt={hackathon.dates?.submissionsClosesAt ?? null}
+            showOrganizerLeaderboard={showOrganizerJudgingTab}
+            showJudgeAssignments={canJudge || isJudgeByRoleList}
           />
         )}
       </div>
