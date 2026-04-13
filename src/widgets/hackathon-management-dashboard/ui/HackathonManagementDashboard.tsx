@@ -14,8 +14,6 @@ import { StaffList } from '@/features/staff-invite/ui/StaffList'
 import { SentStaffInvitationsSection } from '@/features/staff-invite/ui/SentStaffInvitationsSection'
 import { DeclinedInvitationsModal } from '@/features/staff-invite/ui/DeclinedInvitationsModal'
 import { useHackathonStaffInvitationsQuery } from '@/features/staff-invite/model/hooks'
-import { TeamModerationList } from '@/features/team-moderation/ui/TeamModerationList'
-import { StaffSubmissionsSection } from '@/features/submission'
 import { AnnouncementFormModal } from '@/features/announcement-create/ui/AnnouncementFormModal'
 import { AnnouncementModal } from '@/features/hackathon-detail/ui/AnnouncementModal'
 import { useHackathonAnnouncementsQuery } from '@/features/hackathon-detail/model/hooks'
@@ -354,12 +352,6 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
           )}
         </Section>
       )}
-
-      {/* Сабмишены команд */}
-      <StaffSubmissionsSection hackathon={hackathon} />
-
-      {/* Участники и команды */}
-      <TeamModerationList hackathonId={hackathon.hackathonId ?? ''} />
 
       <AnnouncementFormModal
         open={isAnnouncementModalOpen || !!editingAnnouncement}

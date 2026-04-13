@@ -22,6 +22,7 @@ import { useSessionQuery } from '@/features/auth/model/hooks'
 import { useSupportMentorAccessQuery } from '@/features/mentor-support/model/hooks'
 import { SupportTabContent } from '@/features/mentor-support/ui/SupportTabContent'
 import { JudgingTabContent } from '@/features/judging/ui/JudgingTabContent'
+import { OrganizerParticipantsTabContent } from './OrganizerParticipantsTabContent'
 import { useHackathonsByRoleQuery } from '@/entities/hackathon/model/useHackathonsByRoleQuery'
 import { cn } from '@/shared/lib/cn'
 
@@ -39,6 +40,7 @@ type HackathonTab =
   | 'management'
   | 'support'
   | 'judging'
+  | 'participants'
 
 export function HackathonDetail({ hackathonId, initialData, initialTab }: HackathonDetailProps) {
   const t = useT()
@@ -144,6 +146,11 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         id: 'management',
         label: t('hackathons.detail.tabs.management'),
         href: routes.hackathons.detailWithTab(hackathonId, 'management'),
+      })
+      baseTabs.push({
+        id: 'participants',
+        label: t('hackathons.management.teams.title'),
+        href: routes.hackathons.detailWithTab(hackathonId, 'participants'),
       })
     }
     if (showSupportTab) {
@@ -290,6 +297,9 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
         )}
         {activeTabSafe === 'management' && canManage && (
           <HackathonManagementDashboard hackathon={hackathon} />
+        )}
+        {activeTabSafe === 'participants' && canManage && (
+          <OrganizerParticipantsTabContent hackathon={hackathon} />
         )}
         {activeTabSafe === 'support' && showSupportTab && (
           <SupportTabContent

@@ -23,12 +23,14 @@ export const HACKATHON_DETAIL_TAB_PARTICIPATION = 'participation' as const
 export const HACKATHON_DETAIL_TAB_JUDGING = 'judging' as const
 export const HACKATHON_DETAIL_TAB_MANAGEMENT = 'management' as const
 export const HACKATHON_DETAIL_TAB_SUPPORT = 'support' as const
+export const HACKATHON_DETAIL_TAB_PARTICIPANTS = 'participants' as const
 
 export type HackathonDetailTabId =
   | typeof HACKATHON_DETAIL_TAB_PARTICIPATION
   | typeof HACKATHON_DETAIL_TAB_JUDGING
   | typeof HACKATHON_DETAIL_TAB_MANAGEMENT
   | typeof HACKATHON_DETAIL_TAB_SUPPORT
+  | typeof HACKATHON_DETAIL_TAB_PARTICIPANTS
 
 export interface HackathonCardProps {
   hackathon: Hackathon
