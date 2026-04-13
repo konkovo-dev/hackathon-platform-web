@@ -80,7 +80,9 @@ export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlock
                   hackathonId={hackathonId}
                   submissionId={finalSubmission.submissionId}
                   files={postRunCompletedFiles}
-                  sectionLabel={t('hackathons.detail.participation.submission.createModal.filesLabel')}
+                  sectionLabel={t(
+                    'hackathons.detail.participation.submission.createModal.filesLabel'
+                  )}
                 />
               </>
             )}

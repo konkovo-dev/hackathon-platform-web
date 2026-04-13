@@ -68,7 +68,11 @@ export function OrganizerJudgingStatusSection({ hackathonId }: Props) {
       ) : (
         <div className="flex flex-col gap-m3 max-h-[min(60vh,32rem)] overflow-y-auto">
           {entries.map((entry, idx) => (
-            <LeaderboardRow key={entry.submissionId ?? `lb-${idx}`} entry={entry} rank={entry.rank ?? idx + 1} />
+            <LeaderboardRow
+              key={entry.submissionId ?? `lb-${idx}`}
+              entry={entry}
+              rank={entry.rank ?? idx + 1}
+            />
           ))}
         </div>
       )}
@@ -78,8 +82,7 @@ export function OrganizerJudgingStatusSection({ hackathonId }: Props) {
 
 function LeaderboardRow({ entry, rank }: { entry: LeaderboardEntry; rank: number }) {
   const t = useT()
-  const title =
-    entry.title?.trim() || t('hackathons.management.judging_progress.row_unknown_title')
+  const title = entry.title?.trim() || t('hackathons.management.judging_progress.row_unknown_title')
   const ownerLabel = isTeamOwnerKind(entry.ownerKind)
     ? t('hackathons.judging.owner.team')
     : t('hackathons.judging.owner.individual')

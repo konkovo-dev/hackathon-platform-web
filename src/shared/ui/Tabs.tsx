@@ -14,29 +14,17 @@ export interface TabsProps<T extends string = string> {
   className?: string
 }
 
-const tabContent = (activeTab: string, tabId: string, label: string) => (
-  <>
-    {label}
-    {activeTab === tabId ? (
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-primary animate-in fade-in slide-in-from-bottom-1 duration-200"
-        aria-hidden="true"
-      />
-    ) : (
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-border-default opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        aria-hidden="true"
-      />
-    )}
-  </>
-)
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--color-bg-default))]'
 
-const tabClassName = (isActive: boolean) =>
+const tabTriggerClassName = (isActive: boolean) =>
   cn(
-    'group typography-label-md pb-m4 px-m8 relative transition-all duration-200 text-left',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
-    'rounded-t-[var(--spacing-m2)]',
-    isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+    'relative whitespace-nowrap border-b-2 px-m2 pb-m3 typography-label-md transition-colors duration-150 ease-out text-left no-underline',
+    '-mb-px',
+    focusRing,
+    isActive
+      ? 'z-[1] border-brand-primary text-text-primary'
+      : 'border-transparent text-text-secondary hover:text-text-primary'
   )
 
 export function Tabs<T extends string = string>({
@@ -46,9 +34,17 @@ export function Tabs<T extends string = string>({
   className,
 }: TabsProps<T>) {
   return (
-    <div className={cn('flex gap-m8 border-b border-border-default', className)} role="tablist">
+    <div
+      className={cn(
+        'flex flex-wrap items-end gap-x-m4 gap-y-m3 border-b border-border-default',
+        className
+      )}
+      role="tablist"
+    >
       {tabs.map(tab => {
         const isActive = activeTab === tab.id
+        const triggerClass = tabTriggerClassName(isActive)
+
         if (tab.href != null) {
           return (
             <Link
@@ -58,9 +54,9 @@ export function Tabs<T extends string = string>({
               aria-selected={isActive}
               aria-controls={`tabpanel-${tab.id}`}
               id={`tab-${tab.id}`}
-              className={tabClassName(isActive)}
+              className={triggerClass}
             >
-              {tabContent(activeTab, tab.id, tab.label)}
+              {tab.label}
             </Link>
           )
         }
@@ -73,9 +69,9 @@ export function Tabs<T extends string = string>({
             aria-controls={`tabpanel-${tab.id}`}
             id={`tab-${tab.id}`}
             onClick={() => onChange(tab.id)}
-            className={tabClassName(isActive)}
+            className={triggerClass}
           >
-            {tabContent(activeTab, tab.id, tab.label)}
+            {tab.label}
           </button>
         )
       })}

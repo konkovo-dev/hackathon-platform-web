@@ -111,7 +111,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
   ]
 
   return (
-    <div className="flex flex-col gap-m16">
+    <div className="flex flex-col gap-m16 py-m32">
       <Breadcrumb items={breadcrumbItems} />
 
       <div className="flex flex-col gap-m6">

@@ -7,10 +7,10 @@ export default async function HackathonMainPage({
   searchParams,
 }: {
   params: Promise<{ hackathonId: string }>
-  searchParams: Promise<{ tab?: string }>
+  searchParams: Promise<{ tab?: string; section?: string; org?: string }>
 }) {
   const { hackathonId } = await params
-  const { tab: tabParam } = await searchParams
+  const { tab: tabParam, section: sectionParam, org: orgParam } = await searchParams
 
   let initialData
   try {
@@ -27,6 +27,12 @@ export default async function HackathonMainPage({
   }
 
   return (
-    <HackathonDetail hackathonId={hackathonId} initialData={initialData} initialTab={tabParam} />
+    <HackathonDetail
+      hackathonId={hackathonId}
+      initialData={initialData}
+      tab={tabParam}
+      section={sectionParam}
+      org={orgParam}
+    />
   )
 }

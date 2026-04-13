@@ -8,7 +8,9 @@ export interface OrganizerParticipantsTabContentProps {
   hackathon: Hackathon
 }
 
-export function OrganizerParticipantsTabContent({ hackathon }: OrganizerParticipantsTabContentProps) {
+export function OrganizerParticipantsTabContent({
+  hackathon,
+}: OrganizerParticipantsTabContentProps) {
   const hackathonId = hackathon.hackathonId ?? ''
 
   return (

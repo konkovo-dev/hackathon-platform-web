@@ -63,14 +63,25 @@
       "title": "hackathon stages"
     },
     "tabs": {
+      "about": "overview",
       "description": "description",
       "task": "task",
       "myTeam": "my team",
-      "participation": "my participation",
-      "announcements": "announcements",
-      "management": "management",
+      "participation": "participate",
+      "announcements": "news",
+      "management": "manage",
       "support": "support",
-      "judging": "judging"
+      "judging": "jury"
+    },
+    "about": {
+      "navAria": "hackathon overview sections"
+    },
+    "management": {
+      "navAria": "hackathon organizer sections",
+      "org": {
+        "overview": "summary",
+        "leaderboard": "scores"
+      }
     },
     "task": {
       "empty": "task has not been published yet"

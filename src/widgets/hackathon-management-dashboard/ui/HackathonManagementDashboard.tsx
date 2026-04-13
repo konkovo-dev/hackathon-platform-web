@@ -174,8 +174,7 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
   const [assignJudgingPhase, setAssignJudgingPhase] = useState<AssignJudgingPhase>('ready')
   const [assignJudgingResult, setAssignJudgingResult] = useState<AssignJudgingResult | null>(null)
 
-  const showAssignJudgingButton =
-    showAssignJudgingAction && assignJudgingPhase !== 'success'
+  const showAssignJudgingButton = showAssignJudgingAction && assignJudgingPhase !== 'success'
 
   useEffect(() => {
     setAssignJudgingPhase('ready')

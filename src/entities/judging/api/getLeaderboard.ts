@@ -26,7 +26,9 @@ export async function getLeaderboard(
 /**
  * Загружает все страницы лидерборда (offset/limit в теле запроса).
  */
-export async function getLeaderboardAll(hackathonId: string): Promise<{ entries: LeaderboardEntry[] }> {
+export async function getLeaderboardAll(
+  hackathonId: string
+): Promise<{ entries: LeaderboardEntry[] }> {
   const entries: LeaderboardEntry[] = []
   let offset = 0
 

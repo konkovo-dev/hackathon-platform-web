@@ -63,14 +63,25 @@
       "title": "стадии хакатона"
     },
     "tabs": {
+      "about": "обзор",
       "description": "описание",
       "task": "задание",
       "myTeam": "моя команда",
-      "participation": "моё участие",
-      "announcements": "объявления",
+      "participation": "участие",
+      "announcements": "новости",
       "management": "управление",
       "support": "поддержка",
-      "judging": "оценивание"
+      "judging": "жюри"
+    },
+    "about": {
+      "navAria": "разделы общей информации о хакатоне"
+    },
+    "management": {
+      "navAria": "разделы управления хакатоном",
+      "org": {
+        "overview": "сводка",
+        "leaderboard": "оценки"
+      }
     },
     "task": {
       "empty": "задание пока не опубликовано"

@@ -8,7 +8,6 @@ import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { formatDateTime } from '@/shared/lib/formatDate'
 import { useMyAssignmentsQuery, useMyEvaluationsQuery } from '../model/hooks'
 import { AssignmentList } from './AssignmentList'
-import { OrganizerJudgingStatusSection } from './OrganizerJudgingStatusSection'
 import type { AssignmentWithSubmission } from '@/entities/judging/api/getMyAssignments'
 
 type Filter = 'all' | 'pending' | 'done'
@@ -17,7 +16,6 @@ interface Props {
   hackathonId: string
   stage: HackathonStage
   submissionsClosesAt?: string | null
-  showOrganizerLeaderboard?: boolean
   showJudgeAssignments?: boolean
 }
 
@@ -29,7 +27,6 @@ export function JudgingTabContent({
   hackathonId,
   stage,
   submissionsClosesAt,
-  showOrganizerLeaderboard = false,
   showJudgeAssignments = true,
 }: Props) {
   const t = useT()
@@ -87,8 +84,6 @@ export function JudgingTabContent({
 
   return (
     <div className="flex flex-col gap-m8">
-      {showOrganizerLeaderboard ? <OrganizerJudgingStatusSection hackathonId={hackathonId} /> : null}
-
       {showJudgeAssignments ? (
         <>
           <ChipList>

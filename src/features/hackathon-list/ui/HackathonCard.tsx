@@ -67,11 +67,18 @@ export function HackathonCard({
 
   const handleNavigate = () => {
     if (!hackathon.hackathonId) return
-    router.push(
-      detailTabId
-        ? routes.hackathons.detailWithTab(hackathon.hackathonId, detailTabId)
-        : routes.hackathons.detail(hackathon.hackathonId)
-    )
+    if (!detailTabId) {
+      router.push(routes.hackathons.detail(hackathon.hackathonId))
+      return
+    }
+    const href =
+      detailTabId === HACKATHON_DETAIL_TAB_PARTICIPANTS
+        ? routes.hackathons.hackathonDetailPath(hackathon.hackathonId, {
+            tab: 'management',
+            org: 'participants',
+          })
+        : routes.hackathons.hackathonDetailPath(hackathon.hackathonId, { tab: detailTabId })
+    router.push(href)
   }
 
   const isElevated = variant === 'elevated'

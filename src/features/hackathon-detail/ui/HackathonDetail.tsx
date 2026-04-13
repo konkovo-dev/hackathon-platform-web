@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Breadcrumb, Tabs, type Tab } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
@@ -23,29 +23,49 @@ import { useSupportMentorAccessQuery } from '@/features/mentor-support/model/hoo
 import { SupportTabContent } from '@/features/mentor-support/ui/SupportTabContent'
 import { JudgingTabContent } from '@/features/judging/ui/JudgingTabContent'
 import { OrganizerParticipantsTabContent } from './OrganizerParticipantsTabContent'
+import { OrganizerJudgingStatusSection } from '@/features/judging/ui/OrganizerJudgingStatusSection'
 import { useHackathonsByRoleQuery } from '@/entities/hackathon/model/useHackathonsByRoleQuery'
 import { cn } from '@/shared/lib/cn'
+import {
+  parseHackathonDetailSearchParams,
+  hackathonDetailPathOptionsFromState,
+  serializeHackathonDetailUrlFromProps,
+  type HackathonDetailQueryState,
+  type HackathonDetailTopTab,
+} from '../lib/hackathonDetailQuery'
+import { clampHackathonDetailState } from '../lib/clampHackathonDetailState'
+import { HackathonDetailSubnav } from './HackathonDetailSubnav'
 
 export interface HackathonDetailProps {
   hackathonId: string
   initialData?: Hackathon
-  initialTab?: string
+  /** query tab= (включая legacy значения на входе) */
+  tab?: string | null
+  section?: string | null
+  org?: string | null
 }
 
-type HackathonTab =
-  | 'description'
-  | 'task'
-  | 'participation'
-  | 'announcements'
-  | 'management'
-  | 'support'
-  | 'judging'
-  | 'participants'
+function buildSearchParamsFromProps(
+  tab?: string | null,
+  section?: string | null,
+  org?: string | null
+): URLSearchParams {
+  const sp = new URLSearchParams()
+  if (tab) sp.set('tab', tab)
+  if (section) sp.set('section', section)
+  if (org) sp.set('org', org)
+  return sp
+}
 
-export function HackathonDetail({ hackathonId, initialData, initialTab }: HackathonDetailProps) {
+export function HackathonDetail({
+  hackathonId,
+  initialData,
+  tab: tabProp,
+  section: sectionProp,
+  org: orgProp,
+}: HackathonDetailProps) {
   const t = useT()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<HackathonTab>('description')
   const { data: hackathon, isLoading, error } = useHackathonDetailQuery(hackathonId, initialData)
 
   const { decision: canViewAnnouncementsDecision } = useCan('Hackathon.ViewAnnouncements', {
@@ -66,10 +86,9 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   })
   const canJudge = canJudgeDecision.allowed
 
-  const { decision: canViewLeaderboardDecision, isLoading: canViewLeaderboardLoading } = useCan(
-    'Judging.ViewLeaderboard',
-    { hackathonId }
-  )
+  const { isLoading: canViewLeaderboardLoading } = useCan('Judging.ViewLeaderboard', {
+    hackathonId,
+  })
 
   const { data: session } = useSessionQuery()
   const sessionActive = Boolean(session && session.active)
@@ -80,12 +99,10 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
     () => judgeRoleQuery.data?.hackathons.some(h => h.hackathonId === hackathonId) ?? false,
     [hackathonId, judgeRoleQuery.data?.hackathons]
   )
-  const showOrganizerJudgingTab =
-    canManage &&
-    !canViewLeaderboardLoading &&
-    true // canViewLeaderboardDecision.allowed
+  const canJudgeOrAssigned = canJudge || isJudgeByRoleList
+  const showJudgingTab = canJudgeOrAssigned
 
-  const showJudgingTab = canJudge || isJudgeByRoleList || showOrganizerJudgingTab
+  const showManagementLeaderboardNav = canManage && !canViewLeaderboardLoading
 
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
   const myTeamId = myParticipationQuery.data?.teamId ?? null
@@ -112,97 +129,168 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
   const showSupportTab =
     Boolean(hackathon) && isRunning && (isParticipant || canManage || hasMentorAccess === true)
 
-  const tabs: Tab<HackathonTab>[] = useMemo(() => {
-    const baseTabs: Tab<HackathonTab>[] = [
+  const urlSearchParams = useMemo(
+    () => buildSearchParamsFromProps(tabProp, sectionProp, orgProp),
+    [tabProp, sectionProp, orgProp]
+  )
+
+  const { state: parsedState } = useMemo(
+    () => parseHackathonDetailSearchParams(hackathonId, urlSearchParams),
+    [hackathonId, urlSearchParams]
+  )
+
+  const clampContext = useMemo(
+    () => ({
+      canManage,
+      isParticipant,
+      canSeeTask,
+      canSeeAnnouncements,
+      canJudgeOrAssigned,
+      showSupportTab,
+      showManagementLeaderboardNav,
+    }),
+    [
+      canManage,
+      isParticipant,
+      canSeeTask,
+      canSeeAnnouncements,
+      canJudgeOrAssigned,
+      showSupportTab,
+      showManagementLeaderboardNav,
+    ]
+  )
+
+  const displayState: HackathonDetailQueryState = useMemo(
+    () => clampHackathonDetailState(parsedState, clampContext),
+    [parsedState, clampContext]
+  )
+
+  const canonicalHref = useMemo(
+    () =>
+      routes.hackathons.hackathonDetailPath(
+        hackathonId,
+        hackathonDetailPathOptionsFromState(displayState)
+      ),
+    [hackathonId, displayState]
+  )
+
+  const rawHref = useMemo(
+    () => serializeHackathonDetailUrlFromProps(hackathonId, tabProp, sectionProp, orgProp),
+    [hackathonId, tabProp, sectionProp, orgProp]
+  )
+
+  useEffect(() => {
+    if (canonicalHref !== rawHref) {
+      router.replace(canonicalHref)
+    }
+  }, [canonicalHref, rawHref, router])
+
+  const tabs: Tab<HackathonDetailTopTab>[] = useMemo(() => {
+    const out: Tab<HackathonDetailTopTab>[] = [
       {
-        id: 'description',
-        label: t('hackathons.detail.tabs.description'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'description'),
+        id: 'about',
+        label: t('hackathons.detail.tabs.about'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'about' }),
       },
     ]
-    if (canSeeTask) {
-      baseTabs.push({
-        id: 'task',
-        label: t('hackathons.detail.tabs.task'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'task'),
-      })
-    }
-    if (canSeeAnnouncements) {
-      baseTabs.push({
-        id: 'announcements',
-        label: t('hackathons.detail.tabs.announcements'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'announcements'),
-      })
-    }
     if (isParticipant) {
-      baseTabs.push({
+      out.push({
         id: 'participation',
         label: t('hackathons.detail.tabs.participation'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'participation'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'participation' }),
       })
     }
     if (canManage) {
-      baseTabs.push({
+      out.push({
         id: 'management',
         label: t('hackathons.detail.tabs.management'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'management'),
-      })
-      baseTabs.push({
-        id: 'participants',
-        label: t('hackathons.management.teams.title'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'participants'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'management' }),
       })
     }
     if (showSupportTab) {
-      baseTabs.push({
+      out.push({
         id: 'support',
         label: t('hackathons.detail.tabs.support'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'support'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'support' }),
       })
     }
     if (showJudgingTab) {
-      baseTabs.push({
+      out.push({
         id: 'judging',
         label: t('hackathons.detail.tabs.judging'),
-        href: routes.hackathons.detailWithTab(hackathonId, 'judging'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'judging' }),
       })
     }
-    return baseTabs
-  }, [
-    hackathonId,
-    isParticipant,
-    canSeeAnnouncements,
-    canSeeTask,
-    canManage,
-    showSupportTab,
-    showJudgingTab,
-    t,
-  ])
+    return out
+  }, [hackathonId, isParticipant, canManage, showSupportTab, showJudgingTab, t])
 
   const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
-  const activeTabSafe =
-    activeTab && tabIds.includes(activeTab) ? activeTab : ('description' as HackathonTab)
-  const setActiveTabSafe = (id: HackathonTab) => {
-    setActiveTab(id)
-    router.replace(
-      routes.hackathons.detailWithTab(hackathonId, id === 'description' ? undefined : id)
-    )
-  }
+  const activeTopTab: HackathonDetailTopTab = tabIds.includes(displayState.tab)
+    ? displayState.tab
+    : 'about'
 
-  useEffect(() => {
-    if (initialTab == null || initialTab === '') {
-      setActiveTab('description')
-    } else if (tabIds.includes(initialTab as HackathonTab)) {
-      setActiveTab(initialTab as HackathonTab)
+  const aboutNavItems = useMemo(() => {
+    const items: { id: HackathonDetailQueryState['section']; label: string; href: string }[] = [
+      {
+        id: 'description',
+        label: t('hackathons.detail.tabs.description'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'about',
+          section: 'description',
+        }),
+      },
+    ]
+    if (canSeeTask) {
+      items.push({
+        id: 'task',
+        label: t('hackathons.detail.tabs.task'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, { tab: 'about', section: 'task' }),
+      })
     }
-  }, [initialTab, tabIds])
+    if (canSeeAnnouncements) {
+      items.push({
+        id: 'announcements',
+        label: t('hackathons.detail.tabs.announcements'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'about',
+          section: 'announcements',
+        }),
+      })
+    }
+    return items
+  }, [hackathonId, canSeeTask, canSeeAnnouncements, t])
 
-  useEffect(() => {
-    if (activeTab && !tabIds.includes(activeTab)) {
-      setActiveTab('description')
-      router.replace(routes.hackathons.detailWithTab(hackathonId))
+  const managementNavItems = useMemo(() => {
+    const items: { id: HackathonDetailQueryState['org']; label: string; href: string }[] = [
+      {
+        id: 'overview',
+        label: t('hackathons.detail.management.org.overview'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'management',
+          org: 'overview',
+        }),
+      },
+      {
+        id: 'participants',
+        label: t('hackathons.management.teams.tabs.participants'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'management',
+          org: 'participants',
+        }),
+      },
+    ]
+    if (showManagementLeaderboardNav) {
+      items.push({
+        id: 'leaderboard',
+        label: t('hackathons.detail.management.org.leaderboard'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'management',
+          org: 'leaderboard',
+        }),
+      })
     }
-  }, [activeTab, tabIds, hackathonId, router])
+    return items
+  }, [hackathonId, showManagementLeaderboardNav, t])
 
   if (isLoading && !initialData) {
     return (
@@ -246,76 +334,205 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
     },
   ]
 
-  return (
-    <div className="flex flex-col gap-m16">
-      <Breadcrumb items={breadcrumbItems} />
+  const showAboutRail = activeTopTab === 'about' && aboutNavItems.length > 1
+  const showManagementRail =
+    activeTopTab === 'management' && canManage && managementNavItems.length > 1
 
-      <Tabs tabs={tabs} activeTab={activeTabSafe} onChange={setActiveTabSafe} />
+  const gutterX = 'px-m16 xl:px-m8'
+  const detailWell = 'mx-auto w-full min-w-0 max-w-[1280px]'
+
+  return (
+    <div className="flex w-full min-w-0 flex-col gap-m10 py-m32">
+      <div className={cn('w-full', gutterX)}>
+        <div className={detailWell}>
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+      </div>
+
+      <div className={cn('w-full', gutterX)}>
+        <div className={detailWell}>
+          <Tabs
+            tabs={tabs}
+            activeTab={activeTopTab}
+            onChange={() => {
+              /* навигация только через href у табов */
+            }}
+          />
+        </div>
+      </div>
 
       <div
         role="tabpanel"
-        id={`tabpanel-${activeTabSafe}`}
-        aria-labelledby={`tab-${activeTabSafe}`}
+        id={`tabpanel-${activeTopTab}`}
+        aria-labelledby={`tab-${activeTopTab}`}
         className={cn(
-          'animate-in fade-in duration-200',
-          activeTabSafe === 'support' && 'flex min-h-[calc(100dvh-20rem)] flex-col'
+          'w-full min-w-0 animate-in fade-in duration-200',
+          activeTopTab === 'support' && 'flex min-h-[calc(100dvh-20rem)] flex-col'
         )}
       >
-        {activeTabSafe === 'description' && (
-          <div className="flex flex-col gap-m16">
-            <HackathonDetailInfo hackathonId={hackathonId} hackathon={hackathon} />
-          </div>
-        )}
-        {activeTabSafe === 'task' && canSeeTask && (
-          <TaskTabContent
-            hackathonId={hackathonId}
-            task={task ?? undefined}
-            isLoading={isLoadingTask}
-          />
-        )}
-        {activeTabSafe === 'announcements' && canSeeAnnouncements && (
+        {activeTopTab === 'about' && (
           <>
-            {isLoadingAnnouncements ? (
-              <div className="py-m8">
-                <p className="typography-body-md text-text-secondary">
-                  {t('hackathons.list.loading')}
-                </p>
+            {showAboutRail ? (
+              <div className={cn('w-full', gutterX)}>
+                <div className={detailWell}>
+                  <div
+                    className={cn(
+                      'grid w-full min-w-0 grid-cols-1 gap-y-m6',
+                      'lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start lg:gap-x-m8 lg:gap-y-0'
+                    )}
+                  >
+                    <HackathonDetailSubnav
+                      ariaLabel={t('hackathons.detail.about.navAria')}
+                      items={aboutNavItems}
+                      activeId={displayState.section}
+                    />
+                    <div className="min-w-0 space-y-m16">
+                      {displayState.section === 'description' && (
+                        <HackathonDetailInfo hackathonId={hackathonId} hackathon={hackathon} />
+                      )}
+                      {displayState.section === 'task' && canSeeTask && (
+                        <TaskTabContent
+                          hackathonId={hackathonId}
+                          task={task ?? undefined}
+                          isLoading={isLoadingTask}
+                        />
+                      )}
+                      {displayState.section === 'announcements' && canSeeAnnouncements && (
+                        <>
+                          {isLoadingAnnouncements ? (
+                            <div className="py-m8">
+                              <p className="typography-body-md text-text-secondary">
+                                {t('hackathons.list.loading')}
+                              </p>
+                            </div>
+                          ) : (
+                            <AnnouncementsList
+                              announcements={announcements}
+                              hackathonId={hackathonId}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
-              <AnnouncementsList announcements={announcements} hackathonId={hackathonId} />
+              <div className={cn('w-full', gutterX)}>
+                <div className={cn(detailWell, 'space-y-m16')}>
+                  {displayState.section === 'description' && (
+                    <HackathonDetailInfo hackathonId={hackathonId} hackathon={hackathon} />
+                  )}
+                  {displayState.section === 'task' && canSeeTask && (
+                    <TaskTabContent
+                      hackathonId={hackathonId}
+                      task={task ?? undefined}
+                      isLoading={isLoadingTask}
+                    />
+                  )}
+                  {displayState.section === 'announcements' && canSeeAnnouncements && (
+                    <>
+                      {isLoadingAnnouncements ? (
+                        <div className="py-m8">
+                          <p className="typography-body-md text-text-secondary">
+                            {t('hackathons.list.loading')}
+                          </p>
+                        </div>
+                      ) : (
+                        <AnnouncementsList
+                          announcements={announcements}
+                          hackathonId={hackathonId}
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
             )}
           </>
         )}
-        {activeTabSafe === 'participation' && isParticipant && (
-          <MyParticipationTabContent
-            hackathonId={hackathonId}
-            myTeamId={myTeamId}
-            ctxLoading={myParticipationQuery.isLoading}
-            hackathonStage={hackathon.stage}
-            registrationPolicy={hackathon.registrationPolicy}
-          />
+        {activeTopTab === 'participation' && isParticipant && (
+          <div className={cn('w-full', gutterX)}>
+            <div className={detailWell}>
+              <MyParticipationTabContent
+                hackathonId={hackathonId}
+                myTeamId={myTeamId}
+                ctxLoading={myParticipationQuery.isLoading}
+                hackathonStage={hackathon.stage}
+                registrationPolicy={hackathon.registrationPolicy}
+              />
+            </div>
+          </div>
         )}
-        {activeTabSafe === 'management' && canManage && (
-          <HackathonManagementDashboard hackathon={hackathon} />
+        {activeTopTab === 'management' && canManage && (
+          <>
+            {showManagementRail ? (
+              <div className={cn('w-full', gutterX)}>
+                <div className={detailWell}>
+                  <div
+                    className={cn(
+                      'grid w-full min-w-0 grid-cols-1 gap-y-m6',
+                      'lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start lg:gap-x-m8 lg:gap-y-0'
+                    )}
+                  >
+                    <HackathonDetailSubnav
+                      ariaLabel={t('hackathons.detail.management.navAria')}
+                      items={managementNavItems}
+                      activeId={displayState.org}
+                    />
+                    <div className="min-w-0 space-y-m16">
+                      {displayState.org === 'overview' && (
+                        <HackathonManagementDashboard hackathon={hackathon} />
+                      )}
+                      {displayState.org === 'participants' && (
+                        <OrganizerParticipantsTabContent hackathon={hackathon} />
+                      )}
+                      {displayState.org === 'leaderboard' && showManagementLeaderboardNav && (
+                        <OrganizerJudgingStatusSection hackathonId={hackathonId} />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className={cn('w-full', gutterX)}>
+                <div className={cn(detailWell, 'space-y-m16')}>
+                  {displayState.org === 'overview' && (
+                    <HackathonManagementDashboard hackathon={hackathon} />
+                  )}
+                  {displayState.org === 'participants' && (
+                    <OrganizerParticipantsTabContent hackathon={hackathon} />
+                  )}
+                  {displayState.org === 'leaderboard' && showManagementLeaderboardNav && (
+                    <OrganizerJudgingStatusSection hackathonId={hackathonId} />
+                  )}
+                </div>
+              </div>
+            )}
+          </>
         )}
-        {activeTabSafe === 'participants' && canManage && (
-          <OrganizerParticipantsTabContent hackathon={hackathon} />
+        {activeTopTab === 'support' && showSupportTab && (
+          <div className={cn('w-full min-h-0 flex-1 flex flex-col', gutterX)}>
+            <div className={cn(detailWell, 'min-h-0 flex flex-1 flex-col')}>
+              <SupportTabContent
+                hackathonId={hackathonId}
+                showStaffDashboard={canManage || hasMentorAccess === true}
+                canManage={canManage}
+              />
+            </div>
+          </div>
         )}
-        {activeTabSafe === 'support' && showSupportTab && (
-          <SupportTabContent
-            hackathonId={hackathonId}
-            showStaffDashboard={canManage || hasMentorAccess === true}
-            canManage={canManage}
-          />
-        )}
-        {activeTabSafe === 'judging' && showJudgingTab && (
-          <JudgingTabContent
-            hackathonId={hackathonId}
-            stage={hackathon.stage}
-            submissionsClosesAt={hackathon.dates?.submissionsClosesAt ?? null}
-            showOrganizerLeaderboard={showOrganizerJudgingTab}
-            showJudgeAssignments={canJudge || isJudgeByRoleList}
-          />
+        {activeTopTab === 'judging' && showJudgingTab && (
+          <div className={cn('w-full', gutterX)}>
+            <div className={detailWell}>
+              <JudgingTabContent
+                hackathonId={hackathonId}
+                stage={hackathon.stage}
+                submissionsClosesAt={hackathon.dates?.submissionsClosesAt ?? null}
+                showJudgeAssignments={canJudgeOrAssigned}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

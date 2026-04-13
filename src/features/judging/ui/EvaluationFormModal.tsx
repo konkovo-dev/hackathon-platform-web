@@ -122,7 +122,9 @@ export function EvaluationFormModal({
           <span className="typography-body-md-medium text-text-primary">{title}</span>
           {submissionId ? (
             submissionDetailLoading ? (
-              <p className="typography-body-sm text-text-secondary">{t('hackathons.list.loading')}</p>
+              <p className="typography-body-sm text-text-secondary">
+                {t('hackathons.list.loading')}
+              </p>
             ) : submissionDetail ? (
               <ViewSubmissionContent hackathonId={hackathonId} submission={submissionDetail} />
             ) : null

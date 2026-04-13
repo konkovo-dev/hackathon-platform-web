@@ -55,7 +55,7 @@ export function AssignmentList({ hackathonId, assignments, evaluations }: Props)
           return (
             <ListItem
               key={submissionId}
-              variant="bordered"
+              variant="section"
               className="min-w-0"
               text={title}
               textClassName="truncate"
