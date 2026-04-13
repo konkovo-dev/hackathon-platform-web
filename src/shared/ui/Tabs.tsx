@@ -19,7 +19,7 @@ const focusRing =
 
 const tabTriggerClassName = (isActive: boolean) =>
   cn(
-    'relative whitespace-nowrap border-b-2 px-m2 pb-m3 typography-label-md transition-colors duration-150 ease-out text-left no-underline',
+    'relative whitespace-nowrap border-b-2 px-m8 pb-m3 typography-label-md transition-colors duration-150 ease-out text-left no-underline',
     '-mb-px',
     focusRing,
     isActive
