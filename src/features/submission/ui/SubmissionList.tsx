@@ -6,10 +6,7 @@ import { useT } from '@/shared/i18n/useT'
 import { useSelectFinalSubmissionMutation, useSubmissionDetailQuery } from '@/entities/submission'
 import type { Submission } from '@/entities/submission'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
-import {
-  SubmissionViewEditModal,
-  type SubmissionViewEditMode,
-} from './SubmissionViewEditModal'
+import { SubmissionViewEditModal, type SubmissionViewEditMode } from './SubmissionViewEditModal'
 
 export interface SubmissionListProps {
   hackathonId: string
@@ -73,9 +70,7 @@ export function SubmissionList({
           hackathonId={hackathonId}
           submission={displaySubmission}
           mode={submissionModal.mode}
-          onModeChange={mode =>
-            setSubmissionModal(prev => (prev ? { ...prev, mode } : null))
-          }
+          onModeChange={mode => setSubmissionModal(prev => (prev ? { ...prev, mode } : null))}
           canEdit={canEdit}
         />
       )}
@@ -112,10 +107,7 @@ function SubmissionRow({
       onClick={onView}
       rightContent={
         canSelectFinal ? (
-          <div
-            onClick={e => e.stopPropagation()}
-            onKeyDown={e => e.stopPropagation()}
-          >
+          <div onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
             <Button
               variant="secondary"
               size="xs"

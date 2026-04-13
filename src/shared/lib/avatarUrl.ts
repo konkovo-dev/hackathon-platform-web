@@ -17,8 +17,7 @@ export function normalizeAvatarImageSrc(raw: string): string {
         let decoded = segment
         try {
           decoded = decodeURIComponent(segment)
-        } catch {
-        }
+        } catch {}
         return encodeURIComponent(decoded)
       })
       .join('/')

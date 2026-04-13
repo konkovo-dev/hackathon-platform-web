@@ -38,11 +38,7 @@ export function useCreateTeamInvitationMutation(hackathonId: string, teamId: str
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (params: {
-      targetUserId: string
-      vacancyId?: string
-      message?: string
-    }) =>
+    mutationFn: (params: { targetUserId: string; vacancyId?: string; message?: string }) =>
       createTeamInvitation(hackathonId, teamId, {
         idempotencyKey: { key: crypto.randomUUID() },
         ...params,

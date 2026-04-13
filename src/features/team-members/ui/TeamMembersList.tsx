@@ -63,8 +63,7 @@ export function TeamMembersList({
     return members.find(m => m.userId === currentUserId) ?? null
   }, [members, currentUserId])
 
-  const showLeave =
-    Boolean(canLeaveTeam && myMembership && !myMembership.isCaptain)
+  const showLeave = Boolean(canLeaveTeam && myMembership && !myMembership.isCaptain)
 
   const handleLeaveConfirm = async () => {
     try {
@@ -117,42 +116,46 @@ export function TeamMembersList({
         {members.length === 0 ? (
           <p className="typography-body-sm text-text-secondary">{t('teams.members.empty')}</p>
         ) : (
-        <SelectList>
-          {members.map(member => {
-            if (!member.userId) return null
+          <SelectList>
+            {members.map(member => {
+              if (!member.userId) return null
 
-            const user = usersMap.get(member.userId)
-            const isCaptain = member.isCaptain
-            const canKick = canKickFromApi && !isCaptain && member.userId !== currentUserId
+              const user = usersMap.get(member.userId)
+              const isCaptain = member.isCaptain
+              const canKick = canKickFromApi && !isCaptain && member.userId !== currentUserId
 
-            return (
-              <UserListItem
-                key={member.userId}
-                userId={member.userId}
-                user={user}
-                caption={isCaptain ? t('teams.members.captain') : t('teams.members.member')}
-                variant="bordered"
-                showNavigationIcon
-                rightContent={
-                  canKick ? (
-                    <Button
-                      variant="icon-secondary"
-                      size="sm"
-                      type="button"
-                      onClick={e => {
-                        e.stopPropagation()
-                        setConfirmKickUserId(member.userId!)
-                      }}
-                      aria-label={t('teams.members.kick')}
-                    >
-                      <Icon src="/icons/icon-cross/icon-cross-sm.svg" size="sm" color="secondary" />
-                    </Button>
-                  ) : undefined
-                }
-              />
-            )
-          })}
-        </SelectList>
+              return (
+                <UserListItem
+                  key={member.userId}
+                  userId={member.userId}
+                  user={user}
+                  caption={isCaptain ? t('teams.members.captain') : t('teams.members.member')}
+                  variant="bordered"
+                  showNavigationIcon
+                  rightContent={
+                    canKick ? (
+                      <Button
+                        variant="icon-secondary"
+                        size="sm"
+                        type="button"
+                        onClick={e => {
+                          e.stopPropagation()
+                          setConfirmKickUserId(member.userId!)
+                        }}
+                        aria-label={t('teams.members.kick')}
+                      >
+                        <Icon
+                          src="/icons/icon-cross/icon-cross-sm.svg"
+                          size="sm"
+                          color="secondary"
+                        />
+                      </Button>
+                    ) : undefined
+                  }
+                />
+              )
+            })}
+          </SelectList>
         )}
 
         {((onTransferCaptain && members.length > 1) || showLeave) && (

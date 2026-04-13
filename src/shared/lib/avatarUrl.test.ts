@@ -12,8 +12,7 @@ describe('normalizeAvatarImageSrc', () => {
   })
 
   it('preserves NFD (и + combining breve) like MinIO presigned key', () => {
-    const raw =
-      'https://api.hackplatform.ru:9000/avatars/x/%D0%A1%D0%BB%D0%BE%D0%B8%CC%86%200.png'
+    const raw = 'https://api.hackplatform.ru:9000/avatars/x/%D0%A1%D0%BB%D0%BE%D0%B8%CC%86%200.png'
     const out = normalizeAvatarImageSrc(raw)
     expect(out).toContain('%D0%B8%CC%86')
     expect(out).not.toContain('%D0%B9%200')

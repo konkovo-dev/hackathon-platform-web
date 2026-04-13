@@ -45,7 +45,13 @@ function getInitials(name?: string | null): string {
   return pair || '?'
 }
 
-export function Avatar({ src, name, size = 'md', className, placeholderTone = 'default' }: AvatarProps) {
+export function Avatar({
+  src,
+  name,
+  size = 'md',
+  className,
+  placeholderTone = 'default',
+}: AvatarProps) {
   const sizeClass = sizeClasses[size]
   const isXl = size === 'xl'
   const resolvedSrc =

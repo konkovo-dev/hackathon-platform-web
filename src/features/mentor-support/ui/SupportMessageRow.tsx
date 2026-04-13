@@ -112,8 +112,7 @@ export function SupportMessageRow({
   }
 
   if (bubbleSide === 'start') {
-    const isStaff =
-      authorRole === 'AUTHOR_ROLE_MENTOR' || authorRole === 'AUTHOR_ROLE_ORGANIZER'
+    const isStaff = authorRole === 'AUTHOR_ROLE_MENTOR' || authorRole === 'AUTHOR_ROLE_ORGANIZER'
     const isMentorReply = authorRole === 'AUTHOR_ROLE_MENTOR'
 
     let senderLabel: string
@@ -168,7 +167,5 @@ export function SupportMessageRow({
     )
   }
 
-  return (
-    <div className="max-w-[min(88%,30rem)] shrink-0 self-end">{bubbleEnd}</div>
-  )
+  return <div className="max-w-[min(88%,30rem)] shrink-0 self-end">{bubbleEnd}</div>
 }

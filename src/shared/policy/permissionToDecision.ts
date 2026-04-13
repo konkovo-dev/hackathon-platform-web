@@ -80,6 +80,13 @@ export function permissionToDecision(
     return permissions.team.createTeam === true ? { allowed: true } : deny('NOT_ALLOWED')
   }
 
+  if (action === 'Submission.SelectFinal') {
+    if (!permissions?.team) return deny('NOT_ALLOWED')
+    return permissions.team.canSelectFinalSubmission === true
+      ? { allowed: true }
+      : deny('NOT_ALLOWED')
+  }
+
   if (action === 'Team.CanJoinTeam') {
     if (!permissions?.participation?.register) return deny('NOT_ALLOWED')
     if (myTeamId !== null) return deny('ALREADY_IN_TEAM')

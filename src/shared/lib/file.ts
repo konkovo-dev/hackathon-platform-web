@@ -77,7 +77,8 @@ export function resolveSubmissionContentType(file: File): string | null {
   if (raw === '' || raw === 'application/octet-stream') return fromExt
   // Common OS/browser quirks still accepted by our extension + intended format
   if (ext === '.md' && raw === 'text/plain') return 'text/markdown'
-  if (ext === '.csv' && (raw === 'application/vnd.ms-excel' || raw === 'text/csv')) return 'text/csv'
+  if (ext === '.csv' && (raw === 'application/vnd.ms-excel' || raw === 'text/csv'))
+    return 'text/csv'
 
   return null
 }

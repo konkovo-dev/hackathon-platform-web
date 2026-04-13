@@ -79,10 +79,20 @@ export function EditSubmissionForm({
       )}
 
       <div className="flex gap-m4 justify-end">
-        <Button variant="secondary" size="md" onClick={onCancel} disabled={updateMutation.isPending}>
+        <Button
+          variant="secondary"
+          size="md"
+          onClick={onCancel}
+          disabled={updateMutation.isPending}
+        >
           {t('hackathons.detail.participation.submission.editModal.cancel')}
         </Button>
-        <Button variant="primary" size="md" onClick={handleSave} disabled={updateMutation.isPending}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={handleSave}
+          disabled={updateMutation.isPending}
+        >
           {updateMutation.isPending
             ? t('hackathons.list.loading')
             : t('hackathons.detail.participation.submission.editModal.save')}

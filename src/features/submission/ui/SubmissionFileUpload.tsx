@@ -3,10 +3,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { Button } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
-import {
-  useUploadSubmissionFileMutation,
-  type SubmissionFile,
-} from '@/entities/submission'
+import { useUploadSubmissionFileMutation, type SubmissionFile } from '@/entities/submission'
 import {
   SUBMISSION_FILE_ACCEPT,
   submissionFileMetaPlain,
@@ -54,9 +51,7 @@ export function SubmissionFileUpload({
 
   const serverDoneKeys = useMemo(() => {
     if (fileContext !== 'edit' || !uploadDedupeServerFiles?.length) return null
-    return new Set(
-      uploadDedupeServerFiles.map(f => uploadRowDedupeKey(f.filename, f.sizeBytes))
-    )
+    return new Set(uploadDedupeServerFiles.map(f => uploadRowDedupeKey(f.filename, f.sizeBytes)))
   }, [fileContext, uploadDedupeServerFiles])
 
   const visibleFiles = useMemo(() => {

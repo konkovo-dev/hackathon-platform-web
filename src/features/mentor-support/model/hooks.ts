@@ -31,7 +31,9 @@ export function useSupportMentorAccessQuery(
   options: { enabled: boolean }
 ) {
   return useQuery({
-    queryKey: hackathonId ? supportQueryKeys.mentorProbe(hackathonId) : ['support', 'mentor-probe', 'none'],
+    queryKey: hackathonId
+      ? supportQueryKeys.mentorProbe(hackathonId)
+      : ['support', 'mentor-probe', 'none'],
     queryFn: async () => {
       if (!hackathonId) throw new Error('hackathonId is required')
       try {
@@ -85,7 +87,9 @@ export function useSupportMessageAuthorsQuery(userIds: string[]) {
 export function useMySupportMessagesQuery(hackathonId: string | null | undefined) {
   const realtimeConnected = useSupportRealtimeConnected()
   return useQuery({
-    queryKey: hackathonId ? supportQueryKeys.myMessages(hackathonId) : ['support', 'my-messages', 'none'],
+    queryKey: hackathonId
+      ? supportQueryKeys.myMessages(hackathonId)
+      : ['support', 'my-messages', 'none'],
     queryFn: async () => {
       if (!hackathonId) throw new Error('hackathonId is required')
       const res = await getMySupportChatMessages(hackathonId)
@@ -97,7 +101,10 @@ export function useMySupportMessagesQuery(hackathonId: string | null | undefined
   })
 }
 
-export function useSupportOpenTicketsQuery(hackathonId: string | null | undefined, enabled: boolean) {
+export function useSupportOpenTicketsQuery(
+  hackathonId: string | null | undefined,
+  enabled: boolean
+) {
   const realtimeConnected = useSupportRealtimeConnected()
   return useQuery({
     queryKey: hackathonId

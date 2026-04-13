@@ -122,9 +122,7 @@ describe('partitionOpenTickets', () => {
   })
 
   it('hides others section when not organizer view', () => {
-    const tickets: SupportTicket[] = [
-      { ticketId: 'o', assignedMentorUserId: 'other' },
-    ]
+    const tickets: SupportTicket[] = [{ ticketId: 'o', assignedMentorUserId: 'other' }]
     const { others } = partitionOpenTickets(tickets, 'me', false)
     expect(others).toHaveLength(0)
   })

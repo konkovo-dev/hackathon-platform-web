@@ -26,15 +26,15 @@ export function HackathonCardWithParticipation({
   const needsTeamName =
     status === 'PART_TEAM_MEMBER' || status === 'PART_TEAM_CAPTAIN' ? teamId : null
 
-  const {
-    data: teamData,
-    isLoading: isTeamNameLoading,
-  } = useTeamQuery(hackathonId, needsTeamName, {
-    enabled: Boolean(hackathonId && needsTeamName),
-  })
+  const { data: teamData, isLoading: isTeamNameLoading } = useTeamQuery(
+    hackathonId,
+    needsTeamName,
+    {
+      enabled: Boolean(hackathonId && needsTeamName),
+    }
+  )
 
-  const teamName =
-    needsTeamName != null ? (teamData?.team?.team?.name ?? null) : null
+  const teamName = needsTeamName != null ? (teamData?.team?.team?.name ?? null) : null
 
   const teamNameLoading = Boolean(needsTeamName && isTeamNameLoading)
 

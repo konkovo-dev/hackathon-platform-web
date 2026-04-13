@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  type QueryClient,
-} from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
 import { ApiError } from '@/shared/api/errors'
 import { getTeam } from '../api/getTeam'
 import { getMatchmakingTeams } from '../api/getMatchmakingTeams'
@@ -77,8 +72,7 @@ export function useMatchmakingTeamsQuery(
     queryFn: () => getMatchmakingTeams(hackathonId!),
     enabled: (options?.enabled ?? true) && Boolean(hackathonId),
     staleTime: 15_000,
-    retry: (failureCount, error) =>
-      failureCount < 4 && isMatchmakingTeamsSyncLagError(error),
+    retry: (failureCount, error) => failureCount < 4 && isMatchmakingTeamsSyncLagError(error),
     retryDelay: attemptIndex => Math.min(400 * 2 ** attemptIndex, 3000),
   })
 }

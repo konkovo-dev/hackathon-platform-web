@@ -105,9 +105,7 @@ export function JoinRequestModal({
                 key={v.vacancyId}
                 text={vacancyRowTitle(v)}
                 subtitle={
-                  v.description?.trim()
-                    ? v.description
-                    : t('hackathons.detail.no_description')
+                  v.description?.trim() ? v.description : t('hackathons.detail.no_description')
                 }
                 selectable
                 selected={selectedVacancyId === v.vacancyId}

@@ -16,7 +16,10 @@ export interface MatchmakingTeamsListProps {
   fetchEnabled?: boolean
 }
 
-export function MatchmakingTeamsList({ hackathonId, fetchEnabled = true }: MatchmakingTeamsListProps) {
+export function MatchmakingTeamsList({
+  hackathonId,
+  fetchEnabled = true,
+}: MatchmakingTeamsListProps) {
   const t = useT()
   const { data, isLoading, error } = useMatchmakingTeamsQuery(hackathonId, {
     enabled: fetchEnabled,
@@ -56,12 +59,16 @@ export function MatchmakingTeamsList({ hackathonId, fetchEnabled = true }: Match
     }
     if (error) {
       return (
-        <p className="typography-body-sm text-state-error">{t('hackathons.detail.matchmaking.error')}</p>
+        <p className="typography-body-sm text-state-error">
+          {t('hackathons.detail.matchmaking.error')}
+        </p>
       )
     }
     if (recommendations.length === 0) {
       return (
-        <p className="typography-body-sm text-text-secondary">{t('hackathons.detail.matchmaking.empty')}</p>
+        <p className="typography-body-sm text-text-secondary">
+          {t('hackathons.detail.matchmaking.empty')}
+        </p>
       )
     }
     return (
@@ -117,7 +124,9 @@ function MatchmakingTeamRow({
   const teamName = data?.team?.team?.name?.trim() || teamId || '—'
   const score = recommendation.matchScore?.totalScore
   const scoreLabel =
-    score != null ? t('hackathons.detail.matchmaking.matchScore', { score: score.toFixed(1) }) : null
+    score != null
+      ? t('hackathons.detail.matchmaking.matchScore', { score: score.toFixed(1) })
+      : null
 
   const goToTeam = () => {
     if (teamId) router.push(routes.hackathons.teams.detail(hackathonId, teamId))

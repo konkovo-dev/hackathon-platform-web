@@ -145,14 +145,12 @@ export function MyOutgoingJoinRequests() {
           {requests.map(req => {
             const hackathonId = req.hackathonId
             const teamId = req.teamId
-            const pairKey =
-              hackathonId && teamId ? `${hackathonId}:${teamId}` : ''
+            const pairKey = hackathonId && teamId ? `${hackathonId}:${teamId}` : ''
             const teamName =
               (pairKey && teamNameByPair.get(pairKey)) ||
               t('teams.my.outgoingJoinRequests.teamUnknown')
             const hackathonName =
-              (hackathonId && hackathonNameById.get(hackathonId)) ||
-              t('common.fallback.hackathon')
+              (hackathonId && hackathonNameById.get(hackathonId)) || t('common.fallback.hackathon')
             const statusLabel = t(statusToI18nKey(req.status))
             const sent =
               req.createdAt != null
@@ -176,10 +174,7 @@ export function MyOutgoingJoinRequests() {
                 subtitle={subtitle}
                 onClick={
                   canNavigate
-                    ? () =>
-                        router.push(
-                          routes.hackathons.teams.detail(hackathonId!, teamId!)
-                        )
+                    ? () => router.push(routes.hackathons.teams.detail(hackathonId!, teamId!))
                     : undefined
                 }
               />

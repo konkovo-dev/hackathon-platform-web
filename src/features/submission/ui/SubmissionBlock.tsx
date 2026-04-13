@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { Section, Button, Divider, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useMySubmissionsQuery } from '@/entities/submission'
-import { useSessionQuery } from '@/features/auth/model/hooks'
-import { listTeamMembers } from '@/entities/team'
+import { useCan } from '@/shared/policy/useCan'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { SubmissionList } from './SubmissionList'
 import { CreateSubmissionModal } from './CreateSubmissionModal'
@@ -15,38 +13,16 @@ import { MarkdownContent } from '@/shared/ui'
 export interface SubmissionBlockProps {
   hackathonId: string
   hackathonStage: HackathonStage
-  myTeamId: string | null
 }
 
-export function SubmissionBlock({ hackathonId, hackathonStage, myTeamId }: SubmissionBlockProps) {
+export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlockProps) {
   const t = useT()
-  const sessionQuery = useSessionQuery()
-  const session = sessionQuery.data
   const [createOpen, setCreateOpen] = useState(false)
 
-  const sessionUserId =
-    session?.active && session.userId && session.userId.length > 0 ? session.userId : null
-
-  const ownerKind = myTeamId ? 'team' : 'user'
-
-  // TODO: Replace the captain check below with useCan('Submission.SelectFinal', { hackathonId })
-  // once the backend exposes a dedicated permission for finalizing a submission
-  // (per-participant for individuals, captain-only for teams, RUNNING stage only).
-  // Tracking: hackaton-platform-api — add Submission.SelectFinal to GetSubmissionPermissions.
-
-  // Fetch team members to check isCaptain directly from TeamMember.isCaptain flag.
-  // This is stage-independent unlike permission-based proxies (e.g. transferCaptain is REGISTRATION-only).
-  // Uses the same cache key as ParticipationTeamCard so no extra network request.
-  const { data: membersData } = useQuery({
-    queryKey: ['team-members', hackathonId, myTeamId],
-    queryFn: () => listTeamMembers(hackathonId, myTeamId!),
-    enabled: Boolean(myTeamId && hackathonId),
-  })
-  const isCaptain =
-    myTeamId !== null &&
-    (membersData?.members ?? []).some(
-      m => m.userId === sessionUserId && m.isCaptain === true
-    )
+  const { decision: selectFinalDecision, isLoading: selectFinalPermissionLoading } = useCan(
+    'Submission.SelectFinal',
+    { hackathonId }
+  )
 
   const submissionsQuery = useMySubmissionsQuery(hackathonId)
   const submissions = submissionsQuery.data ?? []
@@ -55,11 +31,13 @@ export function SubmissionBlock({ hackathonId, hackathonStage, myTeamId }: Submi
   const isRunning = hackathonStage === 'RUNNING'
   const isPostRun = hackathonStage === 'JUDGING' || hackathonStage === 'FINISHED'
 
-  // individual participants can always select final; team members need to be captain
-  const canSelectFinal = isRunning && (ownerKind === 'user' || isCaptain)
+  const canSelectFinal = isRunning && selectFinalDecision.allowed
   const canEdit = isRunning
 
-  if (submissionsQuery.isLoading) {
+  if (
+    submissionsQuery.isLoading ||
+    (hackathonStage === 'RUNNING' && selectFinalPermissionLoading)
+  ) {
     return (
       <Section
         title={t('hackathons.detail.participation.submission.sectionTitle')}

@@ -302,14 +302,7 @@ function StaffSubmissionSenderNav({
   })
 
   if (ownerKind === 'user') {
-    return (
-      <UserListItem
-        userId={ownerId}
-        user={senderUser}
-        variant="bordered"
-        showNavigationIcon
-      />
-    )
+    return <UserListItem userId={ownerId} user={senderUser} variant="bordered" showNavigationIcon />
   }
 
   const memberCount = membersData?.members?.length ?? 0
@@ -319,8 +312,7 @@ function StaffSubmissionSenderNav({
       : t('teams.card.members', { count: memberCount })
 
   const teamName = team?.name?.trim() || fallbackTitle
-  const subtitle =
-    teamLoading || membersLoading ? t('teams.list.loading') : membersLabel
+  const subtitle = teamLoading || membersLoading ? t('teams.list.loading') : membersLabel
 
   const goToTeam = () => {
     router.push(routes.hackathons.teams.detail(hackathonId, tid))
@@ -361,11 +353,7 @@ function StaffSubmissionViewModal({
   const t = useT()
   const { data: submission, isLoading } = useFinalSubmissionQuery(hackathonId, ownerKind, ownerId)
 
-  const modalTitle = isLoading
-    ? title
-    : submission
-      ? submission.title.trim() || '—'
-      : title
+  const modalTitle = isLoading ? title : submission ? submission.title.trim() || '—' : title
 
   const modalSubtitle = isLoading
     ? t('hackathons.list.loading')
@@ -374,13 +362,7 @@ function StaffSubmissionViewModal({
       : t('hackathons.detail.participation.submission.staff.noSubmission')
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      size="lg"
-      title={modalTitle}
-      subtitle={modalSubtitle}
-    >
+    <Modal open={open} onClose={onClose} size="lg" title={modalTitle} subtitle={modalSubtitle}>
       <div className="flex flex-col gap-m6">
         <StaffSubmissionSenderNav
           hackathonId={hackathonId}
@@ -406,7 +388,9 @@ function StaffSubmissionViewModal({
                   hackathonId={hackathonId}
                   submissionId={submission.submissionId}
                   files={submission.files.filter(f => f.uploadStatus === 'completed')}
-                  sectionLabel={t('hackathons.detail.participation.submission.createModal.filesLabel')}
+                  sectionLabel={t(
+                    'hackathons.detail.participation.submission.createModal.filesLabel'
+                  )}
                 />
               </>
             )}

@@ -2,15 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import {
-  ErrorAlert,
-  Modal,
-  Input,
-  SelectList,
-  ListItem,
-  Button,
-  Section,
-} from '@/shared/ui'
+import { ErrorAlert, Modal, Input, SelectList, ListItem, Button, Section } from '@/shared/ui'
 import { useUsersSearchQuery } from '@/entities/user'
 
 export interface InviteUserModalProps {
@@ -90,16 +82,14 @@ export function InviteUserModal({
                 <p className="typography-body-sm text-text-secondary">{loadingLabel}</p>
               </div>
             ) : users.length > 0 ? (
-              <div
-                className="overflow-y-auto"
-                style={{ maxHeight: SEARCH_LIST_HEIGHT }}
-              >
+              <div className="overflow-y-auto" style={{ maxHeight: SEARCH_LIST_HEIGHT }}>
                 <SelectList>
                   {users.map(user => {
                     if (!user.userId) return null
                     const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
-                    const displayText =
-                      name ? `${name} (${user.username || user.userId})` : user.username || user.userId
+                    const displayText = name
+                      ? `${name} (${user.username || user.userId})`
+                      : user.username || user.userId
                     return (
                       <ListItem
                         key={user.userId}
@@ -124,12 +114,7 @@ export function InviteUserModal({
         <div className="flex flex-col gap-m4 shrink-0 pt-m2">
           {error && <ErrorAlert message={error} />}
           <div className="flex gap-m4 justify-end">
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={handleClose}
-              disabled={isPending}
-            >
+            <Button variant="secondary" size="md" onClick={handleClose} disabled={isPending}>
               {cancelLabel}
             </Button>
             <Button

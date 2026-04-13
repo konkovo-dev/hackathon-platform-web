@@ -107,9 +107,7 @@ describe('ListItem', () => {
 
   describe('active', () => {
     it('должен выставлять aria-current и подсветку для bordered', () => {
-      renderWithProviders(
-        <ListItem text="Current" variant="bordered" active onClick={() => {}} />
-      )
+      renderWithProviders(<ListItem text="Current" variant="bordered" active onClick={() => {}} />)
       const item = screen.getByRole('button')
       expect(item).toHaveAttribute('aria-current', 'true')
       expect(item).toHaveClass('border-border-focus')

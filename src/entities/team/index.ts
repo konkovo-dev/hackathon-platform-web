@@ -50,10 +50,7 @@ export {
 } from './api/listMyJoinRequests'
 export { acceptJoinRequest, type AcceptJoinRequestResponse } from './api/acceptJoinRequest'
 export { rejectJoinRequest, type RejectJoinRequestResponse } from './api/rejectJoinRequest'
-export {
-  getMatchmakingTeams,
-  type GetMatchmakingTeamsResponse,
-} from './api/getMatchmakingTeams'
+export { getMatchmakingTeams, type GetMatchmakingTeamsResponse } from './api/getMatchmakingTeams'
 export {
   getMatchmakingCandidates,
   type GetMatchmakingCandidatesResponse,

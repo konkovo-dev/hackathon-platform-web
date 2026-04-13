@@ -87,7 +87,9 @@ export function MentorQueuePanel({
   return (
     <div className="flex flex-col gap-m8">
       {claimMutation.isError ? (
-        <p className="typography-body-sm-regular text-state-error">{t('hackathons.support.error')}</p>
+        <p className="typography-body-sm-regular text-state-error">
+          {t('hackathons.support.error')}
+        </p>
       ) : null}
       <Section variant="elevated" title={t('hackathons.support.mentor.queue_title')}>
         {u.length === 0 ? (

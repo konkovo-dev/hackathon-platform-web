@@ -31,17 +31,13 @@ export function JoinRequestsList({ hackathonId, teamId, vacancies }: JoinRequest
   const count = pending.length
 
   if (isLoading) {
-    return (
-      <p className="typography-body-sm text-text-secondary">{t('teams.list.loading')}</p>
-    )
+    return <p className="typography-body-sm text-text-secondary">{t('teams.list.loading')}</p>
   }
 
   return (
     <Section
       title={
-        count > 0
-          ? `${t('teams.joinRequests.title')} (${count})`
-          : t('teams.joinRequests.title')
+        count > 0 ? `${t('teams.joinRequests.title')} (${count})` : t('teams.joinRequests.title')
       }
       variant="elevated"
     >

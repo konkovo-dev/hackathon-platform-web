@@ -43,10 +43,7 @@ export function MentorTicketChat({ hackathonId, ticket, canClaimTickets }: Mento
   const outgoingViewer = useSupportViewerOutgoingMeta()
   const [draft, setDraft] = useState('')
 
-  const sorted = useMemo(
-    () => sortMessagesByTime(messagesQuery.data ?? []),
-    [messagesQuery.data]
-  )
+  const sorted = useMemo(() => sortMessagesByTime(messagesQuery.data ?? []), [messagesQuery.data])
 
   const participantAuthorIds = useMemo(() => collectParticipantAuthorUserIds(sorted), [sorted])
   const authorsQuery = useSupportMessageAuthorsQuery(participantAuthorIds)
@@ -91,7 +88,9 @@ export function MentorTicketChat({ hackathonId, ticket, canClaimTickets }: Mento
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-m5">
       {ticketMutationError ? (
-        <p className="typography-body-sm-regular text-state-error">{t('hackathons.support.error')}</p>
+        <p className="typography-body-sm-regular text-state-error">
+          {t('hackathons.support.error')}
+        </p>
       ) : null}
 
       <div className="flex shrink-0 flex-wrap items-center justify-between gap-m3 border-b border-border-default pb-m4">
@@ -135,15 +134,11 @@ export function MentorTicketChat({ hackathonId, ticket, canClaimTickets }: Mento
             }
             const m = item.message
             const isOwn =
-              m.authorUserId != null &&
-              viewerUserId != null &&
-              m.authorUserId === viewerUserId
+              m.authorUserId != null && viewerUserId != null && m.authorUserId === viewerUserId
             const side = isOwn ? bubbleEnd : bubbleStart
             const peerId = supportParticipantAuthorUserId(m)
             const incomingParticipantAuthor =
-              side === bubbleStart && peerId
-                ? (authorsQuery.data?.get(peerId) ?? null)
-                : null
+              side === bubbleStart && peerId ? (authorsQuery.data?.get(peerId) ?? null) : null
             return (
               <SupportMessageRow
                 key={m.messageId ?? `${m.createdAt}-${m.text}-${index}`}

@@ -60,9 +60,7 @@ export function MentorDashboard({ hackathonId, canManage }: MentorDashboardProps
   }
 
   if (ticketsQuery.isError) {
-    return (
-      <p className="typography-body-md text-state-error">{t('hackathons.support.error')}</p>
-    )
+    return <p className="typography-body-md text-state-error">{t('hackathons.support.error')}</p>
   }
 
   const listSectionClass = hasChatOpen

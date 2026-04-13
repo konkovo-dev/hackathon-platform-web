@@ -1,15 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import {
-  Divider,
-  Input,
-  SelectList,
-  ListItem,
-  ChipList,
-  Chip,
-  TextareaLabel,
-} from '@/shared/ui'
+import { Divider, Input, SelectList, ListItem, ChipList, Chip, TextareaLabel } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 
 export type TeamRoleOption = { id: string; name: string }

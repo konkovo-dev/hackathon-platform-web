@@ -34,13 +34,15 @@ describe('filterMapper', () => {
       expect(query.query?.filterGroups).toHaveLength(1)
       expect(query.query?.filterGroups?.[0]?.filters).toHaveLength(4)
       const groupFilters = query.query?.filterGroups?.[0]?.filters ?? []
-      expect(groupFilters.find(f => f.field === 'state')?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
-      expect(groupFilters.find(f => f.field === 'stage')?.stringValue).toBe('HACKATHON_STAGE_REGISTRATION')
+      expect(groupFilters.find(f => f.field === 'state')?.stringValue).toBe(
+        'HACKATHON_STATE_PUBLISHED'
+      )
+      expect(groupFilters.find(f => f.field === 'stage')?.stringValue).toBe(
+        'HACKATHON_STAGE_REGISTRATION'
+      )
       expect(groupFilters.find(f => f.field === 'location.online')?.boolValue).toBe(true)
       expect(groupFilters.find(f => f.field === 'location.city')?.stringValue).toBe('Москва')
-      expect(query.query?.sort).toEqual([
-        { field: 'starts_at', direction: 'SORT_DIRECTION_DESC' },
-      ])
+      expect(query.query?.sort).toEqual([{ field: 'starts_at', direction: 'SORT_DIRECTION_DESC' }])
     })
 
     it('should build one filter group for offline REGISTRATION in Moscow (AND inside group)', () => {
@@ -56,8 +58,12 @@ describe('filterMapper', () => {
       expect(query.query?.filterGroups).toHaveLength(1)
       const filtersInGroup = query.query?.filterGroups?.[0]?.filters ?? []
       expect(filtersInGroup).toHaveLength(4)
-      expect(filtersInGroup.find(f => f.field === 'state')?.stringValue).toBe('HACKATHON_STATE_PUBLISHED')
-      expect(filtersInGroup.find(f => f.field === 'stage')?.stringValue).toBe('HACKATHON_STAGE_REGISTRATION')
+      expect(filtersInGroup.find(f => f.field === 'state')?.stringValue).toBe(
+        'HACKATHON_STATE_PUBLISHED'
+      )
+      expect(filtersInGroup.find(f => f.field === 'stage')?.stringValue).toBe(
+        'HACKATHON_STAGE_REGISTRATION'
+      )
       expect(filtersInGroup.find(f => f.field === 'location.online')?.boolValue).toBe(false)
       expect(filtersInGroup.find(f => f.field === 'location.city')?.stringValue).toBe('Москва')
     })
@@ -199,9 +205,9 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
-        f => f.field === 'location.online'
-      )
+      const formatFilter = query.query?.filterGroups
+        ?.flatMap(g => g.filters ?? [])
+        .find(f => f.field === 'location.online')
 
       expect(formatFilter?.field).toBe('location.online')
       expect(formatFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -216,9 +222,9 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const formatFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
-        f => f.field === 'location.online'
-      )
+      const formatFilter = query.query?.filterGroups
+        ?.flatMap(g => g.filters ?? [])
+        .find(f => f.field === 'location.online')
 
       expect(formatFilter?.field).toBe('location.online')
       expect(formatFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -248,9 +254,9 @@ describe('filterMapper', () => {
       }
 
       const query = buildQueryFromFilters(filters)
-      const cityFilter = query.query?.filterGroups?.flatMap(g => g.filters ?? []).find(
-        f => f.field === 'location.city'
-      )
+      const cityFilter = query.query?.filterGroups
+        ?.flatMap(g => g.filters ?? [])
+        .find(f => f.field === 'location.city')
 
       expect(cityFilter?.field).toBe('location.city')
       expect(cityFilter?.operation).toBe('FILTER_OPERATION_EQUAL')
@@ -266,9 +272,7 @@ describe('filterMapper', () => {
 
       const query = buildQueryFromFilters(filters)
 
-      expect(query.query?.sort).toEqual([
-        { field: 'starts_at', direction: 'SORT_DIRECTION_DESC' },
-      ])
+      expect(query.query?.sort).toEqual([{ field: 'starts_at', direction: 'SORT_DIRECTION_DESC' }])
     })
 
     it('should sort ascending when specified', () => {
@@ -280,9 +284,7 @@ describe('filterMapper', () => {
 
       const query = buildQueryFromFilters(filters)
 
-      expect(query.query?.sort).toEqual([
-        { field: 'starts_at', direction: 'SORT_DIRECTION_ASC' },
-      ])
+      expect(query.query?.sort).toEqual([{ field: 'starts_at', direction: 'SORT_DIRECTION_ASC' }])
     })
   })
 })

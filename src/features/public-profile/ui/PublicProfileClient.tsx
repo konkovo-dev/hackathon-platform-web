@@ -45,38 +45,38 @@ export function PublicProfileClient({ userId, initialData }: PublicProfileClient
         }
         main={
           <>
-          {/* Информация */}
-          <Section title={t('public_profile.sections.info')}>
-            {user ? (
-              <ProfileInfoSection user={user} />
-            ) : (
-              <span className="typography-body-sm-regular text-text-tertiary">—</span>
-            )}
-          </Section>
+            {/* Информация */}
+            <Section title={t('public_profile.sections.info')}>
+              {user ? (
+                <ProfileInfoSection user={user} />
+              ) : (
+                <span className="typography-body-sm-regular text-text-tertiary">—</span>
+              )}
+            </Section>
 
-          {/* Контакты */}
-          <Section title={t('public_profile.sections.contacts')}>
-            <ProfileContactsSection
-              contacts={contacts}
-              emptyState={
-                <span className="typography-body-sm-regular text-text-tertiary">
-                  {t('public_profile.contacts_hidden')}
-                </span>
-              }
-            />
-          </Section>
+            {/* Контакты */}
+            <Section title={t('public_profile.sections.contacts')}>
+              <ProfileContactsSection
+                contacts={contacts}
+                emptyState={
+                  <span className="typography-body-sm-regular text-text-tertiary">
+                    {t('public_profile.contacts_hidden')}
+                  </span>
+                }
+              />
+            </Section>
 
-          {/* Навыки */}
-          <Section title={t('public_profile.sections.skills')}>
-            <ProfileSkillsSection
-              skills={skills}
-              emptyState={
-                <span className="typography-body-sm-regular text-text-tertiary">
-                  {t('public_profile.skills_hidden')}
-                </span>
-              }
-            />
-          </Section>
+            {/* Навыки */}
+            <Section title={t('public_profile.sections.skills')}>
+              <ProfileSkillsSection
+                skills={skills}
+                emptyState={
+                  <span className="typography-body-sm-regular text-text-tertiary">
+                    {t('public_profile.skills_hidden')}
+                  </span>
+                }
+              />
+            </Section>
           </>
         }
       />

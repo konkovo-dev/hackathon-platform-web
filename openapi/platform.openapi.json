@@ -8126,6 +8126,9 @@
           "canInMyTeam": {
             "$ref": "#/components/schemas/v1TeamManagementPermissions"
           },
+          "canSelectFinalSubmission": {
+            "type": "boolean"
+          },
           "createTeam": {
             "type": "boolean"
           }

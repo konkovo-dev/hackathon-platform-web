@@ -272,70 +272,70 @@ export function ProfileClient({ initialData }: ProfileClientProps) {
         }
         main={
           <>
-          {/* Информация */}
-          <Section
-            title={t('profile.sections.info')}
-            action={
-              nameEditing
-                ? sectionEditActions(handleNameCancel, handleNameSave, updateProfile.isPending)
-                : undefined
-            }
-            hoverAction={!nameEditing && user ? sectionHoverEdit(handleNameEdit) : undefined}
-          >
-            {user ? (
-              <EditNameSection
-                user={user}
-                editing={nameEditing}
-                firstName={editFirstName}
-                lastName={editLastName}
-                onFirstNameChange={setEditFirstName}
-                onLastNameChange={setEditLastName}
-                isPending={updateProfile.isPending}
+            {/* Информация */}
+            <Section
+              title={t('profile.sections.info')}
+              action={
+                nameEditing
+                  ? sectionEditActions(handleNameCancel, handleNameSave, updateProfile.isPending)
+                  : undefined
+              }
+              hoverAction={!nameEditing && user ? sectionHoverEdit(handleNameEdit) : undefined}
+            >
+              {user ? (
+                <EditNameSection
+                  user={user}
+                  editing={nameEditing}
+                  firstName={editFirstName}
+                  lastName={editLastName}
+                  onFirstNameChange={setEditFirstName}
+                  onLastNameChange={setEditLastName}
+                  isPending={updateProfile.isPending}
+                />
+              ) : (
+                <span className="typography-body-sm-regular text-text-tertiary">—</span>
+              )}
+            </Section>
+
+            {/* Контакты */}
+            <Section
+              title={t('profile.sections.contacts')}
+              hoverAction={sectionHoverEdit(() => setContactsModalOpen(true))}
+            >
+              <ProfileContactsSection
+                contacts={contactItems}
+                emptyState={
+                  <Button
+                    variant="action"
+                    size="sm"
+                    className="self-start"
+                    onClick={() => setContactsModalOpen(true)}
+                  >
+                    {t('profile.actions.add_contacts')}
+                  </Button>
+                }
               />
-            ) : (
-              <span className="typography-body-sm-regular text-text-tertiary">—</span>
-            )}
-          </Section>
+            </Section>
 
-          {/* Контакты */}
-          <Section
-            title={t('profile.sections.contacts')}
-            hoverAction={sectionHoverEdit(() => setContactsModalOpen(true))}
-          >
-            <ProfileContactsSection
-              contacts={contactItems}
-              emptyState={
-                <Button
-                  variant="action"
-                  size="sm"
-                  className="self-start"
-                  onClick={() => setContactsModalOpen(true)}
-                >
-                  {t('profile.actions.add_contacts')}
-                </Button>
-              }
-            />
-          </Section>
-
-          {/* Навыки */}
-          <Section
-            title={t('profile.sections.skills')}
-            hoverAction={sectionHoverEdit(() => setSkillsModalOpen(true))}
-          >
-            <ProfileSkillsSection
-              skills={skills}
-              emptyState={
-                <Button
-                  variant="action"
-                  size="sm"
-                  className="self-start"
-                  onClick={() => setSkillsModalOpen(true)}
-                >
-                  {t('profile.actions.add_skills')}
-                </Button>
-              }
-            />
-          </Section>
+            {/* Навыки */}
+            <Section
+              title={t('profile.sections.skills')}
+              hoverAction={sectionHoverEdit(() => setSkillsModalOpen(true))}
+            >
+              <ProfileSkillsSection
+                skills={skills}
+                emptyState={
+                  <Button
+                    variant="action"
+                    size="sm"
+                    className="self-start"
+                    onClick={() => setSkillsModalOpen(true)}
+                  >
+                    {t('profile.actions.add_skills')}
+                  </Button>
+                }
+              />
+            </Section>
           </>
         }
       />

@@ -2,13 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import {
-  InviteUserModal,
-  Section,
-  SelectList,
-  ListItem,
-  TextareaLabel,
-} from '@/shared/ui'
+import { InviteUserModal, Section, SelectList, ListItem, TextareaLabel } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCreateTeamInvitationMutation } from '../model/hooks'
 import { listTeamRoles } from '@/entities/team'
@@ -32,7 +26,7 @@ export function TeamInviteModal({
 }: TeamInviteModalProps) {
   const t = useT()
   const [selectedVacancyId, setSelectedVacancyId] = useState<string | null>(
-    vacancies.length === 1 ? vacancies[0]?.vacancyId ?? null : null
+    vacancies.length === 1 ? (vacancies[0]?.vacancyId ?? null) : null
   )
   const [message, setMessage] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -45,8 +39,8 @@ export function TeamInviteModal({
 
   const rolesById = useMemo(() => {
     const list =
-      rolesData?.teamRoles?.filter(
-        (r): r is { id: string; name: string } => Boolean(r?.id && r?.name)
+      rolesData?.teamRoles?.filter((r): r is { id: string; name: string } =>
+        Boolean(r?.id && r?.name)
       ) ?? []
     return new Map(list.map(r => [r.id, r.name]))
   }, [rolesData])
@@ -104,9 +98,7 @@ export function TeamInviteModal({
               {vacancies.map(v => {
                 const rolesText =
                   v.desiredRoleIds && v.desiredRoleIds.length > 0
-                    ? v.desiredRoleIds
-                        .map(id => rolesById.get(id) ?? id)
-                        .join(', ')
+                    ? v.desiredRoleIds.map(id => rolesById.get(id) ?? id).join(', ')
                     : t('common.fallback.untitled')
                 const slotsOpen = parseInt(v.slotsOpen ?? '0', 10)
                 const slotsTotal = parseInt(v.slotsTotal ?? '0', 10)

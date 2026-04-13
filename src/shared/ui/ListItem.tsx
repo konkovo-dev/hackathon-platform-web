@@ -69,9 +69,7 @@ export function ListItem({
                   'cursor-pointer hover:bg-state-error/10 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
               ]
             : [
-                active
-                  ? 'ring-2 ring-border-focus ring-inset bg-bg-elevated'
-                  : 'bg-bg-elevated',
+                active ? 'ring-2 ring-border-focus ring-inset bg-bg-elevated' : 'bg-bg-elevated',
                 isClickable &&
                   'cursor-pointer hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1',
               ],
@@ -98,9 +96,7 @@ export function ListItem({
         )}
       </div>
 
-      {selectable ? (
-        <Checkbox checked={selected} readOnly className="pointer-events-none" />
-      ) : null}
+      {selectable ? <Checkbox checked={selected} readOnly className="pointer-events-none" /> : null}
       {!selectable && (rightContent || caption) ? (
         <div className="flex items-center gap-m4 flex-shrink-0">
           {caption && (

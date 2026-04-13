@@ -70,13 +70,10 @@ export async function listAllSupportTickets(
   hackathonId: string,
   body: SupportListAllTicketsBody
 ): Promise<SupportListAllTicketsResponse> {
-  return platformFetchJson<SupportListAllTicketsResponse>(
-    `${base(hackathonId)}/tickets/all/list`,
-    {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }
-  )
+  return platformFetchJson<SupportListAllTicketsResponse>(`${base(hackathonId)}/tickets/all/list`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
 }
 
 export async function listAssignedSupportTickets(
@@ -111,13 +108,10 @@ export async function replyInSupportTicket(
   ticketId: string,
   body: SupportReplyBody
 ): Promise<SupportReplyResponse> {
-  return platformFetchJson<SupportReplyResponse>(
-    `${base(hackathonId)}/tickets/${ticketId}/reply`,
-    {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }
-  )
+  return platformFetchJson<SupportReplyResponse>(`${base(hackathonId)}/tickets/${ticketId}/reply`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
 }
 
 export async function closeSupportTicket(
@@ -125,13 +119,10 @@ export async function closeSupportTicket(
   ticketId: string,
   body: SupportCloseTicketBody
 ): Promise<void> {
-  await platformFetchJson<Record<string, never>>(
-    `${base(hackathonId)}/tickets/${ticketId}/close`,
-    {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }
-  )
+  await platformFetchJson<Record<string, never>>(`${base(hackathonId)}/tickets/${ticketId}/close`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
 }
 
 export async function getSupportTicketMessages(

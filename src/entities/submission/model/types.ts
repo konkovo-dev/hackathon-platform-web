@@ -43,9 +43,7 @@ export type Submission = {
   updatedAt: string
 }
 
-function normalizeFile(
-  f: components['schemas']['v1SubmissionFile']
-): SubmissionFile | null {
+function normalizeFile(f: components['schemas']['v1SubmissionFile']): SubmissionFile | null {
   if (!f.fileId || !f.submissionId || !f.filename) return null
   return {
     fileId: f.fileId,
@@ -59,9 +57,7 @@ function normalizeFile(
   }
 }
 
-export function normalizeSubmission(
-  s: components['schemas']['v1Submission']
-): Submission | null {
+export function normalizeSubmission(s: components['schemas']['v1Submission']): Submission | null {
   if (!s.submissionId || !s.hackathonId || !s.ownerId || !s.ownerKind || !s.createdByUserId) {
     return null
   }

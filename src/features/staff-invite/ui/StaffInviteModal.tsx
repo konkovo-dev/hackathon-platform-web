@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  InviteUserModal,
-  Section,
-  SelectList,
-  ListItem,
-  MarkdownEditor,
-} from '@/shared/ui'
+import { InviteUserModal, Section, SelectList, ListItem, MarkdownEditor } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCreateStaffInvitationMutation } from '../model/hooks'
 import type { HackathonRole } from '@/entities/hackathon/api/listHackathonStaff'

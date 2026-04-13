@@ -127,15 +127,7 @@ export function HackathonDetail({ hackathonId, initialData, initialTab }: Hackat
       })
     }
     return baseTabs
-  }, [
-    hackathonId,
-    isParticipant,
-    canSeeAnnouncements,
-    canSeeTask,
-    canManage,
-    showSupportTab,
-    t,
-  ])
+  }, [hackathonId, isParticipant, canSeeAnnouncements, canSeeTask, canManage, showSupportTab, t])
 
   const tabIds = useMemo(() => tabs.map(tab => tab.id), [tabs])
   const activeTabSafe =

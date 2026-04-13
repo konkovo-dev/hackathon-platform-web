@@ -164,18 +164,18 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
             </div>
 
             {isLoading ? (
-              <p className="typography-body-sm text-text-secondary">{t('hackathons.list.loading')}</p>
+              <p className="typography-body-sm text-text-secondary">
+                {t('hackathons.list.loading')}
+              </p>
             ) : participations.length > 0 ? (
               filteredParticipations.length > 0 ? (
                 <SelectList>
                   {filteredParticipations.map(participation => {
                     const teamId = participation.teamId
                     const resolvedName = teamId ? teamsNameMap?.get(teamId) : undefined
-                    const teamDisplay = teamId ? resolvedName ?? teamId : undefined
+                    const teamDisplay = teamId ? (resolvedName ?? teamId) : undefined
                     const captionParts = [
-                      getStatusLabel(
-                        participation.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED'
-                      ),
+                      getStatusLabel(participation.status ?? 'PARTICIPATION_STATUS_UNSPECIFIED'),
                     ]
                     if (teamDisplay) {
                       captionParts.push(teamDisplay)
@@ -229,14 +229,12 @@ export function TeamModerationList({ hackathonId }: TeamModerationListProps) {
                   const id = team?.teamId
                   const name = team?.name
                   if (!id || !name) return null
-                    return (
+                  return (
                     <ListItem
                       key={id}
                       text={name}
                       variant="bordered"
-                      onClick={() =>
-                        router.push(routes.hackathons.teams.detail(hackathonId, id))
-                      }
+                      onClick={() => router.push(routes.hackathons.teams.detail(hackathonId, id))}
                       rightContent={
                         <Icon
                           src="/icons/icon-arrow/icon-arrow-right-md.svg"

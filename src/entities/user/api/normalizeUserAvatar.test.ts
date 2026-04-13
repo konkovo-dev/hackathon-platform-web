@@ -4,9 +4,9 @@ import { normalizeUserAvatarFields, pickAvatarUrlFromPayload } from './normalize
 
 describe('pickAvatarUrlFromPayload', () => {
   it('prefers avatarUrl', () => {
-    expect(pickAvatarUrlFromPayload({ avatarUrl: 'https://a.com/x.jpg', avatar_url: 'https://b.com/' })).toBe(
-      'https://a.com/x.jpg'
-    )
+    expect(
+      pickAvatarUrlFromPayload({ avatarUrl: 'https://a.com/x.jpg', avatar_url: 'https://b.com/' })
+    ).toBe('https://a.com/x.jpg')
   })
 
   it('uses avatar_url when avatarUrl missing', () => {

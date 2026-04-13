@@ -35,6 +35,7 @@ export type Action =
   | 'Team.ManageJoinRequests'
   | 'Team.ManageVacancies'
   | 'Team.TransferCaptain'
+  | 'Submission.SelectFinal'
   | 'Judging.AssignJudging'
   | 'Judging.SubmitVerdict'
   | 'Judging.ViewLeaderboard'
@@ -88,6 +89,7 @@ function needsHackathonPermissions(action: Action): boolean {
     PARTICIPATION_ACTIONS.includes(action) ||
     action === 'Team.Create' ||
     action === 'Team.CanJoinTeam' ||
+    action === 'Submission.SelectFinal' ||
     TEAM_SCOPED_ACTIONS.includes(action) ||
     action.startsWith('Judging.')
   )
@@ -100,9 +102,12 @@ export function useCan(action: Action, params?: UseCanParams): UseCanResult {
 
   const needsPermissions = needsHackathonPermissions(action)
   const isAuthenticated = sessionQuery.data?.active === true
-  const permissionsQuery = useHackathonPermissionsQuery(needsPermissions ? hackathonId : undefined, {
-    enabled: isAuthenticated,
-  })
+  const permissionsQuery = useHackathonPermissionsQuery(
+    needsPermissions ? hackathonId : undefined,
+    {
+      enabled: isAuthenticated,
+    }
+  )
   const myParticipationQuery = useMyParticipationQuery(
     action === 'Team.CanJoinTeam' || TEAM_SCOPED_ACTIONS.includes(action) ? hackathonId : undefined
   )

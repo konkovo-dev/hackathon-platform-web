@@ -13,7 +13,4 @@ export {
   finalSubmissionQueryKey,
   submissionDetailQueryKey,
 } from './model/hooks'
-export {
-  listSubmissions,
-  getFinalSubmission,
-} from './api/submissionApi'
+export { listSubmissions, getFinalSubmission } from './api/submissionApi'

@@ -19,7 +19,11 @@ export function mySubmissionsQueryKey(hackathonId: string) {
   return ['hackathon', hackathonId, 'submissions', 'me'] as const
 }
 
-export function finalSubmissionQueryKey(hackathonId: string, ownerKind: OwnerKind, ownerId: string) {
+export function finalSubmissionQueryKey(
+  hackathonId: string,
+  ownerKind: OwnerKind,
+  ownerId: string
+) {
   return ['hackathon', hackathonId, 'final-submission', ownerKind, ownerId] as const
 }
 
@@ -29,7 +33,9 @@ export function submissionDetailQueryKey(hackathonId: string, submissionId: stri
 
 export function useMySubmissionsQuery(hackathonId: string | null | undefined) {
   return useQuery({
-    queryKey: hackathonId ? mySubmissionsQueryKey(hackathonId) : ['hackathon', 'submissions', 'disabled'],
+    queryKey: hackathonId
+      ? mySubmissionsQueryKey(hackathonId)
+      : ['hackathon', 'submissions', 'disabled'],
     queryFn: async () => {
       if (!hackathonId) return []
       const res = await listSubmissions(hackathonId, {})
@@ -103,13 +109,8 @@ export function useCreateSubmissionMutation(hackathonId: string) {
 export function useUpdateSubmissionMutation(hackathonId: string) {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({
-      submissionId,
-      description,
-    }: {
-      submissionId: string
-      description?: string
-    }) => updateSubmission(hackathonId, submissionId, { description }),
+    mutationFn: ({ submissionId, description }: { submissionId: string; description?: string }) =>
+      updateSubmission(hackathonId, submissionId, { description }),
     onSuccess: (_, { submissionId }) => {
       qc.invalidateQueries({ queryKey: ['hackathon', hackathonId, 'submissions'] })
       qc.invalidateQueries({ queryKey: ['hackathon', hackathonId, 'final-submission'] })
@@ -176,12 +177,7 @@ export function useUploadSubmissionFileMutation(hackathonId: string) {
 
 export function useSubmissionFileDownloadUrlMutation(hackathonId: string) {
   return useMutation({
-    mutationFn: ({
-      submissionId,
-      fileId,
-    }: {
-      submissionId: string
-      fileId: string
-    }) => getSubmissionFileDownloadUrl(hackathonId, submissionId, fileId),
+    mutationFn: ({ submissionId, fileId }: { submissionId: string; fileId: string }) =>
+      getSubmissionFileDownloadUrl(hackathonId, submissionId, fileId),
   })
 }

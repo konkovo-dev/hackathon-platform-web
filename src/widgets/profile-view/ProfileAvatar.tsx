@@ -49,7 +49,7 @@ export function ProfileAvatar({
         className={cn(
           boxClass,
           editable &&
-            'group bg-bg-elevated hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300',
+            'group bg-bg-elevated hover:bg-bg-hover hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300'
         )}
       >
         {editable && onUpload && (

@@ -47,7 +47,11 @@ export function MatchmakingCandidatesModal({
     }
   }, [open])
 
-  const { data, isLoading, error: loadError } = useMatchmakingCandidatesQuery(
+  const {
+    data,
+    isLoading,
+    error: loadError,
+  } = useMatchmakingCandidatesQuery(
     open ? hackathonId : null,
     open ? teamId : null,
     open ? vacancyId : null
@@ -95,12 +99,7 @@ export function MatchmakingCandidatesModal({
   }
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title={t('teams.matchmaking.modalTitle')}
-      size="lg"
-    >
+    <Modal open={open} onClose={onClose} title={t('teams.matchmaking.modalTitle')} size="lg">
       <div className="flex flex-col gap-m6">
         {loadError && (
           <p className="typography-body-sm text-state-error">{t('teams.matchmaking.loadError')}</p>

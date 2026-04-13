@@ -27,9 +27,9 @@ describe('validateImageFile', () => {
   })
 
   it('returns too_large when size exceeds max', () => {
-    expect(
-      validateImageFile(makeFile('a.jpg', 'image/jpeg', MAX_AVATAR_SIZE_BYTES + 1))
-    ).toBe('too_large')
+    expect(validateImageFile(makeFile('a.jpg', 'image/jpeg', MAX_AVATAR_SIZE_BYTES + 1))).toBe(
+      'too_large'
+    )
   })
 
   it('respects custom maxBytes and allowedTypes', () => {

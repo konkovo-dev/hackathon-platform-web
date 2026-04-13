@@ -34,9 +34,7 @@ export function VacancyItem({
 
   const positionsText =
     vacancy.desiredRoleIds && vacancy.desiredRoleIds.length > 0
-      ? vacancy.desiredRoleIds
-          .map(id => rolesById?.get(id) ?? id)
-          .join(', ')
+      ? vacancy.desiredRoleIds.map(id => rolesById?.get(id) ?? id).join(', ')
       : t('common.fallback.untitled')
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -73,10 +71,7 @@ export function VacancyItem({
     ) : undefined
 
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <ListItem
         text={positionsText}
         caption={slotsCaption}

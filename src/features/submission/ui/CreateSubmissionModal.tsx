@@ -80,19 +80,14 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
                 'hackathons.detail.participation.submission.createModal.titlePlaceholder'
               )}
             />
-            {titleError && (
-              <p className="typography-body-sm text-state-error">{titleError}</p>
-            )}
+            {titleError && <p className="typography-body-sm text-state-error">{titleError}</p>}
           </div>
 
           <div className="flex flex-col gap-m4">
             <label className="typography-label-md text-text-primary">
               {t('hackathons.detail.participation.submission.createModal.descriptionLabel')}
             </label>
-            <MarkdownEditor
-              value={description}
-              onChange={setDescription}
-            />
+            <MarkdownEditor value={description} onChange={setDescription} />
           </div>
 
           <div className="flex gap-m4 justify-end">

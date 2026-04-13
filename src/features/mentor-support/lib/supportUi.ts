@@ -47,7 +47,9 @@ export type SupportChatTimelineItem =
   | { kind: 'message'; message: SupportMessage }
 
 /** Вставляет разделители календарных дней между сообщениями (порядок — как в списке). */
-export function buildSupportChatTimeline(sortedMessages: SupportMessage[]): SupportChatTimelineItem[] {
+export function buildSupportChatTimeline(
+  sortedMessages: SupportMessage[]
+): SupportChatTimelineItem[] {
   const out: SupportChatTimelineItem[] = []
   let lastDayKey: string | null = null
   for (const message of sortedMessages) {

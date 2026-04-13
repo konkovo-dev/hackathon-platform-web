@@ -19,9 +19,7 @@ export function useSupportViewerOutgoingMeta(): SupportViewerOutgoingMeta {
   return useMemo(() => {
     const u = data?.user
     const displayName =
-      [u?.firstName, u?.lastName].filter(Boolean).join(' ').trim() ||
-      u?.username?.trim() ||
-      ''
+      [u?.firstName, u?.lastName].filter(Boolean).join(' ').trim() || u?.username?.trim() || ''
     const raw = u ? pickAvatarUrlFromPayload(u) : undefined
     const avatarSrc = raw ? toAvatarImgSrc(raw) : null
     return { displayName, avatarSrc }

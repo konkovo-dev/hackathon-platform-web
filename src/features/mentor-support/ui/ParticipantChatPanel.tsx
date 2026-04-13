@@ -37,10 +37,7 @@ export function ParticipantChatPanel({ hackathonId }: ParticipantChatPanelProps)
   const outgoingViewer = useSupportViewerOutgoingMeta()
   const [draft, setDraft] = useState('')
 
-  const sorted = useMemo(
-    () => sortMessagesByTime(messagesQuery.data ?? []),
-    [messagesQuery.data]
-  )
+  const sorted = useMemo(() => sortMessagesByTime(messagesQuery.data ?? []), [messagesQuery.data])
 
   const participantAuthorIds = useMemo(() => collectParticipantAuthorUserIds(sorted), [sorted])
   const authorsQuery = useSupportMessageAuthorsQuery(participantAuthorIds)
@@ -65,16 +62,16 @@ export function ParticipantChatPanel({ hackathonId }: ParticipantChatPanelProps)
   }
 
   if (messagesQuery.isError) {
-    return (
-      <p className="typography-body-md text-state-error">{t('hackathons.support.error')}</p>
-    )
+    return <p className="typography-body-md text-state-error">{t('hackathons.support.error')}</p>
   }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-m6">
       <SupportChatThread className="min-h-0 flex-1">
         {sorted.length === 0 ? (
-          <p className="typography-body-md text-text-secondary">{t('hackathons.support.participant.empty')}</p>
+          <p className="typography-body-md text-text-secondary">
+            {t('hackathons.support.participant.empty')}
+          </p>
         ) : (
           timeline.map((item, index) => {
             if (item.kind === 'daySeparator') {
@@ -86,14 +83,11 @@ export function ParticipantChatPanel({ hackathonId }: ParticipantChatPanelProps)
               )
             }
             const m = item.message
-            const isMine =
-              m.authorUserId != null && userId != null && m.authorUserId === userId
+            const isMine = m.authorUserId != null && userId != null && m.authorUserId === userId
             const side = isMine ? bubbleEnd : bubbleStart
             const peerId = supportParticipantAuthorUserId(m)
             const incomingParticipantAuthor =
-              side === bubbleStart && peerId
-                ? (authorsQuery.data?.get(peerId) ?? null)
-                : null
+              side === bubbleStart && peerId ? (authorsQuery.data?.get(peerId) ?? null) : null
             return (
               <SupportMessageRow
                 key={m.messageId ?? `${m.createdAt}-${m.text}-${index}`}
@@ -111,7 +105,9 @@ export function ParticipantChatPanel({ hackathonId }: ParticipantChatPanelProps)
 
       <SupportChatComposer>
         {sendMutation.isError ? (
-          <p className="typography-body-sm-regular text-state-error">{t('hackathons.support.error')}</p>
+          <p className="typography-body-sm-regular text-state-error">
+            {t('hackathons.support.error')}
+          </p>
         ) : null}
         <div className="flex flex-row items-center gap-m3">
           <div className="min-w-0 flex-1">

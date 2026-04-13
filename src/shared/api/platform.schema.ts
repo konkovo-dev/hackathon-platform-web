@@ -3017,6 +3017,7 @@ export interface components {
     }
     v1TeamPermissions: {
       canInMyTeam?: components['schemas']['v1TeamManagementPermissions']
+      canSelectFinalSubmission?: boolean
       createTeam?: boolean
     }
     v1TeamRecommendation: {

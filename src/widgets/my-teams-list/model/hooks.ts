@@ -79,8 +79,7 @@ export function usePendingJoinRequestsInboxCount() {
     0
   )
   const isLoading =
-    myTeamsLoading ||
-    joinRequestQueries.some(q => q.isPending && q.fetchStatus !== 'idle')
+    myTeamsLoading || joinRequestQueries.some(q => q.isPending && q.fetchStatus !== 'idle')
 
   return { count, isLoading }
 }

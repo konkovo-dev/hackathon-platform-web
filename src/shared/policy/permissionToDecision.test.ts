@@ -67,6 +67,42 @@ describe('permissionToDecision', () => {
     })
   })
 
+  it('returns allowed for Submission.SelectFinal when team.canSelectFinalSubmission is true', () => {
+    const perm: HackathonPermissionsBundle = {
+      hackathon: undefined,
+      participation: undefined,
+      team: { canSelectFinalSubmission: true },
+      judging: undefined,
+    }
+    expect(
+      permissionToDecision('Submission.SelectFinal', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({ allowed: true })
+  })
+
+  it('returns NOT_ALLOWED for Submission.SelectFinal when canSelectFinalSubmission is false', () => {
+    const perm: HackathonPermissionsBundle = {
+      hackathon: undefined,
+      participation: undefined,
+      team: { canSelectFinalSubmission: false },
+      judging: undefined,
+    }
+    expect(
+      permissionToDecision('Submission.SelectFinal', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({ allowed: false, reason: 'NOT_ALLOWED' })
+  })
+
+  it('returns NOT_ALLOWED for Submission.SelectFinal when team permissions missing', () => {
+    const perm: HackathonPermissionsBundle = {
+      hackathon: undefined,
+      participation: undefined,
+      team: undefined,
+      judging: undefined,
+    }
+    expect(
+      permissionToDecision('Submission.SelectFinal', perm, { hackathonId: 'h1' }, null)
+    ).toEqual({ allowed: false, reason: 'NOT_ALLOWED' })
+  })
+
   it('returns ALREADY_IN_TEAM for Team.CanJoinTeam when myTeamId is set', () => {
     const perm: HackathonPermissionsBundle = {
       hackathon: undefined,

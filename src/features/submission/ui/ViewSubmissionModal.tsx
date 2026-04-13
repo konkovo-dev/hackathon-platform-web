@@ -17,9 +17,7 @@ export function ViewSubmissionContent({ hackathonId, submission }: ViewSubmissio
 
   return (
     <div className="flex flex-col gap-m8">
-      {submission.description && (
-        <MarkdownContent>{submission.description}</MarkdownContent>
-      )}
+      {submission.description && <MarkdownContent>{submission.description}</MarkdownContent>}
 
       {completedFiles.length > 0 && (
         <>

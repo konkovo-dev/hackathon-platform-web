@@ -57,11 +57,7 @@ export function MyParticipationTabContent({
       {(hackathonStage === 'RUNNING' ||
         hackathonStage === 'JUDGING' ||
         hackathonStage === 'FINISHED') && (
-        <SubmissionBlock
-          hackathonId={hackathonId}
-          hackathonStage={hackathonStage}
-          myTeamId={myTeamId}
-        />
+        <SubmissionBlock hackathonId={hackathonId} hackathonStage={hackathonStage} />
       )}
     </div>
   )
@@ -133,9 +129,7 @@ function NoTeamContent({
 
   const motivationBriefRaw = participationData?.motivationText?.trim() ?? ''
   const motivationBrief =
-    motivationBriefRaw.length > 220
-      ? `${motivationBriefRaw.slice(0, 220)}…`
-      : motivationBriefRaw
+    motivationBriefRaw.length > 220 ? `${motivationBriefRaw.slice(0, 220)}…` : motivationBriefRaw
 
   const handleSwitchToLookingForTeam = async () => {
     try {

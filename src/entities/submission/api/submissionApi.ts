@@ -1,34 +1,29 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { components, operations } from '@/shared/api/platform.schema'
 
-type CreateSubmissionBody =
-  components['schemas']['SubmissionServiceCreateSubmissionBody']
+type CreateSubmissionBody = components['schemas']['SubmissionServiceCreateSubmissionBody']
 type CreateSubmissionResponse =
   operations['SubmissionService_CreateSubmission']['responses']['200']['content']['application/json']
 
-type ListSubmissionsBody =
-  components['schemas']['SubmissionServiceListSubmissionsBody']
+type ListSubmissionsBody = components['schemas']['SubmissionServiceListSubmissionsBody']
 type ListSubmissionsResponse =
   operations['SubmissionService_ListSubmissions']['responses']['200']['content']['application/json']
 
 type GetSubmissionResponse =
   operations['SubmissionService_GetSubmission']['responses']['200']['content']['application/json']
 
-type UpdateSubmissionBody =
-  components['schemas']['SubmissionServiceUpdateSubmissionBody']
+type UpdateSubmissionBody = components['schemas']['SubmissionServiceUpdateSubmissionBody']
 type UpdateSubmissionResponse =
   operations['SubmissionService_UpdateSubmission']['responses']['200']['content']['application/json']
 
-type SelectFinalBody =
-  components['schemas']['SubmissionServiceSelectFinalSubmissionBody']
+type SelectFinalBody = components['schemas']['SubmissionServiceSelectFinalSubmissionBody']
 type SelectFinalResponse =
   operations['SubmissionService_SelectFinalSubmission']['responses']['200']['content']['application/json']
 
 type GetFinalSubmissionResponse =
   operations['SubmissionService_GetFinalSubmission']['responses']['200']['content']['application/json']
 
-type CreateUploadBody =
-  components['schemas']['SubmissionFilesServiceCreateSubmissionUploadBody']
+type CreateUploadBody = components['schemas']['SubmissionFilesServiceCreateSubmissionUploadBody']
 type CreateUploadResponse =
   operations['SubmissionFilesService_CreateSubmissionUpload']['responses']['200']['content']['application/json']
 
@@ -44,14 +39,11 @@ export async function createSubmission(
   hackathonId: string,
   input: CreateSubmissionBody
 ): Promise<CreateSubmissionResponse> {
-  return platformFetchJson<CreateSubmissionResponse>(
-    `/v1/hackathons/${hackathonId}/submissions`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...input, idempotencyKey: { key: crypto.randomUUID() } }),
-    }
-  )
+  return platformFetchJson<CreateSubmissionResponse>(`/v1/hackathons/${hackathonId}/submissions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...input, idempotencyKey: { key: crypto.randomUUID() } }),
+  })
 }
 
 export async function listSubmissions(

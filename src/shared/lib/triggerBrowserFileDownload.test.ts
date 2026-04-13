@@ -1,5 +1,8 @@
 import { describe, expect, it, vi, afterEach } from 'vitest'
-import { filenameForDownloadAttribute, triggerBrowserFileDownload } from './triggerBrowserFileDownload'
+import {
+  filenameForDownloadAttribute,
+  triggerBrowserFileDownload,
+} from './triggerBrowserFileDownload'
 
 describe('filenameForDownloadAttribute', () => {
   it('takes last path segment', () => {
@@ -41,7 +44,9 @@ describe('triggerBrowserFileDownload', () => {
 
   it('falls back to anchor when fetch fails', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('cors')))
-    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (
+      this: HTMLAnchorElement
+    ) {
       expect(this.download).toBe('readme.txt')
       expect(this.href).toContain('https://s3.example/')
     })

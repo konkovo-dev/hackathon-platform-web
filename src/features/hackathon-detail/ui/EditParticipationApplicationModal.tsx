@@ -39,8 +39,7 @@ export function EditParticipationApplicationModal({
   const { data: teamRolesData } = useQuery({
     queryKey: ['team-roles'],
     queryFn: listTeamRoles,
-    enabled:
-      open && allowTeam && participationStatus === 'PART_LOOKING_FOR_TEAM',
+    enabled: open && allowTeam && participationStatus === 'PART_LOOKING_FOR_TEAM',
   })
   const teamRoleOptions = useMemo(
     () =>
