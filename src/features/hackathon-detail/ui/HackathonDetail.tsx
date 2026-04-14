@@ -76,7 +76,7 @@ export function HackathonDetail({
   const { decision: canReadTaskDecision } = useCan('Hackathon.ReadTask', { hackathonId })
   const canSeeTask = canReadTaskDecision.allowed
 
-  const { decision: canManageDecision } = useCan('Hackathon.Manage', {
+  const { decision: canManageDecision, isLoading: canManageLoading } = useCan('Hackathon.Manage', {
     hackathonId,
   })
   const canManage = canManageDecision.allowed
@@ -86,9 +86,12 @@ export function HackathonDetail({
   })
   const canJudge = canJudgeDecision.allowed
 
-  const { isLoading: canViewLeaderboardLoading } = useCan('Judging.ViewLeaderboard', {
-    hackathonId,
-  })
+  const { decision: canViewLeaderboardDecision, isLoading: canViewLeaderboardLoading } = useCan(
+    'Judging.ViewLeaderboard',
+    {
+      hackathonId,
+    }
+  )
 
   const { data: session } = useSessionQuery()
   const sessionActive = Boolean(session && session.active)
@@ -102,7 +105,10 @@ export function HackathonDetail({
   const canJudgeOrAssigned = canJudge || isJudgeByRoleList
   const showJudgingTab = canJudgeOrAssigned
 
-  const showManagementLeaderboardNav = canManage && !canViewLeaderboardLoading
+  const showManagementLeaderboardNav =
+    canManage &&
+    !canViewLeaderboardLoading &&
+    canViewLeaderboardDecision.allowed
 
   const myParticipationQuery = useMyParticipationQuery(hackathonId)
   const myTeamId = myParticipationQuery.data?.teamId ?? null
@@ -139,10 +145,14 @@ export function HackathonDetail({
     [hackathonId, urlSearchParams]
   )
 
+  const participationLoading = myParticipationQuery.isLoading
+
   const clampContext = useMemo(
     () => ({
       canManage,
+      canManageLoading,
       isParticipant,
+      participationLoading,
       canSeeTask,
       canSeeAnnouncements,
       canJudgeOrAssigned,
@@ -151,7 +161,9 @@ export function HackathonDetail({
     }),
     [
       canManage,
+      canManageLoading,
       isParticipant,
+      participationLoading,
       canSeeTask,
       canSeeAnnouncements,
       canJudgeOrAssigned,

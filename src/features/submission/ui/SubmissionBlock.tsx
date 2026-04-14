@@ -3,7 +3,11 @@
 import { useState } from 'react'
 import { Section, Button, Divider, Icon } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
-import { useMySubmissionsQuery } from '@/entities/submission'
+import {
+  useMySubmissionsQuery,
+  useFinalSubmissionQuery,
+  type OwnerKind,
+} from '@/entities/submission'
 import { useCan } from '@/shared/policy/useCan'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { SubmissionList } from './SubmissionList'
@@ -14,9 +18,18 @@ import { SubmissionFileListItems } from './SubmissionFileListItems'
 export interface SubmissionBlockProps {
   hackathonId: string
   hackathonStage: HackathonStage
+  submissionOwnerKind: OwnerKind
+  submissionOwnerId: string | null
+  submissionOwnerPending?: boolean
 }
 
-export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlockProps) {
+export function SubmissionBlock({
+  hackathonId,
+  hackathonStage,
+  submissionOwnerKind,
+  submissionOwnerId,
+  submissionOwnerPending = false,
+}: SubmissionBlockProps) {
   const t = useT()
   const [createOpen, setCreateOpen] = useState(false)
 
@@ -27,17 +40,29 @@ export function SubmissionBlock({ hackathonId, hackathonStage }: SubmissionBlock
 
   const submissionsQuery = useMySubmissionsQuery(hackathonId)
   const submissions = submissionsQuery.data ?? []
-  const finalSubmission = submissions.find(s => s.isFinal) ?? null
+  const listFinalSubmission = submissions.find(s => s.isFinal) ?? null
 
   const isRunning = hackathonStage === 'RUNNING'
   const isPostRun = hackathonStage === 'JUDGING' || hackathonStage === 'FINISHED'
+  const fetchFinalFromParticipantApi = isPostRun && Boolean(submissionOwnerId)
+
+  const finalSubmissionDetailQuery = useFinalSubmissionQuery(
+    hackathonId,
+    fetchFinalFromParticipantApi ? submissionOwnerKind : null,
+    fetchFinalFromParticipantApi ? submissionOwnerId : null
+  )
+
+  const finalSubmission =
+    finalSubmissionDetailQuery.data ?? listFinalSubmission ?? null
 
   const canSelectFinal = isRunning && selectFinalDecision.allowed
   const canEdit = isRunning
 
   if (
     submissionsQuery.isLoading ||
-    (hackathonStage === 'RUNNING' && selectFinalPermissionLoading)
+    (hackathonStage === 'RUNNING' && selectFinalPermissionLoading) ||
+    submissionOwnerPending ||
+    (fetchFinalFromParticipantApi && finalSubmissionDetailQuery.isPending)
   ) {
     return (
       <Section

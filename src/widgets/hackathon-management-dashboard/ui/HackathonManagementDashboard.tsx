@@ -141,10 +141,14 @@ export function HackathonManagementDashboard({ hackathon }: HackathonManagementD
     hackathonId: hackathon.hackathonId,
   })
 
-  const { decision: canAssignJudgingDecision } = useCan('Judging.AssignJudging', {
-    hackathonId: hackathon.hackathonId,
-  })
-  const canAssignJudging = true // canAssignJudgingDecision.allowed
+  const { decision: canAssignJudgingDecision, isLoading: canAssignJudgingLoading } = useCan(
+    'Judging.AssignJudging',
+    {
+      hackathonId: hackathon.hackathonId,
+    }
+  )
+  const canAssignJudging =
+    !canAssignJudgingLoading && canAssignJudgingDecision.allowed
 
   const stageLabel = getStageLabel(hackathon.stage)
 

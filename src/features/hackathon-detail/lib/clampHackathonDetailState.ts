@@ -2,12 +2,13 @@ import type { HackathonDetailQueryState } from './hackathonDetailQuery'
 
 export interface HackathonDetailClampContext {
   canManage: boolean
+  canManageLoading: boolean
   isParticipant: boolean
+  participationLoading: boolean
   canSeeTask: boolean
   canSeeAnnouncements: boolean
   canJudgeOrAssigned: boolean
   showSupportTab: boolean
-  /** Лидерборд в «Управление»: заглушка true (Judging.ViewLeaderboard пока не используем), см. docs/hackathon-organizer-workspace.md §12 */
   showManagementLeaderboardNav: boolean
 }
 
@@ -17,10 +18,10 @@ export function clampHackathonDetailState(
 ): HackathonDetailQueryState {
   let { tab, section, org } = state
 
-  if (tab === 'management' && !ctx.canManage) {
+  if (tab === 'management' && !ctx.canManageLoading && !ctx.canManage) {
     return { tab: 'about', section: 'description', org: 'overview' }
   }
-  if (tab === 'participation' && !ctx.isParticipant) {
+  if (tab === 'participation' && !ctx.participationLoading && !ctx.isParticipant) {
     return { tab: 'about', section: 'description', org: 'overview' }
   }
   if (tab === 'support' && !ctx.showSupportTab) {

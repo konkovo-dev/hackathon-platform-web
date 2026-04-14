@@ -12,9 +12,11 @@ import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hook
 import { useSwitchParticipationModeMutation } from '@/features/hackathon-registration/model/hooks'
 import { EditParticipationApplicationModal } from './EditParticipationApplicationModal'
 import { useUnregisterFromHackathonMutation } from '../model/hooks'
+import { useSessionQuery } from '@/features/auth/model/hooks'
 import { useCan } from '@/shared/policy/useCan'
 import { MatchmakingTeamsList } from '@/features/matchmaking-teams'
 import { SubmissionBlock } from '@/features/submission'
+import type { OwnerKind } from '@/entities/submission'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { listTeamRoles } from '@/entities/team'
 
@@ -34,6 +36,12 @@ export function MyParticipationTabContent({
   registrationPolicy,
 }: MyParticipationTabContentProps) {
   const t = useT()
+  const { data: session, isLoading: sessionLoading } = useSessionQuery()
+  const sessionUserId =
+    session && session.active === true && 'userId' in session ? session.userId : null
+  const submissionOwnerKind: OwnerKind = myTeamId ? 'team' : 'user'
+  const submissionOwnerId = myTeamId ?? sessionUserId
+  const submissionOwnerPending = !myTeamId && sessionLoading
 
   if (ctxLoading) {
     return (
@@ -57,7 +65,13 @@ export function MyParticipationTabContent({
       {(hackathonStage === 'RUNNING' ||
         hackathonStage === 'JUDGING' ||
         hackathonStage === 'FINISHED') && (
-        <SubmissionBlock hackathonId={hackathonId} hackathonStage={hackathonStage} />
+        <SubmissionBlock
+          hackathonId={hackathonId}
+          hackathonStage={hackathonStage}
+          submissionOwnerKind={submissionOwnerKind}
+          submissionOwnerId={submissionOwnerId}
+          submissionOwnerPending={submissionOwnerPending}
+        />
       )}
     </div>
   )
