@@ -71,7 +71,8 @@
       "announcements": "news",
       "management": "manage",
       "support": "support",
-      "judging": "jury"
+      "judging": "jury",
+      "results": "results"
     },
     "about": {
       "navAria": "hackathon overview sections"
@@ -80,7 +81,8 @@
       "navAria": "hackathon organizer sections",
       "org": {
         "overview": "summary",
-        "leaderboard": "scores"
+        "leaderboard": "scores",
+        "results": "outcomes"
       }
     },
     "task": {
@@ -438,6 +440,34 @@
       "titlePlaceholder": "announcement title",
       "bodyPlaceholder": "announcement text (Markdown supported)",
       "publish": "publish"
+    }
+  },
+  "results": {
+    "organizer": {
+      "draftTitle": "outcome announcement",
+      "placeholder": "write the hackathon outcomes for participants…",
+      "saveDraft": "save draft",
+      "publish": "publish results",
+      "publishedBadge": "published",
+      "publishConfirmTitle": "publish results?",
+      "publishConfirmBody": "after publishing, you cannot change the public text. all participants will see this announcement.",
+      "saveError": "could not save draft",
+      "publishError": "could not publish results",
+      "loadError": "could not load draft"
+    },
+    "public": {
+      "title": "results",
+      "noResult": "the results text has not been published yet.",
+      "loadError": "could not load results"
+    },
+    "my": {
+      "title": "your result",
+      "rank": "place",
+      "score": "average score",
+      "evaluations": "judge evaluations",
+      "comments": "judge comments",
+      "loadError": "could not load your result",
+      "empty": "result data is not available"
     }
   },
   "state": {

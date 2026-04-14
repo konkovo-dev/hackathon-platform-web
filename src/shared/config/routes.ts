@@ -5,9 +5,9 @@ export type HackathonDetailPathTab =
   | 'support'
   | 'judging'
 
-export type HackathonDetailPathSection = 'description' | 'task' | 'announcements'
+export type HackathonDetailPathSection = 'description' | 'task' | 'announcements' | 'results'
 
-export type HackathonDetailPathOrg = 'overview' | 'participants' | 'leaderboard'
+export type HackathonDetailPathOrg = 'overview' | 'participants' | 'leaderboard' | 'results'
 
 export interface HackathonDetailPathOptions {
   tab?: HackathonDetailPathTab

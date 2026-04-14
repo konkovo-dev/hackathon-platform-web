@@ -16,6 +16,7 @@ import { useSessionQuery } from '@/features/auth/model/hooks'
 import { useCan } from '@/shared/policy/useCan'
 import { MatchmakingTeamsList } from '@/features/matchmaking-teams'
 import { SubmissionBlock } from '@/features/submission'
+import { MyResultSection } from '@/features/result/ui/MyResultSection'
 import type { OwnerKind } from '@/entities/submission'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
 import { listTeamRoles } from '@/entities/team'
@@ -26,6 +27,7 @@ export interface MyParticipationTabContentProps {
   ctxLoading: boolean
   hackathonStage: HackathonStage
   registrationPolicy?: { allowIndividual?: boolean; allowTeam?: boolean }
+  resultPublished: boolean
 }
 
 export function MyParticipationTabContent({
@@ -34,6 +36,7 @@ export function MyParticipationTabContent({
   ctxLoading,
   hackathonStage,
   registrationPolicy,
+  resultPublished,
 }: MyParticipationTabContentProps) {
   const t = useT()
   const { data: session, isLoading: sessionLoading } = useSessionQuery()
@@ -73,6 +76,7 @@ export function MyParticipationTabContent({
           submissionOwnerPending={submissionOwnerPending}
         />
       )}
+      {resultPublished ? <MyResultSection hackathonId={hackathonId} /> : null}
     </div>
   )
 }

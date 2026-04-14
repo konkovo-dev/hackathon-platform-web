@@ -28,6 +28,18 @@ describe('hackathonDetailPath', () => {
       '/hackathons/abc?tab=management&org=participants'
     )
   })
+
+  it('adds section for about + results', () => {
+    expect(hackathonDetailPath('abc', { tab: 'about', section: 'results' })).toBe(
+      '/hackathons/abc?tab=about&section=results'
+    )
+  })
+
+  it('adds org for management results', () => {
+    expect(hackathonDetailPath('abc', { tab: 'management', org: 'results' })).toBe(
+      '/hackathons/abc?tab=management&org=results'
+    )
+  })
 })
 
 describe('parseHackathonDetailSearchParams', () => {

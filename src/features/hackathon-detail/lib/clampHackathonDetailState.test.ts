@@ -11,6 +11,10 @@ const baseCtx = (): HackathonDetailClampContext => ({
   canJudgeOrAssigned: false,
   showSupportTab: false,
   showManagementLeaderboardNav: false,
+  canAccessAboutResultsSection: false,
+  aboutResultsSectionLoading: false,
+  canReadResultDraft: false,
+  readResultDraftLoading: false,
 })
 
 describe('clampHackathonDetailState', () => {
@@ -90,5 +94,47 @@ describe('clampHackathonDetailState', () => {
         ctx
       )
     ).toEqual({ tab: 'participation', section: 'description', org: 'overview' })
+  })
+
+  it('keeps about section=results while about results permissions are loading', () => {
+    const ctx = baseCtx()
+    ctx.aboutResultsSectionLoading = true
+    ctx.canAccessAboutResultsSection = false
+
+    expect(
+      clampHackathonDetailState({ tab: 'about', section: 'results', org: 'overview' }, ctx)
+    ).toEqual({ tab: 'about', section: 'results', org: 'overview' })
+  })
+
+  it('redirects about section=results to description when not allowed', () => {
+    const ctx = baseCtx()
+    ctx.aboutResultsSectionLoading = false
+    ctx.canAccessAboutResultsSection = false
+
+    expect(
+      clampHackathonDetailState({ tab: 'about', section: 'results', org: 'overview' }, ctx)
+    ).toEqual({ tab: 'about', section: 'description', org: 'overview' })
+  })
+
+  it('keeps management org=results while readResultDraft is loading', () => {
+    const ctx = baseCtx()
+    ctx.canManage = true
+    ctx.readResultDraftLoading = true
+    ctx.canReadResultDraft = false
+
+    expect(
+      clampHackathonDetailState({ tab: 'management', section: 'description', org: 'results' }, ctx)
+    ).toEqual({ tab: 'management', section: 'description', org: 'results' })
+  })
+
+  it('redirects management org=results to overview when not allowed', () => {
+    const ctx = baseCtx()
+    ctx.canManage = true
+    ctx.readResultDraftLoading = false
+    ctx.canReadResultDraft = false
+
+    expect(
+      clampHackathonDetailState({ tab: 'management', section: 'description', org: 'results' }, ctx)
+    ).toEqual({ tab: 'management', section: 'description', org: 'overview' })
   })
 })

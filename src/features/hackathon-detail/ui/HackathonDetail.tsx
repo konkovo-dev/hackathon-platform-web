@@ -24,6 +24,8 @@ import { SupportTabContent } from '@/features/mentor-support/ui/SupportTabConten
 import { JudgingTabContent } from '@/features/judging/ui/JudgingTabContent'
 import { OrganizerParticipantsTabContent } from './OrganizerParticipantsTabContent'
 import { OrganizerJudgingStatusSection } from '@/features/judging/ui/OrganizerJudgingStatusSection'
+import { PublicResultSection } from '@/features/result/ui/PublicResultSection'
+import { OrganizerResultSection } from '@/features/result/ui/OrganizerResultSection'
 import { useHackathonsByRoleQuery } from '@/entities/hackathon/model/useHackathonsByRoleQuery'
 import { cn } from '@/shared/lib/cn'
 import {
@@ -93,6 +95,21 @@ export function HackathonDetail({
     }
   )
 
+  const { decision: canReadResultDraftDecision, isLoading: readResultDraftLoading } = useCan(
+    'Hackathon.ReadResultDraft',
+    { hackathonId }
+  )
+  const { decision: canUpdateResultDraftDecision } = useCan('Hackathon.UpdateResultDraft', {
+    hackathonId,
+  })
+  const { decision: canPublishResultDecision } = useCan('Hackathon.PublishResult', {
+    hackathonId,
+  })
+  const { decision: canViewResultPublicDecision, isLoading: viewResultPublicLoading } = useCan(
+    'Hackathon.ViewResultPublic',
+    { hackathonId }
+  )
+
   const { data: session } = useSessionQuery()
   const sessionActive = Boolean(session && session.active)
   const judgeRoleQuery = useHackathonsByRoleQuery('judge', {
@@ -147,6 +164,26 @@ export function HackathonDetail({
 
   const participationLoading = myParticipationQuery.isLoading
 
+  const resultPublished = Boolean(hackathon?.resultPublishedAt)
+  const canReadResultDraft = canReadResultDraftDecision.allowed
+  const canViewResultPublic = canViewResultPublicDecision.allowed
+  const canAccessAboutResultsSection =
+    canReadResultDraft || (resultPublished && (!sessionActive || canViewResultPublic))
+  const aboutResultsSectionLoading =
+    (parsedState.tab === 'about' &&
+      parsedState.section === 'results' &&
+      hackathon == null &&
+      isLoading) ||
+    (sessionActive && readResultDraftLoading) ||
+    (sessionActive && resultPublished && viewResultPublicLoading)
+
+  const showAboutResultsNav =
+    canReadResultDraft ||
+    (canManage && readResultDraftLoading) ||
+    (resultPublished && (!sessionActive || canViewResultPublic)) ||
+    (sessionActive && resultPublished && viewResultPublicLoading)
+  const showManagementResultsNav = canManage && !readResultDraftLoading && canReadResultDraft
+
   const clampContext = useMemo(
     () => ({
       canManage,
@@ -158,6 +195,10 @@ export function HackathonDetail({
       canJudgeOrAssigned,
       showSupportTab,
       showManagementLeaderboardNav,
+      canAccessAboutResultsSection,
+      aboutResultsSectionLoading,
+      canReadResultDraft,
+      readResultDraftLoading,
     }),
     [
       canManage,
@@ -169,6 +210,10 @@ export function HackathonDetail({
       canJudgeOrAssigned,
       showSupportTab,
       showManagementLeaderboardNav,
+      canAccessAboutResultsSection,
+      aboutResultsSectionLoading,
+      canReadResultDraft,
+      readResultDraftLoading,
     ]
   )
 
@@ -269,8 +314,18 @@ export function HackathonDetail({
         }),
       })
     }
+    if (showAboutResultsNav) {
+      items.push({
+        id: 'results',
+        label: t('hackathons.detail.tabs.results'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'about',
+          section: 'results',
+        }),
+      })
+    }
     return items
-  }, [hackathonId, canSeeTask, canSeeAnnouncements, t])
+  }, [hackathonId, canSeeTask, canSeeAnnouncements, showAboutResultsNav, t])
 
   const managementNavItems = useMemo(() => {
     const items: { id: HackathonDetailQueryState['org']; label: string; href: string }[] = [
@@ -301,8 +356,18 @@ export function HackathonDetail({
         }),
       })
     }
+    if (showManagementResultsNav) {
+      items.push({
+        id: 'results',
+        label: t('hackathons.detail.management.org.results'),
+        href: routes.hackathons.hackathonDetailPath(hackathonId, {
+          tab: 'management',
+          org: 'results',
+        }),
+      })
+    }
     return items
-  }, [hackathonId, showManagementLeaderboardNav, t])
+  }, [hackathonId, showManagementLeaderboardNav, showManagementResultsNav, t])
 
   if (isLoading && !initialData) {
     return (
@@ -425,6 +490,7 @@ export function HackathonDetail({
                           )}
                         </>
                       )}
+                      {displayState.section === 'results' && <PublicResultSection hackathonId={hackathonId} />}
                     </div>
                   </div>
                 </div>
@@ -458,6 +524,7 @@ export function HackathonDetail({
                       )}
                     </>
                   )}
+                  {displayState.section === 'results' && <PublicResultSection hackathonId={hackathonId} />}
                 </div>
               </div>
             )}
@@ -472,6 +539,7 @@ export function HackathonDetail({
                 ctxLoading={myParticipationQuery.isLoading}
                 hackathonStage={hackathon.stage}
                 registrationPolicy={hackathon.registrationPolicy}
+                resultPublished={resultPublished}
               />
             </div>
           </div>
@@ -502,6 +570,14 @@ export function HackathonDetail({
                       {displayState.org === 'leaderboard' && showManagementLeaderboardNav && (
                         <OrganizerJudgingStatusSection hackathonId={hackathonId} />
                       )}
+                      {displayState.org === 'results' && showManagementResultsNav && (
+                        <OrganizerResultSection
+                          hackathonId={hackathonId}
+                          resultPublished={resultPublished}
+                          canUpdateResultDraft={canUpdateResultDraftDecision.allowed}
+                          canPublishResult={canPublishResultDecision.allowed}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -517,6 +593,14 @@ export function HackathonDetail({
                   )}
                   {displayState.org === 'leaderboard' && showManagementLeaderboardNav && (
                     <OrganizerJudgingStatusSection hackathonId={hackathonId} />
+                  )}
+                  {displayState.org === 'results' && showManagementResultsNav && (
+                    <OrganizerResultSection
+                      hackathonId={hackathonId}
+                      resultPublished={resultPublished}
+                      canUpdateResultDraft={canUpdateResultDraftDecision.allowed}
+                      canPublishResult={canPublishResultDecision.allowed}
+                    />
                   )}
                 </div>
               </div>

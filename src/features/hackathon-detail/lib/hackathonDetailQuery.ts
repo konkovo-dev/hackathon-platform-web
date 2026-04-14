@@ -2,9 +2,9 @@ import { routes, type HackathonDetailPathOptions } from '@/shared/config/routes'
 
 export type HackathonDetailTopTab = 'about' | 'participation' | 'management' | 'support' | 'judging'
 
-export type HackathonDetailAboutSection = 'description' | 'task' | 'announcements'
+export type HackathonDetailAboutSection = 'description' | 'task' | 'announcements' | 'results'
 
-export type HackathonDetailManagementOrg = 'overview' | 'participants' | 'leaderboard'
+export type HackathonDetailManagementOrg = 'overview' | 'participants' | 'leaderboard' | 'results'
 
 export interface HackathonDetailQueryState {
   tab: HackathonDetailTopTab
@@ -82,7 +82,9 @@ export function parseHackathonDetailSearchParams(
   if (safeTab === 'about') {
     const s = sp.get('section')?.trim() || 'description'
     section = (
-      s === 'description' || s === 'task' || s === 'announcements' ? s : 'description'
+      s === 'description' || s === 'task' || s === 'announcements' || s === 'results'
+        ? s
+        : 'description'
     ) as HackathonDetailAboutSection
   }
 
@@ -90,7 +92,7 @@ export function parseHackathonDetailSearchParams(
   if (safeTab === 'management') {
     const o = sp.get('org')?.trim() || 'overview'
     org = (
-      o === 'participants' || o === 'leaderboard' ? o : 'overview'
+      o === 'participants' || o === 'leaderboard' || o === 'results' ? o : 'overview'
     ) as HackathonDetailManagementOrg
   }
 

@@ -10,6 +10,10 @@ export interface HackathonDetailClampContext {
   canJudgeOrAssigned: boolean
   showSupportTab: boolean
   showManagementLeaderboardNav: boolean
+  canAccessAboutResultsSection: boolean
+  aboutResultsSectionLoading: boolean
+  canReadResultDraft: boolean
+  readResultDraftLoading: boolean
 }
 
 export function clampHackathonDetailState(
@@ -44,10 +48,24 @@ export function clampHackathonDetailState(
     if (section === 'announcements' && !ctx.canSeeAnnouncements) {
       section = 'description'
     }
+    if (
+      section === 'results' &&
+      !ctx.aboutResultsSectionLoading &&
+      !ctx.canAccessAboutResultsSection
+    ) {
+      section = 'description'
+    }
   }
 
   if (tab === 'management' && org === 'leaderboard' && !ctx.showManagementLeaderboardNav) {
     org = 'overview'
+  }
+
+  if (tab === 'management' && org === 'results') {
+    if (ctx.readResultDraftLoading) {
+    } else if (!ctx.canReadResultDraft) {
+      org = 'overview'
+    }
   }
 
   return { tab, section, org }
