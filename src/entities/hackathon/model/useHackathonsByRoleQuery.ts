@@ -1,6 +1,6 @@
 'use client'
 
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getHackathonsByRole, type RoleFilter } from '../api/getHackathonsByRole'
 
 export function hackathonsByRoleQueryKey(
@@ -30,6 +30,5 @@ export function useHackathonsByRoleQuery(
       }),
     staleTime: 60_000,
     enabled: options?.enabled ?? true,
-    placeholderData: role === 'owner' ? keepPreviousData : undefined,
   })
 }

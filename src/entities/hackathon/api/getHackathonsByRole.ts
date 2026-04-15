@@ -1,7 +1,7 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import type { operations } from '@/shared/api/platform.schema'
-import type { HackathonListResponse, Hackathon } from '../model/types'
+import type { FilterGroup, HackathonListResponse, Hackathon } from '../model/types'
 import { serializeListHackathonsRequestBody } from './serializeListHackathonsRequestBody'
 
 const DEFAULT_PAGE_SIZE = 20
@@ -13,6 +13,59 @@ export type RoleFilter = 'owner' | 'organizer' | 'judge' | 'mentor'
 
 export type GetHackathonsByRoleOptions = {
   includeOwnerDrafts?: boolean
+}
+
+function mapHackathonStages(response: HackathonListResponse): HackathonListResponse {
+  return {
+    ...response,
+    hackathons: (response.hackathons ?? []).map(hackathon => ({
+      ...hackathon,
+      stage: normalizeHackathonStage(hackathon.stage as any),
+    })),
+  } as HackathonListResponse
+}
+
+async function postListHackathons(query: ListHackathonsRequest): Promise<HackathonListResponse> {
+  const response = await platformFetchJson<
+    operations['HackathonService_ListHackathons']['responses']['200']['content']['application/json']
+  >('/v1/hackathons/list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: serializeListHackathonsRequestBody(query),
+  })
+  return mapHackathonStages(response as HackathonListResponse)
+}
+
+/**
+ * Два OR-группы в одном запросе (owner + draft ∨ owner + published) на части стеков
+ * дают лишнюю выдачу без ограничения по роли — два запроса с одной AND-группой и merge.
+ */
+function mergeOwnerPublishedAndDraftResponses(
+  published: HackathonListResponse,
+  drafts: HackathonListResponse
+): HackathonListResponse {
+  const byId = new Map<string, Hackathon>()
+  for (const h of (published.hackathons ?? []) as Hackathon[]) {
+    if (h.hackathonId) byId.set(h.hackathonId, h)
+  }
+  for (const h of (drafts.hackathons ?? []) as Hackathon[]) {
+    if (h.hackathonId) byId.set(h.hackathonId, h)
+  }
+  const merged = Array.from(byId.values()).sort((a, b) => {
+    const ta = a.dates?.startsAt ? new Date(a.dates.startsAt).getTime() : 0
+    const tb = b.dates?.startsAt ? new Date(b.dates.startsAt).getTime() : 0
+    return tb - ta
+  })
+  return {
+    ...published,
+    hackathons: merged,
+    page: {
+      nextPageToken: '',
+      hasMore: Boolean(published.page?.hasMore || drafts.page?.hasMore),
+    },
+  } as HackathonListResponse
 }
 
 export async function getHackathonsByRole(
@@ -36,14 +89,8 @@ export async function getHackathonsByRole(
     stringValue: 'HACKATHON_STATE_PUBLISHED',
   }
   const includeOwnerDrafts = role === 'owner' && Boolean(options?.includeOwnerDrafts)
-  const filterGroups = includeOwnerDrafts
-    ? [
-        { filters: [myRoleFilter, stateDraftFilter] },
-        { filters: [myRoleFilter, statePublishedFilter] },
-      ]
-    : [{ filters: [myRoleFilter, statePublishedFilter] }]
 
-  const query: ListHackathonsRequest = {
+  const buildListRequest = (filterGroups: FilterGroup[]): ListHackathonsRequest => ({
     query: {
       filterGroups,
       sort: [
@@ -59,27 +106,17 @@ export async function getHackathonsByRole(
     includeDescription: false,
     includeLinks: false,
     includeLimits: true,
-  }
-
-  const response = await platformFetchJson<
-    operations['HackathonService_ListHackathons']['responses']['200']['content']['application/json']
-  >('/v1/hackathons/list', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: serializeListHackathonsRequestBody(query),
   })
 
-  const hackathons = (response.hackathons ?? []).map(hackathon => ({
-    ...hackathon,
-    stage: normalizeHackathonStage(hackathon.stage as any),
-  }))
+  if (includeOwnerDrafts) {
+    const [published, drafts] = await Promise.all([
+      postListHackathons(buildListRequest([{ filters: [myRoleFilter, statePublishedFilter] }])),
+      postListHackathons(buildListRequest([{ filters: [myRoleFilter, stateDraftFilter] }])),
+    ])
+    return mergeOwnerPublishedAndDraftResponses(published, drafts)
+  }
 
-  return {
-    ...response,
-    hackathons,
-  } as HackathonListResponse
+  return postListHackathons(buildListRequest([{ filters: [myRoleFilter, statePublishedFilter] }]))
 }
 
 export async function getHackathonsByParticipation(
