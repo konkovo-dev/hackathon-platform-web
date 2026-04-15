@@ -63,6 +63,7 @@ export const I18N_KEYS = [
   "dashboard.loading",
   "dashboard.organizer.active",
   "dashboard.organizer.drafts",
+  "dashboard.organizer.show_drafts",
   "dashboard.quick_actions.create_hackathon",
   "dashboard.quick_actions.find_hackathons",
   "dashboard.quick_actions.invitations",

@@ -1,6 +1,7 @@
 'use client'
 
-import { PageContainer } from '@/shared/ui'
+import { useState } from 'react'
+import { PageContainer, SwitchField } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { routes } from '@/shared/config/routes'
 import { useDashboardHackathonsQuery } from '../model/hooks'
@@ -15,7 +16,10 @@ import { UpcomingEvents } from './UpcomingEvents'
 
 export function Dashboard() {
   const t = useT()
-  const { organizer, jury, mentor, participant } = useDashboardHackathonsQuery()
+  const [organizerShowDrafts, setOrganizerShowDrafts] = useState(false)
+  const { organizer, jury, mentor, participant } = useDashboardHackathonsQuery({
+    includeOwnerDrafts: organizerShowDrafts,
+  })
 
   const organizerHackathons = organizer.data?.hackathons ?? []
   const juryHackathons = jury.data?.hackathons ?? []
@@ -77,6 +81,13 @@ export function Dashboard() {
             emptyActionLabel={t('dashboard.empty.organizer_action')}
             emptyActionHref={routes.hackathons.create}
             detailTabId={HACKATHON_DETAIL_TAB_MANAGEMENT}
+            sectionAction={
+              <SwitchField
+                checked={organizerShowDrafts}
+                onChange={setOrganizerShowDrafts}
+                label={t('dashboard.organizer.show_drafts')}
+              />
+            }
           />
         </div>
       </div>

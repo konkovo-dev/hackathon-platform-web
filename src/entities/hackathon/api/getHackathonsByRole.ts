@@ -10,26 +10,37 @@ type ListHackathonsRequest =
 
 export type RoleFilter = 'owner' | 'organizer' | 'judge' | 'mentor'
 
+export type GetHackathonsByRoleOptions = {
+  includeOwnerDrafts?: boolean
+}
+
 export async function getHackathonsByRole(
   role: RoleFilter,
-  pageSize: number = DEFAULT_PAGE_SIZE
+  pageSize: number = DEFAULT_PAGE_SIZE,
+  options?: GetHackathonsByRoleOptions
 ): Promise<HackathonListResponse> {
-  const filterGroups = [
-    {
-      filters: [
-        {
-          field: 'my_role',
-          operation: 'FILTER_OPERATION_EQUAL' as const,
-          stringValue: role,
-        },
-        {
-          field: 'state',
-          operation: 'FILTER_OPERATION_EQUAL' as const,
-          stringValue: 'HACKATHON_STATE_PUBLISHED',
-        },
-      ],
-    },
-  ]
+  const myRoleFilter = {
+    field: 'my_role',
+    operation: 'FILTER_OPERATION_EQUAL' as const,
+    stringValue: role,
+  }
+  const stateDraftFilter = {
+    field: 'state',
+    operation: 'FILTER_OPERATION_EQUAL' as const,
+    stringValue: 'HACKATHON_STATE_DRAFT',
+  }
+  const statePublishedFilter = {
+    field: 'state',
+    operation: 'FILTER_OPERATION_EQUAL' as const,
+    stringValue: 'HACKATHON_STATE_PUBLISHED',
+  }
+  const includeOwnerDrafts = role === 'owner' && Boolean(options?.includeOwnerDrafts)
+  const filterGroups = includeOwnerDrafts
+    ? [
+        { filters: [myRoleFilter, stateDraftFilter] },
+        { filters: [myRoleFilter, statePublishedFilter] },
+      ]
+    : [{ filters: [myRoleFilter, statePublishedFilter] }]
 
   const query: ListHackathonsRequest = {
     query: {

@@ -28,8 +28,9 @@ function mergeOwnerAndOrganizerHackathons(
   return Array.from(byId.values())
 }
 
-export function useDashboardHackathonsQuery() {
-  const ownerQuery = useHackathonsByRoleQuery('owner')
+export function useDashboardHackathonsQuery(options?: { includeOwnerDrafts?: boolean }) {
+  const includeOwnerDrafts = Boolean(options?.includeOwnerDrafts)
+  const ownerQuery = useHackathonsByRoleQuery('owner', { includeOwnerDrafts })
   const organizerRoleQuery = useHackathonsByRoleQuery('organizer')
   const juryQuery = useHackathonsByRoleQuery('judge')
   const mentorQuery = useHackathonsByRoleQuery('mentor')
@@ -44,9 +45,16 @@ export function useDashboardHackathonsQuery() {
     [ownerQuery.data?.hackathons, organizerRoleQuery.data?.hackathons]
   )
 
+  const organizerResponseBase =
+    ownerQuery.data !== undefined || organizerRoleQuery.data !== undefined
+      ? { ...(organizerRoleQuery.data ?? {}), ...(ownerQuery.data ?? {}) }
+      : undefined
+
   const organizer = {
     ...ownerQuery,
-    data: ownerQuery.data ? { ...ownerQuery.data, hackathons: organizerHackathons } : undefined,
+    data: organizerResponseBase
+      ? { ...organizerResponseBase, hackathons: organizerHackathons }
+      : undefined,
     isLoading: ownerQuery.isLoading || organizerRoleQuery.isLoading,
     error: ownerQuery.error ?? organizerRoleQuery.error,
   }

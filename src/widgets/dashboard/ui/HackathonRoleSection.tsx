@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { Section, Button } from '@/shared/ui'
 import { HackathonCard } from '@/features/hackathon-list/ui/HackathonCard'
@@ -21,6 +22,7 @@ export interface HackathonRoleSectionProps {
   emptyActionHref?: string
   participationMode?: boolean
   detailTabId?: HackathonDetailTabId | null
+  sectionAction?: ReactNode
 }
 
 export function HackathonRoleSection({
@@ -34,12 +36,13 @@ export function HackathonRoleSection({
   emptyActionHref,
   participationMode = false,
   detailTabId,
+  sectionAction,
 }: HackathonRoleSectionProps) {
   const t = useT()
 
   if (isLoading) {
     return (
-      <Section title={title}>
+      <Section title={title} action={sectionAction}>
         <div className="flex items-center justify-center p-m20">
           <span className="typography-body-md-regular text-text-secondary">
             {t('dashboard.loading')}
@@ -51,7 +54,7 @@ export function HackathonRoleSection({
 
   if (error) {
     return (
-      <Section title={title}>
+      <Section title={title} action={sectionAction}>
         <div className="flex flex-col items-center justify-center p-m20 gap-m4">
           <span className="typography-body-md-regular text-state-error">
             {t('dashboard.error')}
@@ -63,7 +66,7 @@ export function HackathonRoleSection({
 
   if (hackathons.length === 0) {
     return (
-      <Section title={title}>
+      <Section title={title} action={sectionAction}>
         <div className="flex flex-col items-center justify-center p-m20 gap-m6 text-center">
           <span className="typography-body-md-regular text-text-secondary">{emptyMessage}</span>
           {emptyHint && (
@@ -82,7 +85,7 @@ export function HackathonRoleSection({
   }
 
   return (
-    <Section title={title}>
+    <Section title={title} action={sectionAction}>
       <HorizontalScrollList>
         {hackathons.map(hackathon => (
           <div key={hackathon.hackathonId} className="flex-shrink-0 snap-start">

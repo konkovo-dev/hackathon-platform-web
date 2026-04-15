@@ -8,7 +8,8 @@
   },
   "organizer": {
     "active": "active",
-    "drafts": "drafts"
+    "drafts": "drafts",
+    "show_drafts": "show drafts"
   },
   "empty": {
     "organizer": "you don't have any hackathons yet",
