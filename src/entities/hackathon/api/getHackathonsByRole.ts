@@ -2,6 +2,7 @@ import { platformFetchJson } from '@/shared/api/platformClient'
 import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import type { operations } from '@/shared/api/platform.schema'
 import type { HackathonListResponse, Hackathon } from '../model/types'
+import { serializeListHackathonsRequestBody } from './serializeListHackathonsRequestBody'
 
 const DEFAULT_PAGE_SIZE = 20
 
@@ -67,7 +68,7 @@ export async function getHackathonsByRole(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(query),
+    body: serializeListHackathonsRequestBody(query),
   })
 
   const hackathons = (response.hackathons ?? []).map(hackathon => ({
@@ -119,7 +120,7 @@ export async function getHackathonsByParticipation(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(query),
+    body: serializeListHackathonsRequestBody(query),
   })
 
   const hackathons = (response.hackathons ?? []).map(hackathon => ({

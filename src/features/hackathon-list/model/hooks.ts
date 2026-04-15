@@ -30,7 +30,7 @@ export function useInfiniteHackathonListQuery(
     'list',
     'infinite',
     filters.stage,
-    filters.formats.join(','),
+    (filters.formats ?? []).join(','),
     filters.city ?? '',
     filters.sortDirection,
   ] as const

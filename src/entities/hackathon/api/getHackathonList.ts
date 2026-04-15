@@ -1,8 +1,9 @@
 import { platformFetchJson } from '@/shared/api/platformClient'
 import { normalizeHackathonStage } from '@/entities/hackathon-context/model/types'
 import type { operations } from '@/shared/api/platform.schema'
-import type { HackathonListResponse, HackathonListFilters, Hackathon } from '../model/types'
-import { buildQueryFromFilters, getDefaultFilters } from '../model/filterMapper'
+import type { HackathonListResponse, HackathonListFilters } from '../model/types'
+import { buildQueryFromFilters, getDefaultFilters, hackathonStageMatchesListFilter } from '../model/filterMapper'
+import { serializeListHackathonsRequestBody } from './serializeListHackathonsRequestBody'
 
 const DEFAULT_PAGE_SIZE = 50
 
@@ -14,9 +15,8 @@ export async function getHackathonList(
   pageToken?: string,
   pageSize: number = DEFAULT_PAGE_SIZE
 ): Promise<HackathonListResponse> {
-  const query: ListHackathonsRequest = filters
-    ? buildQueryFromFilters(filters, pageToken, pageSize)
-    : buildQueryFromFilters(getDefaultFilters(), pageToken, pageSize)
+  const listFilters = filters ?? getDefaultFilters()
+  const query: ListHackathonsRequest = buildQueryFromFilters(listFilters, pageToken, pageSize)
 
   const response = await platformFetchJson<
     operations['HackathonService_ListHackathons']['responses']['200']['content']['application/json']
@@ -25,13 +25,18 @@ export async function getHackathonList(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(query),
+    body: serializeListHackathonsRequestBody(query),
   })
 
-  const hackathons = (response.hackathons ?? []).map(hackathon => ({
+  const mapped = (response.hackathons ?? []).map(hackathon => ({
     ...hackathon,
     stage: normalizeHackathonStage(hackathon.stage as any),
   }))
+
+  const hackathons =
+    listFilters.skipStageFilter
+      ? mapped
+      : mapped.filter(h => hackathonStageMatchesListFilter(h.stage, listFilters.stage))
 
   return {
     ...response,

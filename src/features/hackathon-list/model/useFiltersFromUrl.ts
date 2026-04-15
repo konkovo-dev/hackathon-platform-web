@@ -7,10 +7,23 @@ import { getDefaultFilters } from '@/entities/hackathon/model/filterMapper'
 import { useGeolocation, findNearestCity } from '@/shared/lib/geolocation/useGeolocation'
 import { getCities } from '@/entities/location'
 
+const CITY_QUERY_ANY = 'all'
+
 function filtersEqual(a: HackathonListFilters, b: HackathonListFilters): boolean {
   if (a.stage !== b.stage || a.city !== b.city || a.sortDirection !== b.sortDirection) return false
   if (a.formats.length !== b.formats.length) return false
   return a.formats.every((f, i) => b.formats[i] === f)
+}
+
+function pendingMatchesUrl(pending: HackathonListFilters, searchParams: URLSearchParams): boolean {
+  const pendingParams = new URLSearchParams(serializeFiltersToUrl(pending))
+  const keys = new Set([...pendingParams.keys(), ...searchParams.keys()])
+  for (const key of keys) {
+    if (pendingParams.get(key) !== searchParams.get(key)) {
+      return false
+    }
+  }
+  return true
 }
 
 /**
@@ -56,10 +69,10 @@ export function useFiltersFromUrl(): [
 
   useEffect(() => {
     if (!pendingFilters) return
-    if (filtersEqual(pendingFilters, filtersFromUrl)) {
+    if (pendingMatchesUrl(pendingFilters, searchParams) || filtersEqual(pendingFilters, filtersFromUrl)) {
       setPendingFilters(null)
     }
-  }, [pendingFilters, filtersFromUrl])
+  }, [pendingFilters, filtersFromUrl, searchParams])
 
   const setFilters = useCallback(
     (newFilters: HackathonListFilters) => {
@@ -77,7 +90,7 @@ export function useFiltersFromUrl(): [
     citySyncDoneRef.current = true
     const params = serializeFiltersToUrl(filtersFromUrl)
     router.replace(`/hackathons?${params}`, { scroll: false })
-  }, [pendingFilters, filtersFromUrl.city, searchParams, router])
+  }, [pendingFilters, filtersFromUrl, searchParams, router])
 
   return [filters, setFilters]
 }
@@ -90,7 +103,9 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
 
   const stage = searchParams.get('stage')
   const formatParam = searchParams.get('format')
-  const city = searchParams.get('city')
+  const cityRaw = searchParams.get('city')
+  const city =
+    cityRaw && cityRaw !== CITY_QUERY_ANY && cityRaw !== '' ? cityRaw : undefined
   const sort = searchParams.get('sort')
 
   return {
@@ -105,7 +120,7 @@ function parseFiltersFromUrl(searchParams: URLSearchParams): HackathonListFilter
     formats: formatParam
       ? (formatParam.split(',').filter(f => f === 'online' || f === 'offline') as HackathonFormat[])
       : defaults.formats,
-    city: city ? city : undefined,
+    city,
     sortDirection: sort === 'asc' ? 'asc' : 'desc',
   }
 }
@@ -126,9 +141,11 @@ function serializeFiltersToUrl(filters: HackathonListFilters): string {
     params.set('format', filters.formats.join(','))
   }
 
-  // Город
+  // Город: без выбора — маркер `all`, иначе после сброса URL пустой и снова подставится город по умолчанию
   if (filters.city) {
     params.set('city', filters.city)
+  } else {
+    params.set('city', CITY_QUERY_ANY)
   }
 
   if (filters.sortDirection === 'asc') {

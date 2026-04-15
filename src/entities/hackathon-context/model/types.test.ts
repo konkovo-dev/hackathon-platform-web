@@ -17,4 +17,9 @@ describe('normalizeHackathonStage', () => {
   it('passes through other prefixed stages', () => {
     expect(normalizeHackathonStage('HACKATHON_STAGE_RUNNING')).toBe('RUNNING')
   })
+
+  it('maps proto enum number to stage', () => {
+    expect(normalizeHackathonStage(4)).toBe('RUNNING')
+    expect(normalizeHackathonStage(6)).toBe('FINISHED')
+  })
 })
