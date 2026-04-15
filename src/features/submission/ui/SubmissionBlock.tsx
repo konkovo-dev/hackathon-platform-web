@@ -6,6 +6,7 @@ import { useT } from '@/shared/i18n/useT'
 import {
   useMySubmissionsQuery,
   useFinalSubmissionQuery,
+  useSubmissionDetailQuery,
   type OwnerKind,
 } from '@/entities/submission'
 import { useCan } from '@/shared/policy/useCan'
@@ -55,6 +56,25 @@ export function SubmissionBlock({
   const finalSubmission =
     finalSubmissionDetailQuery.data ?? listFinalSubmission ?? null
 
+  const completedFilesOnFinal = (
+    finalSubmission?.files.filter(f => f.uploadStatus === 'completed') ?? []
+  ).length
+  const shouldHydrateSubmissionFiles =
+    isPostRun &&
+    Boolean(finalSubmission?.submissionId) &&
+    completedFilesOnFinal === 0
+
+  const submissionFilesDetailQuery = useSubmissionDetailQuery(
+    hackathonId,
+    finalSubmission?.submissionId ?? null,
+    shouldHydrateSubmissionFiles
+  )
+
+  const postRunCompletedFiles =
+    completedFilesOnFinal > 0
+      ? (finalSubmission?.files.filter(f => f.uploadStatus === 'completed') ?? [])
+      : (submissionFilesDetailQuery.data?.files.filter(f => f.uploadStatus === 'completed') ?? [])
+
   const canSelectFinal = isRunning && selectFinalDecision.allowed
   const canEdit = isRunning
 
@@ -62,7 +82,8 @@ export function SubmissionBlock({
     submissionsQuery.isLoading ||
     (hackathonStage === 'RUNNING' && selectFinalPermissionLoading) ||
     submissionOwnerPending ||
-    (fetchFinalFromParticipantApi && finalSubmissionDetailQuery.isPending)
+    (fetchFinalFromParticipantApi && finalSubmissionDetailQuery.isPending) ||
+    (shouldHydrateSubmissionFiles && submissionFilesDetailQuery.isPending)
   ) {
     return (
       <Section
@@ -76,9 +97,6 @@ export function SubmissionBlock({
 
   // Read-only view for post-running stages
   if (isPostRun) {
-    const postRunCompletedFiles =
-      finalSubmission?.files.filter(f => f.uploadStatus === 'completed') ?? []
-
     return (
       <Section
         title={t('hackathons.detail.participation.submission.readonlyTitle')}
