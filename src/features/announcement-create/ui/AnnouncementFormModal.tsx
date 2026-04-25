@@ -14,6 +14,7 @@ import {
 } from '@/entities/hackathon/api/updateAnnouncement'
 import type { HackathonAnnouncement } from '@/entities/hackathon/api/getHackathonAnnouncements'
 import { ApiError } from '@/shared/api/errors'
+import { randomUUID } from '@/shared/lib/randomUuid'
 
 export interface AnnouncementFormModalProps {
   open: boolean
@@ -50,12 +51,12 @@ export function AnnouncementFormModal({
     mutationFn: (params: { title: string; body: string }) => {
       if (isEditMode && announcement?.announcementId) {
         return updateAnnouncement(hackathonId, announcement.announcementId, {
-          idempotencyKey: { key: crypto.randomUUID() },
+          idempotencyKey: { key: randomUUID() },
           ...params,
         })
       }
       return createAnnouncement(hackathonId, {
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
         ...params,
       })
     },

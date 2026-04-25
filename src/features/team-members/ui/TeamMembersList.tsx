@@ -21,6 +21,7 @@ export interface TeamMembersListProps {
   canKickMember: boolean
   canLeaveTeam?: boolean
   canInviteMember?: boolean
+  hasVacancies?: boolean
   onInvite?: () => void
   onTransferCaptain?: () => void
 }
@@ -32,6 +33,7 @@ export function TeamMembersList({
   canKickMember: canKickFromApi,
   canLeaveTeam = false,
   canInviteMember,
+  hasVacancies = true,
   onInvite,
   onTransferCaptain,
 }: TeamMembersListProps) {
@@ -102,14 +104,30 @@ export function TeamMembersList({
         variant="elevated"
         action={
           canInviteMember && onInvite ? (
-            <Button
-              variant="icon-secondary"
-              size="xs"
-              onClick={onInvite}
-              aria-label={t('teams.invitations.create')}
-            >
-              <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
-            </Button>
+            hasVacancies ? (
+              <Button
+                variant="icon-secondary"
+                size="xs"
+                onClick={onInvite}
+                aria-label={t('teams.invitations.create')}
+              >
+                <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
+              </Button>
+            ) : (
+              <div className="relative group cursor-not-allowed">
+                <Button
+                  variant="icon-secondary"
+                  size="xs"
+                  disabled
+                  aria-label={t('teams.invitations.create')}
+                >
+                  <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
+                </Button>
+                <div className="pointer-events-none absolute right-full top-1/2 -translate-y-1/2 mr-m2 z-10 w-max max-w-[180px] rounded-[var(--spacing-m2)] bg-bg-secondary px-m4 py-m2 shadow-sm typography-caption-sm-medium text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                  {t('teams.invitations.noVacanciesHint')}
+                </div>
+              </div>
+            )
           ) : undefined
         }
       >

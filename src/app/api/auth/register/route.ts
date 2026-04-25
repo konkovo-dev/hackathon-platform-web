@@ -3,6 +3,7 @@ import { proxyAuthPost } from '@/shared/lib/auth/proxyAuthGateway'
 import { setAuthCookies } from '@/shared/lib/auth/server'
 import type { components as AuthGatewayComponents } from '@/shared/api/authGateway.schema'
 import { mapAuthGatewayErrorToBff } from '../_lib/errorMap'
+import { randomUUID } from '@/shared/lib/randomUuid'
 
 type TokenPairResponse = AuthGatewayComponents['schemas']['TokenPairResponse']
 type RegisterRequest = AuthGatewayComponents['schemas']['RegisterRequest']
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
     first_name: firstName,
     last_name: lastName,
     timezone,
-    idempotency_key: { key: crypto.randomUUID() },
+    idempotency_key: { key: randomUUID() },
   }
 
   const result = await proxyAuthPost<TokenPairResponse>('/v1/auth/register', payload)

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Modal, Button, Input, MarkdownEditor } from '@/shared/ui'
+import { Modal, Button, Input, MarkdownEditor, ErrorAlert } from '@/shared/ui'
 import { useT } from '@/shared/i18n/useT'
 import { useCreateSubmissionMutation } from '@/entities/submission'
 import { SubmissionFileUpload } from './SubmissionFileUpload'
+import { ApiError } from '@/shared/api/errors'
 
 export interface CreateSubmissionModalProps {
   open: boolean
@@ -21,6 +22,7 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
   const [step, setStep] = useState<Step>('form')
   const [createdSubmissionId, setCreatedSubmissionId] = useState<string | null>(null)
   const [titleError, setTitleError] = useState('')
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const createMutation = useCreateSubmissionMutation(hackathonId)
 
@@ -31,6 +33,7 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
       setStep('form')
       setCreatedSubmissionId(null)
       setTitleError('')
+      setSubmitError(null)
     }
   }, [open])
 
@@ -41,6 +44,7 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
     }
     setTitleError('')
     try {
+      setSubmitError(null)
       const res = await createMutation.mutateAsync({
         title: title.trim(),
         description: description.trim() || undefined,
@@ -51,8 +55,20 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
       } else {
         onClose()
       }
-    } catch {
-      // error handled by mutation state
+    } catch (err) {
+      if (err instanceof ApiError) {
+        const m = err.data.message || ''
+        const forbiddenActiveParticipants =
+          (err.data.status === 403 || err.data.code === '7') &&
+          /only active participants can create submissions/i.test(m)
+        setSubmitError(
+          forbiddenActiveParticipants
+            ? t('hackathons.detail.participation.submission.createModal.errors.onlyActiveParticipants')
+            : t('hackathons.detail.participation.submission.createModal.errors.createFailed')
+        )
+        return
+      }
+      setSubmitError(t('hackathons.detail.participation.submission.createModal.errors.createFailed'))
     }
   }
 
@@ -89,6 +105,8 @@ export function CreateSubmissionModal({ open, onClose, hackathonId }: CreateSubm
             </label>
             <MarkdownEditor value={description} onChange={setDescription} />
           </div>
+
+          {submitError ? <ErrorAlert message={submitError} /> : null}
 
           <div className="flex gap-m4 justify-end">
             <Button

@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { operations } from '@/shared/api/platform.schema'
 
@@ -16,7 +17,7 @@ export async function cancelStaffInvitation(
     `/v1/hackathons/${hackathonId}/staff-invitations/${invitationId}/cancel`,
     {
       method: 'POST',
-      body: JSON.stringify(body ?? { idempotencyKey: { key: crypto.randomUUID() } }),
+      body: JSON.stringify(body ?? { idempotencyKey: { key: randomUUID() } }),
     }
   )
 }

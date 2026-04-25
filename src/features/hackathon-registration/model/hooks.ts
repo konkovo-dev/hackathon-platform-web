@@ -1,5 +1,6 @@
 'use client'
 
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { registerForHackathon } from '@/entities/hackathon/api/registerForHackathon'
 import { switchParticipationMode } from '@/entities/hackathon-context/api/switchParticipationMode'
@@ -16,7 +17,7 @@ export function useRegisterForHackathonMutation(hackathonId: string) {
       wishedRoleIds?: string[]
     }) =>
       registerForHackathon(hackathonId, {
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
         desiredStatus: params?.desiredStatus ?? 'PART_INDIVIDUAL',
         ...(params?.motivationText != null && params.motivationText !== ''
           ? { motivationText: params.motivationText }
@@ -37,7 +38,7 @@ export function useSwitchParticipationModeMutation(hackathonId: string) {
   return useMutation({
     mutationFn: (params: { newStatus: 'PART_INDIVIDUAL' | 'PART_LOOKING_FOR_TEAM' }) =>
       switchParticipationMode(hackathonId, {
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
         newStatus: params.newStatus,
       }),
     onSuccess: async () => {
@@ -52,7 +53,7 @@ export function useUpdateMyParticipationMutation(hackathonId: string) {
   return useMutation({
     mutationFn: (params: { motivationText?: string; wishedRoleIds?: string[] }) =>
       updateMyParticipation(hackathonId, {
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
         ...(params.motivationText !== undefined ? { motivationText: params.motivationText } : {}),
         ...(params.wishedRoleIds !== undefined ? { wishedRoleIds: params.wishedRoleIds } : {}),
       }),

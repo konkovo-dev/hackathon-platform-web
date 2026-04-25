@@ -1,5 +1,6 @@
 'use client'
 
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createJoinRequest } from '@/entities/team'
 
@@ -10,7 +11,7 @@ export function useCreateJoinRequestMutation(hackathonId: string, teamId: string
     mutationFn: (params: { vacancyId: string; message?: string }) =>
       createJoinRequest(hackathonId, teamId, {
         idempotencyKey: {
-          key: crypto.randomUUID(),
+          key: randomUUID(),
         },
         ...params,
       }),

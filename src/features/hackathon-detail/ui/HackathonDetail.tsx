@@ -168,9 +168,10 @@ export function HackathonDetail({
   const canReadResultDraft = canReadResultDraftDecision.allowed
   const canViewResultPublic = canViewResultPublicDecision.allowed
   const canAccessAboutResultsSection =
-    canReadResultDraft || (resultPublished && (!sessionActive || canViewResultPublic))
+    sessionActive && (canReadResultDraft || (resultPublished && canViewResultPublic))
   const aboutResultsSectionLoading =
-    (parsedState.tab === 'about' &&
+    (sessionActive &&
+      parsedState.tab === 'about' &&
       parsedState.section === 'results' &&
       hackathon == null &&
       isLoading) ||
@@ -178,9 +179,9 @@ export function HackathonDetail({
     (sessionActive && resultPublished && viewResultPublicLoading)
 
   const showAboutResultsNav =
-    canReadResultDraft ||
-    (canManage && readResultDraftLoading) ||
-    (resultPublished && (!sessionActive || canViewResultPublic)) ||
+    (sessionActive && canReadResultDraft) ||
+    (sessionActive && canManage && readResultDraftLoading) ||
+    (sessionActive && resultPublished && canViewResultPublic) ||
     (sessionActive && resultPublished && viewResultPublicLoading)
   const showManagementResultsNav = canManage && !readResultDraftLoading && canReadResultDraft
 
@@ -490,7 +491,9 @@ export function HackathonDetail({
                           )}
                         </>
                       )}
-                      {displayState.section === 'results' && <PublicResultSection hackathonId={hackathonId} />}
+                      {displayState.section === 'results' && canAccessAboutResultsSection && (
+                        <PublicResultSection hackathonId={hackathonId} />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -524,7 +527,9 @@ export function HackathonDetail({
                       )}
                     </>
                   )}
-                  {displayState.section === 'results' && <PublicResultSection hackathonId={hackathonId} />}
+                  {displayState.section === 'results' && canAccessAboutResultsSection && (
+                    <PublicResultSection hackathonId={hackathonId} />
+                  )}
                 </div>
               </div>
             )}

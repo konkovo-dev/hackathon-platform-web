@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { operations } from '@/shared/api/platform.schema'
 
@@ -12,7 +13,7 @@ export async function assignSubmissionsToJudges(
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idempotencyKey: { key: crypto.randomUUID() } }),
+      body: JSON.stringify({ idempotencyKey: { key: randomUUID() } }),
     }
   )
 }

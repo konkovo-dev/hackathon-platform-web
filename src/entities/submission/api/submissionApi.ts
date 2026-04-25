@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { components, operations } from '@/shared/api/platform.schema'
 
@@ -42,7 +43,7 @@ export async function createSubmission(
   return platformFetchJson<CreateSubmissionResponse>(`/v1/hackathons/${hackathonId}/submissions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...input, idempotencyKey: { key: crypto.randomUUID() } }),
+    body: JSON.stringify({ ...input, idempotencyKey: { key: randomUUID() } }),
   })
 }
 
@@ -80,7 +81,7 @@ export async function updateSubmission(
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...input, idempotencyKey: { key: crypto.randomUUID() } }),
+      body: JSON.stringify({ ...input, idempotencyKey: { key: randomUUID() } }),
     }
   )
 }
@@ -89,7 +90,7 @@ export async function selectFinalSubmission(
   hackathonId: string,
   submissionId: string
 ): Promise<SelectFinalResponse> {
-  const body: SelectFinalBody = { idempotencyKey: { key: crypto.randomUUID() } }
+  const body: SelectFinalBody = { idempotencyKey: { key: randomUUID() } }
   return platformFetchJson<SelectFinalResponse>(
     `/v1/hackathons/${hackathonId}/submissions/${submissionId}/select-final`,
     {
@@ -121,7 +122,7 @@ export async function createSubmissionUpload(
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...input, idempotencyKey: { key: crypto.randomUUID() } }),
+      body: JSON.stringify({ ...input, idempotencyKey: { key: randomUUID() } }),
     }
   )
 }
@@ -131,7 +132,7 @@ export async function completeSubmissionUpload(
   submissionId: string,
   fileId: string
 ): Promise<CompleteUploadResponse> {
-  const body: CompleteUploadBody = { idempotencyKey: { key: crypto.randomUUID() } }
+  const body: CompleteUploadBody = { idempotencyKey: { key: randomUUID() } }
   return platformFetchJson<CompleteUploadResponse>(
     `/v1/hackathons/${hackathonId}/submissions/${submissionId}/files/${fileId}/complete`,
     {

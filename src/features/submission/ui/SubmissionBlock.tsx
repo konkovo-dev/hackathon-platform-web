@@ -11,6 +11,7 @@ import {
 } from '@/entities/submission'
 import { useCan } from '@/shared/policy/useCan'
 import type { HackathonStage } from '@/entities/hackathon-context/model/types'
+import { useMyParticipationQuery } from '@/entities/hackathon-context/model/hooks'
 import { SubmissionList } from './SubmissionList'
 import { CreateSubmissionModal } from './CreateSubmissionModal'
 import { MarkdownContent } from '@/shared/ui'
@@ -45,6 +46,16 @@ export function SubmissionBlock({
 
   const isRunning = hackathonStage === 'RUNNING'
   const isPostRun = hackathonStage === 'JUDGING' || hackathonStage === 'FINISHED'
+
+  const participationQuery = useMyParticipationQuery(hackathonId)
+  const participationStatus = participationQuery.data?.status ?? null
+  const isActiveParticipant =
+    participationStatus === 'PART_INDIVIDUAL' ||
+    participationStatus === 'PART_LOOKING_FOR_TEAM' ||
+    participationStatus === 'PART_TEAM_MEMBER' ||
+    participationStatus === 'PART_TEAM_CAPTAIN'
+  const canCreateSubmissions = isRunning && isActiveParticipant
+
   const fetchFinalFromParticipantApi = isPostRun && Boolean(submissionOwnerId)
 
   const finalSubmissionDetailQuery = useFinalSubmissionQuery(
@@ -81,6 +92,7 @@ export function SubmissionBlock({
   if (
     submissionsQuery.isLoading ||
     (hackathonStage === 'RUNNING' && selectFinalPermissionLoading) ||
+    (hackathonStage === 'RUNNING' && participationQuery.isLoading) ||
     submissionOwnerPending ||
     (fetchFinalFromParticipantApi && finalSubmissionDetailQuery.isPending) ||
     (shouldHydrateSubmissionFiles && submissionFilesDetailQuery.isPending)
@@ -148,7 +160,7 @@ export function SubmissionBlock({
         title={t('hackathons.detail.participation.submission.sectionTitle')}
         variant="elevated"
         hoverAction={
-          submissions.length > 0 ? (
+          submissions.length > 0 && canCreateSubmissions ? (
             <Button
               variant="icon-secondary"
               size="xs"
@@ -165,7 +177,17 @@ export function SubmissionBlock({
             <p className="typography-body-sm text-text-secondary">
               {t('hackathons.detail.participation.submission.noSubmissions')}
             </p>
-            <Button variant="primary" size="md" onClick={() => setCreateOpen(true)}>
+            {!canCreateSubmissions ? (
+              <p className="typography-body-sm text-text-tertiary">
+                {t('hackathons.detail.participation.submission.createForbidden')}
+              </p>
+            ) : null}
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => setCreateOpen(true)}
+              disabled={!canCreateSubmissions}
+            >
               {t('hackathons.detail.participation.submission.createButton')}
             </Button>
           </div>

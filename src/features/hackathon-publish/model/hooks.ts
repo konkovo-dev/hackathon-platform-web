@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { publishHackathon } from '@/entities/hackathon/api/publishHackathon'
 import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
@@ -9,7 +10,7 @@ export function usePublishHackathonMutation(hackathonId: string) {
     mutationFn: () =>
       publishHackathon(hackathonId, {
         idempotencyKey: {
-          key: crypto.randomUUID(),
+          key: randomUUID(),
         },
       }),
     onSuccess: () => {

@@ -155,6 +155,7 @@ export function TeamDetailView({ hackathonId, teamId, currentUserId }: TeamDetai
           canKickMember={canKickMember}
           canLeaveTeam={leaveTeamDecision.allowed}
           canInviteMember={canInviteMember}
+          hasVacancies={vacancies.length > 0}
           onInvite={() => setInviteModalOpen(true)}
           onTransferCaptain={canTransfer ? () => setTransferModalOpen(true) : undefined}
         />

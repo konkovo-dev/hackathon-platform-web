@@ -7,6 +7,7 @@ import { useT } from '@/shared/i18n/useT'
 import { useCan } from '@/shared/policy/useCan'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { formatRelativeTime } from '@/shared/lib/formatDate'
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { routes } from '@/shared/config/routes'
 import { HackathonValidationChecklist } from '@/features/hackathon-validation/ui/HackathonValidationChecklist'
 import { EditTaskModal } from '@/features/hackathon-task-edit/ui/EditTaskModal'
@@ -59,7 +60,7 @@ function ManageableAnnouncementItem({
         throw new Error('Announcement ID is required')
       }
       return deleteAnnouncement(hackathonId, announcement.announcementId, {
-        'idempotencyKey.key': crypto.randomUUID(),
+        'idempotencyKey.key': randomUUID(),
       })
     },
     onSuccess: () => {

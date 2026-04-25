@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { batchGetUsers } from '@/entities/user/api/batchGetUsers'
 import { pickAvatarUrlFromPayload } from '@/entities/user/api/normalizeUserAvatar'
 import { toAvatarImgSrc } from '@/shared/lib/avatarUrl'
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { ApiError } from '@/shared/api/errors'
 import type { SupportMessageAuthorProfile } from '../lib/supportMessageAuthorProfile'
 import {
@@ -23,7 +24,7 @@ import { useSupportRealtimeConnected } from './SupportRealtimeProvider'
 export { supportQueryKeys, SUPPORT_POLL_MS } from './supportQueryKeys'
 
 function newIdempotencyBody() {
-  return { idempotencyKey: { key: crypto.randomUUID() } }
+  return { idempotencyKey: { key: randomUUID() } }
 }
 
 export function useSupportMentorAccessQuery(
@@ -152,7 +153,7 @@ export function useSendSupportMessageMutation(hackathonId: string) {
       sendSupportMessage(hackathonId, {
         text,
         ...newIdempotencyBody(),
-        clientMessageId: crypto.randomUUID(),
+        clientMessageId: randomUUID(),
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: supportQueryKeys.myMessages(hackathonId) })

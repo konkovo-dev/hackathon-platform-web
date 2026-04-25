@@ -111,6 +111,7 @@
         "sectionTitle": "submissions",
         "noSubmissions": "you haven't submitted anything yet",
         "createButton": "submit work",
+        "createForbidden": "submissions can only be created by active participants",
         "newVersionButton": "new version",
         "finalBadge": "final",
         "makeFinalButton": "mark as final",
@@ -125,7 +126,11 @@
           "filesLabel": "files",
           "continue": "continue",
           "done": "done",
-          "cancel": "cancel"
+          "cancel": "cancel",
+          "errors": {
+            "createFailed": "could not submit work",
+            "onlyActiveParticipants": "could not create submission: the service does not see your participation as active. refresh the page and try again"
+          }
         },
         "editModal": {
           "title": "edit submission",

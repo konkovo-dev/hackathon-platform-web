@@ -1,5 +1,6 @@
 'use client'
 
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTeam, deleteTeam } from '@/entities/team'
 import { hackathonMyParticipationQueryKey } from '@/entities/hackathon-context/model/queryKeys'
@@ -11,7 +12,7 @@ export function useUpdateTeamMutation(hackathonId: string, teamId: string) {
     mutationFn: (params: { name?: string; description?: string; isJoinable?: boolean }) =>
       updateTeam(hackathonId, teamId, {
         idempotencyKey: {
-          key: crypto.randomUUID(),
+          key: randomUUID(),
         },
         ...params,
       }),
@@ -27,7 +28,7 @@ export function useDeleteTeamMutation(hackathonId: string, teamId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: () => deleteTeam(hackathonId, teamId, crypto.randomUUID()),
+    mutationFn: () => deleteTeam(hackathonId, teamId, randomUUID()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams', hackathonId] })
       queryClient.invalidateQueries({ queryKey: ['hackathon-teams-name-map', hackathonId] })

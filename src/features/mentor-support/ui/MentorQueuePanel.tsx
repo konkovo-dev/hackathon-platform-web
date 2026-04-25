@@ -103,15 +103,17 @@ export function MentorQueuePanel({
         )}
       </Section>
 
-      <Section variant="elevated" title={t('hackathons.support.mentor.assigned_title')}>
-        {m.length === 0 ? (
-          <p className="typography-body-md text-text-tertiary">
-            {t('hackathons.support.mentor.assigned_empty')}
-          </p>
-        ) : (
-          <div className="flex flex-col gap-m4">{m.map(ticket => renderTicket(ticket, false))}</div>
-        )}
-      </Section>
+      {canClaimTickets ? (
+        <Section variant="elevated" title={t('hackathons.support.mentor.assigned_title')}>
+          {m.length === 0 ? (
+            <p className="typography-body-md text-text-tertiary">
+              {t('hackathons.support.mentor.assigned_empty')}
+            </p>
+          ) : (
+            <div className="flex flex-col gap-m4">{m.map(ticket => renderTicket(ticket, false))}</div>
+          )}
+        </Section>
+      ) : null}
 
       {o.length > 0 ? (
         <Section variant="elevated" title={t('hackathons.support.mentor.others_title')}>

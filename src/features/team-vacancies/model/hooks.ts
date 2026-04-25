@@ -1,5 +1,6 @@
 'use client'
 
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { upsertVacancy } from '@/entities/team'
 
@@ -16,7 +17,7 @@ export function useUpsertVacancyMutation(hackathonId: string, teamId: string) {
     }) =>
       upsertVacancy(hackathonId, teamId, {
         idempotencyKey: {
-          key: crypto.randomUUID(),
+          key: randomUUID(),
         },
         ...params,
       }),

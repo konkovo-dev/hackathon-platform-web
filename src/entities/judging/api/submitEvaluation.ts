@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { platformFetchJson } from '@/shared/api/platformClient'
 import type { operations } from '@/shared/api/platform.schema'
 
@@ -17,7 +18,7 @@ export async function submitEvaluation(
       body: JSON.stringify({
         score: params.score,
         comment: params.comment,
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
       }),
     }
   )

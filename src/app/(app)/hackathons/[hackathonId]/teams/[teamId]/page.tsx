@@ -1,6 +1,7 @@
 import { getServerI18n } from '@/shared/i18n/server'
 import { getMe } from '@/entities/user/api/getMe'
 import { TeamDetailView } from '@/widgets/team-detail'
+import { PageContainer } from '@/shared/ui'
 
 export default async function TeamDetailPage({
   params,
@@ -13,10 +14,12 @@ export default async function TeamDetailPage({
   const currentUser = await getMe()
 
   return (
-    <TeamDetailView
-      hackathonId={hackathonId}
-      teamId={teamId}
-      currentUserId={currentUser.user?.userId}
-    />
+    <PageContainer className="py-0">
+      <TeamDetailView
+        hackathonId={hackathonId}
+        teamId={teamId}
+        currentUserId={currentUser.user?.userId}
+      />
+    </PageContainer>
   )
 }

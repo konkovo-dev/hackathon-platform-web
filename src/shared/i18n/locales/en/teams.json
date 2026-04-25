@@ -95,6 +95,7 @@
     "title": "invitations",
     "empty": "no invitations",
     "create": "invite member",
+    "noVacanciesHint": "add a vacancy to invite members",
     "searchUser": "search participant",
     "searchPlaceholder": "enter name or username",
     "selectVacancy": "select vacancy",

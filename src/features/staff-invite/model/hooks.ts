@@ -1,3 +1,4 @@
+import { randomUUID } from '@/shared/lib/randomUuid'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { listHackathonStaff } from '@/entities/hackathon/api/listHackathonStaff'
 import { listHackathonStaffInvitations } from '@/entities/hackathon/api/listHackathonStaffInvitations'
@@ -68,7 +69,7 @@ export function useCreateStaffInvitationMutation(hackathonId: string) {
     }) =>
       createStaffInvitation(hackathonId, {
         idempotencyKey: {
-          key: crypto.randomUUID(),
+          key: randomUUID(),
         },
         ...params,
       }),
@@ -90,7 +91,7 @@ export function useRemoveStaffRoleMutation(hackathonId: string) {
       removeHackathonRole(hackathonId, {
         userId: params.userId,
         role: params.role,
-        idempotencyKey: { key: crypto.randomUUID() },
+        idempotencyKey: { key: randomUUID() },
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hackathon-staff', hackathonId] })
