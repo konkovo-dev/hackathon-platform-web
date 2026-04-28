@@ -52,15 +52,15 @@ export function MentorTicketChat({ hackathonId, ticket, canClaimTickets }: Mento
 
   const isOpen = ticket.status === 'TICKET_STATUS_OPEN'
   const isTakenByMe =
-    viewerUserId != null &&
-    ticket.assignedMentorUserId != null &&
+    Boolean(viewerUserId) &&
+    Boolean(ticket.assignedMentorUserId) &&
     ticket.assignedMentorUserId === viewerUserId
   const canActAsAssignee = isOpen && isTakenByMe
 
   const assignedToOther =
     isOpen &&
     !canActAsAssignee &&
-    ticket.assignedMentorUserId != null &&
+    Boolean(ticket.assignedMentorUserId) &&
     ticket.assignedMentorUserId !== viewerUserId
 
   const showClaimHint =
@@ -180,6 +180,10 @@ export function MentorTicketChat({ hackathonId, ticket, canClaimTickets }: Mento
             />
           </div>
         </SupportChatComposer>
+      ) : !canClaimTickets ? (
+        <p className="typography-caption-sm-regular text-text-tertiary pt-m2">
+          {t('hackathons.support.mentor.reply_hint_organizer')}
+        </p>
       ) : assignedToOther ? (
         <p className="typography-caption-sm-regular text-text-tertiary pt-m2">
           {t('hackathons.support.mentor.reply_hint_other_mentor')}

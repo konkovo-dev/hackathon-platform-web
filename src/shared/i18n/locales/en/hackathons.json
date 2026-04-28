@@ -236,6 +236,7 @@
       "reply": "reply",
       "reply_hint_claim": "claim the ticket from the list to reply in this chat.",
       "reply_hint_other_mentor": "this ticket is assigned to another mentor — you cannot reply here.",
+      "reply_hint_organizer": "organizers cannot reply to participant support requests.",
       "assigned_title": "my tickets",
       "assigned_empty": "no assigned tickets",
       "others_title": "assigned to others",

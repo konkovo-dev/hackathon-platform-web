@@ -421,6 +421,7 @@ export const I18N_KEYS = [
   "hackathons.support.mentor.reply",
   "hackathons.support.mentor.reply_hint_claim",
   "hackathons.support.mentor.reply_hint_other_mentor",
+  "hackathons.support.mentor.reply_hint_organizer",
   "hackathons.support.mentor.reply_placeholder",
   "hackathons.support.mentor.status_closed",
   "hackathons.support.mentor.status_open",

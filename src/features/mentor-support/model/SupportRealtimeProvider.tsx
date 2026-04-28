@@ -6,7 +6,7 @@ import { Centrifuge } from 'centrifuge'
 import { useSessionQuery } from '@/features/auth/model/hooks'
 import { getCentrifugoWsUrl } from '@/shared/config/env'
 import { getSupportRealtimeToken } from '../api'
-import { invalidateSupportQueriesFromPublication } from '../lib/invalidateSupportQueriesFromPublication'
+import { applyPublicationToCache } from '../lib/applyPublicationToCache'
 
 const SupportRealtimeConnectedContext = createContext(false)
 
@@ -51,10 +51,13 @@ export function SupportRealtimeProvider({ hackathonId, children }: SupportRealti
     const sub = centrifuge.newSubscription(channel)
 
     sub.on('publication', ctx => {
-      invalidateSupportQueriesFromPublication(ctx.data, hackathonId, qc)
+      applyPublicationToCache(ctx.data, hackathonId, qc)
     })
 
-    const onSubscribed = () => setConnected(true)
+    const onSubscribed = () => {
+      setConnected(true)
+      void qc.invalidateQueries({ queryKey: ['support'] })
+    }
     const onUnsubscribed = () => setConnected(false)
     const onDisconnected = () => setConnected(false)
 

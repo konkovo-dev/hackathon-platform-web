@@ -115,12 +115,12 @@ export function submissionFileFormatLabel(filename: string): string {
   return ext.slice(1).toUpperCase()
 }
 
-/** `EXT • 1.2 MB` — без ведущей точки, когда слева нет статуса (просмотр, attach). */
+/** `EXT • 1.2 MB` */
 export function submissionFileMetaPlain(filename: string, sizeBytes: number): string {
   return `${submissionFileFormatLabel(filename)} \u2022 ${formatBinarySize(sizeBytes)}`
 }
 
-/** `• EXT • 1.2 MB` — после текста статуса («загружен», «загружается…»). */
+/** `• EXT • 1.2 MB` */
 export function submissionFileMetaSuffix(filename: string, sizeBytes: number): string {
   return `\u2022 ${submissionFileMetaPlain(filename, sizeBytes)}`
 }

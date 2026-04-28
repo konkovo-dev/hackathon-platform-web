@@ -11,6 +11,7 @@ import type {
   HackathonRole,
   HackathonStaffMember,
 } from '@/entities/hackathon/api/listHackathonStaff'
+import { useCan } from '@/shared/policy/useCan'
 
 export interface StaffListProps {
   hackathonId: string
@@ -29,6 +30,7 @@ export function StaffList({ hackathonId }: StaffListProps) {
     () => staff.some(m => m.userId === currentUserId && (m.roles ?? []).includes('HX_ROLE_OWNER')),
     [staff, currentUserId]
   )
+  const { decision: canInviteStaffDecision } = useCan('Participation.InviteStaff', { hackathonId })
   const userIds = useMemo(
     () => staff.map(s => s.userId).filter((id): id is string => id != null),
     [staff]
@@ -87,14 +89,16 @@ export function StaffList({ hackathonId }: StaffListProps) {
       <Section
         title={t('hackathons.management.staff.title')}
         action={
-          <Button
-            variant="icon-secondary"
-            size="xs"
-            onClick={() => setIsInviteModalOpen(true)}
-            aria-label={t('hackathons.management.staff.invite')}
-          >
-            <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
-          </Button>
+          canInviteStaffDecision.allowed ? (
+            <Button
+              variant="icon-secondary"
+              size="xs"
+              onClick={() => setIsInviteModalOpen(true)}
+              aria-label={t('hackathons.management.staff.invite')}
+            >
+              <Icon src="/icons/icon-plus/icon-plus-xs.svg" size="xs" color="secondary" />
+            </Button>
+          ) : undefined
         }
       >
         {isLoading ? (
